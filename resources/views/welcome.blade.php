@@ -1,0 +1,2 @@
+@extends('template.app')
+hola

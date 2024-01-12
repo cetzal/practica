@@ -8,3 +8,10 @@ DataTable
 
 #Back-end
 Laravel 8
+
+#Implementaciones
+Jwt
+Middleware
+Busquedas serve side con DataTable
+
+

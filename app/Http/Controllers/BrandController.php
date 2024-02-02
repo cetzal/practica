@@ -23,15 +23,16 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $request->name = preg_replace('/\s+/', ' ', $request->name);
-        $this->validate($request, [
+        $validator = $this->validate($request, [
             'name' => [
                 'max:255',
-                    Rule::unique('brands')->where(function ($query) {
+                Rule::unique('brands')->where(function ($query) {
                     return $query->where('is_active', 1);
-                }),
+                })
             ],
+            'description' => ['required']
         ]);
-
+        
         $input = $request->except('image');
         $input['is_active'] = true;
        

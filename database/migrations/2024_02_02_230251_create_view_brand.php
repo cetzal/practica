@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateViewBranch extends Migration
+class CreateViewBrand extends Migration
 {
     /**
      * Run the migrations.
@@ -37,7 +38,7 @@ class CreateViewBranch extends Migration
     {
         return <<<SQL
             CREATE VIEW view_brands AS
-                SELECT id, name, description, is_active 
+                SELECT id, name, description, is_active, deleted_at
                 FROM brands;
             SQL;
     }

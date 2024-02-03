@@ -37,7 +37,7 @@ class CreateViewBranch extends Migration
     {
         return <<<SQL
             CREATE VIEW view_brands AS
-                SELECT id, name, description 
+                SELECT id, name, description, is_active 
                 FROM brands;
             SQL;
     }

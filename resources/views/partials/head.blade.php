@@ -5,10 +5,11 @@
  <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
  <!-- Font Awesome CSS -->
- <link 
+ <!-- <link 
   href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
-  rel="stylesheet"  type='text/css'>
- <link href="{{ asset('assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css" />
+  rel="stylesheet"  type='text/css'> -->
+ <!-- <link href="{{ asset('assets/font-awesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css" /> -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
  <!-- laravel css -->
  <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
@@ -17,7 +18,9 @@
  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
  <!-- BEGIN CSS for this page -->
- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+ <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/> -->
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+ <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css"> -->
 
  <!-- END CSS for this page -->
 

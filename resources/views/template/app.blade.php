@@ -38,6 +38,32 @@
 
     @include('partials.footer')
     @include('partials.scripts')
+    <script type="text/javascript">
+   $(document).ready(function(){
+     //jquery for toggle sub menus
+     $('.sub-btn').click(function(){
+       $(this).next('.sub-menu').slideToggle();
+       $(this).find('.dropdown').toggleClass('rotate');
+     });
+
+     //jquery for expand and collapse the sidebar
+     $('.open-left').click(function(){
+      $('.side-bar').toggleClass('active');
+      if($('.side-bar').hasClass('active')){
+        $('.content-page').css('margin-left', '250px');
+      }else{
+        $('.content-page').css('margin-left', '0px');
+      }
+     });
+
+     $('.close-btn').click(function(){
+       $('.side-bar').removeClass('active');
+       this.addclass('open-left');
+       this.removeClass('close-btn');
+       //$('.open-left').css("visibility", "visible");
+     });
+   });
+   </script>
     @yield('scripts')
 
 </body>

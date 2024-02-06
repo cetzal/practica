@@ -1,14 +1,76 @@
 @extends('template.app') 
 @section('content')
 <section>
-    <div class="container-fluid">
+    <div class="container-fluid mb-2">
         <a href="{{route('user.create')}}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.Add User')}}</a>
         <a href="#" class="btn btn-primary delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
-            <a href="#" class="btn btn-primary active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
-            <a href="#" class="btn btn-primary desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
+        <a href="#" class="btn btn-primary active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
+        <a href="#" class="btn btn-primary desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
+        <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
+    </div>
+    <div class="container-fluid mb-2 form_search">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <label for="fisrt_name"> First name</label>
+                    <input type="text" class="form-control" placeholder="User name" name="first_name">
+                </div>
+                <div class="col">
+                    <label for="last_name">Last name</label>
+                    <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                </div>
+                <div class="col">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" placeholder="Email" name="email">
+                </div>
+                <div class="col">
+                    <label for="last_name">Usuario alta</label>
+                    <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Fecha alta</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                            <input type="text" name="date_create" id="date_create" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Fecha modificacion</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                            <input type="text" name="date_update" id="date_update" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>status</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for=""></label>
+                    <button type="button" class="btn btn-primary mt-4 filter_data">Filtrar</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form">Limpiar</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="table-responsive">
-        <table id="user-table" class="table">
+        <table id="user-table" class="table table-striped nowrap">
             <thead>
                 <tr>
                     <th class="not-exported">
@@ -238,7 +300,18 @@
         }
     });
 
+    $('.show_form_search').on('click', function(e){
+        $('.form_search').toggleClass('form_search_active');
+    });
+
+    $('.close_form').on('click', function(e){
+        $('.form_search').removeClass('form_search_active');
+    });
+
     var table = $('#user-table').DataTable( {
+        responsive: true,
+        autoWidth : true,
+        "searching": false,
         "ajax" : "{{route('api.user.list')}}",
         "createdRow": function( row, data, dataIndex ) {
                 $(row).addClass('user-link');
@@ -299,8 +372,8 @@
             "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
             "search":  '{{trans("file.Search")}}',
             'paginate': {
-                    'previous': '<i class="dripicons-chevron-left"></i>',
-                    'next': '<i class="dripicons-chevron-right"></i>'
+                    'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
+                    'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         },
         

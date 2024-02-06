@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Roles;
+use App\Models\ViewUser;
 use Auth;
 use Hash;
 use Keygen\Keygen;
@@ -19,7 +20,16 @@ class UserController extends Controller
     }
 
     public function list(){
-        $data = User::all();
+        $data = ViewUser::select([
+            'id',
+            'name',
+            'last_name',
+            'email',
+            'picture',
+            'role_name',
+            'is_active',
+            'deleted_at'
+        ])->get();
         return json_encode(['data' => $data]);
     }
 
@@ -29,7 +39,16 @@ class UserController extends Controller
     }
 
     public function show($id){
-        $user_data = User::findOrFail($id);
+        $user_data = ViewUser::select([
+            'id',
+            'name',
+            'last_name',
+            'email',
+            'password',
+            'picture',
+            'role_id',
+            'is_active',
+        ])->findOrFail($id);
         return $user_data;
     }
 
@@ -42,16 +61,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => [
-                'max:255'
-            ],
+            'name' => ['required','max:191'],
+            'last_name' => ['required', 'max:191'],
             'email' => [
                 'email',
                 'max:255',
-                    Rule::unique('users')->where(function ($query) {
+                    Rule::unique('view_users')->where(function ($query) {
                     return $query->where('is_active', false);
                 }),
             ],
+            'password' => ['required', 'max:30'],
+            'is_active' => ['boolean'],
+            'role_id' => ['required', 'exists:roles,id']
         ]);
 
         $data = $request->except('image');
@@ -86,34 +107,32 @@ class UserController extends Controller
         return view('user.edit', compact('lims_user_data', 'lims_role_list', 'lims_biller_list', 'lims_warehouse_list'));
     }
 
-    public function activarBySelection(Request $request){
-        $user_id = $request['userIdArray'];
-        foreach ($user_id as $id) {
-            $user_data = User::findOrFail($id);
-            $user_data->is_active = true;
-            $user_data->save();
-        }
+    public function activarBySelection(Request $request)
+    {
+        $request->validate($request, [
+            'userIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        User::whereIn('id', $request['userIdArray'])->update(['is_active' => true]);
        
         return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha activado con exito']);
     }
-    public function desactivarBySelection(Request $request){
-        $user_id = $request['userIdArray'];
-        foreach ($user_id as $id) {
-            $user_data = User::findOrFail($id);
-            $user_data->is_active = false;
-            $user_data->save();
-        }
+    public function desactivarBySelection(Request $request)
+    {    
+        $request->validate($request, [
+            'userIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        User::whereIn('id', $request['userIdArray'])->update(['is_active' => false]);
        
         return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha desactivado con exito']);
     }
     public function deleteBySelection(Request $request){
-        $user_id = $request['userIdArray'];
-        foreach ($user_id as $id) {
-            $user_data = User::findOrFail($id);
-            $user_data->is_active = false;
-            $user_data->save();
-            $user_data->delete();
-        }
+        $request->validate($request, [
+            'userIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        User::destroy($request['userIdArray']);
        
         return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
     }
@@ -121,9 +140,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => [
-                'max:255',
-            ],
+            'name' => ['required','max:191'],
+            'last_name' => ['required', 'max:191'],
             'email' => [
                 'email',
                 'max:255',
@@ -131,6 +149,9 @@ class UserController extends Controller
                     return $query->where('is_active', false);
                 }),
             ],
+            'password' => ['sometimes', 'max:30'],
+            'is_active' => ['boolean'],
+            'role_id' => ['required', 'exists:roles,id']
         ]);
 
         $input = $request->except('password', '_method', '_token', 'image');

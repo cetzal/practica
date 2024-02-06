@@ -28,15 +28,17 @@ class JwtMiddleware extends BaseMiddleware
                     $cookes_array['access_token'] = str_replace('access_token=', '',$token_ex[$i]);
                 }
             }
-            if (isset($cookes_array['access_token'])) {
-                // Auth::setToken($request->cookie('access_token'));
-                // var_export($cookes_array['access_token']);
-                // exit;
-                JWTAuth::setToken(trim($cookes_array['access_token'])); //<-- set token and check
-                if (! $claim = JWTAuth::getPayload()) {
-                    // return response()->json(array('message'=>'user_not_found'), 404);
-                    throw new Exception('User Not Found');
-                }
+            if (!isset($cookes_array['access_token'])) {
+                return redirect()->route('login')->with('error', 'Please auth!!'); 
+            }
+
+            // Auth::setToken($request->cookie('access_token'));
+            // var_export($cookes_array['access_token']);
+            // exit;
+            JWTAuth::setToken(trim($cookes_array['access_token'])); //<-- set token and check
+            if (! $claim = JWTAuth::getPayload()) {
+                // return response()->json(array('message'=>'user_not_found'), 404);
+                throw new Exception('User Not Found');
             }
 
             // $user = JWTAuth::parseToken()->authenticate();
@@ -45,7 +47,8 @@ class JwtMiddleware extends BaseMiddleware
         } catch (Exception $e) {
             if($e instanceof \Tymon\JWTAuth\Exceptions\JWTException){
                 //Se requiere un token - Token no proporcionado - El token no se pudo analizar de la solicitud 
-                return response()->json(['status' => 'error', 'message' => 'Se requiere un token'], 401);
+                return redirect()->route('login')->with('error', 'Please auth!!'); 
+                //return response()->json(['status' => 'error', 'message' => 'Se requiere un token'], 401);
             }
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return response()->json(['status' => 'error', 'message' => 'El token es invalido'], 401);

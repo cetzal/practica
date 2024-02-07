@@ -38,4 +38,7 @@
   href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
   type="text/css"
 />
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 

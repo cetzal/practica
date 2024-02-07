@@ -9,7 +9,7 @@
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
     <div class="container-fluid mb-2 form_search">
-        <form>
+        <form id="from_search">
             <div class="row">
                 <div class="col">
                     <label for="fisrt_name"> First name</label>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="col">
                     <label for="last_name">Usuario alta</label>
-                    <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                    <input type="text" class="form-control" placeholder="Last name" name="user_created">
                 </div>
             </div>
             <div class="row">
@@ -54,15 +54,16 @@
                 <div class="col">
                     <div class="form-group">
                         <label>status</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected value="1">Active</option>
+                        <select class="form-select" name="user_status">
+                            <option selected value="">All</option>
+                            <option value="1">Active</option>
                             <option value="2">Inactive</option>
                         </select>
                     </div>
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="button" class="btn btn-primary mt-4 filter_data">Filtrar</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filtrar</button>
                     <button type="button" class="btn btn-primary mt-4 clear_form">Limpiar</button>
                     <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
                 </div>
@@ -191,6 +192,21 @@
         }
     });
 
+    $( "#date_create" ).daterangepicker({
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+        todayHighlight: true,
+        autoUpdateInput: false,
+    });
+
+    $( "#date_update" ).daterangepicker({
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+        todayHighlight: true,
+        autoUpdateInput: false,
+    });
     
     function escapeHtml(text) {
     return text
@@ -301,6 +317,7 @@
     });
 
     $('.show_form_search').on('click', function(e){
+        e.preventDefault();
         $('.form_search').toggleClass('form_search_active');
     });
 
@@ -311,8 +328,20 @@
     var table = $('#user-table').DataTable( {
         responsive: true,
         autoWidth : true,
+        serverSide: true,
         "searching": false,
-        "ajax" : "{{route('api.user.list')}}",
+        "bProcessing": true,
+        //"ajax" : "",
+        "ajax": {
+            "url": "{{route('api.user.list')}}",
+            "data": function(d) {
+                var frm_data = $('form#from_search').serializeArray();
+                // return frm_data;
+                $.each(frm_data, function(key, val) {
+                    d[val.name] = val.value;
+                });
+            }
+        },
         "createdRow": function( row, data, dataIndex ) {
                 $(row).addClass('user-link');
                 $(row).attr('data-user', JSON.stringify(data));
@@ -364,7 +393,8 @@
                     "orderable": false,
                     'targets': [0, 3]
             },
-                { targets: [1], className: "text-center"},
+            { targets: [1], className: "text-center"},
+            {targets: [0, 1, 2, 3], searchable: false}
         ],
         "order": [],
         'language': {
@@ -380,6 +410,27 @@
         
         
     } );
+
+
+    $( "#from_search" ).on( "submit", function( event ) {
+        event.preventDefault();
+        table.ajax.reload();
+        // var data = new FormData( $( 'form#from_search' )[ 0 ] );
+        // $.ajax({
+        //     url: "{{route('api.user.list')}}",
+        //     type: 'GET',
+        //     data:$( 'form#from_search' ).serialize(),
+        //     success: function (response) {
+        //            // Transform the AJAX's response here and get the data to add to your data table below
+        //            table.clear().rows.add(response).draw()
+        //         }
+        // });
+    });
+
+    $('.clear_form').on('click', function(e){
+        $('#from_search')[0].reset();
+        table.ajax.reload();
+    });
 
   
 

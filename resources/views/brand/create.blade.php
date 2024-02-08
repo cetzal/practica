@@ -29,6 +29,30 @@
                         </select>
                     </div>
                 </div>
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Seleccione fecha</label>
+                        <select class="form-select" name="select_date">
+                            <option selected value="">Seleccione</option>
+                            <option value="created_at">Fecha creacion</option>
+                            <option value="updated_at">Fecha actualizacion</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Rango de fecha</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                            <input type="text" name="range_date" id="range_date" class="form-control" />
+                        </div>
+                    </div>
+                </div>
                 <div class="col">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data">Filtrar</button>
@@ -145,6 +169,23 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    $( "#range_date" ).daterangepicker({
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+        todayHighlight: true,
+        autoUpdateInput: false,
+    });
+
+    $('input[name="range_date"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="range_date"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
     brand_ids = [];
     //Eliminar todas las marcas
     
@@ -256,13 +297,13 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.created_at;
+                    return moment(row.created_at).format('MM/DD/YYYY HH:mm:ss');
                 },
                 'targets': [5]
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.updated_at;
+                    return moment(row.updated_at).format('MM/DD/YYYY HH:mm:ss');
                 },
                 'targets': [6]
             },

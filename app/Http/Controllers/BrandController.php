@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use App\Models\Brand;
-use App\Models\BrandView;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +36,14 @@ class BrandController extends Controller
 
         if (isset($request['status']) && $request['status'] != '') {
             $where_conditions[] = ['is_active', '=', $request['status']];
+        }
+
+        if (!empty($request['range_date']) && !empty($request['select_date'])) {
+            list($date_from, $date_to) = explode(' - ', $request['range_date']);
+            $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
+            $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
+            $where_conditions[] = [$request['select_date'], '>=', $date_from];
+            $where_conditions[] = [$request['select_date'], '<=', $date_to];
         }
         
         $data = DB::table('view_brands')

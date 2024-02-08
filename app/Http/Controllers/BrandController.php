@@ -2,28 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use JWTAuth;
 use App\Models\Brand;
 use App\Models\BrandView;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
 
     public function index()
     {
-        $brand_all = BrandView::where('is_active', true)->get();
+        Log::emergency('index main');
+        $brand_all = DB::table('view_brands')->get();
         return view('brand.create', compact('brand_all'));
     }
 
-    public function list(Request $request){
+    public function list(Request $request)
+    {
         $this->validate($request, [
             'brand' => ['sometimes', 'required', 'max:255'],
             'is_active' => ['sometimes', 'boolean']
         ]);
+        Log::emergency($request->all());
+        
+        $where_conditions = [];
+        if (!empty($request['name'])) {
+            $where_conditions[] = ['name', 'like', '%'.$request['name'].'%'];
+        }
+        if (!empty($request['created_by'])) {
+            $where_conditions[] = ['user_name', 'like', '%'.$request['created_by'].'%'];
+        }
 
-        $data = BrandView::select(['id', 'name', 'description', 'is_active'])
-                ->filter($request)->get();
+        if (!empty($request['status'])) {
+            $where_conditions[] = ['is_active', '=', $request['status']];
+        }
+        
+        $data = DB::table('view_brands')
+                ->select(['id', 'name', 'description', 'is_active'])
+                ->where($where_conditions)
+                ->get();
 
         return response()->json(['data' =>$data]);
     }
@@ -40,26 +60,18 @@ class BrandController extends Controller
             ],
             'description' => ['required']
         ]);
-
+        
         $input = $request->except('image');
         $input['is_active'] = true;
-       
-        // $image = $request->image;
-        // if ($image) {
-        //     $ext = pathinfo($image->getClientOriginalName(), PATHINFO_EXTENSION);
-        //     $imageName = preg_replace('/[^a-zA-Z0-9]/', '', $input['title']);
-        //     $imageName = $imageName . '.' . $ext;
-        //     $image->move('public/images/brand', $imageName);
-        //     $input['image'] = $imageName;
-        // }
+        $input['created_by'] = JWTAuth::toUser()->id;
         Brand::create($input);
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']);
     }
 
     public function edit($id)
     {
-        $brand_data = BrandView::select(['id', 'name', 'description'])
-                        ->findOrFail($id);
+        $brand_data = DB::table('view_brands')->select(['id', 'name', 'description'])
+                        ->find($id);
         return $brand_data;
     }
 
@@ -69,7 +81,7 @@ class BrandController extends Controller
             'name' => [
                 'max:255',
                 Rule::unique('view_brands')->ignore($request->brand_id)->where(function ($query) {
-                    return $query->where('is_active', 1)->whereNull('deleted_at');
+                    return $query->where('is_active', 1);
                 }),
             ],
             'description' => ['required']
@@ -85,7 +97,7 @@ class BrandController extends Controller
 
     public function desactivarBySelection(Request $request)
     {
-        $request->validate($request, [
+        $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
@@ -96,13 +108,23 @@ class BrandController extends Controller
 
     public function activarBySelection(Request $request)
     {
-        $request->validate($request, [
+        $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
         Brand::whereIn('id', $request['brandIdArray'])->update(['is_active' => true]);
 
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido activado']); 
+    }
+
+    public function deleteBySelection(Request $request){
+        $this->validate($request, [
+            'brandIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        Brand::whereIn('id', $request['brandIdArray'])->update(['deleted_at' => date('Y-m-d H:i:s')]);
+       
+        return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
     }
 
     public function desactivar($id)
@@ -123,7 +145,8 @@ class BrandController extends Controller
 
     public function destroy($id){
         $brand_data = Brand::findOrFail($id);
-        $brand_data->delete();
+        $brand_data->deleted_at = date('Y-m-d H:i:s');
+        $brand_data->save();
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 
     }
 }

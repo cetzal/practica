@@ -3,9 +3,43 @@
 <section>
     <div class="container-fluid">
         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add Brand')}} </button>&nbsp;
+        <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
+        <a href="#" class="btn btn-success active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
+        <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
+        <a href="#" class="btn btn-primary show_form_brand_search"><i class="fa fa-search" aria-hidden="true"></i></a>
+    </div>
+    <div class="container-fluid mb-2 form_branch_search">
+        <form id="from_brand_search">
+            <div class="row">
+                <div class="col">
+                    <label for="fisrt_name">Name</label>
+                    <input type="text" class="form-control" placeholder="Brand name" name="name">
+                </div>
+                <div class="col">
+                    <label for="last_name">Created by</label>
+                    <input type="text" class="form-control" placeholder="Last name" name="created_by">
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>status</label>
+                        <select class="form-select" name="status">
+                            <option selected value="">All</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for=""></label>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filtrar</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form">Limpiar</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="table-responsive">
-        <table id="biller-table" class="table">
+        <table id="brand-table" class="table">
             <thead>
                 <tr>
                     <th class="not-exported">
@@ -42,9 +76,11 @@
                 <label>{{trans('file.Description')}} *</label>
                 {{Form::text('description',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand description...'))}}
             </div>
-            <div class="form-group">       
-              <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
-            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
         </div>
         {{ Form::close() }}
       </div>
@@ -89,6 +125,9 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    brand_ids = [];
+    //Eliminar todas las marcas
+    
 
     $( "#select_all" ).on( "change", function() {
         if ($(this).is(':checked')) {
@@ -99,8 +138,33 @@
         }
     });
 
-    var table = $('#biller-table').DataTable( {
-        "ajax" : "{{route('api.brand.list')}}",
+    $('.show_form_brand_search').on('click', function(e){
+        e.preventDefault();
+        $('.form_branch_search').toggleClass('form_brand_search_active');
+    });
+
+    $('.close_form').on('click', function(e){
+        $('.form_branch_search').removeClass('form_brand_search_active');
+    });
+
+    var table = $('#brand-table').DataTable( {
+        responsive: true,
+        autoWidth : true,
+        serverSide: true,
+        "searching": false,
+        "bProcessing": true,
+        "ajax" : {
+            "url": "{{route('api.brand.list')}}",
+            "data": function(d) {
+                var frm_data = $('form#from_brand_search').serializeArray();
+                // return frm_data;
+                $.each(frm_data, function(key, val) {
+                    d[val.name] = val.value;
+                });
+
+                console.log('form_data', frm_data);
+            }
+        },
         "order": [],
         'language': {
             'lengthMenu': '_MENU_ {{trans("file.records per page")}}',
@@ -128,6 +192,9 @@
         //         }
         //     },
         // ],
+        'createdRow': function(row, data, dataIndex) {
+            $(row).attr('data-branch-id', data['id']);
+        },
         'columnDefs': [
             {
                 "orderable": false,
@@ -157,7 +224,7 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.is_active == 1 ? 'Activo' : 'suspendiso';
+                    return row.is_active == 1 ? 'Activo' : 'suspendido';
                 },
                 'targets': [3]
             },
@@ -181,7 +248,151 @@
        
     } );
 
-    $('#biller-table').on('click', '.open-EditbrandDialog ', function() {
+    $(".delete_all").on('click', function(e){
+        e.preventDefault();
+        brand_ids = [];
+        verific_checks(0);
+        if(brand_ids.length) {
+            $.ajax({
+                type:'PUT',
+                url:'{{route("api.brand.all_delete")}}',
+                data:{
+                    brandIdArray: brand_ids
+                },
+                success:function(data){
+                    $.confirm({
+                        title: 'Eliminar marcas',
+                        content: 'se elimino todo las marcas selecionados',
+                        buttons: {
+                            ok: function () {
+                                table.ajax.reload();
+                                $("tbody input[type='checkbox']").prop('checked', false);
+                            }
+                        }
+                    });
+                }
+            });
+        }else{
+            $.confirm({
+                title: 'Eliminar marcas',
+                content: 'Seleccione las marcas que deseas eliminar',
+            });
+        }
+    });
+
+    //Activar todas las marcas seleccionas
+    $(".active_all").on('click', function(e){
+        e.preventDefault();
+        brand_ids = [];
+        verific_checks(0);
+        if(brand_ids.length) {
+            $.ajax({
+                type:'PUT',
+                url:'{{route("api.brand.all_active")}}',
+                data:{
+                    brandIdArray: brand_ids
+                },
+                success:function(data){
+                    $.confirm({
+                        title: 'Activar marcas',
+                        content: 'Se activo todo las marcas selecionados ',
+                        buttons: {
+                            ok: function () {
+                                console.log('activar todas las marcas');
+                                table.ajax.reload();
+                                $("tbody input[type='checkbox']").prop('checked', false);
+                            }
+                        }
+                    });
+                }
+            });
+        }else{
+            $.confirm({
+                title: 'Activar marcas',
+                content: 'Seleccione los marcas que deseas activar',
+            });
+        }
+    });
+
+    // Desactivas todas las marcas seleccionadas
+    $(".desactive_all").on('click', function(e){
+        e.preventDefault();
+        brand_ids = [];
+        verific_checks(0);
+        if(brand_ids.length) {
+            $.ajax({
+                type:'PUT',
+                url:'{{route("api.brand.all_desactive")}}',
+                data:{
+                    brandIdArray: brand_ids
+                },
+                success:function(data){
+                    $.confirm({
+                        title: 'Desactivar marcas',
+                        content: 'Se desactivo todas los marcas selecionados ',
+                        buttons: {
+                            ok: function () {
+                                console.log('desactivar todas las marcas');
+                                table.ajax.reload();
+                                $("tbody input[type='checkbox']").prop('checked', false);
+                                // $('#brand-table').DataTable().ajax().reload();
+                            }
+                            // cancel: function () {
+                            //     $.alert('Canceled!');
+                            // },
+                            // somethingElse: {
+                            //     text: 'Something else',
+                            //     btnClass: 'btn-blue',
+                            //     keys: ['enter', 'shift'],
+                            //     action: function(){
+                            //         $.alert('Something else?');
+                            //     }
+                            // }
+                        }
+                    });
+                    
+                }
+            });
+        }else{
+            $.confirm({
+                title: 'Desactivar marcas',
+                content: 'Seleccione lass marcas que deseas desactivar',
+            });
+        }
+    });
+
+    var verific_checks = function(num){
+        $(':checkbox:checked').each(function(i){
+            i+=num;
+            if(i){
+                var brand_data = $(this).closest('tr').data('branch-id');
+                console.log(brand_data);
+                brand_ids[i-1] = brand_data;
+            }
+        });
+    }
+
+    $( "#from_brand_search" ).on( "submit", function( event ) {
+        event.preventDefault();
+        table.ajax.reload();
+        // var data = new FormData( $( 'form#from_brand_search' )[ 0 ] );
+        // $.ajax({
+        //     url: "{{route('api.user.list')}}",
+        //     type: 'GET',
+        //     data:$( 'form#from_brand_search' ).serialize(),
+        //     success: function (response) {
+        //            // Transform the AJAX's response here and get the data to add to your data table below
+        //            table.clear().rows.add(response).draw()
+        //         }
+        // });
+    });
+
+    $('.clear_form').on('click', function(e){
+        $('#from_brand_search')[0].reset();
+        table.ajax.reload();
+    });
+
+    $('#brand-table').on('click', '.open-EditbrandDialog ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/edit");
@@ -194,7 +405,7 @@
         });
     });
 
-    $('#biller-table').on('click', '.remove ', function() {
+    $('#brand-table').on('click', '.remove ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/delete");
@@ -230,7 +441,7 @@
     });
 
 
-    $('#biller-table').on('click', '.desactivar ', function() {
+    $('#brand-table').on('click', '.desactivar ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/desactivar");
@@ -265,7 +476,7 @@
 
     });
 
-    $('#biller-table').on('click', '.activar ', function() {
+    $('#brand-table').on('click', '.activar ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/activar");
@@ -321,6 +532,7 @@
                     title: response.status,
                     content: response.message,
                 });
+                // $("#createModal").hide();
             }
         });
     });

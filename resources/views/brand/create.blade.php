@@ -97,7 +97,6 @@
           <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
             <div class="form-group">
                 <label>{{trans('file.name')}} *</label>
-                <!-- {{Form::text('name',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand name...'))}} -->
                 <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
                 @if($errors->has('name'))
                 <span>
@@ -107,7 +106,6 @@
             </div>
             <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>
-                <!-- {{Form::text('description',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand description...'))}} -->
                 <input type="text" name="description" required class="form-control" value="" placeholder="Type brand description...">
                 @if($errors->has('description'))
                 <span>
@@ -138,17 +136,22 @@
         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
           <div class="form-group">
             <label>{{trans('file.Title')}} *</label>
-            {{Form::text('name',null, array('required' => 'required', 'class' => 'form-control'))}}
+            <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
             @if($errors->has('name'))
-                            <span>
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                            @endif
+                <span>
+                    <strong>{{ $errors->first('name') }}</strong>
+                </span>
+            @endif
         </div>
         <input type="hidden" name="brand_id">
         <div class="form-group">
             <label>{{trans('file.Description')}} *</label>
-            {{Form::text('description',null, array('required' => 'required', 'class' => 'form-control'))}}
+            <input type="text" name="description" required class="form-control" value="" placeholder="Type brand description...">
+            @if($errors->has('description'))
+                <span>
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
+            @endif
         </div>
         <div class="form-group">       
             <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
@@ -456,16 +459,6 @@
     $( "#from_brand_search" ).on( "submit", function( event ) {
         event.preventDefault();
         table.ajax.reload();
-        // var data = new FormData( $( 'form#from_brand_search' )[ 0 ] );
-        // $.ajax({
-        //     url: "{{route('api.user.list')}}",
-        //     type: 'GET',
-        //     data:$( 'form#from_brand_search' ).serialize(),
-        //     success: function (response) {
-        //            // Transform the AJAX's response here and get the data to add to your data table below
-        //            table.clear().rows.add(response).draw()
-        //         }
-        // });
     });
 
     $('.clear_form').on('click', function(e){
@@ -638,6 +631,28 @@
                 // $("#createModal").hide();
             }
         });
+    });
+
+    $('form#update_brand').validate({
+        rules:{
+            name: 'required',
+            description : 'required'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorPlacement: function ( error, element ) {
+            // Add the `invalid-feedback` class to the error element
+            error.addClass("invalid-feedback" );
+            error.insertAfter(element);
+        },
+        messages: {
+            name: "El nombre es requerido",
+            description: "La descripcion es requerido"
+        }
     });
 
     $( 'form#update_brand' ).submit( function(e){

@@ -244,8 +244,6 @@
       });
     });
 
-    
-
     tinymce.init({
       selector: 'textarea',
       height: 130,
@@ -311,19 +309,19 @@
 
     var starting_date = $('#starting_date');
     starting_date.datepicker({
-     format: "dd-mm-yyyy",
-     startDate: "<?php echo date('d-m-Y'); ?>",
-     autoclose: true,
-     todayHighlight: true
-     });
+        format: "dd-mm-yyyy",
+        startDate: "<?php echo date('d-m-Y'); ?>",
+        autoclose: true,
+        todayHighlight: true
+    });
 
     var ending_date = $('#ending_date');
     ending_date.datepicker({
-     format: "dd-mm-yyyy",
-     startDate: "<?php echo date('d-m-Y'); ?>",
-     autoclose: true,
-     todayHighlight: true
-     });
+        format: "dd-mm-yyyy",
+        startDate: "<?php echo date('d-m-Y'); ?>",
+        autoclose: true,
+        todayHighlight: true
+    });
 
     $(window).keydown(function(e){
         if (e.which == 13) {
@@ -345,6 +343,7 @@
             }
         }
     });
+
     //dropzone portion
     Dropzone.autoDiscover = false;
 
@@ -360,6 +359,31 @@
         unhighlight: function (element, errorClass, validClass) {
             $(element).closest('div.form-group').removeClass('has-error').addClass('has-success');
             $(element).closest('div.form-group').find('.validation-msg').html('');
+        }
+    });
+
+    $("#product-form").validate({
+        rules : {
+            name : 'requerid'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        // errorPlacement: function ( error, element ) {
+        //     // Add the `invalid-feedback` class to the error element
+        //     error.addClass("invalid-feedback");
+        //     error.insertAfter(element);
+        // },
+        messages: {
+            name : 'the name is requerid'
         }
     });
 

@@ -20,18 +20,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('login','App\Http\Controllers\Auth\LoginController@ajaxLogin')->name('api.login');
 
+Route::group(['middleware' => ['auth.jwt']],function(){
+    Route::get('/user/genpass', [App\Http\Controllers\UserController::class, 'generatePassword'])->name('api.user.generatePassword');
+    Route::get('/user/list', [App\Http\Controllers\UserController::class, 'list'])->name('api.user.list');
+    Route::post('/user', [App\Http\Controllers\UserController::class, 'store'])->name('api.user.store');
+    Route::get('/user/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('api.user.show');
+    Route::put('/user/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('api.user.update');
+    Route::delete('/user/{id}', [App\Http\Controllers\UserController::class, 'delete'])->name('api.user.delete');
+    Route::put('/user/{id}/activar', [App\Http\Controllers\UserController::class, 'activar'])->name('api.brand.activar');
+    Route::put('/user/{id}/desactivar', [App\Http\Controllers\UserController::class, 'desactivar'])->name('api.brand.deactivar');
+    Route::put('/user/all/activarbyselection', [App\Http\Controllers\UserController::class, 'activarBySelection'])->name('api.user.all_active');
+    Route::put('/user/all/desactivarbyselection', [App\Http\Controllers\UserController::class, 'desactivarBySelection'])->name('api.user.all_desactive');
+    Route::put('/user/all/deletebyselection', [App\Http\Controllers\UserController::class, 'deleteBySelection'])->name('api.user.all_delete');
 
-Route::get('/user/genpass', [App\Http\Controllers\UserController::class, 'generatePassword'])->name('api.user.generatePassword');
-Route::get('/user/list', [App\Http\Controllers\UserController::class, 'list'])->name('api.user.list');
-Route::post('/user', [App\Http\Controllers\UserController::class, 'store'])->name('api.user.store');
-Route::get('/user/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('api.user.show');
-Route::put('/user/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('api.user.update');
-Route::delete('/user/{id}', [App\Http\Controllers\UserController::class, 'delete'])->name('api.user.delete');
-Route::put('/user/{id}/activar', [App\Http\Controllers\UserController::class, 'activar'])->name('api.brand.activar');
-Route::delete('/use/{id}/desactivar', [App\Http\Controllers\UserController::class, 'desactivar'])->name('api.brand.deactivar');
-Route::put('/user/all/activarbyselection', [App\Http\Controllers\UserController::class, 'activarBySelection'])->name('api.user.all_active');
-Route::put('/user/all/desactivarbyselection', [App\Http\Controllers\UserController::class, 'desactivarBySelection'])->name('api.user.all_desactive');
-Route::put('/user/all/deletebyselection', [App\Http\Controllers\UserController::class, 'deleteBySelection'])->name('api.user.all_delete');
+
+});
 
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/brand', [App\Http\Controllers\BrandController::class, 'list'])->name('api.brand.list');

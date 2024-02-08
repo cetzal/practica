@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Roles;
+use App\Models\User;
 use App\Models\ViewUser;
-use Auth;
+use Carbon\Carbon;
 use Hash;
-use Keygen\Keygen;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Keygen\Keygen;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWTGuard;
 
 class UserController extends Controller
 {
@@ -19,18 +23,54 @@ class UserController extends Controller
         return view('user.index');
     }
 
-    public function list(){
-        $data = ViewUser::select([
-            'id',
-            'name',
-            'last_name',
-            'email',
-            'picture',
-            'role_name',
-            'is_active',
-            'deleted_at'
-        ])->get();
-        return json_encode(['data' => $data]);
+    public function list(Request $request) {
+        $where = [];
+        $where[] = 'deleted_at IS NULL';
+        if(!is_null($request->get('first_name'))){
+            $where[] = 'name like "%'.$request->get('first_name').'%"';
+        }
+        if(!is_null($request->get('first_name'))){
+            $where[] = 'last_name like "%'.$request->get('last_name').'%"';
+        }
+        if(!is_null($request->get('email'))){
+            $where[] = 'email like "%'.$request->get('email').'%"';
+        }
+        if(!is_null($request->get('user_created'))){
+            $where[] = 'user_parent_name like "%'.$request->get('user_created').'%"';
+        }
+        if(!is_null($request->get('date_create'))){
+            $range = explode(' - ', $request->get('date_create'));
+            $where[] = 'DATE(created_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+        }
+        if(!is_null($request->get('date_update'))){
+            $range = explode(' - ', $request->get('date_update'));
+            $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+           
+        }
+
+        if(!is_null($request->get('user_status'))){
+            $where[] = 'is_active = '.$request->get('user_status');
+        }
+
+        $query = '';
+        if(count($where) > 0){
+            $query = 'where ' . implode(' and ',  $where);
+        }
+
+        $totalData = DB::table('view_users')->whereRaw(implode(' and ', $where))->count();
+        $totalFiltered = $totalData; 
+
+        $data = DB::select('SELECT * from view_users '. $query );
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+            
+        //echo json_encode($json_data);
+        return json_encode($json_data);
     }
 
     public function create()
@@ -60,6 +100,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $user = JWTAuth::toUser()->id;
         $this->validate($request, [
             'name' => ['required','max:191'],
             'last_name' => ['required', 'max:191'],
@@ -109,32 +150,32 @@ class UserController extends Controller
 
     public function activarBySelection(Request $request)
     {
-        $request->validate($request, [
+        $this->validate($request, [
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
         User::whereIn('id', $request['userIdArray'])->update(['is_active' => true]);
        
-        return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha activado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha activado con exito']);
     }
     public function desactivarBySelection(Request $request)
     {    
-        $request->validate($request, [
+        $this->validate($request, [
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
         User::whereIn('id', $request['userIdArray'])->update(['is_active' => false]);
        
-        return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha desactivado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha desactivado con exito']);
     }
     public function deleteBySelection(Request $request){
-        $request->validate($request, [
+        $this->validate($request, [
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
         User::destroy($request['userIdArray']);
        
-        return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha eliminado con exito']);
     }
 
     public function update(Request $request, $id)
@@ -187,12 +228,26 @@ class UserController extends Controller
         // return redirect('user')->with('message2', 'Data updated successfullly');
     }
 
+    public function activar($id){
+        $data_user = User::find($id);
+        $data_user->is_active = true;
+        $data_user->save();
+        return response()->json(['status' => 'success', 'message' => 'El usuario se ha activado con exito']);
+    }
+
+    public function desactivar($id) {
+        $data_user = User::find($id);
+        $data_user->is_active = false;
+        $data_user->save();
+        return response()->json(['status' => 'success', 'message' => 'El usuario se ha desactivado con exito']);
+    }
+
     public function delete($id){
         $user_data =User::find($id);
         $user_data->is_active = false;
         $user_data->save();
         $user_data->delete();
-        return response()->json(['status' => 'success', 'message' => 'El usuario fue creado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El usuario se ha eliminado con exito']);
     }
 
     public function destroy($id)

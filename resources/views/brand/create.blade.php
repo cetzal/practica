@@ -1,22 +1,22 @@
 @extends('template.app') 
 @section('content')
 <section>
-    <div class="container-fluid">
+    <div class="container-fluid mb-2">
         <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add Brand')}} </button>&nbsp;
         <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
         <a href="#" class="btn btn-success active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
         <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
-        <a href="#" class="btn btn-primary show_form_brand_search"><i class="fa fa-search" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
-    <div class="container-fluid mb-2 form_branch_search">
+    <div class="container-fluid mb-2 form_search">
         <form id="from_brand_search">
             <div class="row">
                 <div class="col">
-                    <label for="fisrt_name">Name</label>
+                    <label for="name">Name</label>
                     <input type="text" class="form-control" placeholder="Brand name" name="name">
                 </div>
                 <div class="col">
-                    <label for="last_name">Created by</label>
+                    <label for="created_by">Created by</label>
                     <input type="text" class="form-control" placeholder="Last name" name="created_by">
                 </div>
                 <div class="col">
@@ -25,7 +25,7 @@
                         <select class="form-select" name="status">
                             <option selected value="">All</option>
                             <option value="1">Active</option>
-                            <option value="2">Inactive</option>
+                            <option value="0">Inactive</option>
                         </select>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
         </form>
     </div>
     <div class="table-responsive">
-        <table id="brand-table" class="table">
+        <table id="brand-table" class="table table-striped nowrap">
             <thead>
                 <tr>
                     <th class="not-exported">
@@ -48,6 +48,9 @@
                     <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.Description')}}</th>
                     <th>{{trans('file.Status')}}</th>
+                    <th>{{trans('file.CreatedBy')}}</th>
+                    <th>{{trans('file.CreatedAt')}}</th>
+                    <th>{{trans('file.UpdatedAt')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
@@ -70,11 +73,23 @@
           <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
             <div class="form-group">
                 <label>{{trans('file.name')}} *</label>
-                {{Form::text('name',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand name...'))}}
+                <!-- {{Form::text('name',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand name...'))}} -->
+                <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
+                @if($errors->has('name'))
+                <span>
+                    <strong>{{ $errors->first('name') }}</strong>
+                </span>
+                @endif
             </div>
             <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>
-                {{Form::text('description',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand description...'))}}
+                <!-- {{Form::text('description',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand description...'))}} -->
+                <input type="text" name="description" required class="form-control" value="" placeholder="Type brand description...">
+                @if($errors->has('description'))
+                <span>
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
+                @endif
             </div>
             
         </div>
@@ -100,6 +115,11 @@
           <div class="form-group">
             <label>{{trans('file.Title')}} *</label>
             {{Form::text('name',null, array('required' => 'required', 'class' => 'form-control'))}}
+            @if($errors->has('name'))
+                            <span>
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                            @endif
         </div>
         <input type="hidden" name="brand_id">
         <div class="form-group">
@@ -138,13 +158,13 @@
         }
     });
 
-    $('.show_form_brand_search').on('click', function(e){
+    $('.show_form_search').on('click', function(e){
         e.preventDefault();
-        $('.form_branch_search').toggleClass('form_brand_search_active');
+        $('.form_search').toggleClass('form_search_active');
     });
 
     $('.close_form').on('click', function(e){
-        $('.form_branch_search').removeClass('form_brand_search_active');
+        $('.form_search').removeClass('form_search_active');
     });
 
     var table = $('#brand-table').DataTable( {
@@ -171,8 +191,8 @@
              "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
             "search":  '{{trans("file.Search")}}',
             'paginate': {
-                    'previous': '<i class="dripicons-chevron-left"></i>',
-                    'next': '<i class="dripicons-chevron-right"></i>'
+                'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
+                'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         },
         // 'columns': [
@@ -230,6 +250,24 @@
             },
             {
                 'render': function(data, type, row, meta){
+                    return row.created_by;
+                },
+                'targets': [4]
+            },
+            {
+                'render': function(data, type, row, meta){
+                    return row.created_at;
+                },
+                'targets': [5]
+            },
+            {
+                'render': function(data, type, row, meta){
+                    return row.updated_at;
+                },
+                'targets': [6]
+            },
+            {
+                'render': function(data, type, row, meta){
                     let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="icon-floppy-disk"></i> {{trans('file.edit')}}</button>';
                     $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="icon-trash"></i> {{trans('file.delete')}}</a>';
                     if(row.is_active == 1){
@@ -240,10 +278,12 @@
                     return $html;
                 
                 },
-                'targets': [4]
-            }
+                'targets': [7]
+            },
+            { targets: [1], className: "text-center"},
+            {targets: [0, 1, 2, 3], searchable: false}
         ],
-        'select': { style: 'multi',  selector: 'td:first-child'},
+        // 'select': { style: 'multi',  selector: 'td:first-child'},
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        
     } );
@@ -509,6 +549,28 @@
             }
         });
 
+    });
+
+    $('form#new_brand').validate({
+        rules:{
+            name: 'required',
+            description : 'required'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorPlacement: function ( error, element ) {
+            // Add the `invalid-feedback` class to the error element
+            error.addClass("invalid-feedback" );
+            error.insertAfter(element);
+        },
+        messages: {
+            name: "El nombre es requerido",
+            description: "La descripcion es requerido"
+        }
     });
 
     $( 'form#new_brand' ).submit( function(e){

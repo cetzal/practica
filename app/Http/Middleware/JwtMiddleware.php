@@ -21,6 +21,7 @@ class JwtMiddleware extends BaseMiddleware
     {
         try {
             $cookes = $request->header('cookie');
+            
             $token_ex = explode(';', $cookes);
             $cookes_array = array();
             for ($i=0; $i < count($token_ex); $i++) { 

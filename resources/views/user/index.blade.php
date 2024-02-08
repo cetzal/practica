@@ -57,7 +57,7 @@
                         <select class="form-select" name="user_status">
                             <option selected value="">All</option>
                             <option value="1">Active</option>
-                            <option value="2">Inactive</option>
+                            <option value="0">Inactive</option>
                         </select>
                     </div>
                 </div>
@@ -207,6 +207,23 @@
         todayHighlight: true,
         autoUpdateInput: false,
     });
+
+    $('input[name="date_create"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="date_create"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
+    $('input[name="date_update"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="date_update"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
     
     function escapeHtml(text) {
     return text
@@ -246,72 +263,120 @@
     $(".delete_all").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.user.all_delete")}}',
-                data:{
-                    userIdArray: user_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Eliminar usuario',
-                        content: 'se elimino todo los usuarios selecionados ',
-                    });
-                    $('#user-table').DataTable().ajax().reload();
+            $.confirm({
+                title: 'Eliminar usuarios',
+                content: 'Realmente quieres eliminar los usarios selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, eliminar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.user.all_delete")}}',
+                                data:{
+                                    userIdArray: user_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Eliminar usuarios seleccionados',
+                                        content: 'se elimino todo los usuarios selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#user-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
         }else{
             $.confirm({
                 title: 'Eliminar usuario',
-                content: 'Selecciiones los usuario que deseas eliminar',
+                content: 'Selecciones los usuario que deseas eliminar',
             });
         }
     });
     $(".active_all").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.user.all_active")}}',
-                data:{
-                    userIdArray: user_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Activar usuario',
-                        content: 'se activado todo los usuario selecionados ',
-                    });
-                    $('#user-table').DataTable().ajax().reload();
+            $.confirm({
+                title: 'Activar usuarios',
+                content: 'Realmente quieres Activar los usarios selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.user.all_active")}}',
+                                data:{
+                                    userIdArray: user_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar usuario',
+                                        content: 'se activado todo los usuario selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#user-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.confirm({
                 title: 'Activar usuario',
-                content: 'Selecciiones los usuario que deseas activar',
+                content: 'Selecciones los usuario que deseas activar',
             });
         }
     });
     $(".desactive_all").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.user.all_desactive")}}',
-                data:{
-                    userIdArray: user_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Desactiva usuario',
-                        content: 'Se desactivo todo los usuario selecionados ',
-                    });
-                    $('#user-table').DataTable().ajax().reload();
+
+            $.confirm({
+                title: 'Desactivar usuarios',
+                content: 'Realmente quieres desactivar los usarios selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.user.all_desactive")}}',
+                                data:{
+                                    userIdArray: user_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactiva usuario',
+                                        content: 'Se desactivo todo los usuario selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#user-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.confirm({
                 title: 'Desactivar usuario',
-                content: 'Selecciiones los usuario que deseas desactivar',
+                content: 'Selecciones los usuario que deseas desactivar',
             });
         }
     });
@@ -432,9 +497,6 @@
         table.ajax.reload();
     });
 
-  
-
-
     $('#user-table').on('click', '.open-EditbrandDialog ', function() {
         var url = "api/user/"
         var id = $(this).data('id').toString();
@@ -459,12 +521,11 @@
         var Jquery = $.Jquery;
        
         $.confirm({
-            title: 'Delete brand?',
-            content: 'Realmente quieres eliminar la marca',
-            // autoClose: 'cancelAction|8000',
+            title: 'Eliminar usuarios',
+            content: 'Realmente quieres eliminar el usuario',
             buttons: {
                 deleteUser: {
-                    text: 'delete User',
+                    text: 'Si, eliminar',
                     action: function () {
                         $.ajax({
                             url: url,
@@ -479,13 +540,82 @@
                         });
                     }
                 },
-                cancelAction: function () {
+                cancelar: function () {
                     // $.alert('action is canceled');
                 }
             }
         });
 
     });
+
+    $('#user-table').on('click', '.desactivar ', function() {
+        var url = "api/user/{id}/desactivar"
+        var id = $(this).data('id').toString();
+        url = url.replace(/{id}/g, id);
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Desactivar usuario',
+            content: 'Realmente quieres desactivar el usuario',
+            buttons: {
+                deleteUser: {
+                    text: 'Si, desactivar',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelar: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#user-table').on('click', '.activar ', function() {
+        var url = "api/user/{id}/activar"
+        var id = $(this).data('id').toString();
+        url = url.replace(/{id}/g, id);
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Activar usuario',
+            content: 'Realmente quieres activar el usuario',
+            buttons: {
+                deleteUser: {
+                    text: 'Si, activar',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelar: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
 
     $( "#select_all" ).on("change", function() {
         if ($(this).is(':checked')) {

@@ -33,18 +33,23 @@
                                     </div>
                                     <div class="form-group">
                                         <label><strong>{{trans('file.Password')}} *</strong> </label>
-                                        <div class="input-group">
+                                        <!-- <div class="input-group">
                                             <input type="password" name="password" id="btn-password" required class="form-control">
                                             <div class="input-group-append">
                                                 <button id="genbutton" type="button" class="btn btn-default">{{trans('file.Generate')}}</button>
                                             </div>
-                                            @if($errors->has('password'))
-                                            <span>
-                                               <strong>{{ $errors->first('password') }}</strong>
-                                            </span>
-                                            @endif
+                                        </div> -->
+                                        <div class="input-group has-validation">
+                                            <input type="password" name="password" id="btn-password" required class="form-control">
+                                            <div class="input-group-prepend">
+                                                <!-- <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                                <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div> -->
+                                                <button type="button" class="input-group-text show_p" name="show_pass" id="show_pass"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                <button id="genbutton" type="button" class="input-group-text"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button>
+                                            </div>
                                         </div>
-                                        <label for="show_pass"><input type="checkbox" name="show_pass" id="show_pass">Show Password</label>
+                                        <div class="invalid-feedback order-last"></div>
+                                        <!-- <label for="show_pass"><input type="checkbox" name="show_pass" id="show_pass">Show Password</label> -->
                                     </div>
                                     <div class="form-group">
                                         <label><strong>{{trans('file.Email')}} *</strong></label>
@@ -118,16 +123,52 @@
         }
     });
 
-    jQuery.validator.setDefaults({
+    // jQuery.validator.setDefaults({
+    //     errorPlacement: function (error, element) {
+    //         $(element).closest('div.form-group').find('.validation-msg').html(error.html());
+    //     },
+    //     highlight: function (element) {
+    //         $(element).closest('div.form-group').removeClass('has-success').addClass('has-error');
+    //     },
+    //     unhighlight: function (element, errorClass, validClass) {
+    //         $(element).closest('div.form-group').removeClass('has-error').addClass('has-success');
+    //         $(element).closest('div.form-group').find('.validation-msg').html('');
+    //     }
+    // });
+
+
+    $('form#new_user').validate({
+        rules:{
+            email: {
+                required: true,
+                email: true
+            },
+            password : 'required'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorElement: 'span',
         errorPlacement: function (error, element) {
-            $(element).closest('div.form-group').find('.validation-msg').html(error.html());
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
-        highlight: function (element) {
-            $(element).closest('div.form-group').removeClass('has-success').addClass('has-error');
-        },
-        unhighlight: function (element, errorClass, validClass) {
-            $(element).closest('div.form-group').removeClass('has-error').addClass('has-success');
-            $(element).closest('div.form-group').find('.validation-msg').html('');
+        // errorPlacement: function ( error, element ) {
+        //     // Add the `invalid-feedback` class to the error element
+        //     error.addClass("invalid-feedback");
+        //     error.insertAfter(element);
+        // },
+        messages: {
+            name:'name is requerid',
+            last_name:'last name is requerid',
+            password: "password is requerid",
+            email: {
+                required: "We need your email address to contact you",
+                email: "Your email address must be in the format of name@domain.com"
+            }
         }
     });
 
@@ -184,6 +225,8 @@
                             },
                         });
                     }
+                }else{
+                    alert("hola");
                 }
             });
 
@@ -216,7 +259,20 @@
     });
 
     $('#show_pass').on("click", function(){
-        $(this).is(':checked') ? $('#btn-password').attr('type', 'text') : $('#btn-password').attr('type', 'password')
+      
+        if($(this).hasClass('show_p')) { 
+            $(this).removeClass('show_p');
+            $(this).addClass('hiden_p');
+            $(this).html('<i class="fa fa-eye-slash" aria-hidden="true"></i>');
+            $('#btn-password').attr('type', 'text');
+        }else{
+            $(this).removeClass('hiden_p');
+            $(this).addClass('show_p');
+            $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>')
+            $('#btn-password').attr('type', 'password');
+        }
+        
+        // $(this).is(':checked') ? $('#btn-password').attr('type', 'text') : $('#btn-password').attr('type', 'password')
     })
 
     // $('.selectpicker').selectpicker({
@@ -229,21 +285,22 @@
       });
     });
 
-    $( 'form#new_user' ).submit( function(e){
-        e.preventDefault();
-        var data = new FormData( $( 'form#new_user' )[ 0 ] );
+    // $( 'form#new_user' ).submit( function(e){
+    //     e.preventDefault();
+    //     alert("hola");
+    //     var data = new FormData( $( 'form#new_user' )[ 0 ] );
 
-        $.ajax( {
-            processData: false,
-            contentType: false,
-            data: data,
-            dataType: 'json',
-            type: $( this ).attr( 'method' ),
-            url: "{{url('api/user')}}",
-            success: function( feedback ){
-                console.log( "the feedback from your API: " + feedback );
-            }
-        });
-    });
+    //     $.ajax( {
+    //         processData: false,
+    //         contentType: false,
+    //         data: data,
+    //         dataType: 'json',
+    //         type: $( this ).attr( 'method' ),
+    //         url: "{{url('api/user')}}",
+    //         success: function( feedback ){
+    //             console.log( "the feedback from your API: " + feedback );
+    //         }
+    //     });
+    // });
 </script>
 @endsection

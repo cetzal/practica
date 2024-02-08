@@ -6,7 +6,9 @@ SELECT
   b.description,
   b.is_active,
   u.id as user_id,
-  u.name as user_name
+  u.name as created_by,
+  b.created_at,
+  b.updated_at
 FROM
    brands as b
 INNER JOIN users u ON u.id = b.created_by

@@ -238,14 +238,3 @@ body.adminbody .main-sidebar.left {
 .form_search_active{
   display: block;
 }
-
-.form_brand_search{
-  display: none !important;
-}
-
-.form_brand_search_active{
-  display: block !important;
-}
-
-
-

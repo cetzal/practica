@@ -553,5 +553,8 @@ return [
 	"delete_all" => "Delete all",
 	"active_all" => "Active all",
 	"desactive_all" => "Desactive all",
+	"CreatedBy" => "Created by",
+	"CreatedAt" => "Create date",
+	"UpdatedAt" => "Update date",
 ];
 ?>

@@ -548,7 +548,10 @@ return [
 	"To Account" => "A la cuenta",
 	"Update Money Transfer" => "Actualizar transferencia de dinero",
 	"Stock Quantity" => "Cantidad de stock",
-	"Stock Worth (Price/Cost)" => "Valor de la acción (precio / costo)",
+	"Stock Worth (Price/Cost)" => "Valoßr de la acción (precio / costo)",
 	"Number of Product" => "Número de producto",
+	"CreatedBy" => "Creado por",
+	"CreatedAt" => "Fecha creación",
+	"UpdatedAt" => "Fecha actualización",
 ];
 ?>

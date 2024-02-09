@@ -153,9 +153,9 @@
                 </span>
             @endif
         </div>
-        <div class="form-group">       
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
-          </div>
         </div>
       {{ Form::close() }}
     </div>
@@ -630,7 +630,10 @@
                     buttons: {
                         ok: function () {
                             // $("#createModal").hide();
-                            $("#createModal .close").click();
+                            // if ($('.modal-backdrop').is(':visible')) {
+                            //     $('body').removeClass('modal-open'); 
+                            //     $('.modal-backdrop').remove(); 
+                            // };
                             $("#new_brand").get(0).reset();
                             $("tbody input[type='checkbox']").prop('checked', false);
                             table.ajax.reload();

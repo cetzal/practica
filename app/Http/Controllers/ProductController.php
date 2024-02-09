@@ -96,8 +96,8 @@ class ProductController extends Controller
     
     public function create()
     {
-        $lims_product_list = Product::where([ ['is_active', 1], ['type', 'standard'] ])->get();
-        $lims_brand_list = Brand::where('is_active', 1)->get();
+        $lims_product_list = DB::table('view_products')->where([ ['is_active', 1], ['type', 'standard'] ])->get();
+        $lims_brand_list = DB::table('view_brands')->where('is_active', 1)->get();
         $lims_category_list = Category::where('is_active', 1)->get();
         $lims_unit_list = Unit::where('is_active', 1)->get();
         // var_dump($lims_unit_list->toarray());

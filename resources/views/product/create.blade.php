@@ -26,7 +26,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Name')}} *</strong> </label>
-                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="name" required>
+                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="name">
                                         <span class="validation-msg" id="name-error"></span>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                                     <div class="form-group">
                                         <label>{{trans('file.Product Code')}} *</strong> </label>
                                         <div class="input-group">
-                                            <input type="text" name="code" class="form-control" id="code" aria-describedby="code" required>
+                                            <input type="text" name="code" class="form-control" id="code" aria-describedby="code">
                                             <div class="input-group-append">
                                                 <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}">{{trans('file.Generate')}}</button>
                                             </div>
@@ -364,7 +364,9 @@
 
     $("#product-form").validate({
         rules : {
-            name : 'requerid'
+            name : 'required',
+            code : 'required',
+            
         },
         highlight: function (input) {
             $(input).addClass('is-invalid');
@@ -383,7 +385,8 @@
         //     error.insertAfter(element);
         // },
         messages: {
-            name : 'the name is requerid'
+            name : 'The name is required',
+            code : 'The code is required'
         }
     });
 

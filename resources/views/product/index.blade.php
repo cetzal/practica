@@ -349,6 +349,13 @@
                 header: true,
                 footer: true
             },
+            fixedColumns: {
+                left: 1,
+                right: 1
+            },
+            scrollCollapse: true,
+            scrollX: true,
+            scrollY: 300,
             "processing": true,
             "serverSide": true,
             "ajax":{
@@ -364,15 +371,15 @@
             },
             "columns": [
                 {"data": "id"},
-                {"data": "image"},
+                {"data": "picture"},
                 {"data": "name"},
                 {"data": "code"},
-                {"data": "brand"},
-                {"data": "category"},
+                {"data": "brand_name"},
+                {"data": "category_name"},
                 {"data": "qty"},
-                {"data": "unit"},
+                {"data": "unit_name"},
                 {"data": "price"},
-                {"data": "options"},
+                //{"data": "options"},
             ],
             'language': {
                 
@@ -403,6 +410,27 @@
                        'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
                     },
                     'targets': [0]
+                },
+                {
+                    'targets' : [1],
+                    'render' : function(data, type, row, meta){
+                        return '';
+                    }
+                },
+                {
+                    'targets': [9],
+                    'render' : function(){
+                        return '';
+                        // return '<div class="btn-group">
+                        //     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        //     <span class="caret"></span>
+                        //     <span class="sr-only">Toggle Dropdown</span>
+                        //     </button>
+                        //     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                        //     <li>
+                        //         <button="type" class="btn bs-info m-1 view"><i class="fa fa-eye"></i> </button>
+                        //     </li>';
+                    }
                 }
             ],
             'select': { style: 'multi', selector: 'td:first-child'},

@@ -29,18 +29,28 @@
                 </div>
             </div>
             <div class="row">
+            <div class="col">
+                    <div class="form-group">
+                        <label>Seleccione fecha</label>
+                        <select class="form-select" name="select_date">
+                            <option selected value="">Seleccione</option>
+                            <option value="created_at">Fecha creacion</option>
+                            <option value="updated_at">Fecha actualizacion</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Fecha alta</label>
+                        <label>Fecha inicio y fin</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
                             </div>
-                            <input type="text" name="date_create" id="date_create" class="form-control" />
+                            <input type="text" name="date_range" id="date_range" class="form-control" />
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <!-- <div class="col">
                     <div class="form-group">
                         <label>Fecha modificacion</label>
                         <div class="input-group">
@@ -50,7 +60,7 @@
                             <input type="text" name="date_update" id="date_update" class="form-control" />
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col">
                     <div class="form-group">
                         <label>status</label>
@@ -97,7 +107,8 @@
               {{ Form::open([ 'files' => true, 'id' => 'update_user'] ) }}
             <div class="modal-header">
               <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Update User')}}</h5>
-              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+             
             </div>
             <div class="modal-body">
                
@@ -173,8 +184,10 @@
                                           
                 <div class="form-group">       
                     <input type="submit" value="{{trans('file.submit')}}" id="submit-btn" class="btn btn-primary">
-                    </div>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-info">Close</button>
+
                 </div>
+            </div>
             {{ Form::close() }}
           </div>
         </div>
@@ -192,7 +205,7 @@
         }
     });
 
-    $( "#date_create" ).daterangepicker({
+    $( "#date_range" ).daterangepicker({
         locale: {
             format: 'DD/MM/YYYY'
         },
@@ -208,11 +221,11 @@
         autoUpdateInput: false,
     });
 
-    $('input[name="date_create"]').on('apply.daterangepicker', function(ev, picker) {
+    $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
-    $('input[name="date_create"]').on('cancel.daterangepicker', function(ev, picker) {
+    $('input[name="date_range"]').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
 
@@ -471,10 +484,7 @@
                     'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
                     'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
-        },
-        
-        
-        
+        }, 
     } );
 
 
@@ -665,6 +675,41 @@
         }
     });
 
+    $("#update_user").validate({
+        rules:{
+            email: {
+                required: true,
+                email: true
+            },
+            // password : 'required'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        // errorPlacement: function ( error, element ) {
+        //     // Add the `invalid-feedback` class to the error element
+        //     error.addClass("invalid-feedback");
+        //     error.insertAfter(element);
+        // },
+        messages: {
+            name:'The name is requerid',
+            last_name:'The last name is requerid',
+            password: "The password is requerid",
+            email: {
+                required: "We need your email address to contact you",
+                email: "Your email address must be in the format of name@domain.com"
+            }
+        }
+    });
+
     var url_user = '{{ route("api.user.update", [":id"]) }}';
     // url_user = url_user.replace(':id', up_user_id);
     // console.log(up_user_id);
@@ -711,11 +756,16 @@
                             url:url_user,
                             data: $("#update_user").serialize(),
                             success:function(response){
+                                $('#user-table').DataTable().ajax.reload();
                                 $.confirm({
                                     title: 'Actualizar usuario',
                                     content: 'El usuario se ha actualizado con exito',
                                 });
-                                location.href = '../user';
+                                $('#editModal').modal('hide');
+                                $('#editModal').modal({backdrop: false});
+                                $('.modal-backdrop').remove();
+
+                                // location.href = '../user';
                             },
                             error:function(response) {
                               

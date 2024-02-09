@@ -91,7 +91,7 @@
         {!! Form::open([ 'route' => 'api.brand.store', 'method' => 'post', 'files' => true, 'id'=> 'new_brand']) !!}
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Brand')}}</h5>
-          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
         </div>
         <div class="modal-body">
           <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
@@ -130,7 +130,7 @@
         {{ Form::open([ 'route' => ['api.brand.update', 1], 'method' => 'PUT', 'files' => true, 'id'=> 'update_brand'] ) }}
       <div class="modal-header">
         <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Update Brand')}}</h5>
-        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
       </div>
       <div class="modal-body">
         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
@@ -672,6 +672,9 @@
             url: actionUrl,
             success: function( response ){
                 table.ajax.reload();
+                $('#editModal').modal('hide');
+                $('#editModal').modal({backdrop: false});
+                $('.modal-backdrop').remove();
                 $.confirm({
                     title: response.status,
                     content: response.message,

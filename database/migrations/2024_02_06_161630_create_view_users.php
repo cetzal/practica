@@ -43,6 +43,7 @@ class CreateViewUsers extends Migration
                     u.email, 
                     u.picture, 
                     u.is_active, 
+                    u.role_id,
                     r.name as role_name, 
                     u.user_parent_id, 
                     CONCAT(u2.name, ' ', u2.last_name) as user_parent_name,

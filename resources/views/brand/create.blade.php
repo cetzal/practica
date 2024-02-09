@@ -629,11 +629,9 @@
                     content: response.message,
                     buttons: {
                         ok: function () {
-                            // $("#createModal").hide();
-                            // if ($('.modal-backdrop').is(':visible')) {
-                            //     $('body').removeClass('modal-open'); 
-                            //     $('.modal-backdrop').remove(); 
-                            // };
+                            $('#createModal').modal('hide');
+                            $('#createModal').modal({backdrop: false});
+                            $('.modal-backdrop').remove();
                             $("#new_brand").get(0).reset();
                             $("tbody input[type='checkbox']").prop('checked', false);
                             table.ajax.reload();

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Keygen\Keygen;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Unit;
-use App\Models\Tax;
 use App\Models\Product;
+use App\Models\Tax;
+use App\Models\Unit;
 use Auth;
 use DNS1D;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use DB;
+use Keygen\Keygen;
 
 class ProductController extends Controller
 {
@@ -23,145 +23,10 @@ class ProductController extends Controller
 
     public function list(Request $request)
     {
-        $columns = array( 
-            2 => 'name', 
-            3 => 'code',
-            4 => 'brand_id',
-            5 => 'category_id',
-            6 => 'qty',
-            7 => 'unit_id',
-            8 => 'price' 
-        );
-        
-        $totalData = Product::where('is_active', true)->count();
-        $totalFiltered = $totalData; 
+       $data = DB::table('view_products')->get();
 
-        if($request->input('length') != -1)
-            $limit = $request->input('length');
-        else
-            $limit = $totalData;
-        $start = $request->input('start');
-        $order = 'products.'.$columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-        if(empty($request->input('search.value'))){
-            $products = Product::with('category', 'brand', 'unit')->offset($start)
-                        ->where('is_active', true)
-                        ->limit($limit)
-                        ->orderBy($order,$dir)
-                        ->get();
-        }
-        else
-        {
-            $search = $request->input('search.value'); 
-            $products =  Product::select('products.*')
-                        ->with('category', 'brand', 'unit')
-                        ->join('categories', 'products.category_id', '=', 'categories.id')
-                        ->leftjoin('brands', 'products.brand_id', '=', 'brands.id')
-                        ->where([
-                            ['products.name', 'LIKE', "%{$search}%"],
-                            ['products.is_active', true]
-                        ])
-                        ->orWhere([
-                            ['products.code', 'LIKE', "%{$search}%"],
-                            ['products.is_active', true]
-                        ])
-                        ->orWhere([
-                            ['categories.name', 'LIKE', "%{$search}%"],
-                            ['categories.is_active', true],
-                            ['products.is_active', true]
-                        ])
-                        ->orWhere([
-                            ['brands.name', 'LIKE', "%{$search}%"],
-                            ['brands.is_active', true],
-                            ['products.is_active', true]
-                        ])
-                        ->offset($start)
-                        ->limit($limit)
-                        ->orderBy($order,$dir)->get();
-
-            $totalFiltered = Product::
-                            join('categories', 'products.category_id', '=', 'categories.id')
-                            ->leftjoin('brands', 'products.brand_id', '=', 'brands.id')
-                            ->where([
-                                ['products.name','LIKE',"%{$search}%"],
-                                ['products.is_active', true]
-                            ])
-                            ->orWhere([
-                                ['products.code', 'LIKE', "%{$search}%"],
-                                ['products.is_active', true]
-                            ])
-                            ->orWhere([
-                                ['categories.name', 'LIKE', "%{$search}%"],
-                                ['categories.is_active', true],
-                                ['products.is_active', true]
-                            ])
-                            ->orWhere([
-                                ['brands.name', 'LIKE', "%{$search}%"],
-                                ['brands.is_active', true],
-                                ['products.is_active', true]
-                            ])
-                            ->count();
-        }
-        $data = array();
-        if(!empty($products))
-        {
-            foreach ($products as $key=>$product)
-            {
-                $nestedData['id'] = $product->id;
-                $nestedData['key'] = $key;
-                $product_image = explode(",", $product->image);
-                $product_image = htmlspecialchars($product_image[0]);
-                $nestedData['image'] = '<img src="'.url('public/images/product', $product_image).'" height="80" width="80">';
-                $nestedData['name'] = $product->name;
-                $nestedData['code'] = $product->code;
-                if($product->brand_id)
-                    $nestedData['brand'] = $product->brand->title;
-                else
-                    $nestedData['brand'] = "N/A";
-                $nestedData['category'] = $product->category->name;
-                $nestedData['qty'] = $product->qty;
-                if($product->unit_id)
-                    $nestedData['unit'] = $product->unit->unit_name;
-                else
-                    $nestedData['unit'] = 'N/A';
-                
-                $nestedData['price'] = $product->price;
-                $nestedData['options'] = '<div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.trans("file.action").'
-                              <span class="caret"></span>
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                            <li>
-                                <button="type" class="btn bs-info m-1 view"><i class="fa fa-eye"></i> '.trans('file.View').'</button>
-                            </li>';
-              
-                    $nestedData['options'] .= '<li>
-                            <a href="'.route('products.edit', ['id' => $product->id]).'" class="btn bg-success m-1"><i class="fa fa-edit"></i> '.trans('file.edit').'</a>
-                        </li>';
-                        $nestedData['options'] .= '<li>
-                        <a class="btn bg-danger m-1 remove" data-id="'.$product->id.'"><i class="icon-trash"></i> '.trans('file.delete').'</a>
-                    </li>';
-                        '
-                  
-                        </ul>
-                    </div>';
-                // data for product details by one click
-                if($product->tax_id)
-                    $tax = Tax::find($product->tax_id)->name;
-                else
-                    $tax = "N/A";
-
-                if($product->tax_method == 1)
-                    $tax_method = trans('file.Exclusive');
-                else
-                    $tax_method = trans('file.Inclusive');
-
-                $nestedData['product'] = array( '[ "'.$product->type.'"', ' "'.$product->name.'"', ' "'.$product->code.'"', ' "'.$nestedData['brand'].'"', ' "'.$nestedData['category'].'"', ' "'.$nestedData['unit'].'"', ' "'.$product->cost.'"', ' "'.$product->price.'"', ' "'.$tax.'"', ' "'.$tax_method.'"', ' "'.$product->alert_quantity.'"', ' "'.preg_replace('/\s+/S', " ", $product->product_details).'"', ' "'.$product->id.'"', ' "'.$product->product_list.'"', ' "'.$product->qty_list.'"', ' "'.$product->price_list.'"', ' "'.$product->qty.'"', ' "'.$product->image.'"]'
-                );
-                $data[] = $nestedData;
-            }
-        }
+       $totalData = $data->count();
+       $totalFiltered = $data->count();
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  

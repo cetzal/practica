@@ -42,10 +42,16 @@ class LoginController extends Controller
 
     public function ajaxLogin(LoginRequest $request){
         $input = $request->only('email', 'password');
+        $input['deleted_at'] = NULL;
         if (!$jwt_token = Auth::guard('api')->attempt($input)) {
             return response()->json(['status' => 'error', 'message' => 'usuario o contraseña no válidos', 'data' => []]);
         }
         $users = Auth::guard('api')->user();
+
+        if($users->is_active == 0){
+            return response()->json(['status' => 'error', 'message' => 'El usuario ingresado esta suspendido', 'data' => []]);
+        }
+
         $users->token = $jwt_token;
         session([
             // 'user_confirmed' => $userInformation['user']['confirmed'],

@@ -25,42 +25,54 @@ class UserController extends Controller
 
     public function list(Request $request) {
         $where = [];
-        $where[] = 'deleted_at IS NULL';
+        
         if(!is_null($request->get('first_name'))){
-            $where[] = 'name like "%'.$request->get('first_name').'%"';
+            $where[] = ['name', 'like', '%'.$request->get('first_name').'%'];
         }
         if(!is_null($request->get('first_name'))){
-            $where[] = 'last_name like "%'.$request->get('last_name').'%"';
+            $where[] = ['last_name', 'like', '%'.$request->get('last_name').'%'];
         }
         if(!is_null($request->get('email'))){
-            $where[] = 'email like "%'.$request->get('email').'%"';
+            $where[] = ['email', 'like', '%'.$request->get('email').'%'];
         }
         if(!is_null($request->get('user_created'))){
-            $where[] = 'user_parent_name like "%'.$request->get('user_created').'%"';
+            $where[] = ['user_parent_name', 'like', '%'.$request->get('user_created').'%'];
         }
-        if(!is_null($request->get('date_create'))){
-            $range = explode(' - ', $request->get('date_create'));
-            $where[] = 'DATE(created_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+
+        $select_date = 'created_at';
+        if(!is_null($request->get('select_date'))){
+            $select_date = $request->get('select_date');
         }
-        if(!is_null($request->get('date_update'))){
-            $range = explode(' - ', $request->get('date_update'));
-            $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+
+        if(!is_null($request->get('date_range'))){
+            list($start_date, $end_date)= explode(' - ', $request->get('date_range'));
+            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
+            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
+        }
+
+        // if(!is_null($request->get('date_create'))){
+        //     $range = explode(' - ', $request->get('date_create'));
+        //     $where[] = 'DATE(created_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+        // }
+        // if(!is_null($request->get('date_update'))){
+        //     $range = explode(' - ', $request->get('date_update'));
+        //     $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
            
-        }
+        // }
 
         if(!is_null($request->get('user_status'))){
-            $where[] = 'is_active = '.$request->get('user_status');
+            $where[] = ['is_active', '=', $request->get('user_status')];
         }
 
-        $query = '';
+        $query = DB::table('view_users');
         if(count($where) > 0){
-            $query = 'where ' . implode(' and ',  $where);
+            $query = $query->where($where);
         }
 
-        $totalData = DB::table('view_users')->whereRaw(implode(' and ', $where))->count();
-        $totalFiltered = $totalData; 
 
-        $data = DB::select('SELECT * from view_users '. $query );
+        $data = $query->get();
+        $totalData = $data->count();
+        $totalFiltered = $totalData; 
 
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -84,7 +96,6 @@ class UserController extends Controller
             'name',
             'last_name',
             'email',
-            'password',
             'picture',
             'role_id',
             'is_active',

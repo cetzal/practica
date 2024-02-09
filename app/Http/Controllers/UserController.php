@@ -149,7 +149,7 @@ class UserController extends Controller
         else {
             $data['picture'] = ',zummXD2dvAtI.png';
         }
-
+        $data['user_parent_id'] = JWTAuth::toUser()->id;
         User::create($data);
         return response()->json(['status' => 'success', 'message' => 'El usuario fue creado con exito']);
     }

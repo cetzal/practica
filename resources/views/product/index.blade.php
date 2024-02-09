@@ -193,21 +193,36 @@
     $(".delete_all").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.product.all_delete")}}',
-                data:{
-                    productIdArray: product_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Eliminat productos',
-                        content: 'se elimino todo los productos selecionados ',
-                    });
-                    $( "#select_all" ).prop('checked', false);
-                    $('#product-data-table').DataTable().ajax.reload();
+            $.confirm({
+                title: 'Eliminar producto',
+                content: 'Realmente quieres eliminar los producto selecionados?',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, eliminar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.product.all_delete")}}',
+                                data:{
+                                    productIdArray: product_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Eliminat productos',
+                                        content: 'se elimino todo los productos selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#product-data-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.confirm({
                 title: 'Eliminat productos',
@@ -218,21 +233,36 @@
     $(".active_all").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.product.all_active")}}',
-                data:{
-                    productIdArray: product_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Activar productos',
-                        content: 'se activado todo los productos selecionados ',
-                    });
-                    $( "#select_all" ).prop('checked', false);
-                    $('#product-data-table').DataTable().ajax.reload();
+            $.confirm({
+                title: 'Activar producto',
+                content: 'Realmente quieres activar los productos selecionados?',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, Activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.product.all_active")}}',
+                                data:{
+                                    productIdArray: product_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar productos',
+                                        content: 'se activado todo los productos selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#product-data-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+           
         }else{
             $.confirm({
                 title: 'Activar productos',
@@ -243,21 +273,36 @@
     $(".desactive_all").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
-            $.ajax({
-                type:'PUT',
-                url:'{{route("api.product.all_desactive")}}',
-                data:{
-                    productIdArray: product_id
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Desactiva productos',
-                        content: 'Se desactivo todo los productos selecionados ',
-                    });
-                    $( "#select_all" ).prop('checked', false);
-                    $('#product-data-table').DataTable().ajax.reload();
+            $.confirm({
+                title: 'Desactivar producto',
+                content: 'Realmente quieres desactivar los productos selecionados?',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, Desactivar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'{{route("api.product.all_desactive")}}',
+                                data:{
+                                    productIdArray: product_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactiva productos',
+                                        content: 'Se desactivo todo los productos selecionados ',
+                                    });
+                                    $( "#select_all" ).prop('checked', false);
+                                    $('#product-data-table').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.confirm({
                 title: 'Desactivar productos',

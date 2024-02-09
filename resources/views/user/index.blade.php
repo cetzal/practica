@@ -412,7 +412,8 @@
                 $(row).attr('data-user', JSON.stringify(data));
             },
         'columns': [
-            { data: "text", "render": function (data, type, full, meta) {
+            { 
+                data: "text", "render": function (data, type, full, meta) {
                         return '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
                     }
             },
@@ -450,8 +451,8 @@
                         $html +=  '<a class="btn bg-grey m-1 activar" data-id="'+row.id+'"><i class="icon-reset"></i> Activar</a>';
                     }
                     return $html;
-                        }
-                    },
+                 }
+            },
         ],
         "columnDefs": [
             {

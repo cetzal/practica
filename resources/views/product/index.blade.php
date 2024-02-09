@@ -7,7 +7,7 @@
             <a href="#" class="btn btn-primary delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
             <a href="#" class="btn btn-primary active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
             <a href="#" class="btn btn-primary desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
-            <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
+            <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
         </div>
     <div class="container-fluid mb-2 form_search">
         <form id="from_search">
@@ -55,7 +55,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>status</label>
-                        <select class="form-select" name="user_status">
+                        <select class="form-select" name="prod_status">
                             <option selected value="">All</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
@@ -86,6 +86,9 @@
                     <th>{{trans('file.Quantity')}}</th>
                     <th>{{trans('file.Unit')}}</th>
                     <th>{{trans('file.Price')}}</th>
+                    <th>{{trans('file.status')}}</th>
+                    <th>{{trans('file.CreatedAt')}}</th>
+                    <th>{{trans('file.UpdatedAt')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
@@ -124,6 +127,15 @@
         }
     });
 
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     $( "#date_create" ).daterangepicker({
         locale: {
             format: 'DD/MM/YYYY'
@@ -156,8 +168,9 @@
         $(this).val('');
     });
 
-    product_id.length = 0;
+    //product_id.length = 0;
     $(".delete_all").on('click', function(e){
+        e.preventDefault();
         if(product_id.length) {
             $.ajax({
                 type:'PUT',
@@ -170,7 +183,8 @@
                         title: 'Eliminat productos',
                         content: 'se elimino todo los productos selecionados ',
                     });
-                    $('#product-data-table').DataTable().ajax().reload();
+                    $( "#select_all" ).prop('checked', false);
+                    $('#product-data-table').DataTable().ajax.reload();
                 }
             });
         }else{
@@ -181,6 +195,7 @@
         }
     });
     $(".active_all").on('click', function(e){
+        e.preventDefault();
         if(product_id.length) {
             $.ajax({
                 type:'PUT',
@@ -193,7 +208,8 @@
                         title: 'Activar productos',
                         content: 'se activado todo los productos selecionados ',
                     });
-                    $('#product-data-table').DataTable().ajax().reload();
+                    $( "#select_all" ).prop('checked', false);
+                    $('#product-data-table').DataTable().ajax.reload();
                 }
             });
         }else{
@@ -204,10 +220,11 @@
         }
     });
     $(".desactive_all").on('click', function(e){
+        e.preventDefault();
         if(product_id.length) {
             $.ajax({
                 type:'PUT',
-                url:'{{route("api.product.all_active")}}',
+                url:'{{route("api.product.all_desactive")}}',
                 data:{
                     productIdArray: product_id
                 },
@@ -216,7 +233,8 @@
                         title: 'Desactiva productos',
                         content: 'Se desactivo todo los productos selecionados ',
                     });
-                    $('#product-data-table').DataTable().ajax().reload();
+                    $( "#select_all" ).prop('checked', false);
+                    $('#product-data-table').DataTable().ajax.reload();
                 }
             });
         }else{
@@ -260,7 +278,7 @@
             if(i){
                 var product_data = $(this).closest('tr').data('product');
                 console.log(product_data);
-                product_id[i-1] = product_data[12];
+                product_id[i-1] = product_data.id;
             }
         });
     }
@@ -342,6 +360,7 @@
         $('#product-img-slider').carousel(0);
     }
 
+
     $(document).ready(function() {
         var table = $('#product-data-table').DataTable( {
             responsive: true,
@@ -360,14 +379,20 @@
             "serverSide": true,
             "ajax":{
                 url:"{{route('api.product.list')}}",
-                data:{},
-                dataType: "json",
+                "data": function(d) {
+                    var frm_data = $('form#from_search').serializeArray();
+                    // return frm_data;
+                    $.each(frm_data, function(key, val) {
+                        d[val.name] = val.value;
+                    });
+                },
                 type:"GET"
             },
             "createdRow": function( row, data, dataIndex ) {
                 $(row).addClass('product-link');
-                $(row).attr('data-product', data['product']);
-                $(row).attr('data-imagedata', data['imagedata']);
+                $(row).attr('data-product', JSON.stringify(data));
+                // $(row).attr('data-product', data['product']);
+                // $(row).attr('data-imagedata', data['imagedata']);
             },
             "columns": [
                 {"data": "id"},
@@ -379,6 +404,9 @@
                 {"data": "qty"},
                 {"data": "unit_name"},
                 {"data": "price"},
+                {"data": "status"},
+                {"data": "created_at"},
+                {"data": "updated_at"},
                 //{"data": "options"},
             ],
             'language': {
@@ -395,7 +423,7 @@
             'columnDefs': [
                 {
                     "orderable": false,
-                    'targets': [0, 1, 9]
+                    'targets': [0, 1, 12]
                 },
                 {
                     'render': function(data, type, row, meta){
@@ -414,22 +442,36 @@
                 {
                     'targets' : [1],
                     'render' : function(data, type, row, meta){
-                        return '';
+                        var _picture = 'avarat.png';
+                        if(row.picture != null){
+                            let _pictures = row.picture.split(",");
+                            _picture = _pictures[_pictures.length - 1];
+                            _picture = escapeHtml(_picture);
+                        
+                        }
+                        return '<img src="{{asset("public/images/user/")}}/'+_picture+'" height="80" width="80">';;
                     }
                 },
                 {
-                    'targets': [9],
-                    'render' : function(){
-                        return '';
-                        // return '<div class="btn-group">
-                        //     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        //     <span class="caret"></span>
-                        //     <span class="sr-only">Toggle Dropdown</span>
-                        //     </button>
-                        //     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                        //     <li>
-                        //         <button="type" class="btn bs-info m-1 view"><i class="fa fa-eye"></i> </button>
-                        //     </li>';
+                    'targets':[9],
+                    'render' : function(data, type, row, meta){
+                        return row.is_active == 1 ? 'Activo' : 'Desactivado';
+                    }
+                },
+                {
+                    'targets': [12],
+                    'render' : function(data, type, row, meta){
+                        var url_edit = "{{route('products.edit', [':id'])}}";
+                        url_edit = url_edit.replace(':id', row.id);
+                        let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                    $html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                    if(row.is_active == 1){
+                        $html +=  '<a class="btn bg-grey m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
+                    }else{
+                        $html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
+                    }
+                    $html += '<a class="btn bs-info m-1 view"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+                    return $html;
                     }
                 }
             ],

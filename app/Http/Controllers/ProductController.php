@@ -8,11 +8,13 @@ use App\Models\Product;
 use App\Models\Tax;
 use App\Models\Unit;
 use Auth;
+use Carbon\Carbon;
 use DNS1D;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Keygen\Keygen;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends Controller
 {
@@ -23,7 +25,49 @@ class ProductController extends Controller
 
     public function list(Request $request)
     {
-       $data = DB::table('view_products')->get();
+        $where = [];
+
+        if(!empty($request->input('code_prod'))){
+            $where[] = ['code', 'like', '%'.$request->input('code_prod').'%'];
+        }
+
+        if(!empty($request->input('name_prod'))){
+            $where[] = ['name', 'like', '%'.$request->input('name_prod').'%'];
+        }
+
+        if(!empty($request->input('brand_prod'))){
+            $where[] = ['brand_name', 'like', '%'.$request->input('brand_prod').'%'];
+        }
+
+        if(!empty($request->input('user_created'))){
+            $where[] = ['asuser_name', 'like', '%'.$request->input('name_prod').'%'];
+        }
+
+        if(!is_null($request->get('date_create'))){
+            list($start_date, $end_date) = explode(' - ', $request->get('date_create'));
+            $where[] = ['DATE(created_at)', '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
+            $where[] = ['DATE(created_at)', '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
+
+            // $where[] = 'DATE(created_at) BETWEEN "'..'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+        }
+        if(!is_null($request->get('date_update'))){
+            $range = explode(' - ', $request->get('date_update'));
+            $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+           
+        }
+
+        if(!is_null($request->get('prod_status'))){
+            $where[] = ['is_active', '=' ,$request->get('prod_status')];
+        }
+
+       
+        $query = DB::table('view_products');
+
+        if(count($where) > 0){
+            $query = $query->where($where);
+        }
+
+        $data = $query->get();
 
        $totalData = $data->count();
        $totalFiltered = $data->count();
@@ -66,7 +110,7 @@ class ProductController extends Controller
             ]
         ]);
         $data = $request->except('image', 'file');
-       
+        $data['user_id'] = JWTAuth::toUser()->id;
         $data['product_details'] = str_replace('"', '@', $data['product_details']);
 
         if($data['starting_date'])
@@ -87,9 +131,8 @@ class ProductController extends Controller
         else {
             $data['image'] = 'zummXD2dvAtI.png';
         }
-        $file = $request->file;
         
-        $lims_product_data = Product::create($data);
+       Product::create($data);
         
         return response()->json(['status' => 'success', 'messages' => 'El producto se guardo con exito']);
     }

@@ -207,6 +207,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input type="button" value="{{trans('file.submit')}}" class="btn btn-primary" id="submit-btn">
+                                        <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                                     </div>
                                 </div>
                             </div>
@@ -252,17 +253,17 @@
     });
 
   
-    tinymce.init({
-      selector: 'textarea',
-      height: 130,
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor textcolor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code wordcount'
-      ],
-      toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-      branding:false
-    });
+    // tinymce.init({
+    //   selector: 'textarea',
+    //   height: 130,
+    //   plugins: [
+    //     'advlist autolink lists link image charmap print preview anchor textcolor',
+    //     'searchreplace visualblocks code fullscreen',
+    //     'insertdatetime media table contextmenu paste code wordcount'
+    //   ],
+    //   toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+    //   branding:false
+    // });
 
     var barcode_symbology = $("input[name='barcode_symbology_hidden']").val();
     $('select[name=barcode_symbology]').val(barcode_symbology);
@@ -384,6 +385,34 @@
         unhighlight: function (element, errorClass, validClass) {
             $(element).closest('div.form-group').removeClass('has-error').addClass('has-success');
             $(element).closest('div.form-group').find('.validation-msg').html('');
+        }
+    });
+
+    $("#product-form").validate({
+        rules : {
+            name : 'required',
+            code : 'required',
+            
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        // errorPlacement: function ( error, element ) {
+        //     // Add the `invalid-feedback` class to the error element
+        //     error.addClass("invalid-feedback");
+        //     error.insertAfter(element);
+        // },
+        messages: {
+            name : 'The name is required',
+            code : 'The code is required'
         }
     });
 

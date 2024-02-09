@@ -40,7 +40,7 @@ class ProductController extends Controller
         }
 
         if(!empty($request->input('user_created'))){
-            $where[] = ['asuser_name', 'like', '%'.$request->input('name_prod').'%'];
+            $where[] = ['asuser_name', 'like', '%'.$request->input('user_created').'%'];
         }
 
         $select_date = 'created_at';

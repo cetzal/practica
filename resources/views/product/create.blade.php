@@ -215,6 +215,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="button" value="{{trans('file.submit')}}" id="submit-btn" class="btn btn-primary">
+                                <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                             </div>
                         </form>
                     </div>

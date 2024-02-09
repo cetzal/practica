@@ -244,17 +244,17 @@
       });
     });
 
-    tinymce.init({
-      selector: 'textarea',
-      height: 130,
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor textcolor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code wordcount'
-      ],
-      toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-      branding:false
-    });
+    // tinymce.init({
+    //   selector: 'textarea',
+    //   height: 130,
+    //   plugins: [
+    //     'advlist autolink lists link image charmap print preview anchor textcolor',
+    //     'searchreplace visualblocks code fullscreen',
+    //     'insertdatetime media table contextmenu paste code wordcount'
+    //   ],
+    //   toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+    //   branding:false
+    // });
 
     $('select[name="unit_id"]').on('change', function() {
         

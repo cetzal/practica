@@ -117,6 +117,7 @@
             type: $( this ).attr( 'method' ),
             url: actionUrl,
             success: function( response ){
+
                 $.confirm({
                     title: response.status,
                     content: response.message,

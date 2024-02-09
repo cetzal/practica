@@ -43,18 +43,31 @@ class ProductController extends Controller
             $where[] = ['asuser_name', 'like', '%'.$request->input('name_prod').'%'];
         }
 
-        if(!is_null($request->get('date_create'))){
-            list($start_date, $end_date) = explode(' - ', $request->get('date_create'));
-            $where[] = ['DATE(created_at)', '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
-            $where[] = ['DATE(created_at)', '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
+        $select_date = 'created_at';
+        if(!is_null($request->get('select_date'))){
+            $select_date = $request->get('select_date');
+        }
 
-            // $where[] = 'DATE(created_at) BETWEEN "'..'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+        if(!is_null($request->get('date_range'))){
+            list($start_date, $end_date)= explode(' - ', $request->get('date_range'));
+            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('d-m-Y')];
+            $where[] = [$select_date, '<=', Carbon::createFromFormat('d/m/Y', $end_date)->format('d-m-Y')];
         }
-        if(!is_null($request->get('date_update'))){
-            $range = explode(' - ', $request->get('date_update'));
-            $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+
+       
+
+        // if(!is_null($request->get('date_create'))){
+        //     list($start_date, $end_date) = explode(' - ', $request->get('date_create'));
+        //     $where[] = ['created_at', '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('d-m-y')];
+        //     $where[] = ['created_at', '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('d-m-y')];
+
+        //     // $where[] = 'DATE(created_at) BETWEEN "'..'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
+        // }
+        // if(!is_null($request->get('date_update'))){
+        //     $range = explode(' - ', $request->get('date_update'));
+        //     $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
            
-        }
+        // }
 
         if(!is_null($request->get('prod_status'))){
             $where[] = ['is_active', '=' ,$request->get('prod_status')];
@@ -214,6 +227,20 @@ class ProductController extends Controller
     {
         $data = Product::select('name', 'code')->where('id', $id)->get();
         return $data[0];
+    }
+
+    public function activar($id){
+        $data_user = Product::find($id);
+        $data_user->is_active = true;
+        $data_user->save();
+        return response()->json(['status' => 'success', 'message' => 'El producto se ha activado con exito']);
+    }
+
+    public function desactivar($id) {
+        $data_user = Product::find($id);
+        $data_user->is_active = false;
+        $data_user->save();
+        return response()->json(['status' => 'success', 'message' => 'El producto se ha desactivado con exito']);
     }
 
     public function desactivarBySelection(Request $request)

@@ -66,4 +66,8 @@ class LoginController extends Controller
             'message' => 'Bienbenido', 
             'data' => $users], 200)->withCookie(cookie('access_token', $jwt_token, 45000));
     }
+
+    public function logout(){
+        return redirect('/')->withCookie(cookie('access_token', '', -1));
+    }
 }

@@ -756,14 +756,18 @@
                             url:url_user,
                             data: $("#update_user").serialize(),
                             success:function(response){
-                                $('#user-table').DataTable().ajax.reload();
+                                
                                 $.confirm({
                                     title: 'Actualizar usuario',
                                     content: 'El usuario se ha actualizado con exito',
                                 });
+                                $("input[name='name']").val('');
+                                $("input[name='last_name']").val('');
+                                $("input[name='email']").val('');
                                 $('#editModal').modal('hide');
-                                $('#editModal').modal({backdrop: false});
+                                //$('#editModal').modal({backdrop: false});
                                 $('.modal-backdrop').remove();
+                                $('#user-table').DataTable().ajax.reload();
 
                                 // location.href = '../user';
                             },

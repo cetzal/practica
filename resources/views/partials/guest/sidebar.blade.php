@@ -12,6 +12,7 @@
         </div>
     </div>
     <div class="item"><a href="{{route('user.index')}}"><i class="fas fa-th"></i>Users</a></div>
+    <div class="item"><a href="{{route('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>logout</a></div>
    
     </div>
 </div>

@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/product', [App\Http\Controllers\ProductController::class, 'store'])->name('api.product.store');
     Route::put('/product/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('api.product.update');
     Route::delete('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('api.product.destroy');
+    Route::put('/product/{id}/activar', [App\Http\Controllers\ProductController::class, 'activar'])->name('api.product.activar');
+    Route::put('/product/{id}/desactivar', [App\Http\Controllers\ProductController::class, 'desactivar'])->name('api.product.desactivar');
     Route::put('/product/all/activarbyselection', [App\Http\Controllers\ProductController::class, 'activarBySelection'])->name('api.product.all_active');
     Route::put('/product/all/desactivarbyselection', [App\Http\Controllers\ProductController::class, 'desactivarBySelection'])->name('api.product.all_desactive');
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');

@@ -479,7 +479,7 @@
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha creado con exito',
                                 });
-                                location.href = '../products';
+                                location.href = '../product';
                             },
                             error:function(response) {
                               
@@ -538,7 +538,7 @@
                 title: 'Agregar producto',
                 content: 'El producto se ha creado con exito',
             });
-            location.href = '../products';
+            location.href = '../product';
             //console.log(file, response);
         },
         completemultiple: function (file, response) {

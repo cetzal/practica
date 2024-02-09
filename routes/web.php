@@ -24,6 +24,7 @@ Route::get('login','App\Http\Controllers\Auth\LoginController@showLoginForm')->n
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware'=> ['auth.jwt']], function () {
+    Route::get('logout','App\Http\Controllers\Auth\LoginController@logout')->name('logout');
     Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
     Route::get('/brand', [App\Http\Controllers\BrandController::class, 'index'])->name('brand.index');

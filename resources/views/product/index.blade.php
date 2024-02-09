@@ -30,7 +30,28 @@
                 </div>
             </div>
             <div class="row">
+            <div class="col">
+                    <div class="form-group">
+                        <label>Seleccione fecha</label>
+                        <select class="form-select" name="select_date">
+                            <option selected value="">Seleccione</option>
+                            <option value="created_at">Fecha creacion</option>
+                            <option value="updated_at">Fecha actualizacion</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col">
+                    <div class="form-group">
+                        <label>Fecha inicio y fin</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                            <input type="text" name="date_range" id="date_range" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col">
                     <div class="form-group">
                         <label>Fecha alta</label>
                         <div class="input-group">
@@ -51,7 +72,7 @@
                             <input type="text" name="date_update" id="date_update" class="form-control" />
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col">
                     <div class="form-group">
                         <label>status</label>
@@ -136,7 +157,7 @@
             .replace(/'/g, "&#039;");
     }
 
-    $( "#date_create" ).daterangepicker({
+    $( "#date_range" ).daterangepicker({
         locale: {
             format: 'DD/MM/YYYY'
         },
@@ -152,11 +173,11 @@
         autoUpdateInput: false,
     });
 
-    $('input[name="date_create"]').on('apply.daterangepicker', function(ev, picker) {
+    $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
-    $('input[name="date_create"]').on('cancel.daterangepicker', function(ev, picker) {
+    $('input[name="date_range"]').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
 
@@ -331,6 +352,76 @@
 
     });
 
+
+    $('#product-data-table').on('click', '.desactivar', function() {
+        var url = "{{route('api.product.desactivar', [':id'])}}";
+        var id = $(this).data('id').toString();
+        url = url.replace(':id', id);
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Desactivar producto',
+            content: 'Realmente quieres desactivar el producto',
+            buttons: {
+                deleteUser: {
+                    text: 'Si, desactivar',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                $('#product-data-table').DataTable().ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelar: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#product-data-table').on('click', '.activar', function() {
+        var url = "{{route('api.product.activar', [':id'])}}";
+        var id = $(this).data('id').toString();
+        url = url.replace(':id', id);
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Activar producto',
+            content: 'Realmente quieres activar el producto',
+            buttons: {
+                deleteUser: {
+                    text: 'Si, activar',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                $('#product-data-table').DataTable().ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelar: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+
     function productDetails(product, imagedata) {
         product[11] = product[11].replace(/@/g, '"');
         htmltext = slidertext = '';
@@ -470,7 +561,7 @@
                     }else{
                         $html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                     }
-                    $html += '<a class="btn bs-info m-1 view"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+                    //$html += '<a class="btn bs-info m-1 view"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
                     return $html;
                     }
                 }

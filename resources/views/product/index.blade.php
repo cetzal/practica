@@ -449,7 +449,7 @@
                             _picture = escapeHtml(_picture);
                         
                         }
-                        return '<img src="{{asset("public/images/user/")}}/'+_picture+'" height="80" width="80">';;
+                        return '<img src="{{asset("public/images/product/")}}/'+_picture+'" height="80" width="80">';;
                     }
                 },
                 {

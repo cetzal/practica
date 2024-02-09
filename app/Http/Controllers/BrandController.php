@@ -42,8 +42,8 @@ class BrandController extends Controller
             list($date_from, $date_to) = explode(' - ', $request['range_date']);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $where_conditions[] = [$request['select_date'], '>=', $date_from];
-            $where_conditions[] = [$request['select_date'], '<=', $date_to];
+            $where_conditions[] = [DB::raw('DATE_FORMAT('. $request['select_date'].',"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where_conditions[] = [DB::raw('DATE_FORMAT('. $request['select_date'].',"%Y-%m-%d")'), '<=', trim($date_to)];
         }
         
         $data = DB::table('view_brands')

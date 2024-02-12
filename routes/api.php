@@ -42,10 +42,10 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/brand/{id}/edit', [App\Http\Controllers\BrandController::class, 'edit'])->name('api.brand.edit');
     Route::put('/brand/{id}/update', [App\Http\Controllers\BrandController::class, 'update'])->name('api.brand.update');
     Route::put('/brand/{id}/activar', [App\Http\Controllers\BrandController::class, 'activar'])->name('api.brand.activar');
-    Route::put('/brand/{id}/desactivar', [App\Http\Controllers\BrandController::class, 'desactivar'])->name('api.brand.deactivar');
+    Route::put('/brand/{id}/deactivate', [App\Http\Controllers\BrandController::class, 'deactivate'])->name('api.brand.deactivate');
     Route::delete('/brand/{id}/delete', [App\Http\Controllers\BrandController::class, 'destroy'])->name('api.brand.delete');
-    Route::put('/brand/all/activarbyselection', [App\Http\Controllers\BrandController::class, 'activarBySelection'])->name('api.brand.all_active');
-    Route::put('/brand/all/desactivarbyselection', [App\Http\Controllers\BrandController::class, 'desactivarBySelection'])->name('api.brand.all_desactive');
+    Route::put('/brand/all/activatebyselection', [App\Http\Controllers\BrandController::class, 'activateBySelection'])->name('api.brand.all_active');
+    Route::put('/brand/all/deactivatebyselection', [App\Http\Controllers\BrandController::class, 'deactivateBySelection'])->name('api.brand.all_desactive');
     Route::put('/brand/all/deletebyselection', [App\Http\Controllers\BrandController::class, 'deleteBySelection'])->name('api.brand.all_delete');
 });
 
@@ -57,9 +57,9 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/product/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('api.product.update');
     Route::delete('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('api.product.destroy');
     Route::put('/product/{id}/activate', [App\Http\Controllers\ProductController::class, 'activate'])->name('api.product.activate');
-    Route::put('/product/{id}/deactivate', [App\Http\Controllers\ProductController::class, 'deactivate'])->name('api.product.deactivate');
-    Route::put('/product/all/activatebyselection', [App\Http\Controllers\ProductController::class, 'activateBySelection'])->name('api.product.all_active');
-    Route::put('/product/all/deactivatebyselection', [App\Http\Controllers\ProductController::class, 'deactivateBySelection'])->name('api.product.all_desactive');
+    Route::put('/product/{id}/desactivar', [App\Http\Controllers\ProductController::class, 'desactivar'])->name('api.product.desactivar');
+    Route::put('/product/all/activarbyselection', [App\Http\Controllers\ProductController::class, 'activarBySelection'])->name('api.product.all_active');
+    Route::put('/product/all/desactivarbyselection', [App\Http\Controllers\ProductController::class, 'desactivarBySelection'])->name('api.product.all_desactive');
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');
 });
 

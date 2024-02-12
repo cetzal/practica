@@ -15,8 +15,7 @@ class BrandController extends Controller
 
     public function index()
     {
-        $brand_all = DB::table('view_brands')->get();
-        return view('brand.create', compact('brand_all'));
+        return view('brand.create');
     }
 
     public function list(Request $request)
@@ -27,7 +26,7 @@ class BrandController extends Controller
         ]);
         
         $where_conditions = [];
-        if (!empty($request['name'])) {
+        if (!empty($request['brand_name'])) {
             $where_conditions[] = ['name', 'like', '%'.$request['name'].'%'];
         }
         if (!empty($request['created_by'])) {
@@ -108,7 +107,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']); 
     }
 
-    public function desactivarBySelection(Request $request)
+    public function deactivateBySelection(Request $request)
     {
         $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
@@ -119,7 +118,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']); 
     }
 
-    public function activarBySelection(Request $request)
+    public function activateBySelection(Request $request)
     {
         $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
@@ -140,7 +139,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
     }
 
-    public function desactivar($id)
+    public function deactivate($id)
     {
         $brand_data = Brand::findOrFail($id);
         $brand_data->is_active = false;
@@ -148,7 +147,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']);
     }
 
-    public function activar($id)
+    public function activate($id)
     {
         $brand_data = Brand::findOrFail($id);
         $brand_data->is_active = true;
@@ -158,6 +157,10 @@ class BrandController extends Controller
 
     public function destroy($id){
         $brand_data = Brand::findOrFail($id);
+        $products = DB::table('view_products')->where('brand_id', $brand_data->getKey())->get();
+        if (count($products) > 0) {
+            return response()->json(['status' => 'warning', 'message' => 'La marca no se puede eliminar, tiene uno o varios productos asignados.']); 
+        }
         $brand_data->deleted_at = date('Y-m-d H:i:s');
         $brand_data->save();
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 

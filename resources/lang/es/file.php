@@ -550,8 +550,9 @@ return [
 	"Stock Quantity" => "Cantidad de stock",
 	"Stock Worth (Price/Cost)" => "Valoßr de la acción (precio / costo)",
 	"Number of Product" => "Número de producto",
-	"CreatedBy" => "Creado por",
-	"CreatedAt" => "Fecha creación",
-	"UpdatedAt" => "Fecha actualización",
+	"created_by" => "Creado por",
+	"created_at" => "Fecha creación",
+	"updated_at" => "Fecha actualización",
+	"range_date" => "Rango fecha",
 ];
 ?>

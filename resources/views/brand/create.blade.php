@@ -12,16 +12,16 @@
         <form id="from_brand_search">
             <div class="row">
                 <div class="col">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" placeholder="Brand name" name="name">
+                    <label for="name">{{trans('file.name')}}</label>
+                    <input type="text" class="form-control" placeholder="Brand name" name="brand_name">
                 </div>
                 <div class="col">
-                    <label for="created_by">Created by</label>
+                    <label for="created_by">{{trans('file.created_by')}}</label>
                     <input type="text" class="form-control" placeholder="Last name" name="created_by">
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>status</label>
+                        <label>{{trans('file.status')}}</label>
                         <select class="form-select" name="status">
                             <option selected value="">All</option>
                             <option value="1">Active</option>
@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Seleccione fecha</label>
+                        <label>{{trans('file.date')}}</label>
                         <select class="form-select" name="select_date">
                             <option selected value="">Seleccione</option>
                             <option value="created_at">Fecha creacion</option>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Rango de fecha</label>
+                        <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
@@ -63,7 +63,7 @@
         </form>
     </div>
     <div class="table-responsive">
-        <table id="brand-table" class="table table-striped nowrap">
+        <table id="brand-table" class="table table-striped nowrap" style="width:100%">
             <thead>
                 <tr>
                     <th class="not-exported">
@@ -72,9 +72,9 @@
                     <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.Description')}}</th>
                     <th>{{trans('file.Status')}}</th>
-                    <th>{{trans('file.CreatedBy')}}</th>
-                    <th>{{trans('file.CreatedAt')}}</th>
-                    <th>{{trans('file.UpdatedAt')}}</th>
+                    <th>{{trans('file.created_by')}}</th>
+                    <th>{{trans('file.created_at')}}</th>
+                    <th>{{trans('file.updated_at')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
@@ -211,6 +211,28 @@
         $('.form_search').removeClass('form_search_active');
     });
 
+    // $('form#from_brand_search').validate({
+    //     rules:{
+    //         name: 'required',
+    //         description : 'required'
+    //     },
+    //     highlight: function (input) {
+    //         $(input).addClass('is-invalid');
+    //     },
+    //     unhighlight: function (input) {
+    //         $(input).removeClass('is-invalid');
+    //     },
+    //     errorPlacement: function ( error, element ) {
+    //         // Add the `invalid-feedback` class to the error element
+    //         error.addClass("invalid-feedback" );
+    //         error.insertAfter(element);
+    //     },
+    //     messages: {
+    //         name: "El nombre es requerido",
+    //         description: "La descripcion es requerido"
+    //     }
+    // });
+
     var table = $('#brand-table').DataTable( {
         responsive: true,
         autoWidth : true,
@@ -281,6 +303,7 @@
                 'targets': [1]
             },
             {
+                'width': '100px',
                 'render': function(data, type, row, meta){
                    return row.description;
                 },
@@ -288,7 +311,13 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.is_active == 1 ? 'Activo' : 'suspendido';
+                    is_active = row.is_active == 1 ? 'Activo' : 'suspendido';
+                    class_text = "text-success";
+                    if (row.is_active == 0) {
+                        class_text = "text-warning"
+                    }
+                    data = '<span class="'+ class_text +'">'+ is_active +'</span>'
+                    return data;
                 },
                 'targets': [3]
             },
@@ -312,13 +341,16 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="icon-floppy-disk"></i> {{trans('file.edit')}}</button>';
-                    $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="icon-trash"></i> {{trans('file.delete')}}</a>';
+                    // let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></button>';
+                    let $html =  '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                    $html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     if(row.is_active == 1){
-                        $html +=  '<a class="btn bg-grey m-1 desactivar" data-id="'+row.id+'"><i class="icon-reset"></i> Desactivar</a>';
+                        $html +=  '<a class="btn m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
                     }else{
-                        $html +=  '<a class="btn bg-grey m-1 activar" data-id="'+row.id+'"><i class="icon-reset"></i> Activar</a>';
+                        $html +=  '<a class="btn m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                     }
+                    // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                    // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm " data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                     return $html;
                 
                 },
@@ -500,8 +532,13 @@
                                 $.confirm({
                                     title: response.status,
                                     content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
                                 });
-                                table.ajax.reload();
+                                // table.ajax.reload();
                             }
                         });
                     }
@@ -518,7 +555,7 @@
     $('#brand-table').on('click', '.desactivar ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
-        url = url.concat(id).concat("/desactivar");
+        url = url.concat(id).concat("/deactivate");
         var Jquery = $.Jquery;
        
         $.confirm({
@@ -553,7 +590,7 @@
     $('#brand-table').on('click', '.activar ', function() {
         var url = "api/brand/"
         var id = $(this).data('id').toString();
-        url = url.concat(id).concat("/activar");
+        url = url.concat(id).concat("/activate");
         var Jquery = $.Jquery;
        
         $.confirm({
@@ -607,39 +644,40 @@
         }
     });
 
-    $( 'form#new_brand' ).submit( function(e){
+    $('form#new_brand').submit( function(e){
         e.preventDefault();
         
-        // var data = $(this);
-        var data = new FormData( $( 'form#new_brand' )[ 0 ] );
-        var actionUrl = $(this).attr('action');
-        var method = $( this ).attr( 'method' );
-        
-        $.ajax( {
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            data: data,
-            type: $( this ).attr( 'method' ),
-            url: actionUrl,
-            success: function( response ){
-                table.ajax.reload();
-                $.confirm({
-                    title: response.status,
-                    content: response.message,
-                    buttons: {
-                        ok: function () {
-                            $('#createModal').modal('hide');
-                            $('#createModal').modal({backdrop: false});
-                            $('.modal-backdrop').remove();
-                            $("#new_brand").get(0).reset();
-                            $("tbody input[type='checkbox']").prop('checked', false);
-                            table.ajax.reload();
+        if ($('form#new_brand').valid()) {
+            var data = new FormData( $('form#new_brand')[ 0 ] );
+            var actionUrl = $(this).attr('action');
+            var method = $( this ).attr( 'method' );
+            $.ajax( {
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: data,
+                type: $( this ).attr( 'method' ),
+                url: actionUrl,
+                success: function( response ){
+                    table.ajax.reload();
+                    $.confirm({
+                        title: response.status,
+                        content: response.message,
+                        buttons: {
+                            ok: function () {
+                                $('#createModal').modal('hide');
+                                $('#createModal').modal({backdrop: false});
+                                $('.modal-backdrop').remove();
+                                $("#new_brand").get(0).reset();
+                                $("tbody input[type='checkbox']").prop('checked', false);
+                                table.ajax.reload();
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+        
     });
 
     $('form#update_brand').validate({
@@ -667,29 +705,30 @@
     $( 'form#update_brand' ).submit( function(e){
         e.preventDefault();
         
-        // var data = $(this);
-        var data = new FormData( $( 'form#update_brand' )[ 0 ] );
-        var actionUrl = $(this).attr('action');
-        var method = $( this ).attr( 'method' );
-        
-        $.ajax( {
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            data: data,
-            type: $( this ).attr( 'method' ),
-            url: actionUrl,
-            success: function( response ){
-                table.ajax.reload();
-                $('#editModal').modal('hide');
-                $('#editModal').modal({backdrop: false});
-                $('.modal-backdrop').remove();
-                $.confirm({
-                    title: response.status,
-                    content: response.message,
-                });
-            }
-        });
+        if ($('#update_brand').valid()) {
+            var data = new FormData( $( 'form#update_brand' )[ 0 ] );
+            var actionUrl = $(this).attr('action');
+            var method = $( this ).attr( 'method' );
+            
+            $.ajax( {
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: data,
+                type: $( this ).attr( 'method' ),
+                url: actionUrl,
+                success: function( response ){
+                    table.ajax.reload();
+                    $('#editModal').modal('hide');
+                    $('#editModal').modal({backdrop: false});
+                    $('.modal-backdrop').remove();
+                    $.confirm({
+                        title: response.status,
+                        content: response.message,
+                    });
+                }
+            });
+        }
     });
    
 </script>

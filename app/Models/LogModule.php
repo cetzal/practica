@@ -11,7 +11,7 @@ class LogModule extends Model
 
     public $timestamps = false;
 
-    protected $table = 'logs';
+    protected $table = 'log_modules';
 
     protected $fillable = [
         'user_id',

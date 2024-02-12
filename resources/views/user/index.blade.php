@@ -303,7 +303,7 @@
         if(type_fecha==''){
             $.alert({
                 title: 'Filtra datos',
-                content:'Selecrione un tipo de fecha a consultar',
+                content:'Selecione un tipo de fecha a consultar',
             });
         }
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));

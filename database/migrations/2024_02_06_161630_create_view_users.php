@@ -41,6 +41,7 @@ class CreateViewUsers extends Migration
                     u.name, 
                     u.last_name, 
                     u.email, 
+                    u.password,
                     u.picture, 
                     u.is_active, 
                     u.role_id,

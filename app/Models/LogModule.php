@@ -5,14 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LogProduct extends Model
+class LogModule extends Model
 {
     use HasFactory;
 
-    protected $table = 'log_products';
+    public $timestamps = false;
+
+    protected $table = 'log_modules';
 
     protected $fillable = [
         'user_id',
+        'module',
         'movement_type',
         'details',
         'movement_date',

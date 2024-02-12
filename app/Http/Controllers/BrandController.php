@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use JWTAuth;
-use App\Models\Brand;
 use Carbon\Carbon;
+use App\Models\Brand;
+use App\Models\LogModule;
+use App\Traits\LogModuleTrait;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -12,11 +15,11 @@ use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
-
+    use LogModuleTrait;
+    
     public function index()
     {
-        $brand_all = DB::table('view_brands')->get();
-        return view('brand.create', compact('brand_all'));
+        return view('brand.create');
     }
 
     public function list(Request $request)
@@ -27,7 +30,7 @@ class BrandController extends Controller
         ]);
         
         $where_conditions = [];
-        if (!empty($request['name'])) {
+        if (!empty($request['brand_name'])) {
             $where_conditions[] = ['name', 'like', '%'.$request['name'].'%'];
         }
         if (!empty($request['created_by'])) {
@@ -77,7 +80,17 @@ class BrandController extends Controller
         $input = $request->except('image');
         $input['is_active'] = true;
         $input['created_by'] = JWTAuth::toUser()->id;
-        Brand::create($input);
+        $brand = Brand::create($input);
+        if ($brand->getKey()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => [],
+                    'current' => $brand->getOriginal(),
+                    'module' => 'Marcas',
+                    'movement_type' => 'Creacion'
+                ]
+            ));
+        }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']);
     }
 
@@ -101,14 +114,24 @@ class BrandController extends Controller
         ]);
 
         $brand_data = Brand::findOrFail($request->brand_id);
+        $previous_value = $brand_data->getOriginal();
         $brand_data->name = $request->name;
         $brand_data->description = $request->description;
         $brand_data->save();
-        
+        if ($brand_data->getChanges()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => Arr::only($previous_value, array_keys($brand_data->getOriginal())),
+                    'current' => $brand_data->getOriginal(),
+                    'module' => 'Marcas',
+                    'movement_type' => 'Actualizacion'
+                ]
+            ));
+        }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']); 
     }
 
-    public function desactivarBySelection(Request $request)
+    public function deactivateBySelection(Request $request)
     {
         $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
@@ -119,7 +142,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']); 
     }
 
-    public function activarBySelection(Request $request)
+    public function activateBySelection(Request $request)
     {
         $this->validate($request, [
             'brandIdArray' => ['required', 'array', 'min:1']
@@ -140,7 +163,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
     }
 
-    public function desactivar($id)
+    public function deactivate($id)
     {
         $brand_data = Brand::findOrFail($id);
         $brand_data->is_active = false;
@@ -148,7 +171,7 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']);
     }
 
-    public function activar($id)
+    public function activate($id)
     {
         $brand_data = Brand::findOrFail($id);
         $brand_data->is_active = true;
@@ -158,6 +181,10 @@ class BrandController extends Controller
 
     public function destroy($id){
         $brand_data = Brand::findOrFail($id);
+        $products = DB::table('view_products')->where('brand_id', $brand_data->getKey())->get();
+        if (count($products) > 0) {
+            return response()->json(['status' => 'warning', 'message' => 'La marca no se puede eliminar, tiene uno o varios productos asignados.']); 
+        }
         $brand_data->deleted_at = date('Y-m-d H:i:s');
         $brand_data->save();
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 

@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
+use Auth;
+use DNS1D;
+use Carbon\Carbon;
+use Keygen\Keygen;
 use App\Models\Tax;
 use App\Models\Unit;
-use Auth;
-use Carbon\Carbon;
-use DNS1D;
+use App\Models\Brand;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\LogModule;
+use App\Traits\LogModuleTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
-use Keygen\Keygen;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+    use LogModuleTrait;
+
     public function index()
     {
         return view('product.index');
@@ -145,7 +151,18 @@ class ProductController extends Controller
             $data['image'] = 'zummXD2dvAtI.png';
         }
         
-       Product::create($data);
+        $product = Product::create($data);
+
+        if ($product->getKey()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => [],
+                    'current' => $product->getOriginal(),
+                    'module' => 'Productos',
+                    'movement_type' => 'Creacion'
+                ]
+            ));
+        }
         
         return response()->json(['status' => 'success', 'messages' => 'El producto se guardo con exito']);
     }
@@ -180,6 +197,7 @@ class ProductController extends Controller
             ]
         ]);
         $product_data = Product::findOrFail($id);
+        $previous_value = $product_data->getOriginal();
         $data = $request->except('image', '_method');
         $data['product_details'] = str_replace('"', '@', $data['product_details']);
         $data['product_details'] = $data['product_details'];
@@ -208,6 +226,17 @@ class ProductController extends Controller
 
        
         $product_data->update($data);
+
+        if ($product_data->getChanges()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => Arr::only($previous_value, array_keys($product_data->getOriginal())),
+                    'current' => $product_data->getOriginal(),
+                    'module' => 'Productos',
+                    'movement_type' => 'Actualizacion'
+                ]
+            ));
+        }
         return response()->json(['status' => 'success', 'messages' => 'El producto se actualizado con exito']);
     }
 

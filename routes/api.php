@@ -56,13 +56,15 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/product', [App\Http\Controllers\ProductController::class, 'store'])->name('api.product.store');
     Route::put('/product/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('api.product.update');
     Route::delete('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('api.product.destroy');
-    Route::put('/product/{id}/activar', [App\Http\Controllers\ProductController::class, 'activar'])->name('api.product.activar');
-    Route::put('/product/{id}/desactivar', [App\Http\Controllers\ProductController::class, 'desactivar'])->name('api.product.desactivar');
-    Route::put('/product/all/activarbyselection', [App\Http\Controllers\ProductController::class, 'activarBySelection'])->name('api.product.all_active');
-    Route::put('/product/all/desactivarbyselection', [App\Http\Controllers\ProductController::class, 'desactivarBySelection'])->name('api.product.all_desactive');
+    Route::put('/product/{id}/activate', [App\Http\Controllers\ProductController::class, 'activate'])->name('api.product.activate');
+    Route::put('/product/{id}/deactivate', [App\Http\Controllers\ProductController::class, 'deactivate'])->name('api.product.deactivate');
+    Route::put('/product/all/activatebyselection', [App\Http\Controllers\ProductController::class, 'activateBySelection'])->name('api.product.all_active');
+    Route::put('/product/all/deactivatebyselection', [App\Http\Controllers\ProductController::class, 'deactivateBySelection'])->name('api.product.all_desactive');
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');
 });
 
-
-
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/log-module/list', [App\Http\Controllers\LogModuleController::class, 'list'])->name('api.logs.list');
+    Route::get('/log-module/{id}/edit', [App\Http\Controllers\LogModuleController::class, 'edit'])->name('api.logs.edit');
+});
 

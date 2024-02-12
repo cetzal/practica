@@ -239,6 +239,11 @@ body.adminbody .main-sidebar.left {
   display: block;
 }
 
+.text_ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
 
 .glyphicon-remove {
   color: red;

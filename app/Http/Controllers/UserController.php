@@ -116,15 +116,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = JWTAuth::toUser()->id;
-        $this->validate($request, [
+        $validate = $this->validate($request, [
             'name' => ['required','max:191'],
             'last_name' => ['required', 'max:191'],
             'email' => [
+                'required',
                 'email',
                 'max:255',
-                    Rule::unique('view_users')->where(function ($query) {
-                    return $query->where('is_active', false);
-                }),
+                Rule::unique('view_users')
             ],
             'password' => ['required', 'max:30'],
             'is_active' => ['boolean'],

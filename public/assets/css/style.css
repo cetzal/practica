@@ -244,3 +244,11 @@ body.adminbody .main-sidebar.left {
   overflow: hidden;
   text-overflow: ellipsis
 }
+
+.glyphicon-remove {
+  color: red;
+}
+
+.glyphicon-ok {
+  color: green;
+}

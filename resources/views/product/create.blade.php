@@ -63,7 +63,8 @@
                                         <label>{{trans('file.Brand')}}</strong> </label>
                                         <div class="input-group">
                                           <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                                            @foreach($lims_brand_list as $brand)
+                                          <option value="">Select a brand</option>  
+                                          @foreach($lims_brand_list as $brand)
                                                 <option value="{{$brand->id}}">{{$brand->name}}</option>
                                             @endforeach
                                           </select>
@@ -364,10 +365,19 @@
     });
 
     $("#product-form").validate({
+      
         rules : {
             name : 'required',
             code : 'required',
+            brand_id: 'required'
             
+        },
+        onfocusout: false,
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {                    
+                validator.errorList[0].element.focus();
+            }
         },
         highlight: function (input) {
             $(input).addClass('is-invalid');
@@ -387,7 +397,8 @@
         // },
         messages: {
             name : 'The name is required',
-            code : 'The code is required'
+            code : 'The code is required',
+            brand_id : 'The brand is required'
         }
     });
 
@@ -479,11 +490,30 @@
                                 $.confirm({
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha creado con exito',
+                                    autoClose: 'ok|1000',
+                                    buttons: {
+                                        ok: function () {
+                                            window.location.replace('/product');
+                                        }
+                                    }
                                 });
-                                location.href = '../product';
+                                //location.href = '../product';
                             },
                             error:function(response) {
-                              
+                                if (response.status == 422) { 
+                                    //toastError(err.responseJSON.message);
+                                    let details = response.responseJSON.errors ;
+                                    let content = '';
+                                    Object.keys(details).forEach(field => {
+                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
+                                    });
+
+                                    $.alert({
+                                        title: 'Error',
+                                        content: content
+
+                                    });
+                                }
                             },
                         });
                     }
@@ -499,40 +529,54 @@
             });
         },
         error: function (file, response) {
-            console.log(response);
-            if(response.errors.name) {
-              $("#name-error").text(response.errors.name);
-              this.removeAllFiles(true);
+            if (response.status == 422) { 
+                //toastError(err.responseJSON.message);
+                let details = response.responseJSON.errors ;
+                let content = '';
+                Object.keys(details).forEach(field => {
+                    content += formatErrorUsingClassesAndPopover(field,details[field]);
+                });
+
+                $.alert({
+                    title: 'Error',
+                    content: content
+
+                });
             }
-            else if(response.errors.code) {
-              $("#code-error").text(response.errors.code);
-              this.removeAllFiles(true);
-            }
-            else {
-              try {
-                  var res = JSON.parse(response);
-                  if (typeof res.message !== 'undefined' && !$modal.hasClass('in')) {
-                      $("#success-icon").attr("class", "fas fa-thumbs-down");
-                      $("#success-text").html(res.message);
-                      $modal.modal("show");
-                  } else {
-                      if ($.type(response) === "string")
-                          var message = response; //dropzone sends it's own error messages in string
-                      else
-                          var message = response.message;
-                      file.previewElement.classList.add("dz-error");
-                      _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-                      _results = [];
-                      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                          node = _ref[_i];
-                          _results.push(node.textContent = message);
-                      }
-                      return _results;
-                  }
-              } catch (error) {
-                  console.log(error);
-              }
-            }
+            // console.log(response);
+            // if(response.errors.name) {
+            //   $("#name-error").text(response.errors.name);
+            //   this.removeAllFiles(true);
+            // }
+            // else if(response.errors.code) {
+            //   $("#code-error").text(response.errors.code);
+            //   this.removeAllFiles(true);
+            // }
+            // else {
+            //   try {
+            //       var res = JSON.parse(response);
+            //       if (typeof res.message !== 'undefined' && !$modal.hasClass('in')) {
+            //           $("#success-icon").attr("class", "fas fa-thumbs-down");
+            //           $("#success-text").html(res.message);
+            //           $modal.modal("show");
+            //       } else {
+            //           if ($.type(response) === "string")
+            //               var message = response; //dropzone sends it's own error messages in string
+            //           else
+            //               var message = response.message;
+            //           file.previewElement.classList.add("dz-error");
+            //           _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+            //           _results = [];
+            //           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            //               node = _ref[_i];
+            //               _results.push(node.textContent = message);
+            //           }
+            //           return _results;
+            //       }
+            //   } catch (error) {
+            //       console.log(error);
+            //   }
+            // }
         },
         successmultiple: function (file, response) {
             $.confirm({

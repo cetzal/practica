@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Roles;
-use App\Models\User;
-use App\Models\ViewUser;
-use Carbon\Carbon;
 use Hash;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use Keygen\Keygen;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\User;
+use App\Models\Roles;
+use App\Models\ViewUser;
+use App\Models\LogModule;
+use Illuminate\Support\Arr;
 use Tymon\JWTAuth\JWTGuard;
+use Illuminate\Http\Request;
+use App\Traits\LogModuleTrait;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    use LogModuleTrait;
 
     public function index()
     {
@@ -150,7 +154,19 @@ class UserController extends Controller
             $data['picture'] = ',zummXD2dvAtI.png';
         }
         $data['user_parent_id'] = JWTAuth::toUser()->id;
-        User::create($data);
+        $user = User::create($data);
+
+        if ($user->getKey()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => [],
+                    'current' => $user->getOriginal(),
+                    'module' => 'Usuarios',
+                    'movement_type' => 'Creacion'
+                ]
+            ));
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El usuario fue creado con exito']);
     }
 
@@ -213,7 +229,8 @@ class UserController extends Controller
         if(!empty($request['password']))
             $input['password'] = bcrypt($request['password']);
         
-        $user_data = User::find($id);
+        $user_data = User::findOrFail($id);
+        $previous_value = $user_data->getOriginal();
         $images = $request->image;
         
         $image_names = [];
@@ -235,6 +252,18 @@ class UserController extends Controller
         }
         
         $user_data->update($input);
+
+        if ($user_data->getChanges()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => Arr::only($previous_value, array_keys($user_data->getOriginal())),
+                    'current' => $user_data->getOriginal(),
+                    'module' => 'Usuarios',
+                    'movement_type' => 'Actualizacion'
+                ]
+            ));
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha actualizado con exito']);
         // return redirect('user')->with('message2', 'Data updated successfullly');
     }

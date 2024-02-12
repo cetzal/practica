@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use JWTAuth;
-use App\Models\Brand;
 use Carbon\Carbon;
+use App\Models\Brand;
+use App\Models\LogModule;
+use App\Traits\LogModuleTrait;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +15,8 @@ use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
-
+    use LogModuleTrait;
+    
     public function index()
     {
         return view('brand.create');
@@ -76,7 +80,17 @@ class BrandController extends Controller
         $input = $request->except('image');
         $input['is_active'] = true;
         $input['created_by'] = JWTAuth::toUser()->id;
-        Brand::create($input);
+        $brand = Brand::create($input);
+        if ($brand->getKey()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => [],
+                    'current' => $brand->getOriginal(),
+                    'module' => 'Marcas',
+                    'movement_type' => 'Creacion'
+                ]
+            ));
+        }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']);
     }
 
@@ -100,10 +114,20 @@ class BrandController extends Controller
         ]);
 
         $brand_data = Brand::findOrFail($request->brand_id);
+        $previous_value = $brand_data->getOriginal();
         $brand_data->name = $request->name;
         $brand_data->description = $request->description;
         $brand_data->save();
-        
+        if ($brand_data->getChanges()) {
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => Arr::only($previous_value, array_keys($brand_data->getOriginal())),
+                    'current' => $brand_data->getOriginal(),
+                    'module' => 'Marcas',
+                    'movement_type' => 'Actualizacion'
+                ]
+            ));
+        }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']); 
     }
 

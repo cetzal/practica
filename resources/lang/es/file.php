@@ -556,5 +556,6 @@ return [
 	"range_date" => "Rango fecha",
 	"module" => "Modulo",
 	"movement_type" => "Movimiento",
+	"detail_log" => "Detalle"
 ];
 ?>

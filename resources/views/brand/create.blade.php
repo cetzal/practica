@@ -234,8 +234,8 @@
     // });
 
     var table = $('#brand-table').DataTable( {
-        responsive: true,
-        autoWidth : true,
+        responsive: false,
+        autoWidth : false,
         serverSide: true,
         "searching": false,
         "bProcessing": true,
@@ -305,7 +305,8 @@
             {
                 'width': '100px',
                 'render': function(data, type, row, meta){
-                   return row.description;
+                    let html = '<p class="text_ellipsis" style="width:250px;">'+row.description+'</p>';
+                   return html;
                 },
                 'targets': [2]
             },

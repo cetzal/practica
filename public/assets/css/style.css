@@ -238,3 +238,12 @@ body.adminbody .main-sidebar.left {
 .form_search_active{
   display: block;
 }
+
+
+.glyphicon-remove {
+  color: red;
+}
+
+.glyphicon-ok {
+  color: green;
+}

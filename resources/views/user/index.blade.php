@@ -2,7 +2,7 @@
 @section('content')
 <section>
     <div class="container-fluid mb-2">
-        <a href="{{route('user.create')}}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.Add User')}}</a>
+        <a href="{{route('user.create')}}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add User')}}</a>
         <a href="#" class="btn btn-primary delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
         <a href="#" class="btn btn-primary active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
         <a href="#" class="btn btn-primary desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
@@ -101,13 +101,90 @@
             </tbody>
         </table>
     </div>
+
+    <div id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog modal-lg">
+          <div class="modal-content">
+              {{ Form::open([ 'files' => true, 'id' => 'new_user'] ) }}
+            <div class="modal-header">
+              <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Add User')}}</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+             
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><strong>{{trans('file.UserName')}} *</strong> </label>
+                            <input type="text" name="name" required class="form-control" value="">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>{{trans('file.UserLastName')}} *</strong> </label>
+                            <input type="text" name="last_name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label><strong>{{trans('file.Password')}} *</strong> </label>
+                            <div class="input-group has-validation">
+                                <input type="password" name="password" id="btn-password" required class="form-control">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="input-group-text show_p" name="show_pass" id="show_pass"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    <button id="genbutton" type="button" class="input-group-text"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="invalid-feedback order-last"></div>
+                            <div id="Length" class="glyphicon glyphicon-remove">Must be at least 7 charcters</div>
+                            <div id="UpperCase" class="glyphicon glyphicon-remove">Must have atleast 1 upper case character</div>
+                            <div id="LowerCase" class="glyphicon glyphicon-remove">Must have atleast 1 lower case character</div>
+                            <div id="Numbers" class="glyphicon glyphicon-remove">Must have atleast 1 numeric character</div>
+                            <div id="Symbols" class="glyphicon glyphicon-remove">Must have atleast 1 special character</div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label><strong>{{trans('file.Email')}} *</strong></label>
+                            <input type="email" name="email" placeholder="example@example.com" required class="form-control" value="">
+                        </div>
+                        <div class="form-group">
+                            <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
+                            <label class="mt-2"><strong>{{trans('file.Active')}}</strong></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                       
+                        <div class="form-group">
+                            <label><strong>{{trans('file.Role')}} *</strong></label>
+                            <input type="hidden" name="role_id_hidden" value="">
+                            <select name="role_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Role...">
+                                <option value="1">ADMIN</option>
+                                <option value="2 ">CUSTOMER</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>avatar</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
+                            <div id="imageUploadNewUser" class="dropzone"></div>
+                            <span class="validation-msg" id="image-error"></span>
+                        </div>
+                       
+                    </div>                              
+                </div>
+                                          
+                <div class="form-group">       
+                    <input type="submit" value="{{trans('file.submit')}}" id="submit-btn-create" class="btn btn-primary">
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-close-modal">Close</button>
+
+                </div>
+            </div>
+            {{ Form::close() }}
+          </div>
+        </div>
+    </div>
+
     <div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-        <div role="document" class="modal-dialog">
+        <div role="document" class="modal-dialog modal-lg">
           <div class="modal-content">
               {{ Form::open([ 'files' => true, 'id' => 'update_user'] ) }}
             <div class="modal-header">
               <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Update User')}}</h5>
-              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
+              <button type="button" class="close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
              
             </div>
             <div class="modal-body">
@@ -136,30 +213,29 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label><strong>{{trans('file.Change Password')}}</strong> </label>
-                            <div class="input-group">
-                                <input type="password" name="password" class="form-control">
-                                <div class="input-group-append">
-                                    <button id="genbutton" type="button" class="btn btn-default">{{trans('file.Generate')}}</button>
+                            <label><strong>{{trans('file.Password')}} *</strong> </label>
+                            <div class="input-group has-validation">
+                                <input type="password" name="password" id="btn-password-up" required class="form-control">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="input-group-text show_pu" name="show_passpu" id="show_passpu"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    <button id="genbuttonup" type="button" class="input-group-text"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button>
                                 </div>
                             </div>
+
+                            <div class="invalid-feedback order-last"></div>
+                            <div id="Length" class="glyphicon glyphicon-remove">Must be at least 7 charcters</div>
+                            <div id="UpperCase" class="glyphicon glyphicon-remove">Must have atleast 1 upper case character</div>
+                            <div id="LowerCase" class="glyphicon glyphicon-remove">Must have atleast 1 lower case character</div>
+                            <div id="Numbers" class="glyphicon glyphicon-remove">Must have atleast 1 numeric character</div>
+                            <div id="Symbols" class="glyphicon glyphicon-remove">Must have atleast 1 special character</div>
                         </div>
                         <div class="form-group mt-3">
                             <label><strong>{{trans('file.Email')}} *</strong></label>
                             <input type="email" name="email" placeholder="example@example.com" required class="form-control" value="">
-                            @if($errors->has('email'))
-                            <span>
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                            @endif
+                           
                         </div>
                         <div class="form-group">
                             <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
-                            {{-- @if($lims_user_data->is_active)
-                            <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
-                            @else
-                            <input class="mt-2" type="checkbox" name="is_active" value="1">
-                            @endif --}}
                             <label class="mt-2"><strong>{{trans('file.Active')}}</strong></label>
                         </div>
                     </div>
@@ -184,14 +260,14 @@
                                           
                 <div class="form-group">       
                     <input type="submit" value="{{trans('file.submit')}}" id="submit-btn" class="btn btn-primary">
-                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-info">Close</button>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-close-modal">Close</button>
 
                 </div>
             </div>
             {{ Form::close() }}
           </div>
         </div>
-      </div>
+    </div>
 </section>
 @endsection
 @section('scripts')
@@ -206,6 +282,7 @@
     });
 
     $( "#date_range" ).daterangepicker({
+        maxDate: "0",
         locale: {
             format: 'DD/MM/YYYY'
         },
@@ -222,7 +299,14 @@
     });
 
     $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
-      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        var type_fecha = $('.form-select').val();
+        if(type_fecha==''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecrione un tipo de fecha a consultar',
+            });
+        }
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
     $('input[name="date_range"]').on('cancel.daterangepicker', function(ev, picker) {
@@ -647,6 +731,18 @@
         
     });
 
+    $('.bt-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("input[name='last_name']").val('');
+        $("input[name='email']").val('');
+    });
+
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("input[name='last_name']").val('');
+        $("input[name='email']").val('');
+    });
+
 
     var verific_checks = function(num){
         $(':checkbox:checked').each(function(i){
@@ -674,6 +770,8 @@
             $(element).closest('div.form-group').find('.validation-msg').html('');
         }
     });
+
+    $('#btn-password-up').on('keyup', ValidatePassword);
 
     $("#update_user").validate({
         rules:{
@@ -709,6 +807,7 @@
             }
         }
     });
+
 
     var url_user = '{{ route("api.user.update", [":id"]) }}';
     // url_user = url_user.replace(':id', up_user_id);
@@ -772,7 +871,20 @@
                                 // location.href = '../user';
                             },
                             error:function(response) {
-                              
+                                if (response.status == 422) { 
+                                    //toastError(err.responseJSON.message);
+                                    let details = response.responseJSON.errors ;
+                                    let content = '';
+                                    Object.keys(details).forEach(field => {
+                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
+                                    });
+
+                                    $.alert({
+                                        title: 'Error',
+                                        content: content
+
+                                    });
+                                }
                             },
                         });
                     }
@@ -788,7 +900,20 @@
             });
         },
         error: function (file, response) {
-            console.log(response);
+            if (response.status == 422) { 
+                //toastError(err.responseJSON.message);
+                let details = response.responseJSON.errors ;
+                let content = '';
+                Object.keys(details).forEach(field => {
+                    content += formatErrorUsingClassesAndPopover(field,details[field]);
+                });
+
+                $.alert({
+                    title: 'Error',
+                    content: content
+
+                });
+            }
         },
         successmultiple: function (file, response) {
             $.confirm({
@@ -806,5 +931,238 @@
             this.removeAllFiles(true);
         }
     });
+
+
+    $('form#new_user').validate({
+        rules:{
+            email: {
+                required: true,
+                email: true
+            },
+            password : 'required'
+        },
+        highlight: function (input) {
+            $(input).addClass('is-invalid');
+        },
+        unhighlight: function (input) {
+            $(input).removeClass('is-invalid');
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        // errorPlacement: function ( error, element ) {
+        //     // Add the `invalid-feedback` class to the error element
+        //     error.addClass("invalid-feedback");
+        //     error.insertAfter(element);
+        // },
+        messages: {
+            name:'name is requerid',
+            last_name:'last name is requerid',
+            password: "password is requerid",
+            email: {
+                required: "We need your email address to contact you",
+                email: "Your email address must be in the format of name@domain.com"
+            }
+        }
+    });
+
+    var url_user = '{{ route("api.user.store") }}';
+    // url_user = url_user.replace(':id', up_user_id);
+    // console.log(up_user_id);
+    myDropzone = new Dropzone('div#imageUploadNewUser', {
+        addRemoveLinks: true,
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 1,
+        maxFilesize: 12,
+        paramName: 'image',
+        clickable: true,
+        method: 'POST',
+        url: url_user,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        renameFile: function(file) {
+            var dt = new Date();
+            var time = dt.getTime();
+            return time + file.name;
+        },
+        acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        init: function () {
+            var myDropzone = this;
+            $('#submit-btn-create').on("click", function (e) {
+                e.preventDefault();
+                if ( $("#new_user").valid() ) {
+                    tinyMCE.triggerSave();
+                    if(myDropzone.getAcceptedFiles().length) {
+                        myDropzone.processQueue();
+                    }
+                    else {
+                        $.ajax({
+                            type:'POST',
+                            url:url_user,
+                            data: $("#new_user").serialize(),
+                            success:function(response, statusHttp){
+                               console.log(statusHttp);
+                                $.confirm({
+                                    title: 'Crear usuario',
+                                    content: 'El usuario se ha creado con exito',
+                                });
+                              
+                            },
+                            error:function(response) {
+
+                                if (response.status == 422) { 
+                                    //toastError(err.responseJSON.message);
+                                    let details = response.responseJSON.errors ;
+                                    let content = '';
+                                    Object.keys(details).forEach(field => {
+                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
+                                    });
+
+                                    $.alert({
+                                        title: 'Error',
+                                        content: content
+
+                                    });
+                                }
+                            },
+                        });
+                    }
+                }
+            });
+
+            this.on('sending', function (file, xhr, formData) {
+                // Append all form inputs to the formData Dropzone will POST
+                var data = $("#new_user").serializeArray();
+                $.each(data, function (key, el) {
+                    formData.append(el.name, el.value);
+                });
+            });
+        },
+        error: function (file, response) {
+            if (response.status == 422) { 
+                //toastError(err.responseJSON.message);
+                let details = response.responseJSON.errors ;
+                let content = '';
+                Object.keys(details).forEach(field => {
+                    content += formatErrorUsingClassesAndPopover(field,details[field]);
+                });
+
+                $.alert({
+                    title: 'Error',
+                    content: content
+
+                });
+            }
+        },
+        successmultiple: function (file, response) {
+            $.confirm({
+                title: 'Agregar usuario',
+                content: 'El usuario se ha creado con exito',
+            });
+            //location.href = '../user';
+            //console.log(file, response);
+        },
+        completemultiple: function (file, response) {
+            console.log(file, response, "completemultiple");
+        },
+        reset: function () {
+            console.log("resetFiles");
+            this.removeAllFiles(true);
+        }
+    });
+
+    function formatErrorUsingClassesAndPopover(element , array_of_problems ){
+        let someHTML = '';
+        array_of_problems.forEach(function(e){someHTML+='<li>'+element +': '+ e+'</li>'});
+        // $('#'+element+'_error_section').html('<ul>'+someHTML+'</ul>');
+        // $('#'+element).addClass('is-invalid');
+
+        return '<ul>'+someHTML+'</ul><br>';
+    }
+
+    $('#show_pass').on("click", function(){
+      
+        if($(this).hasClass('show_p')) { 
+            $(this).removeClass('show_p');
+            $(this).addClass('hiden_p');
+            $(this).html('<i class="fa fa-eye-slash" aria-hidden="true"></i>');
+            $('#btn-password').attr('type', 'text');
+        }else{
+            $(this).removeClass('hiden_p');
+            $(this).addClass('show_p');
+            $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>')
+            $('#btn-password').attr('type', 'password');
+        }
+    });
+
+    $('#show_passpu').on("click", function(){
+      
+        if($(this).hasClass('show_pu')) { 
+            $(this).removeClass('show_pu');
+            $(this).addClass('hiden_p');
+            $(this).html('<i class="fa fa-eye-slash" aria-hidden="true"></i>');
+            $('#btn-password-up').attr('type', 'text');
+        }else{
+            $(this).removeClass('hiden_p');
+            $(this).addClass('show_pu');
+            $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>')
+            $('#btn-password-up').attr('type', 'password');
+        }
+    });
+    
+    $('#genbutton').on("click", function(){
+      $.get("{{url('api/user/genpass')}}", function(data){
+        $("input[name='password']").val(data);
+      });
+    });
+
+    $('#genbuttonup').on("click", function(){
+      $.get("{{url('api/user/genpass')}}", function(data){
+        $("#btn-password-up").val(data);
+      });
+    });
+
+    /*Actual validation function*/
+    function ValidatePassword() {
+    /*Array of rules and the information target*/
+    var rules = [{
+        Pattern: "[A-Z]",
+        Target: "UpperCase"
+        },
+        {
+        Pattern: "[a-z]",
+        Target: "LowerCase"
+        },
+        {
+        Pattern: "[0-9]",
+        Target: "Numbers"
+        },
+        {
+        Pattern: "[!@@#$%^&*]",
+        Target: "Symbols"
+        }
+    ];
+
+    //Just grab the password once
+    var password = $(this).val();
+
+    /*Length Check, add and remove class could be chained*/
+    /*I've left them seperate here so you can see what is going on */
+    /*Note the Ternary operators ? : to select the classes*/
+    $("#Length").removeClass(password.length > 6 ? "glyphicon-remove" : "glyphicon-ok");
+    $("#Length").addClass(password.length > 6 ? "glyphicon-ok" : "glyphicon-remove");
+    
+    /*Iterate our remaining rules. The logic is the same as for Length*/
+    for (var i = 0; i < rules.length; i++) {
+
+        $("#" + rules[i].Target).removeClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-remove" : "glyphicon-ok"); 
+        $("#" + rules[i].Target).addClass(new RegExp(rules[i].Pattern).test(password) ? "glyphicon-ok" : "glyphicon-remove");
+    }
+    }
+
 </script>
 @endsection

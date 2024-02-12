@@ -66,7 +66,8 @@
                                         <div class="input-group">
                                             <input type="hidden" name="brand" value="{{ $lims_product_data->brand_id}}">
                                           <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                                            @foreach($lims_brand_list as $brand)
+                                          <option value="">Select a brand</option> 
+                                          @foreach($lims_brand_list as $brand)
                                                 <option value="{{$brand->id}}">{{$brand->name}}</option>
                                             @endforeach
                                           </select>
@@ -392,7 +393,15 @@
         rules : {
             name : 'required',
             code : 'required',
+            brand_id: 'required'
             
+        },
+        onfocusout: false,
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {                    
+                validator.errorList[0].element.focus();
+            }
         },
         highlight: function (input) {
             $(input).addClass('is-invalid');
@@ -412,7 +421,8 @@
         // },
         messages: {
             name : 'The name is required',
-            code : 'The code is required'
+            code : 'The code is required',
+            brand_id : 'The brand is required'
         }
     });
 
@@ -504,11 +514,30 @@
                                 $.confirm({
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha actualizado con exito',
+                                    autoClose: 'ok|1000',
+                                    buttons: {
+                                        ok: function () {
+                                            window.location.replace('/product');
+                                        }
+                                    }
                                 });
-                                location.href = '../';
+                                //location.href = '../';
                             },
                             error:function(response) {
-                                console.log(response);
+                                if (response.status == 422) { 
+                                    //toastError(err.responseJSON.message);
+                                    let details = response.responseJSON.errors ;
+                                    let content = '';
+                                    Object.keys(details).forEach(field => {
+                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
+                                    });
+
+                                    $.alert({
+                                        title: 'Error',
+                                        content: content
+
+                                    });
+                                }
                             },
                         });
                     }
@@ -524,19 +553,34 @@
             });
         },
         error: function (file, response) {
-            console.log(response);
-            $.confirm({
-                title: 'Actualizar producto',
-                content: 'Ha ocurrido un error, comunicate con administrador del sistema',
-            });
+            if (response.status == 422) { 
+                //toastError(err.responseJSON.message);
+                let details = response.responseJSON.errors ;
+                let content = '';
+                Object.keys(details).forEach(field => {
+                    content += formatErrorUsingClassesAndPopover(field,details[field]);
+                });
+
+                $.alert({
+                    title: 'Error',
+                    content: content
+
+                });
+            }
             
         },
         successmultiple: function (file, response) {
             $.confirm({
                 title: 'Actualizar producto',
                 content: 'El producto se ha actualizado con exito',
+                autoClose: 'ok|1000',
+                buttons: {
+                    ok: function () {
+                        window.location.replace('/product');
+                    }
+                }
             });
-            location.href = '../';
+            //location.href = '../';
             //console.log('sss: '+ response);
         },
         completemultiple: function (file, response) {

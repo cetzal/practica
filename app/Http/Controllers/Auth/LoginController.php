@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Providers\RouteServiceProvider;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use App\Services\JWTService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Namshi\JOSE\JWT;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
 
 class LoginController extends Controller
 {
@@ -40,31 +48,51 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function ajaxLogin(LoginRequest $request){
-        $input = $request->only('email', 'password');
-        $input['deleted_at'] = NULL;
-        if (!$jwt_token = Auth::guard('api')->attempt($input)) {
+    public function ajaxLogin(Request $request){
+       
+       $this->validate($request, [
+                'email' => [
+                    'required',
+                    'email',
+                ],
+                'password' => [
+                    'password' => ['required'],
+                ]
+            ]);
+        $email = $request->input('email');
+        $pass = $request->input('password');
+
+        $user = DB::table('view_users_login')->where('email', $email)->first();
+
+        if($user){
+            
+            if (Hash::check($pass, $user->password)) {
+     
+                if(!$jwt_token = JWTAuth::fromUser(new JWTService($user))){
+                    return response()->json(['status' => 'error', 'message' => 'usuario o contraseña no válidos', 'data' => []]);
+                }
+
+                session([
+                    // 'user_confirmed' => $userInformation['user']['confirmed'],
+                    // 'user_name' => $userInformation['user']['name'],
+                    // 'user_email' =>  $userInformation['user']['email'],
+                    // 'type_user' => $userInformation['user']['type_user'],
+                    'token' => $jwt_token,
+                    // 'refresh_token' => $userInformation['refresh_token']
+                ]);
+
+                unset($user->password);
+                return response()->json([
+                'status' => 'success', 
+                'message' => 'Bienbenido', 
+                'data' => $user], 200)->withCookie(cookie('access_token', $jwt_token, 45000));
+
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'usuario o contraseña no válidos', 'data' => []]);
+            }
+        }else{
             return response()->json(['status' => 'error', 'message' => 'usuario o contraseña no válidos', 'data' => []]);
         }
-        $users = Auth::guard('api')->user();
-
-        if($users->is_active == 0){
-            return response()->json(['status' => 'error', 'message' => 'El usuario ingresado esta suspendido', 'data' => []]);
-        }
-
-        $users->token = $jwt_token;
-        session([
-            // 'user_confirmed' => $userInformation['user']['confirmed'],
-            // 'user_name' => $userInformation['user']['name'],
-            // 'user_email' =>  $userInformation['user']['email'],
-            // 'type_user' => $userInformation['user']['type_user'],
-            'token' => $jwt_token,
-            // 'refresh_token' => $userInformation['refresh_token']
-        ]);
-        return response()->json([
-            'status' => 'success', 
-            'message' => 'Bienbenido', 
-            'data' => $users], 200)->withCookie(cookie('access_token', $jwt_token, 45000));
     }
 
     public function logout(){

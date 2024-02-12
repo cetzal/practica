@@ -174,6 +174,13 @@
     });
 
     $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
+        var type_fecha = $('.form-select').val();
+        if(type_fecha==''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecrione un tipo de fecha a consultar',
+            });
+        }
       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
@@ -226,7 +233,7 @@
         }else{
             $.confirm({
                 title: 'Eliminat productos',
-                content: 'Selecciiones los productos que deseas eliminar',
+                content: 'Selecciones los productos que deseas eliminar',
             });
         }
     });
@@ -266,7 +273,7 @@
         }else{
             $.confirm({
                 title: 'Activar productos',
-                content: 'Selecciiones los productos que deseas activar',
+                content: 'Selecciones los productos que deseas activar',
             });
         }
     });
@@ -306,7 +313,7 @@
         }else{
             $.confirm({
                 title: 'Desactivar productos',
-                content: 'Selecciiones los productos que deseas desactivar',
+                content: 'Selecciones los productos que deseas desactivar',
             });
         }
     });

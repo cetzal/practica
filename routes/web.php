@@ -31,5 +31,7 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/product', [App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
     Route::get('/product/create', [App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
     Route::get('/product/{id}/edit', [App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
+    Route::get('/log-module', [App\Http\Controllers\LogModuleController::class, 'index'])->name('logs.index');
+
 });
 

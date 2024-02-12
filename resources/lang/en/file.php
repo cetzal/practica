@@ -557,5 +557,7 @@ return [
 	"created_at" => "Create date",
 	"updated_at" => "Update date",
 	"range_date" => "Range date",
+	"module" => "Module",
+	"movement_type" => "Movement type",
 ];
 ?>

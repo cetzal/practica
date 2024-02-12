@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');
 });
 
-
-
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/log-module/list', [App\Http\Controllers\LogModuleController::class, 'list'])->name('api.logs.list');
+    Route::get('/log-module/{id}/edit', [App\Http\Controllers\LogModuleController::class, 'edit'])->name('api.logs.edit');
+});
 

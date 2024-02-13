@@ -240,12 +240,12 @@
                 }
             },
             { data: 'email' },
-            { data: 'role' , "render": function (data, type, full, meta) {
-                        return full.role_id == 1 ? 'ADMIN' : 'CUSTOMER';
+            { data: 'role_name' , "render": function (data, type, full, meta) {
+                        return full.role_name;
+                        // return full.role_id == 1 ? 'ADMIN' : 'CUSTOMER';
                     }
             },
             { data: 'status' , "render": function (data, type, full, meta) {
-                        console.log(full.is_active);
                 return full.is_active == 1 ? 'Activo' : 'Desactivado';
                 }
             },
@@ -267,7 +267,7 @@
             {
                 targets : [8],
                 render: function(data, type, row, meta){
-                    return row.deleted_at
+                    return row.updated_at
                 }
             },
             {

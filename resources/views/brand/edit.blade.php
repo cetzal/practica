@@ -11,21 +11,13 @@
           <div class="form-group">
             <label>{{trans('file.Title')}} *</label>
             <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
-            @if($errors->has('name'))
-                <span>
-                    <strong>{{ $errors->first('name') }}</strong>
-                </span>
-            @endif
+           
         </div>
         <input type="hidden" name="brand_id">
         <div class="form-group">
             <label>{{trans('file.Description')}} *</label>
-            <input type="text" name="description" required class="form-control" value="" placeholder="Type brand description...">
-            @if($errors->has('description'))
-                <span>
-                    <strong>{{ $errors->first('description') }}</strong>
-                </span>
-            @endif
+           
+            <textarea name="description" required class="form-control" value="" placeholder="Type brand description..." rows="3"></textarea>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

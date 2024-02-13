@@ -8,6 +8,9 @@
     });
 
     $( "#range_date" ).daterangepicker({
+        showApplyButton: false,
+        autoApply: true,
+        showInputs: false,
         locale: {
             format: 'DD/MM/YYYY'
         },
@@ -74,7 +77,7 @@
         "searching": false,
         "bProcessing": true,
         "ajax" : {
-            "url": "{{route('api.brand.list')}}",
+            "url": "api/brand",
             "data": function(d) {
                 var frm_data = $('form#from_brand_search').serializeArray();
                 // return frm_data;
@@ -87,9 +90,9 @@
         },
         "order": [],
         'language': {
-            'lengthMenu': '_MENU_ {{trans("file.records per page")}}',
-             "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
-            "search":  '{{trans("file.Search")}}',
+            'lengthMenu': '_MENU_',
+             "info":      ' _START_ - _END_ (_TOTAL_)</small>',
+            "search":  '',
             'paginate': {
                 'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
                 'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
@@ -206,7 +209,7 @@
         if(brand_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'{{route("api.brand.all_delete")}}',
+                url:'api/brand/all/deletebyselection',
                 data:{
                     brandIdArray: brand_ids
                 },
@@ -239,7 +242,7 @@
         if(brand_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'{{route("api.brand.all_active")}}',
+                url:'api/brand/all/activatebyselection',
                 data:{
                     brandIdArray: brand_ids
                 },
@@ -273,7 +276,7 @@
         if(brand_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'{{route("api.brand.all_desactive")}}',
+                url:'api/brand/all/deactivatebyselection',
                 data:{
                     brandIdArray: brand_ids
                 },
@@ -323,8 +326,28 @@
         });
     }
 
-    $( "#from_brand_search" ).on( "submit", function( event ) {
+    $( "#from_brand_search" ).on("submit", function( event ) {
         event.preventDefault();
+        var date_range = $('#range_date').val();
+        var type_fecha = $('.brand-date-select').val();
+        console.log(type_fecha);
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
+        
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
         table.ajax.reload();
     });
 

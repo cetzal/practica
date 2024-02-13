@@ -19,6 +19,9 @@
     }
 
     $( "#date_range" ).daterangepicker({
+        showApplyButton: false,
+        autoApply: true,
+        showInputs: false,
         locale: {
             format: 'DD/MM/YYYY'
         },
@@ -58,7 +61,7 @@
     });
 
     //product_id.length = 0;
-    $(".delete_all").on('click', function(e){
+    $(".delete_all_prod").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
             $.confirm({
@@ -70,7 +73,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.product.all_delete")}}',
+                                url:'api/product/all/deletebyselection',
                                 data:{
                                     productIdArray: product_id
                                 },
@@ -98,7 +101,7 @@
             });
         }
     });
-    $(".active_all").on('click', function(e){
+    $(".active_all_prod").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
             $.confirm({
@@ -110,7 +113,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.product.all_active")}}',
+                                url:'api/product/all/activarbyselection',
                                 data:{
                                     productIdArray: product_id
                                 },
@@ -138,7 +141,7 @@
             });
         }
     });
-    $(".desactive_all").on('click', function(e){
+    $(".desactive_all_prod").on('click', function(e){
         e.preventDefault();
         if(product_id.length) {
             $.confirm({
@@ -150,7 +153,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.product.all_desactive")}}',
+                                url:'api/product/all/desactivarbyselection',
                                 data:{
                                     productIdArray: product_id
                                 },
@@ -187,7 +190,7 @@
         $('.form_search').removeClass('form_search_active');
     });
 
-    $( "#select_all" ).on("change", function() {
+    $( "#product-data-table #select_all" ).on("change", function() {
         if ($(this).is(':checked')) {
             $("tbody input[type='checkbox']").prop('checked', true);
         } 
@@ -195,18 +198,18 @@
             $("tbody input[type='checkbox']").prop('checked', false);
         }
         product_id = [];
-        verific_checks(0);
+        verific_checks_prod(0);
     });
 
     $('#product-data-table').on('click', "tbody input[type='checkbox']", function(e) {
         if (!$(this).is(":checked")) { //If the checkbox is checked
             product_id = [];
         }
-        verific_checks(1);
+        verific_checks_prod(1);
         
     });
 
-    var verific_checks = function(num){
+    var verific_checks_prod = function(num){
         $(':checkbox:checked').each(function(i){
             i+=num;
             if(i){
@@ -230,7 +233,7 @@
     });
 
     $('#product-data-table').on('click', '.remove', function() {
-        var url = "{{route('api.product.destroy', [':id'])}}";
+        var url = "api/product/:id/delete";
         var id = $(this).data('id').toString();
         // url = url.concat(id).concat("/delete");
         url = url.replace(':id', id);
@@ -267,7 +270,7 @@
 
 
     $('#product-data-table').on('click', '.desactivar', function() {
-        var url = "{{route('api.product.desactivar', [':id'])}}";
+        var url = "api/product/:id/desactivar";
         var id = $(this).data('id').toString();
         url = url.replace(':id', id);
         var Jquery = $.Jquery;
@@ -301,7 +304,7 @@
     });
 
     $('#product-data-table').on('click', '.activar', function() {
-        var url = "{{route('api.product.activar', [':id'])}}";
+        var url = "api/product/:id/activar";
         var id = $(this).data('id').toString();
         url = url.replace(':id', id);
         var Jquery = $.Jquery;
@@ -368,6 +371,8 @@
     $(document).ready(function() {
         var table = $('#product-data-table').DataTable( {
             responsive: true,
+            "searching": false,
+            "bProcessing": true,
             fixedHeader: {
                 header: true,
                 footer: true
@@ -382,7 +387,7 @@
             "processing": true,
             "serverSide": true,
             "ajax":{
-                url:"{{route('api.product.list')}}",
+                url:"api/product/list",
                 "data": function(d) {
                     var frm_data = $('form#from_search').serializeArray();
                     // return frm_data;
@@ -415,8 +420,8 @@
             ],
             'language': {
                 
-                'lengthMenu': '_MENU_ {{trans("file.records per page")}}',
-                "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
+                'lengthMenu': '_MENU_',
+                "info":      '<small> _START_ - _END_ (_TOTAL_)</small>',
                 "search":  '{{trans("file.Search")}}',
                 'paginate': {
                     'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
@@ -465,7 +470,7 @@
                 {
                     'targets': [12],
                     'render' : function(data, type, row, meta){
-                        var url_edit = "{{route('products.edit', [':id'])}}";
+                        var url_edit = "product/:id/edit";
                         url_edit = url_edit.replace(':id', row.id);
                         let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                         $html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';

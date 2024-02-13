@@ -3,9 +3,9 @@
 <section>
     <div class="container-fluid mb-2">
         <a href="{{route('user.create')}}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add User')}}</a>
-        <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
-        <a href="#" class="btn btn-success active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
-        <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
+        <a href="#" class="btn btn-danger delete_all_user"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
+        <a href="#" class="btn btn-success active_all_user"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
+        <a href="#" class="btn btn-warning desactive_all_user"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
     <div class="container-fluid mb-2 form_search">
@@ -74,7 +74,7 @@
                 <div class="col">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data">Filtrar</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form">Limpiar</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form_user">Limpiar</button>
                     <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
                 </div>
             </div>

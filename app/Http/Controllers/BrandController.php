@@ -19,7 +19,7 @@ class BrandController extends Controller
     
     public function index()
     {
-        return view('brand.create');
+        return view('brand.index');
     }
 
     public function list(Request $request)

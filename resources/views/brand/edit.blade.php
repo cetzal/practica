@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
+            <input type="submit" value="{{trans('file.save')}}" class="btn btn-primary">
         </div>
       {{ Form::close() }}
     </div>

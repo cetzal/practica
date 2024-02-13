@@ -215,7 +215,7 @@
                                 </div> 
                             </div>
                             <div class="form-group">
-                                <input type="button" value="{{trans('file.submit')}}" id="submit-btn" class="btn btn-primary">
+                                <input type="button" value="{{trans('file.Save')}}" id="submit-btn" class="btn btn-primary">
                                 <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                             </div>
                         </form>
@@ -368,7 +368,15 @@
       
         rules : {
             name : 'required',
-            code : 'required',
+            code : {
+                required : true,
+                remote: {
+                    url: 'code',
+                    type: 'get',
+                    delay: 1000,
+                    message: 'The pageurl is not available.'
+                }
+            },
             brand_id: 'required'
             
         },
@@ -397,8 +405,12 @@
         // },
         messages: {
             name : 'The name is required',
-            code : 'The code is required',
+            code : {
+                required : 'The code is required',
+                remote: "code already in use."
+            },
             brand_id : 'The brand is required'
+            
         }
     });
 

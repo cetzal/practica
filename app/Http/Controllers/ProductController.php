@@ -311,20 +311,16 @@ class ProductController extends Controller
 
     public function validateCode(Request $request)
     {   
-        $this->validate($request, [
-            'product_code' => [
-                'max:255',
-                function($attribute, $value, $fail) {
-                    if (empty($value)) {
-                        return;
-                    }
+        if(empty($request->code)){
+            return null;
+            exit;
+        }
 
-                    if (DB::table('view_products')->where('code', $value)->count() > 0) {
-                        $fail("The product code is assigned, please try another.");
-                    }
-                }
-            ]
-        ]);
-        return;
+
+        if(DB::table('view_products')->where('code', $request->code)->count() > 0){
+            echo 0;
+            exit;
+        }
+        return null;
     }
 }

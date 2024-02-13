@@ -492,13 +492,33 @@
     } );
 
 
-    $( "#from_search" ).on( "submit", function( event ) {
+    $( "#from_search_prod" ).on( "submit", function( event ) {
         event.preventDefault();
+        var date_range = $('#date_range').val();
+        var type_fecha = $('.product-select-date').val();
+        console.log(type_fecha);
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
+        
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
         $('#product-data-table').DataTable().ajax.reload();
     });
 
     $('.clear_form').on('click', function(e){
-        $('#from_search')[0].reset();
+        $('#from_search_prod')[0].reset();
         $('#product-data-table').DataTable().ajax.reload();
     });
 

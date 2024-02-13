@@ -68,7 +68,12 @@
                                           <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                                           <option value="">Select a brand</option> 
                                           @foreach($lims_brand_list as $brand)
+                                                @if ($brand->is_active == 1)
                                                 <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                                @else
+                                                <option readonly value="{{$brand->id}}">{{$brand->name}}</option>
+                                                @endif
+                                                
                                             @endforeach
                                           </select>
                                       </div>
@@ -207,7 +212,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input type="button" value="{{trans('file.submit')}}" class="btn btn-primary" id="submit-btn">
+                                        <input type="button" value="{{trans('file.Save')}}" class="btn btn-primary" id="submit-btn">
                                         <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                                     </div>
                                 </div>

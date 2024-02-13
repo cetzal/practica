@@ -31,7 +31,7 @@ class BrandController extends Controller
         
         $where_conditions = [];
         if (!empty($request['brand_name'])) {
-            $where_conditions[] = ['name', 'like', '%'.$request['name'].'%'];
+            $where_conditions[] = ['name', 'like', '%'.$request['brand_name'].'%'];
         }
         if (!empty($request['created_by'])) {
             $where_conditions[] = ['user_name', 'like', '%'.$request['created_by'].'%'];

@@ -26,7 +26,9 @@ class ProductController extends Controller
 
     public function index()
     {
-        return view('product.index');
+        $lims_product_category_list = DB::table('view_products_categories')->get();
+        return view('product.index', compact('lims_product_category_list'));
+        // return view('product.index');
     }
 
     public function list(Request $request)
@@ -44,7 +46,10 @@ class ProductController extends Controller
         if(!empty($request->brand_prod)){
             $where[] = ['brand_name', 'like', '%'.$request->brand_prod.'%'];
         }
-
+        if(!empty($request->category_id)){
+            $where[] = ['category_id', '=', '%'.$request->category_id.'%'];
+        }
+        
         if(!empty($request->user_created)){
             $where[] = ['asuser_name', 'like', '%'.$request->user_created.'%'];
         }

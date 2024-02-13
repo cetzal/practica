@@ -25,6 +25,19 @@
                     <input type="text" class="form-control" placeholder="Brand" name="brand_prod">
                 </div>
                 <div class="col">
+                    <div class="form-group">
+                        <label>Categoria</strong> </label>
+                        <div class="input-group">
+                            <select name="category_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
+                            <option value="">Select a category</option>  
+                            @foreach($lims_product_category_list as $category)
+                                <option value="{{$category->category_id}}">{{$category->category_name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
                     <label for="last_name">Usuario alta</label>
                     <input type="text" class="form-control" placeholder="User" name="user_created">
                 </div>

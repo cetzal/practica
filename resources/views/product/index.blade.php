@@ -4,9 +4,9 @@
 <section>
     <div class="container-fluid mb-2">
             <a href="{{route('products.create')}}" class="btn btn-info"><i class="dripicons-plus"></i> {{__('file.add_product')}}</a>
-            <a href="#" class="btn btn-primary delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
-            <a href="#" class="btn btn-primary active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
-            <a href="#" class="btn btn-primary desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
+            <a href="#" class="btn btn-danger delete_all_prod"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
+            <a href="#" class="btn btn-success active_all_prod"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
+            <a href="#" class="btn btn-warning desactive_all_prod"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
             <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
         </div>
     <div class="container-fluid mb-2 form_search">

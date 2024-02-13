@@ -35,7 +35,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.date')}}</label>
-                        <select class="form-select" name="select_date">
+                        <select class="form-select brand-date-select" name="select_date">
                             <option selected value="">Seleccione</option>
                             <option value="created_at">Fecha creacion</option>
                             <option value="updated_at">Fecha actualizacion</option>

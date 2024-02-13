@@ -64,8 +64,8 @@
     //dropzone portion
     Dropzone.autoDiscover = false;
 
-    user_id.length = 0;
-    $(".delete_all").on('click', function(e){
+   
+    $(".delete_all_user").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
             $.confirm({
@@ -77,11 +77,12 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.user.all_delete")}}',
+                                url:'api/user/all/deletebyselection',
                                 data:{
                                     userIdArray: user_id
                                 },
                                 success:function(data){
+                                    user_id = [];
                                     $.confirm({
                                         title: 'Eliminar usuarios seleccionados',
                                         content: 'se elimino todo los usuarios selecionados ',
@@ -104,7 +105,7 @@
             });
         }
     });
-    $(".active_all").on('click', function(e){
+    $(".active_all_user").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
             $.confirm({
@@ -116,7 +117,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.user.all_active")}}',
+                                url:'api/user/all/activarbyselection',
                                 data:{
                                     userIdArray: user_id
                                 },
@@ -125,6 +126,7 @@
                                         title: 'Activar usuario',
                                         content: 'se activado todo los usuario selecionados ',
                                     });
+                                    user_id = [];
                                     $( "#select_all" ).prop('checked', false);
                                     $('#user-table').DataTable().ajax.reload();
                                 }
@@ -144,7 +146,7 @@
             });
         }
     });
-    $(".desactive_all").on('click', function(e){
+    $(".desactive_all_user").on('click', function(e){
         e.preventDefault();
         if(user_id.length) {
 
@@ -157,11 +159,12 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'{{route("api.user.all_desactive")}}',
+                                url:'api/user/all/desactivarbyselection',
                                 data:{
                                     userIdArray: user_id
                                 },
                                 success:function(data){
+                                    user_id = [];
                                     $.confirm({
                                         title: 'Desactiva usuario',
                                         content: 'Se desactivo todo los usuario selecionados ',
@@ -222,7 +225,7 @@
         'columns': [
             { 
                 data: "text", "render": function (data, type, full, meta) {
-                        return '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
+                        return '<div class="checkbox"><input type="checkbox" class="dt-checkboxes checkbox_user"><label></label></div>';
                     }
             },
             { data: 'name' },
@@ -329,7 +332,7 @@
         table.ajax.reload();
     });
 
-    $('.clear_form').on('click', function(e){
+    $('.clear_form_user').on('click', function(e){
         $('#from_search')[0].reset();
         table.ajax.reload();
     });
@@ -454,7 +457,7 @@
     });
 
 
-    $( "#select_all" ).on("change", function() {
+    $( "#user-table #select_all" ).on("change", function() {
         if ($(this).is(':checked')) {
             $("tbody input[type='checkbox']").prop('checked', true);
         } 
@@ -462,14 +465,14 @@
             $("tbody input[type='checkbox']").prop('checked', false);
         }
         user_id = [];
-        verific_checks(0);
+        verific_checks_users(0);
     });
 
     $('#user-table').on('click', "tbody input[type='checkbox']", function(e) {
         if (!$(this).is(":checked")) { //If the checkbox is checked
             user_id = [];
         }
-        verific_checks(1);
+        verific_checks_users(1);
         
     });
 
@@ -502,12 +505,14 @@
     });
 
 
-    var verific_checks = function(num){
-        $(':checkbox:checked').each(function(i){
+    var verific_checks_users = function(num){
+        
+        $(':checkbox.checkbox_user:checked').each(function(i){
             i+=num;
             if(i){
                 var user_data = $(this).closest('tr').data('user');
                 if(typeof(user_data) !== 'undefined'){
+                    console.log(user_data);
                     user_id[i-1] = user_data.id;
                 }
             }

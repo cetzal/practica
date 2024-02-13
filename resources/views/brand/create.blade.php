@@ -11,20 +11,11 @@
             <div class="form-group">
                 <label>{{trans('file.name')}} *</label>
                 <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
-                @if($errors->has('name'))
-                <span>
-                    <strong>{{ $errors->first('name') }}</strong>
-                </span>
-                @endif
             </div>
             <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>
-                <input type="text" name="description" required class="form-control" value="" placeholder="Type brand description...">
-                @if($errors->has('description'))
-                <span>
-                    <strong>{{ $errors->first('description') }}</strong>
-                </span>
-                @endif
+                <textarea name="description" required class="form-control" value="" placeholder="Type brand description..." rows="3"></textarea>
+                <!-- <input type="textarea" name="description" required class="form-control" value="" placeholder="Type brand description..."> -->
             </div>
             
         </div>

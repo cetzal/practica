@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/brand', [App\Http\Controllers\BrandController::class, 'store'])->name('api.brand.store');
     Route::get('/brand/{id}/edit', [App\Http\Controllers\BrandController::class, 'edit'])->name('api.brand.edit');
     Route::put('/brand/{id}/update', [App\Http\Controllers\BrandController::class, 'update'])->name('api.brand.update');
-    Route::put('/brand/{id}/activar', [App\Http\Controllers\BrandController::class, 'activar'])->name('api.brand.activar');
+    Route::put('/brand/{id}/activate', [App\Http\Controllers\BrandController::class, 'activate'])->name('api.brand.activar');
     Route::put('/brand/{id}/deactivate', [App\Http\Controllers\BrandController::class, 'deactivate'])->name('api.brand.deactivate');
     Route::delete('/brand/{id}/delete', [App\Http\Controllers\BrandController::class, 'destroy'])->name('api.brand.delete');
     Route::put('/brand/all/activatebyselection', [App\Http\Controllers\BrandController::class, 'activateBySelection'])->name('api.brand.all_active');

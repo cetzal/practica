@@ -80,12 +80,12 @@ class LoginController extends Controller
                     'token' => $jwt_token,
                     // 'refresh_token' => $userInformation['refresh_token']
                 ]);
-
+                $user->token = $jwt_token;
                 unset($user->password);
                 return response()->json([
-                'status' => 'success', 
-                'message' => 'Bienbenido', 
-                'data' => $user], 200)->withCookie(cookie('access_token', $jwt_token, 45000));
+                    'status' => 'success', 
+                    'message' => 'Bienbenido', 
+                    'data' => $user], 200)->withCookie(cookie('access_token', $jwt_token, 45000));
 
             } else {
                 return response()->json(['status' => 'error', 'message' => 'usuario o contraseña no válidos', 'data' => []]);

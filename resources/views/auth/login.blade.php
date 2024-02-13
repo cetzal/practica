@@ -117,7 +117,7 @@
             type: $( this ).attr( 'method' ),
             url: actionUrl,
             success: function( response ){
-
+                localStorage.setItem('token', response.data.token);
                 $.confirm({
                     title: response.status,
                     content: response.message,

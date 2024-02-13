@@ -14,7 +14,7 @@
 
 {{-- <script src="{{ asset('assets/js/popper.min.js') }}"></script> --}}
 
-<script src="{{ asset('js/app.js') }}"></script>
+
 
 {{-- <script src="{{ asset('assets/js/detect.js') }}"></script> --}}
 {{-- <script src="{{ asset('assets/js/fastclick.js') }}"></script> --}}
@@ -53,7 +53,7 @@ https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.j
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 
-
+<script src="{{ asset('js/app.js') }}"></script>
 
 
 

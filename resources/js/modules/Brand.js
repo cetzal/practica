@@ -214,9 +214,14 @@
                     brandIdArray: brand_ids
                 },
                 success:function(data){
+                    console.log('data', data.messages);
+                    var messsage = 'se elimino todo las marcas selecionados';
+                    if (typeof data.messages != undefined) {
+                        messsage = data.messages;
+                    }
                     $.confirm({
                         title: 'Eliminar marcas',
-                        content: 'se elimino todo las marcas selecionados',
+                        content: messsage,
                         buttons: {
                             ok: function () {
                                 table.ajax.reload();

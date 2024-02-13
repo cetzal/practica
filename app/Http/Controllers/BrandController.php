@@ -162,9 +162,28 @@ class BrandController extends Controller
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        Brand::whereIn('id', $request['brandIdArray'])->update(['deleted_at' => date('Y-m-d H:i:s')]);
+        $products = DB::table('view_products')->select(['id', 'name', 'brand_id'])->whereIn('brand_id', $request->brandIdArray)->get();
+        $brand_ids = [];
+        $brand_names = [];
+        if ($products->count() > 0) {
+            $brand_ids = array_values(array_unique($products->pluck('brand_id')));
+            $brand_names = array_unique($products->pluck('name'));
+        }
+
+        $message = 'Se borraron todas las marcas seleccionadas';
+        $brand_deletes = array_diff($request->brandIdArray, $brand_ids);
+        Brand::whereIn('id', $brand_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
+
+        if (count($brand_ids) > 0) {
+            $brand = $brand_names[0];
+            if (count($brand_names) > 1) {
+                $brand.=','.$brand_names[0].'...';
+            }
+            $message = 'Se borraron '. count($brand_deletes) .'Marcas. No se borraron {'.$brand.'} porque cuentan con productos';
+        }
+
        
-        return response()->json(['status' => 'success', 'messages' => 'Los usuario selecionado se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'messages' => $message]);
     }
 
     public function deactivate($id)
@@ -185,7 +204,7 @@ class BrandController extends Controller
 
     public function destroy($id){
         $brand_data = Brand::findOrFail($id);
-        $products = DB::table('view_products')->where('brand_id', $brand_data->getKey())->get();
+        $products = DB::table('view_products')->select(['id'])->where('brand_id', $brand_data->getKey())->get();
         if (count($products) > 0) {
             return response()->json(['status' => 'warning', 'message' => 'La marca no se puede eliminar, tiene uno o varios productos asignados.']); 
         }

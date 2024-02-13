@@ -117,7 +117,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'api/user/all/activarbyselection',
+                                url:'api/user/all/activatebyselection',
                                 data:{
                                     userIdArray: user_id
                                 },
@@ -159,7 +159,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'api/user/all/desactivarbyselection',
+                                url:'api/user/all/deactivatebyselection',
                                 data:{
                                     userIdArray: user_id
                                 },
@@ -395,7 +395,7 @@
     });
 
     $('#user-table').on('click', '.desactivar ', function() {
-        var url = "api/user/{id}/desactivar"
+        var url = "api/user/{id}/deactivate"
         var id = $(this).data('id').toString();
         url = url.replace(/{id}/g, id);
         var Jquery = $.Jquery;
@@ -429,7 +429,7 @@
     });
 
     $('#user-table').on('click', '.activar ', function() {
-        var url = "api/user/{id}/activar"
+        var url = "api/user/{id}/activate"
         var id = $(this).data('id').toString();
         url = url.replace(/{id}/g, id);
         var Jquery = $.Jquery;

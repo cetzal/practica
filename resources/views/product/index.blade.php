@@ -21,8 +21,17 @@
                     <input type="text" class="form-control" placeholder="Name" name="name_prod">
                 </div>
                 <div class="col">
-                    <label for="brand_prod">Brand</label>
-                    <input type="text" class="form-control" placeholder="Brand" name="brand_prod">
+                    <div class="form-group">
+                        <label>Brand</strong> </label>
+                        <div class="input-group">
+                            <select name="brand_prod" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
+                            <option value="">Select a Brand</option>  
+                            @foreach($lims_product_brand_list as $brand)
+                                <option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <div class="form-group">

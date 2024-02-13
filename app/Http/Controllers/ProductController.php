@@ -26,8 +26,9 @@ class ProductController extends Controller
 
     public function index()
     {
+        $lims_product_brand_list = DB::table('view_products_brands')->get();
         $lims_product_category_list = DB::table('view_products_categories')->get();
-        return view('product.index', compact('lims_product_category_list'));
+        return view('product.index', compact('lims_product_category_list', 'lims_product_brand_list'));
     }
 
     public function list(Request $request)

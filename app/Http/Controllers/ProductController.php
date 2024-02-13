@@ -33,60 +33,40 @@ class ProductController extends Controller
     {
         $where = [];
 
-        if(!empty($request->input('code_prod'))){
-            $where[] = ['code', 'like', '%'.$request->input('code_prod').'%'];
+        if(!empty($request->code_prod)){
+            $where[] = ['code', 'like', '%'.$request->code_prod.'%'];
         }
 
-        if(!empty($request->input('name_prod'))){
-            $where[] = ['name', 'like', '%'.$request->input('name_prod').'%'];
+        if(!empty($request->name_prod)){
+            $where[] = ['name', 'like', '%'.$request->name_prod.'%'];
         }
 
-        if(!empty($request->input('brand_prod'))){
-            $where[] = ['brand_name', 'like', '%'.$request->input('brand_prod').'%'];
+        if(!empty($request->brand_prod)){
+            $where[] = ['brand_name', 'like', '%'.$request->brand_prod.'%'];
         }
 
-        if(!empty($request->input('user_created'))){
-            $where[] = ['asuser_name', 'like', '%'.$request->input('user_created').'%'];
+        if(!empty($request->user_created)){
+            $where[] = ['asuser_name', 'like', '%'.$request->user_created.'%'];
+        }
+        
+        if (!empty($request->date_range) && !empty($request->select_date)) {
+            list($start_date, $end_date)= explode(' - ', $request->date_range);
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
+        }
+        
+        if($request->prod_status != '') {
+            $where[] = ['is_active', '=' ,$request->prod_status];
         }
 
-        $select_date = 'created_at';
-        if(!is_null($request->get('select_date'))){
-            $select_date = $request->get('select_date');
-        }
-
-        if(!is_null($request->get('date_range'))){
-            list($start_date, $end_date)= explode(' - ', $request->get('date_range'));
-            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('d-m-Y')];
-            $where[] = [$select_date, '<=', Carbon::createFromFormat('d/m/Y', $end_date)->format('d-m-Y')];
-        }
-
-       
-
-        // if(!is_null($request->get('date_create'))){
-        //     list($start_date, $end_date) = explode(' - ', $request->get('date_create'));
-        //     $where[] = ['created_at', '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('d-m-y')];
-        //     $where[] = ['created_at', '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('d-m-y')];
-
-        //     // $where[] = 'DATE(created_at) BETWEEN "'..'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
-        // }
-        // if(!is_null($request->get('date_update'))){
-        //     $range = explode(' - ', $request->get('date_update'));
-        //     $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
-           
-        // }
-
-        if(!is_null($request->get('prod_status'))){
-            $where[] = ['is_active', '=' ,$request->get('prod_status')];
-        }
-
-       
-        $query = DB::table('view_products');
-
-        if(count($where) > 0){
-            $query = $query->where($where);
-        }
-
-        $data = $query->get();
+        $data = DB::table('view_products')
+                 ->select([
+                    'id','name', 'code', 'brand_name', 'category_name',
+                    'picture', 'qty', 'unit_name', 'price',
+                    'is_active','created_at', 'updated_at'
+                ])
+                ->where($where)
+                ->get();
 
        $totalData = $data->count();
        $totalFiltered = $data->count();
@@ -102,14 +82,11 @@ class ProductController extends Controller
     
     public function create()
     {
-        $lims_product_list = DB::table('view_products')->where([ ['is_active', 1], ['type', 'standard'] ])->get();
-        $lims_brand_list = DB::table('view_brands')->where('is_active', 1)->get();
-        $lims_category_list = Category::where('is_active', 1)->get();
-        $lims_unit_list = Unit::where('is_active', 1)->get();
-        // var_dump($lims_unit_list->toarray());
-        // exit;
-        $lims_tax_list = Tax::where('is_active', 1)->get();
-        return view('product.create',compact('lims_product_list', 'lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
+        $lims_brand_list = DB::table('view_brands_active')->get();
+        $lims_category_list = DB::table('view_categories_active')->get();
+        $lims_unit_list = DB::table('view_units_active')->get();
+        $lims_tax_list = DB::table('view_taxes_active')->get();
+        return view('product.create',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
     }
 
     public function store(Request $request)
@@ -169,14 +146,14 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $lims_product_list = Product::where([ ['is_active', true], ['type', 'standard'] ])->get();
-        $lims_brand_list = Brand::where('is_active', true)->get();
-        $lims_category_list = Category::where('is_active', true)->get();
-        $lims_unit_list = Unit::where('is_active', true)->get();
-        $lims_tax_list = Tax::where('is_active', true)->get();
-        $lims_product_data = Product::where('id', $id)->first();
+        // $lims_product_list = Product::where([ ['is_active', true], ['type', 'standard'] ])->get();
+        $lims_brand_list = DB::table('view_brands_active')->get();
+        $lims_category_list = DB::table('view_categories_active')->get();
+        $lims_unit_list = DB::table('view_units_active')->get();
+        $lims_tax_list = DB::table('view_taxes_active')->get();
+        $lims_product_data = DB::table('view_products')->where('id', $id)->first();
 
-        return view('product.edit',compact('lims_product_list', 'lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list', 'lims_product_data'));
+        return view('product.edit',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list', 'lims_product_data'));
     }
 
     public function update( $id, Request $request)
@@ -326,5 +303,24 @@ class ProductController extends Controller
         $lims_product_data->delete();
      
         return response()->json(['status' => 'success', 'messages' => 'El producto se ha eliminado con exito']);
+    }
+
+    public function validateCode(Request $request)
+    {   
+        $this->validate($request, [
+            'product_code' => [
+                'max:255',
+                function($attribute, $value, $fail) {
+                    if (empty($value)) {
+                        return;
+                    }
+
+                    if (DB::table('view_products')->where('code', $value)->count() > 0) {
+                        $fail("The product code is assigned, please try another.");
+                    }
+                }
+            ]
+        ]);
+        return;
     }
 }

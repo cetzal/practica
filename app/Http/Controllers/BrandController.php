@@ -24,34 +24,29 @@ class BrandController extends Controller
 
     public function list(Request $request)
     {
-        $this->validate($request, [
-            'brand' => ['sometimes', 'required', 'max:255'],
-            'is_active' => ['sometimes', 'boolean']
-        ]);
-        
-        $where_conditions = [];
-        if (!empty($request['brand_name'])) {
-            $where_conditions[] = ['name', 'like', '%'.$request['brand_name'].'%'];
+        $where = [];
+        if (!empty($request->brand_name)) {
+            $where[] = ['name', 'like', '%'.$request->brand_name.'%'];
         }
-        if (!empty($request['created_by'])) {
-            $where_conditions[] = ['user_name', 'like', '%'.$request['created_by'].'%'];
+        if (!empty($request->created_by)) {
+            $where[] = ['created_by', 'like', '%'.$request->created_by.'%'];
         }
 
-        if (isset($request['status']) && $request['status'] != '') {
-            $where_conditions[] = ['is_active', '=', $request['status']];
+        if ($request->status != '') {
+            $where[] = ['is_active', '=', $request->status];
         }
 
-        if (!empty($request['range_date']) && !empty($request['select_date'])) {
-            list($date_from, $date_to) = explode(' - ', $request['range_date']);
+        if (!empty($request->range_date) && !empty($request->select_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $where_conditions[] = [DB::raw('DATE_FORMAT('. $request['select_date'].',"%Y-%m-%d")'), '>=', trim($date_from)];
-            $where_conditions[] = [DB::raw('DATE_FORMAT('. $request['select_date'].',"%Y-%m-%d")'), '<=', trim($date_to)];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', trim($date_to)];
         }
         
         $data = DB::table('view_brands')
                 ->select(['id', 'name', 'description', 'is_active', 'created_by', 'created_at', 'updated_at'])
-                ->where($where_conditions)
+                ->where($where)
                 ->get();
         
         $json_data = array(
@@ -70,9 +65,18 @@ class BrandController extends Controller
         $this->validate($request, [
             'name' => [
                 'max:255',
-                Rule::unique('view_brands')->where(function ($query) {
-                    return $query->where('is_active', 1);
-                })
+                // Rule::unique('view_brands')->where(function ($query) {
+                //     return $query->where('name', );
+                // }),
+                function($attribute, $value, $fail) {
+                    if (empty($value)) {
+                        return;
+                    }
+
+                    if (DB::table('view_brands')->where('name', $value)->count() > 0) {
+                        $fail("The brand name already exists, by try another name.");
+                    }
+                }
             ],
             'description' => ['required']
         ]);

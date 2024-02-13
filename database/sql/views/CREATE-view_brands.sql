@@ -13,12 +13,3 @@ FROM
    brands as b
 INNER JOIN users u ON u.id = b.created_by
   where b.deleted_at is NULL;
-  
- SELECT
-  b.id,
-  b.name,
-  b.description,
-  b.is_active
-FROM
-   brands as b
- where b.deleted_at is NULL ;

@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -29,52 +30,40 @@ class UserController extends Controller
 
     public function list(Request $request) {
         $where = [];
+
+        if(!empty($request->first_name)){
+            $where[] = ['name', 'like', '%'.$request->first_name.'%'];
+        }
+        if(!empty($request->last_name)){
+            $where[] = ['last_name', 'like', '%'.$request->last_name.'%'];
+        }
+        if(!empty($request->email)){
+            $where[] = ['email', 'like', '%'.$request->email.'%'];
+        }
+        if(!empty($request->user_created)){
+            $where[] = ['user_parent_name', 'like', '%'.$request->user_created.'%'];
+        }
+
+        if (!empty($request->date_range) && !empty($request->select_date)) {
+            list($start_date, $end_date)= explode(' - ', $request->date_range);
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
+        }
+
+        if($request->user_status != '') {
+            $where[] = ['is_active', '=', $request->user_status];
+        }
         
-        if(!is_null($request->get('first_name'))){
-            $where[] = ['name', 'like', '%'.$request->get('first_name').'%'];
-        }
-        if(!is_null($request->get('first_name'))){
-            $where[] = ['last_name', 'like', '%'.$request->get('last_name').'%'];
-        }
-        if(!is_null($request->get('email'))){
-            $where[] = ['email', 'like', '%'.$request->get('email').'%'];
-        }
-        if(!is_null($request->get('user_created'))){
-            $where[] = ['user_parent_name', 'like', '%'.$request->get('user_created').'%'];
-        }
-
-        $select_date = 'created_at';
-        if(!is_null($request->get('select_date'))){
-            $select_date = $request->get('select_date');
-        }
-
-        if(!is_null($request->get('date_range'))){
-            list($start_date, $end_date)= explode(' - ', $request->get('date_range'));
-            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $start_date)->format('Y-m-d')];
-            $where[] = [$select_date, '>=', Carbon::createFromFormat('d/m/Y', $end_date)->format('Y-m-d')];
-        }
-
-        // if(!is_null($request->get('date_create'))){
-        //     $range = explode(' - ', $request->get('date_create'));
-        //     $where[] = 'DATE(created_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
-        // }
-        // if(!is_null($request->get('date_update'))){
-        //     $range = explode(' - ', $request->get('date_update'));
-        //     $where[] = 'DATE(updated_at) BETWEEN "'.Carbon::createFromFormat('d/m/Y', $range[0])->format('Y-m-d').'" and "'.Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d').'"';
-           
-        // }
-
-        if(!is_null($request->get('user_status'))){
-            $where[] = ['is_active', '=', $request->get('user_status')];
-        }
-
-        $query = DB::table('view_users');
-        if(count($where) > 0){
-            $query = $query->where($where);
-        }
-
-
-        $data = $query->get();
+        $data = DB::table('view_users')
+                    ->select([
+                        'id', 'name', 'last_name',
+                        'picture', 'email', 'role_name',
+                        'is_active', 'user_parent_name',
+                        'created_at', 'updated_at',
+                    ])
+                    ->where($where)
+                    ->get();
+        
         $totalData = $data->count();
         $totalFiltered = $totalData; 
 
@@ -287,10 +276,5 @@ class UserController extends Controller
         $user_data->save();
         $user_data->delete();
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha eliminado con exito']);
-    }
-
-    public function destroy($id)
-    {
-        
     }
 }

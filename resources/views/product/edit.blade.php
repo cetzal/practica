@@ -68,11 +68,7 @@
                                           <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                                           <option value="">Select a brand</option> 
                                           @foreach($lims_brand_list as $brand)
-                                                @if ($brand->is_active == 1)
-                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
-                                                @else
-                                                <option readonly value="{{$brand->id}}">{{$brand->name}}</option>
-                                                @endif
+                                          <option value="{{$brand->id}}">{{$brand->name}}</option>
                                                 
                                             @endforeach
                                           </select>

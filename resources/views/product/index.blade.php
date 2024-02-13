@@ -26,7 +26,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Categoria</strong> </label>
+                        <label>Category</strong> </label>
                         <div class="input-group">
                             <select name="category_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
                             <option value="">Select a category</option>  

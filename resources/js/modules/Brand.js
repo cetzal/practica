@@ -149,7 +149,7 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    is_active = row.is_active == 1 ? 'Activo' : 'suspendido';
+                    is_active = row.is_active == 1 ? 'Activo' : 'Desactivado';
                     class_text = "text-success";
                     if (row.is_active == 0) {
                         class_text = "text-warning"

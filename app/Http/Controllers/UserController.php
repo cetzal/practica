@@ -169,7 +169,7 @@ class UserController extends Controller
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        User::whereIn('id', $request['userIdArray'])->update(['is_active' => true]);
+        User::whereIn('id', $request->userIdArray)->update(['is_active' => true]);
        
         return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha activado con exito']);
     }
@@ -179,7 +179,7 @@ class UserController extends Controller
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        User::whereIn('id', $request['userIdArray'])->update(['is_active' => false]);
+        User::whereIn('id', $request->userIdArray)->update(['is_active' => false]);
        
         return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha desactivado con exito']);
     }
@@ -188,7 +188,7 @@ class UserController extends Controller
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        User::destroy($request['userIdArray']);
+        User::destroy($request->userIdArray);
        
         return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha eliminado con exito']);
     }

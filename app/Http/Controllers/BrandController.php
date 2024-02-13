@@ -141,7 +141,7 @@ class BrandController extends Controller
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        Brand::whereIn('id', $request['brandIdArray'])->update(['is_active' => false]);
+        Brand::whereIn('id', $request->brandIdArray)->update(['is_active' => false]);
         
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']); 
     }
@@ -152,7 +152,7 @@ class BrandController extends Controller
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        Brand::whereIn('id', $request['brandIdArray'])->update(['is_active' => true]);
+        Brand::whereIn('id', $request->brandIdArray)->update(['is_active' => true]);
 
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido activado']); 
     }
@@ -162,27 +162,27 @@ class BrandController extends Controller
             'brandIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        $products = DB::table('view_products')->select(['id', 'name', 'brand_id'])->whereIn('brand_id', $request->brandIdArray)->get();
+        $products = DB::table('view_products')->select(['id', 'name', 'brand_id', 'brand_name'])->whereIn('brand_id', $request->brandIdArray)->get();
         $brand_ids = [];
         $brand_names = [];
         if ($products->count() > 0) {
-            $brand_ids = array_values(array_unique($products->pluck('brand_id')));
-            $brand_names = array_unique($products->pluck('name'));
+            $brand_ids = array_values(array_unique($products->pluck('brand_id')->toArray()));
+            $brand_names = array_unique($products->pluck('brand_name')->toArray());
         }
-
+        
         $message = 'Se borraron todas las marcas seleccionadas';
         $brand_deletes = array_diff($request->brandIdArray, $brand_ids);
-        Brand::whereIn('id', $brand_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-
+        
         if (count($brand_ids) > 0) {
             $brand = $brand_names[0];
             if (count($brand_names) > 1) {
-                $brand.=','.$brand_names[0].'...';
+                $brand.=', '.$brand_names[1].'...';
             }
-            $message = 'Se borraron '. count($brand_deletes) .'Marcas. No se borraron {'.$brand.'} porque cuentan con productos';
+            $message = 'Se borraron '. count($brand_deletes) .' Marcas. No se borraron {'.$brand.'} porque cuentan con productos';
         }
+        
+        Brand::whereIn('id', $brand_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
-       
         return response()->json(['status' => 'success', 'messages' => $message]);
     }
 

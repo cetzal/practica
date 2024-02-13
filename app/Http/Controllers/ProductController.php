@@ -28,7 +28,6 @@ class ProductController extends Controller
     {
         $lims_product_category_list = DB::table('view_products_categories')->get();
         return view('product.index', compact('lims_product_category_list'));
-        // return view('product.index');
     }
 
     public function list(Request $request)
@@ -256,7 +255,7 @@ class ProductController extends Controller
 
     public function desactivarBySelection(Request $request)
     {
-        $product_id = $request['productIdArray'];
+        $product_id = $request->productIdArray;
         foreach ($product_id as $id) {
             $lims_product_data = Product::findOrFail($id);
             $lims_product_data->is_active = false;
@@ -268,7 +267,7 @@ class ProductController extends Controller
 
     public function activarBySelection(Request $request)
     {
-        $product_id = $request['productIdArray'];
+        $product_id = $request->productIdArray;
         foreach ($product_id as $id) {
             $lims_product_data = Product::findOrFail($id);
             $lims_product_data->is_active = true;
@@ -280,7 +279,7 @@ class ProductController extends Controller
 
     public function deleteBySelection(Request $request)
     {
-        $product_id = $request['productIdArray'];
+        $product_id = $request->productIdArray;
         foreach ($product_id as $id) {
             $lims_product_data = Product::findOrFail($id);
             $lims_product_data->is_active = false;

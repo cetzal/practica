@@ -559,6 +559,7 @@ return [
 	"range_date" => "Range date",
 	"module" => "Module",
 	"movement_type" => "Movement type",
-	"detail_log" => "Detail log"
+	"detail_log" => "Detail log",
+	"Save" => "Save"
 ];
 ?>

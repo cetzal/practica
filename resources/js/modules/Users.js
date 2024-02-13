@@ -310,7 +310,7 @@
     $( "#from_search" ).on( "submit", function( event ) {
         event.preventDefault();
         var date_range = $('#date_range').val();
-        var type_fecha = $('.form-select').val();
+        var type_fecha = $('.user-select-date').val();
         if(type_fecha=='' && date_range !== ''){
             $.alert({
                 title: 'Filtra datos',

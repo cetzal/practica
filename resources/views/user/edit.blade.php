@@ -1,13 +1,17 @@
-<div id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+<div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog modal-lg">
           <div class="modal-content">
-              {{ Form::open([ 'files' => true, 'id' => 'new_user'] ) }}
+              {{ Form::open([ 'files' => true, 'id' => 'update_user'] ) }}
             <div class="modal-header">
-              <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Add User')}}</h5>
+              <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.Update User')}}</h5>
               <button type="button" class="close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
              
             </div>
             <div class="modal-body">
+               
+                @method('PUT')
+                <input type="hidden" name="id" value="" />
+                {{-- <input type="hidden" name="user_id"> --}}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -21,15 +25,15 @@
                         <div class="form-group">
                             <label><strong>{{trans('file.Password')}} *</strong> </label>
                             <div class="input-group has-validation">
-                                <input type="password" name="password" id="btn-password" required class="form-control">
+                                <input type="password" name="password" id="btn-password-up" class="form-control">
                                 <div class="input-group-prepend">
-                                    <button type="button" class="input-group-text show_p" name="show_pass" id="show_pass"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                    <!-- <button id="genbutton" type="button" class="input-group-text"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button> -->
+                                    <button type="button" class="input-group-text show_pu" name="show_passpu" id="show_passpu"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                    <!-- <button id="genbuttonup" type="button" class="input-group-text"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button> -->
                                 </div>
                             </div>
 
                             <div class="invalid-feedback order-last"></div>
-                            <div class="securty_pass_c">
+                            <div class="securty_pass_u">
                                 <div id="Length" class="glyphicon glyphicon-remove">Must be at least 7 charcters</div>
                                 <div id="UpperCase" class="glyphicon glyphicon-remove">Must have atleast 1 upper case character</div>
                                 <div id="LowerCase" class="glyphicon glyphicon-remove">Must have atleast 1 lower case character</div>
@@ -40,6 +44,7 @@
                         <div class="form-group mt-3">
                             <label><strong>{{trans('file.Email')}} *</strong></label>
                             <input type="email" name="email" placeholder="example@example.com" required class="form-control" value="">
+                           
                         </div>
                         <div class="form-group">
                             <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
@@ -58,7 +63,7 @@
                         </div>
                         <div class="form-group">
                             <label>avatar</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
-                            <div id="imageUploadNewUser" class="dropzone"></div>
+                            <div id="imageUpload" class="dropzone"></div>
                             <span class="validation-msg" id="image-error"></span>
                         </div>
                        
@@ -66,7 +71,7 @@
                 </div>
                                           
                 <div class="form-group">       
-                    <input type="submit" value="{{trans('file.submit')}}" id="submit-btn-create" class="btn btn-primary">
+                    <input type="submit" value="{{trans('file.submit')}}" id="submit-btn" class="btn btn-primary">
                     <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-close-modal">Close</button>
 
                 </div>

@@ -212,7 +212,7 @@ class UserController extends Controller
             'email' => [
                 'email',
                 'max:255',
-                    Rule::unique('users')->ignore($id)->where(function ($query) {
+                    Rule::unique('users')->ignore($id)->where(function ($query) use($id) {
                     return $query->where('is_active', false);
                 }),
             ],

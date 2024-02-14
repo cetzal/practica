@@ -167,13 +167,13 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    return moment(row.created_at).format('MM/DD/YYYY HH:mm:ss');
+                    return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [5]
             },
             {
                 'render': function(data, type, row, meta){
-                    return moment(row.updated_at).format('MM/DD/YYYY HH:mm:ss');
+                    return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [6]
             },

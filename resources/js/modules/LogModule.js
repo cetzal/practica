@@ -59,7 +59,7 @@
                     },
                     {
                         'render' : function(data, type, row, meta){
-                            return row.movement_date;
+                            return moment(row.movement_date).format('DD/MM/YYYY HH:mm:ss');
                         },
                         'targets': [3]
                     },
@@ -80,7 +80,6 @@
         var url = "api/log-module/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/edit");
-        console.log('id', id, url);
         $.get(url, function(data) {
             var details = JSON.parse(data.details);
             var previous_value = details.previous_value;

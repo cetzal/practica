@@ -270,13 +270,14 @@
             {
                 targets : [7],
                 render: function(data, type, row, meta){
-                    return row.created_at
+                    return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
+DD
                 }
             },
             {
                 targets : [8],
                 render: function(data, type, row, meta){
-                    return row.updated_at
+                    return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 }
             },
             {

@@ -62,6 +62,8 @@
             
         </table>
     </div>
+
+    @include('log-module.detail')
 </section>
 @endsection
 @section('scripts')

@@ -476,6 +476,18 @@
                     }
                 },
                 {
+                    'targets':[10],
+                    'render' : function(data, type, row, meta){
+                        return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
+                    }
+                },
+                {
+                    'targets':[11],
+                    'render' : function(data, type, row, meta){
+                        return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
+                    }
+                },
+                {
                     'targets': [12],
                     'render' : function(data, type, row, meta){
                         var url_edit = "product/:id/edit";

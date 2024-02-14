@@ -17,7 +17,7 @@
                 </div>
                 <div class="col">
                     <label for="created_by">{{trans('file.created_by')}}</label>
-                    <input type="text" class="form-control" placeholder="Last name" name="created_by">
+                    <input type="text" class="form-control" placeholder="Created by" name="created_by">
                 </div>
                 <div class="col">
                     <div class="form-group">

@@ -297,7 +297,7 @@
 
     $( "#promotion" ).on( "change", function() {
         if ($(this).is(':checked')) {
-            $("#starting_date").val($.datepicker.formatDate('dd-mm-yy', new Date()));
+            $("#starting_date").val($.datepicker.formatDate('dd/mm/yy', new Date()));
             $("#promotion_price").show(300);
             $("#start_date").show(300);
             $("#last_date").show(300);
@@ -310,20 +310,44 @@
     });
 
     var starting_date = $('#starting_date');
-    starting_date.datepicker({
-        format: "dd-mm-yyyy",
-        startDate: "<?php echo date('d-m-Y'); ?>",
-        autoclose: true,
-        todayHighlight: true
+    starting_date.daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'),10),
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+    }, function(start, end, label) {
+        var years = moment().diff(start, 'years');
+       
     });
+    // starting_date.datepicker({
+    //     format: "dd-mm-yyyy",
+    //     startDate: "<?php //echo date('d-m-Y'); ?>",
+    //     autoclose: true,
+    //     todayHighlight: true
+    // });
 
     var ending_date = $('#ending_date');
-    ending_date.datepicker({
-        format: "dd-mm-yyyy",
-        startDate: "<?php echo date('d-m-Y'); ?>",
-        autoclose: true,
-        todayHighlight: true
+    ending_date.daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'),10),
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+    }, function(start, end, label) {
+        var years = moment().diff(start, 'years');
+       
     });
+    // ending_date.datepicker({
+    //     format: "dd-mm-yyyy",
+    //     startDate: "<?php //echo date('d-m-Y'); ?>",
+    //     autoclose: true,
+    //     todayHighlight: true
+    // });
 
     $(window).keydown(function(e){
         if (e.which == 13) {

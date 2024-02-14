@@ -26,8 +26,9 @@ class ProductController extends Controller
 
     public function index()
     {
+        $lims_product_brand_list = DB::table('view_products_brands')->get();
         $lims_product_category_list = DB::table('view_products_categories')->get();
-        return view('product.index', compact('lims_product_category_list'));
+        return view('product.index', compact('lims_product_category_list', 'lims_product_brand_list'));
     }
 
     public function list(Request $request)
@@ -239,21 +240,21 @@ class ProductController extends Controller
         return $data[0];
     }
 
-    public function activar($id){
+    public function activate($id){
         $data_user = Product::find($id);
         $data_user->is_active = true;
         $data_user->save();
         return response()->json(['status' => 'success', 'message' => 'El producto se ha activado con exito']);
     }
 
-    public function desactivar($id) {
+    public function deactivate($id) {
         $data_user = Product::find($id);
         $data_user->is_active = false;
         $data_user->save();
         return response()->json(['status' => 'success', 'message' => 'El producto se ha desactivado con exito']);
     }
 
-    public function desactivarBySelection(Request $request)
+    public function deactivateBySelection(Request $request)
     {
         $product_id = $request->productIdArray;
         foreach ($product_id as $id) {
@@ -265,7 +266,7 @@ class ProductController extends Controller
         return response()->json(['status' => 'success', 'messages' => 'Los productos selecionado se ha desactivado con exito']);
     }
 
-    public function activarBySelection(Request $request)
+    public function activateBySelection(Request $request)
     {
         $product_id = $request->productIdArray;
         foreach ($product_id as $id) {

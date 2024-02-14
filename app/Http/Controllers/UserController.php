@@ -163,7 +163,7 @@ class UserController extends Controller
         return view('user.edit', compact('lims_user_data', 'lims_role_list', 'lims_biller_list', 'lims_warehouse_list'));
     }
 
-    public function activarBySelection(Request $request)
+    public function activateBySelection(Request $request)
     {
         $this->validate($request, [
             'userIdArray' => ['required', 'array', 'min:1']
@@ -173,7 +173,7 @@ class UserController extends Controller
        
         return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha activado con exito']);
     }
-    public function desactivarBySelection(Request $request)
+    public function deactivateBySelection(Request $request)
     {    
         $this->validate($request, [
             'userIdArray' => ['required', 'array', 'min:1']
@@ -256,14 +256,14 @@ class UserController extends Controller
         // return redirect('user')->with('message2', 'Data updated successfullly');
     }
 
-    public function activar($id){
+    public function activate($id){
         $data_user = User::find($id);
         $data_user->is_active = true;
         $data_user->save();
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha activado con exito']);
     }
 
-    public function desactivar($id) {
+    public function deactivate($id) {
         $data_user = User::find($id);
         $data_user->is_active = false;
         $data_user->save();

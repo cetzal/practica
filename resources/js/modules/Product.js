@@ -113,7 +113,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'api/product/all/activarbyselection',
+                                url:'api/product/all/activatebyselection',
                                 data:{
                                     productIdArray: product_id
                                 },
@@ -153,7 +153,7 @@
                         action: function () {
                             $.ajax({
                                 type:'PUT',
-                                url:'api/product/all/desactivarbyselection',
+                                url:'api/product/all/deactivatebyselection',
                                 data:{
                                     productIdArray: product_id
                                 },
@@ -270,7 +270,7 @@
 
 
     $('#product-data-table').on('click', '.desactivar', function() {
-        var url = "api/product/:id/desactivar";
+        var url = "api/product/:id/deactivate";
         var id = $(this).data('id').toString();
         url = url.replace(':id', id);
         var Jquery = $.Jquery;
@@ -304,7 +304,7 @@
     });
 
     $('#product-data-table').on('click', '.activar', function() {
-        var url = "api/product/:id/activar";
+        var url = "api/product/:id/activate";
         var id = $(this).data('id').toString();
         url = url.replace(':id', id);
         var Jquery = $.Jquery;

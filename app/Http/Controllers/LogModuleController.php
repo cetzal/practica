@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,10 +17,31 @@ class LogModuleController extends Controller
 
     public function list(Request $request)
     {
-        $query = DB::table('view_log_modules');
-        $data = $query->get();
-        Log::emergency('list logs');
-        Log::emergency(print_r($data, true));
+        $where = [];
+
+        if (!empty($request->search_module)) {
+            $where[] = ['module', 'like', '%'.$request->search_module.'%'];
+        }
+
+        if (!empty($request->select_movement)) {
+            $where[] = ['movement_type', 'like', '%'.$request->select_movement.'%'];
+        }
+        
+        if (!empty($request->user_created)) {
+            $where[] = ['user_name', 'like', '%'.$request->user_created.'%'];
+        }
+
+        if (!empty($request->range_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->range_date);
+            $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
+            $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
+            $where[] = [DB::raw('DATE_FORMAT(movement_date,"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT(movement_date,"%Y-%m-%d")'), '<=', trim($date_to)];
+        }
+        $data = DB::table('view_log_modules')
+                    ->where($where)
+                    ->get();
+       
 
         $totalData = $data->count();
         $totalFiltered = $data->count();

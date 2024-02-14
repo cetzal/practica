@@ -73,8 +73,8 @@
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filtrar</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form_user">Limpiar</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form_user">Clear</button>
                     <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
                 </div>
             </div>

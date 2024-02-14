@@ -79,7 +79,7 @@
                                     productIdArray: product_id
                                 },
                                 success:function(data){
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Eliminat productos',
                                         content: 'se elimino todo los productos selecionados ',
                                     });
@@ -96,7 +96,7 @@
             });
             
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Eliminat productos',
                 content: 'Selecciones los productos que deseas eliminar',
             });
@@ -119,7 +119,7 @@
                                     productIdArray: product_id
                                 },
                                 success:function(data){
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Activar productos',
                                         content: 'se activado todo los productos selecionados ',
                                     });
@@ -136,7 +136,7 @@
             });
            
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Activar productos',
                 content: 'Selecciones los productos que deseas activar',
             });
@@ -159,7 +159,7 @@
                                     productIdArray: product_id
                                 },
                                 success:function(data){
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Desactiva productos',
                                         content: 'Se desactivo todo los productos selecionados ',
                                     });
@@ -176,7 +176,7 @@
             });
             
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Desactivar productos',
                 content: 'Selecciones los productos que deseas desactivar',
             });
@@ -252,7 +252,7 @@
                             url: url,
                             type: 'DELETE',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -287,7 +287,7 @@
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -321,7 +321,7 @@
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });

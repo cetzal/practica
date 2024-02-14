@@ -84,7 +84,7 @@
                                 },
                                 success:function(data){
                                     user_id = [];
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Eliminar usuarios seleccionados',
                                         content: 'se elimino todo los usuarios selecionados ',
                                     });
@@ -100,7 +100,7 @@
                 }
             });
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Eliminar usuario',
                 content: 'Selecciones los usuario que deseas eliminar',
             });
@@ -123,7 +123,7 @@
                                     userIdArray: user_id
                                 },
                                 success:function(data){
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Activar usuario',
                                         content: 'se activado todo los usuario selecionados ',
                                     });
@@ -141,7 +141,7 @@
             });
             
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Activar usuario',
                 content: 'Selecciones los usuario que deseas activar',
             });
@@ -166,7 +166,7 @@
                                 },
                                 success:function(data){
                                     user_id = [];
-                                    $.confirm({
+                                    $.alert({
                                         title: 'Desactiva usuario',
                                         content: 'Se desactivo todo los usuario selecionados ',
                                     });
@@ -183,7 +183,7 @@
             });
             
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Desactivar usuario',
                 content: 'Selecciones los usuario que deseas desactivar',
             });
@@ -269,20 +269,26 @@
             { targets: [1], className: "text-center"},
             {targets: [0, 1, 2, 3], searchable: false},
             {
-                targets : [7],
+                targets: [7],
+                render : function(data, type, row, meta){
+                    return row.user_parent_name;
+                }
+            },
+            {
+                targets : [8],
                 render: function(data, type, row, meta){
                     return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
 DD
                 }
             },
             {
-                targets : [8],
+                targets : [9],
                 render: function(data, type, row, meta){
                     return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 }
             },
             {
-                targets : [9]
+                targets : [10]
                 , "render": function (data, type, row, meta) {
                         
                 let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
@@ -379,7 +385,7 @@ DD
                             url: url,
                             type: 'DELETE',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -413,7 +419,7 @@ DD
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -447,7 +453,7 @@ DD
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });

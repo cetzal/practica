@@ -36,7 +36,7 @@
                                         <div class="input-group">
                                             <input type="text" name="code" class="form-control" id="code" aria-describedby="code">
                                             <div class="input-group-append">
-                                                <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}">{{trans('file.Generate')}}</button>
+                                                <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}"><i class="fa fa-retweet" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
                                         <span class="validation-msg" id="code-error"></span>
@@ -297,7 +297,8 @@
 
     $( "#promotion" ).on( "change", function() {
         if ($(this).is(':checked')) {
-            $("#starting_date").val($.datepicker.formatDate('dd/mm/yy', new Date()));
+            // $.datepicker.formatDate('dd/mm/yy', new Date())
+            $("#starting_date").val();
             $("#promotion_price").show(300);
             $("#start_date").show(300);
             $("#last_date").show(300);
@@ -314,13 +315,9 @@
         singleDatePicker: true,
         showDropdowns: true,
         minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'),10),
         locale: {
             format: 'DD/MM/YYYY'
         },
-    }, function(start, end, label) {
-        var years = moment().diff(start, 'years');
-       
     });
     // starting_date.datepicker({
     //     format: "dd-mm-yyyy",
@@ -334,13 +331,9 @@
         singleDatePicker: true,
         showDropdowns: true,
         minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'),10),
         locale: {
             format: 'DD/MM/YYYY'
         },
-    }, function(start, end, label) {
-        var years = moment().diff(start, 'years');
-       
     });
     // ending_date.datepicker({
     //     format: "dd-mm-yyyy",
@@ -542,7 +535,7 @@
                                 $.confirm({
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha creado con exito',
-                                    autoClose: 'ok|1000',
+                                    autoClose: 'ok|3000',
                                     buttons: {
                                         ok: function () {
                                             window.location.replace('/product');
@@ -634,8 +627,14 @@
             $.confirm({
                 title: 'Agregar producto',
                 content: 'El producto se ha creado con exito',
+                autoClose: 'ok|3000',
+                buttons: {
+                    ok: function () {
+                        window.location.replace('/product');
+                    }
+                }
             });
-            location.href = '../product';
+            //location.href = '../product';
             //console.log(file, response);
         },
         completemultiple: function (file, response) {

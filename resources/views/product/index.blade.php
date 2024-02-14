@@ -107,9 +107,9 @@
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form_prod">Clear</button>
-                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data"> {{ trans('file.Filter') }}</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form_prod">{{ trans('file.Clear') }}</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">{{ trans('file.Close') }}</button>
                 </div>
             </div>
         </form>

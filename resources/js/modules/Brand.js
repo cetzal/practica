@@ -233,7 +233,7 @@
                 }
             });
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Eliminar marcas',
                 content: 'Seleccione las marcas que deseas eliminar',
             });
@@ -267,7 +267,7 @@
                 }
             });
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Activar marcas',
                 content: 'Seleccione los marcas que deseas activar',
             });
@@ -314,7 +314,7 @@
                 }
             });
         }else{
-            $.confirm({
+            $.alert({
                 title: 'Desactivar marcas',
                 content: 'Seleccione lass marcas que deseas desactivar',
             });
@@ -434,7 +434,7 @@
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -469,7 +469,7 @@
                             url: url,
                             type: 'PUT',
                             success: function(response) {
-                                $.confirm({
+                                $.alert({
                                     title: response.status,
                                     content: response.message,
                                 });
@@ -586,7 +586,7 @@
                     $('#editModal').modal('hide');
                     $('#editModal').modal({backdrop: false});
                     $('.modal-backdrop').remove();
-                    $.confirm({
+                    $.alert({
                         title: response.status,
                         content: response.message,
                     });

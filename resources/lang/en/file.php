@@ -118,6 +118,7 @@ return [
 	'Role' => 'Role',
 	'UserName' => 'UserName',
 	'UserLastName' => 'Last Name',
+	'LastName' => 'Last Name',
 	'Password' => 'Password',
 	'LogIn' => 'LogIn',
 	'Change Password' => 'Change Password',
@@ -566,6 +567,6 @@ return [
 	"Save" => "Save",
 	"Close" => "Close",
 	"Filter" => "Filter",
-	
+
 ];
 ?>

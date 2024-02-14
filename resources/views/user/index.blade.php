@@ -16,7 +16,7 @@
                     <input type="text" class="form-control" placeholder="{{__('file.name')}}" name="first_name">
                 </div>
                 <div class="col">
-                    <label for="last_name">Last name</label>
+                    <label for="last_name">{{trans('file.LastName')}}</label>
                     <input type="text" class="form-control" placeholder="Last name" name="last_name">
                 </div>
                 <div class="col">
@@ -24,8 +24,8 @@
                     <input type="text" class="form-control" placeholder="Email" name="email">
                 </div>
                 <div class="col">
-                    <label for="last_name">Usuario alta</label>
-                    <input type="text" class="form-control" placeholder="User" name="user_created">
+                    <label for="last_name">{{ trans('file.Created By') }}</label>
+                    <input type="text" class="form-control" placeholder="{{ trans('file.Created By') }}" name="user_created">
                 </div>
             </div>
             <div class="row">
@@ -93,6 +93,7 @@
                     <th>{{trans('file.Email')}}</th>
                     <th>{{trans('file.Role')}}</th>
                     <th>{{trans('file.status')}}</th>
+                    <th>{{trans('file.Created By')}}</th>
                     <th>{{trans('file.created_at')}}</th>
                     <th>{{trans('file.updated_at')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>

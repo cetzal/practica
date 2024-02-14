@@ -36,9 +36,9 @@
                                     <div class="form-group">
                                         <label>{{trans('file.Product Code')}} *</strong> </label>
                                         <div class="input-group">
-                                            <input type="text" name="code" id="code" value="{{$lims_product_data->code}}" class="form-control" required>
+                                            <input type="text" name="code" id="code" value="{{$lims_product_data->code}}" class="form-control" required readonly>
                                             <div class="input-group-append">
-                                                <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}">{{trans('file.Generate')}}</button>
+                                                <button desb id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}" disabled><i class="fa fa-retweet" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
                                         <span class="validation-msg" id="code-error"></span>
@@ -357,20 +357,24 @@
     });
 
     var starting_date = $('#starting_date');
-    starting_date.datepicker({
-     format: "dd-mm-yyyy",
-     startDate: "<?php echo date('d-m-Y'); ?>",
-     autoclose: true,
-     todayHighlight: true
-     });
+    starting_date.daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+    });
 
     var ending_date = $('#ending_date');
-    ending_date.datepicker({
-     format: "dd-mm-yyyy",
-     startDate: "<?php echo date('d-m-Y'); ?>",
-     autoclose: true,
-     todayHighlight: true
-     });
+    ending_date.daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+    });
 
     //dropzone portion
     Dropzone.autoDiscover = false;
@@ -531,7 +535,7 @@
                                 $.confirm({
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha actualizado con exito',
-                                    autoClose: 'ok|1000',
+                                    autoClose: 'ok|3000',
                                     buttons: {
                                         ok: function () {
                                             window.location.replace('/product');
@@ -590,7 +594,7 @@
             $.confirm({
                 title: 'Actualizar producto',
                 content: 'El producto se ha actualizado con exito',
-                autoClose: 'ok|1000',
+                autoClose: 'ok|3000',
                 buttons: {
                     ok: function () {
                         window.location.replace('/product');

@@ -567,5 +567,6 @@ return [
 	"Save" => "Guardar",
 	"Close" => "Cerrar",
 	"Filter" => "Filtrar",
+	"LastName" => "Apellidos"
 ];
 ?>

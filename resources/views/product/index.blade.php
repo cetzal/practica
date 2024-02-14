@@ -13,16 +13,16 @@
         <form id="from_search_prod">
             <div class="row">
                 <div class="col">
-                    <label for="code_prod">Code</label>
-                    <input type="text" class="form-control" placeholder="Code" name="code_prod">
+                    <label for="code_prod">{{trans('file.Code')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.Code')}}" name="code_prod">
                 </div>
                 <div class="col">
-                    <label for="name_rod">Name</label>
-                    <input type="text" class="form-control" placeholder="Name" name="name_prod">
+                    <label for="name_rod">{{trans('file.name')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="name_prod">
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Brand</strong> </label>
+                        <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
                             <select name="brand_prod" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                             <option value="">Select a Brand</option>  
@@ -47,8 +47,8 @@
                     </div>
                 </div>
                 <div class="col">
-                    <label for="last_name">Usuario alta</label>
-                    <input type="text" class="form-control" placeholder="User" name="user_created">
+                    <label for="last_name">{{trans('file.Created By')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.Created By')}}" name="user_created">
                 </div>
             </div>
             <div class="row">

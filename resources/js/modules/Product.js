@@ -389,7 +389,7 @@
             "ajax":{
                 url:"api/product/list",
                 "data": function(d) {
-                    var frm_data = $('form#from_search').serializeArray();
+                    var frm_data = $('form#from_search_prod').serializeArray();
                     // return frm_data;
                     $.each(frm_data, function(key, val) {
                         d[val.name] = val.value;

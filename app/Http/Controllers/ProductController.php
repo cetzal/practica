@@ -212,8 +212,8 @@ class ProductController extends Controller
         if ($product_data->getChanges()) {
             LogModule::create($this->logFormat(
                 [
-                    'previous' => Arr::only($previous_value, array_keys($product_data->getOriginal())),
-                    'current' => $product_data->getOriginal(),
+                    'previous' => Arr::only($previous_value, array_keys($product_data->getChanges())),
+                    'current' => $product_data->getChanges(),
                     'module' => 'Productos',
                     'movement_type' => 'Actualizacion'
                 ]

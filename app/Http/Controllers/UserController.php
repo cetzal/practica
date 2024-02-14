@@ -244,8 +244,8 @@ class UserController extends Controller
         if ($user_data->getChanges()) {
             LogModule::create($this->logFormat(
                 [
-                    'previous' => Arr::only($previous_value, array_keys($user_data->getOriginal())),
-                    'current' => $user_data->getOriginal(),
+                    'previous' => Arr::only($previous_value, array_keys($user_data->getChanges())),
+                    'current' => $user_data->getChanges(),
                     'module' => 'Usuarios',
                     'movement_type' => 'Actualizacion'
                 ]

@@ -125,8 +125,8 @@ class BrandController extends Controller
         if ($brand_data->getChanges()) {
             LogModule::create($this->logFormat(
                 [
-                    'previous' => Arr::only($previous_value, array_keys($brand_data->getOriginal())),
-                    'current' => $brand_data->getOriginal(),
+                    'previous' => Arr::only($previous_value, array_keys($brand_data->getChanges())),
+                    'current' => $brand_data->getChanges(),
                     'module' => 'Marcas',
                     'movement_type' => 'Actualizacion'
                 ]

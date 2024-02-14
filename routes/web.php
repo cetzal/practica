@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,12 +29,11 @@ Route::get('/lang/{locale}', function ($locale) {
     if (!in_array($locale, ['en', 'es'])) {        
         abort(404);
     }
-
-    \Illuminate\Support\Facades\App::setLocale($locale);
-    // Session
-    session()->put('locale', $locale);
-
-    return redirect()->back();
+    //cookie('language', null, -2628000, null, null);
+    setcookie('language', $locale, time() + (86400 * 365), "/");
+    session()->put('language', $locale);
+    
+    return back();
 });
 
 Route::group(['middleware'=> ['auth.jwt']], function () {

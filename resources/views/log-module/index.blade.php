@@ -4,7 +4,7 @@
     <div class="container-fluid mb-2">
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
-    <div class="container-fluid mb-2 form_search_log">
+    <div class="container-fluid mb-2 form_search">
         <form id="from_search_log">
             <div class="row">
                 <div class="col">

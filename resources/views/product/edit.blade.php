@@ -390,11 +390,24 @@
         }
     });
 
+    $.validator.addMethod("requiredIfChecked", function(value, element) {
+        // Check if checkbox is checked and date is empty
+        if ($('#promotion').prop('checked') && value === '') {
+            return false; // Return false to indicate validation failure
+        }
+        return true; // Return true if validation passes
+    }, "Date is required if checkbox is checked.");
+
+
     $("#product-form").validate({
         rules : {
             name : 'required',
             code : 'required',
-            brand_id: 'required'
+            brand_id: 'required',
+            promotion_price : {
+                requiredIfChecked: true,
+                required : true
+            }
             
         },
         onfocusout: false,
@@ -423,7 +436,10 @@
         messages: {
             name : 'The name is required',
             code : 'The code is required',
-            brand_id : 'The brand is required'
+            brand_id : 'The brand is required',
+            promotion_price : {
+                required : 'The promition price is required'
+            }
         }
     });
 

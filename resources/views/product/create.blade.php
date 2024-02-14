@@ -388,6 +388,15 @@
         }
     });
 
+    $.validator.addMethod("requiredIfChecked", function(value, element) {
+        // Check if checkbox is checked and date is empty
+        if ($('#promotion').prop('checked') && value === '') {
+            return false; // Return false to indicate validation failure
+        }
+        return true; // Return true if validation passes
+    }, "Date is required if checkbox is checked.");
+
+
     $("#product-form").validate({
       
         rules : {
@@ -401,7 +410,11 @@
                     message: 'The pageurl is not available.'
                 }
             },
-            brand_id: 'required'
+            brand_id: 'required',
+            promotion_price : {
+                requiredIfChecked: true,
+                required : true
+            }
             
         },
         onfocusout: false,
@@ -433,7 +446,10 @@
                 required : 'The code is required',
                 remote: "code already in use."
             },
-            brand_id : 'The brand is required'
+            brand_id : 'The brand is required',
+            promotion_price : {
+                required : 'The promition price is required'
+            }
             
         }
     });

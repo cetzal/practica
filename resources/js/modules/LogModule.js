@@ -5,6 +5,30 @@
         }
     });
     $(document).ready(function() {
+
+        $( "#range_date" ).daterangepicker({
+            opens: 'left',
+            //maxDate: moment().endOf('month'),
+            maxDate : moment().endOf(),
+            showApplyButton: false,
+            autoApply: true,
+            showInputs: false,
+            locale: {
+                format: 'DD/MM/YYYY'
+            },
+            todayHighlight: true,
+            autoUpdateInput: false,
+        });
+
+        $('input[name="range_date"]').on('apply.daterangepicker', function(ev, picker) {
+            
+          $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+    
+        $('input[name="range_date"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
         var table = $('#log-data-table').DataTable({
                 searching: false,
                 bProcessing: true,

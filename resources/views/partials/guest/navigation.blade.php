@@ -19,10 +19,20 @@
             </li>
 
             <li class="float-right"> 
-                <select onchange="window.location.href = this.value" class="form-control">
-                    <option value="{{ url('lang/en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
-                    <option value="{{ url('lang/es') }}" {{ session('locale') == 'es' ? 'selected' : '' }}>Spanish</option>
-                </select>
+                <!-- <select onchange="window.location.href = this.value" class="form-control">
+                    <option value="{{ url('lang/en') }}" {{ session('language') == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="{{ url('lang/es') }}" {{ session('language') == 'es' ? 'selected' : '' }}>Spanish</option>
+                </select> -->
+                <a rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-item"><i class="dripicons-web"></i> <span>{{__('file.language')}}</span> <i class="fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                    <li>
+                        <a href="{{ url('lang/en') }}" class="btn btn-link"> English</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('lang/es') }}" class="btn btn-link"> Español</a>
+                    </li>
+                   
+                </ul>
             </li>
            
         </ul>

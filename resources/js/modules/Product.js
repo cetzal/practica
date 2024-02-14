@@ -19,6 +19,7 @@
     }
 
     $( "#date_range" ).daterangepicker({
+        maxDate : moment().endOf(),
         showApplyButton: false,
         autoApply: true,
         showInputs: false,

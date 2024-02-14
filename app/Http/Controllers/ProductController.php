@@ -313,15 +313,15 @@ class ProductController extends Controller
     public function validateCode(Request $request)
     {   
         if(empty($request->code)){
-            return null;
+            return response()->json(true);
             exit;
         }
 
 
         if(DB::table('view_products')->where('code', $request->code)->count() > 0){
-            echo 0;
+            return response()->json(false);
             exit;
         }
-        return null;
+        return response()->json(true);
     }
 }

@@ -517,7 +517,7 @@
         $('#product-data-table').DataTable().ajax.reload();
     });
 
-    $('.clear_form').on('click', function(e){
+    $('.clear_form_prod').on('click', function(e){
         $('#from_search_prod')[0].reset();
         $('#product-data-table').DataTable().ajax.reload();
     });

@@ -17,7 +17,17 @@
                     <i class="fa fa-fw fa-bars"></i>
                 </button>
             </li>
+
+            <li class="float-right"> 
+                <select onchange="window.location.href = this.value" class="form-control">
+                    <option value="{{ url('lang/en') }}" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="{{ url('lang/es') }}" {{ session('locale') == 'es' ? 'selected' : '' }}>Spanish</option>
+                </select>
+            </li>
+           
         </ul>
+
+       
     </nav>
 
 </div>

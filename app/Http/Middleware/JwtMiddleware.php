@@ -41,6 +41,7 @@ class JwtMiddleware extends BaseMiddleware
                 // return response()->json(array('message'=>'user_not_found'), 404);
                 throw new Exception('User Not Found');
             }
+            
 
             // $user = JWTAuth::parseToken()->authenticate();
             // if( !$user ) throw new Exception('User Not Found');

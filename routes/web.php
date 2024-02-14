@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,18 @@ use Illuminate\Support\Facades\Route;
 // Auth::routes();
 Route::get('login','App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'es'])) {        
+        abort(404);
+    }
+
+    \Illuminate\Support\Facades\App::setLocale($locale);
+    // Session
+    session()->put('locale', $locale);
+
+    return redirect()->back();
+});
 
 Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('logout','App\Http\Controllers\Auth\LoginController@logout')->name('logout');

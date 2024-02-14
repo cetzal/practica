@@ -54,7 +54,7 @@
             <div class="row">
             <div class="col">
                     <div class="form-group">
-                        <label>Seleccione fecha</label>
+                        <label>Select Date</label>
                         <select class="form-select product-select-date" name="select_date">
                             <option selected value="">Seleccione</option>
                             <option value="created_at">Fecha creacion</option>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Fecha inicio y fin</label>
+                        <label>Range Date</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
@@ -97,7 +97,7 @@
                 </div> -->
                 <div class="col">
                     <div class="form-group">
-                        <label>status</label>
+                        <label>Status</label>
                         <select class="form-select" name="prod_status">
                             <option selected value="">All</option>
                             <option value="1">Active</option>

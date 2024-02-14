@@ -464,7 +464,15 @@
                 {
                     'targets':[9],
                     'render' : function(data, type, row, meta){
-                        return row.is_active == 1 ? 'Activo' : 'Desactivado';
+                        //return row.is_active == 1 ? 'Activo' : 'Desactivado';
+
+                        var is_active = row.is_active == 1 ? 'Activo' : 'Desactivado';
+                        var class_text = "text-success";
+                        if (row.is_active == 0) {
+                            class_text = "text-warning";
+                        }
+                        data = '<span class="'+ class_text +'">'+ is_active +'</span>';
+                        return data;
                     }
                 },
                 {

@@ -12,8 +12,8 @@
         <form id="from_search">
             <div class="row">
                 <div class="col">
-                    <label for="fisrt_name"> First name</label>
-                    <input type="text" class="form-control" placeholder="First name" name="first_name">
+                    <label for="fisrt_name">{{__('file.name')}}</label>
+                    <input type="text" class="form-control" placeholder="{{__('file.name')}}" name="first_name">
                 </div>
                 <div class="col">
                     <label for="last_name">Last name</label>
@@ -73,9 +73,9 @@
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form_user">Clear</button>
-                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">{{ __('file.Filter') }}</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form_user">{{ __('file.Clear') }}</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">{{ __('file.Close') }}</button>
                 </div>
             </div>
         </form>
@@ -92,7 +92,7 @@
                     <th>Imagen</th>
                     <th>{{trans('file.Email')}}</th>
                     <th>{{trans('file.Role')}}</th>
-                    <th>{{trans('file.Status')}}</th>
+                    <th>{{trans('file.status')}}</th>
                     <th>{{trans('file.created_at')}}</th>
                     <th>{{trans('file.updated_at')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>

@@ -67,7 +67,7 @@
                                           
                 <div class="form-group">       
                     <input type="submit" value="{{trans('file.Save')}}" id="submit-btn-create" class="btn btn-primary">
-                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-close-modal">Close</button>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn bt-close-modal">{{__('file.Close')}}</button>
 
                 </div>
             </div>

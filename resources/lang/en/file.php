@@ -563,6 +563,9 @@ return [
 	"module" => "Module",
 	"movement_type" => "Movement type",
 	"detail_log" => "Detail log",
-	"Save" => "Save"
+	"Save" => "Save",
+	"Close" => "Close",
+	"Filter" => "Filter",
+	
 ];
 ?>

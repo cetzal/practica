@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -550,7 +550,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 
 /***/ }),
 
-/***/ 7:
+/***/ 6:
 /*!***************************************************!*\
   !*** multi ./resources/js/modules/brand/index.js ***!
   \***************************************************/

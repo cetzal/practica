@@ -159,8 +159,5 @@
 </div>
 @endsection
 @section('scripts')
-<script>
-   
-
-</script>
+    <script src="{{ asset('js/modules/product/index.js') }}"></script>
 @endsection

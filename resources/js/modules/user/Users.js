@@ -54,12 +54,12 @@
 
     
     function escapeHtml(text) {
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     //dropzone portion
@@ -68,6 +68,7 @@
    
     $(".delete_all_user").on('click', function(e){
         e.preventDefault();
+        
         if(user_id.length) {
             $.confirm({
                 title: 'Eliminar usuarios',
@@ -276,7 +277,10 @@
             },
             {
                 targets : [8],
-                render: function(data, type, row, meta){
+                render: function(data, type, row, meta){                    
+                    if (row.created_at == null) {
+                        return '';
+                    }
                     return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
 DD
                 }
@@ -284,6 +288,9 @@ DD
             {
                 targets : [9],
                 render: function(data, type, row, meta){
+                    if (row.updated_at == null) {
+                        return '';
+                    }
                     return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 }
             },
@@ -362,9 +369,6 @@ DD
             $("input[name='email']").val(data['email']);
             $("input[name='role_id']").val(data['role_id']);
             up_user_id = data['id'];
-            console.log(up_user_id);
-            
-
         });
     });
 
@@ -520,15 +524,10 @@ DD
 
 
     var verific_checks_users = function(num){
-        
         $(':checkbox.checkbox_user:checked').each(function(i){
-            i+=num;
-            if(i){
-                var user_data = $(this).closest('tr').data('user');
-                if(typeof(user_data) !== 'undefined'){
-                    console.log(user_data);
-                    user_id[i-1] = user_data.id;
-                }
+            var user_data = $(this).closest('tr').data('user');
+            if(typeof(user_data) !== 'undefined'){
+                user_id[i] = user_data.id;
             }
         });
     }
@@ -548,6 +547,7 @@ DD
         }
     });
 
+    //Create user
     $('form#new_user').validate({
         rules:{
             email: {
@@ -587,6 +587,7 @@ DD
         ValidatePassword('#btn-password','#new_user');
     });
 
+    //Update user
     $("form#update_user").validate({
         rules:{
             email: {
@@ -672,6 +673,11 @@ DD
                                 $.confirm({
                                     title: 'Crear usuario',
                                     content: 'El usuario se ha creado con exito',
+                                    buttons: {
+                                        ok: function() {
+                                            table.ajax.reload();
+                                        }
+                                    }
                                 });
                               
                             },
@@ -802,8 +808,7 @@ DD
                         url_user_up = url_path_user + '/:id';
                         up_user_id = $("input[name='id']").val();
                         url_user_up = url_user_up.replace(':id', up_user_id);
-                        console.log(url_user_up);
-                        console.log(up_user_id);
+
                         $.ajax({
                             type:'POST',
                             url:url_user_up,

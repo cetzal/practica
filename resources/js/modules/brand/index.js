@@ -1,4 +1,4 @@
-(function(){
+(function() {
     var brand_id = [];
     
     $.ajaxSetup({
@@ -49,28 +49,6 @@
         $('.form_search').removeClass('form_search_active');
     });
 
-    // $('form#from_brand_search').validate({
-    //     rules:{
-    //         name: 'required',
-    //         description : 'required'
-    //     },
-    //     highlight: function (input) {
-    //         $(input).addClass('is-invalid');
-    //     },
-    //     unhighlight: function (input) {
-    //         $(input).removeClass('is-invalid');
-    //     },
-    //     errorPlacement: function ( error, element ) {
-    //         // Add the `invalid-feedback` class to the error element
-    //         error.addClass("invalid-feedback" );
-    //         error.insertAfter(element);
-    //     },
-    //     messages: {
-    //         name: "El nombre es requerido",
-    //         description: "La descripcion es requerido"
-    //     }
-    // });
-
     var table = $('#brand-table').DataTable( {
         responsive: false,
         autoWidth : false,
@@ -85,8 +63,6 @@
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
-
-                console.log('form_data', frm_data);
             }
         },
         "order": [],
@@ -168,12 +144,18 @@
             },
             {
                 'render': function(data, type, row, meta){
+                    if (row.created_at == null) {
+                        return '';
+                    }
                     return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [5]
             },
             {
                 'render': function(data, type, row, meta){
+                    if (row.created_at == null) {
+                        return '';
+                    }
                     return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [6]
@@ -258,7 +240,6 @@
                         content: 'Se activo todo las marcas selecionados ',
                         buttons: {
                             ok: function () {
-                                console.log('activar todas las marcas');
                                 table.ajax.reload();
                                 $("tbody input[type='checkbox']").prop('checked', false);
                             }
@@ -292,7 +273,6 @@
                         content: 'Se desactivo todas los marcas selecionados ',
                         buttons: {
                             ok: function () {
-                                console.log('desactivar todas las marcas');
                                 table.ajax.reload();
                                 $("tbody input[type='checkbox']").prop('checked', false);
                                 // $('#brand-table').DataTable().ajax().reload();
@@ -320,13 +300,10 @@
             });
         }
     });
-
     var verific_checks = function(num){
         $(':checkbox:checked').each(function(i){
-            i+=num;
-            if(i){
-                var brand_data = $(this).closest('tr').data('branch-id');
-                console.log(brand_data);
+            var brand_data = $(this).closest('tr').data('branch-id');
+            if (typeof(brand_data) != "undefined") {
                 brand_ids[i-1] = brand_data;
             }
         });
@@ -336,7 +313,7 @@
         event.preventDefault();
         var date_range = $('#range_date').val();
         var type_fecha = $('.brand-date-select').val();
-        console.log(type_fecha);
+
         if(type_fecha=='' && date_range !== ''){
             $.alert({
                 title: 'Filtra datos',
@@ -369,7 +346,7 @@
 
         $.get(url, function(data) {
             $("input[name='name']").val(data['name']);
-            $("input[name='description']").val(data['description']);
+            $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
 
         });
@@ -486,112 +463,31 @@
 
     });
 
-    $('form#new_brand').validate({
-        rules:{
-            name: 'required',
-            description : 'required'
-        },
-        highlight: function (input) {
-            $(input).addClass('is-invalid');
-        },
-        unhighlight: function (input) {
-            $(input).removeClass('is-invalid');
-        },
-        errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            error.addClass("invalid-feedback" );
-            error.insertAfter(element);
-        },
-        messages: {
-            name: "El nombre es requerido",
-            description: "La descripcion es requerido"
-        }
+    //Cerrar los modales de update or create
+    $('.bt-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("textarea[name='description']").val('');
+        
+        $('form#new_brand')[0].reset();
+        $('form#update_brand')[0].reset();
+        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
+        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
+    });
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("textarea[name='description']").val('');
+        $('form#new_brand')[0].reset();
+        $('form#update_brand')[0].reset();
+        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
+        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
     });
 
-    $('form#new_brand').submit( function(e){
-        e.preventDefault();
-        
-        if ($('form#new_brand').valid()) {
-            var data = new FormData( $('form#new_brand')[ 0 ] );
-            var actionUrl = $(this).attr('action');
-            var method = $( this ).attr( 'method' );
-            $.ajax( {
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                data: data,
-                type: $( this ).attr( 'method' ),
-                url: actionUrl,
-                success: function( response ){
-                    table.ajax.reload();
-                    $.confirm({
-                        title: response.status,
-                        content: response.message,
-                        buttons: {
-                            ok: function () {
-                                $('#createModal').modal('hide');
-                                $('#createModal').modal({backdrop: false});
-                                $('.modal-backdrop').remove();
-                                $("#new_brand").get(0).reset();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                                table.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
-        }
-        
+    $('#createModal').on('show.bs.modal', function (event) {
+        // Encuentra el formulario dentro del modal y limpia los campos
+        $(this).find('form')[0].reset();
     });
-
-    $('form#update_brand').validate({
-        rules:{
-            name: 'required',
-            description : 'required'
-        },
-        highlight: function (input) {
-            $(input).addClass('is-invalid');
-        },
-        unhighlight: function (input) {
-            $(input).removeClass('is-invalid');
-        },
-        errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            error.addClass("invalid-feedback" );
-            error.insertAfter(element);
-        },
-        messages: {
-            name: "El nombre es requerido",
-            description: "La descripcion es requerido"
-        }
-    });
-
-    $( 'form#update_brand' ).submit( function(e){
-        e.preventDefault();
-        
-        if ($('#update_brand').valid()) {
-            var data = new FormData( $( 'form#update_brand' )[ 0 ] );
-            var actionUrl = $(this).attr('action');
-            var method = $( this ).attr( 'method' );
-            
-            $.ajax( {
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                data: data,
-                type: $( this ).attr( 'method' ),
-                url: actionUrl,
-                success: function( response ){
-                    table.ajax.reload();
-                    $('#editModal').modal('hide');
-                    $('#editModal').modal({backdrop: false});
-                    $('.modal-backdrop').remove();
-                    $.alert({
-                        title: response.status,
-                        content: response.message,
-                    });
-                }
-            });
-        }
-    });
-})()
+})();

@@ -1,4 +1,4 @@
-(function(){
+(function() {
     var qty = [];
     var htmltext;
     var slidertext;
@@ -220,9 +220,6 @@
             }
         });
     }
-
-
-
     $(document).on("click", "tr.product-link td:not(:first-child, :last-child)", function() {
         productDetails( $(this).parent().data('product'), $(this).parent().data('imagedata') );        
     });
@@ -338,37 +335,6 @@
 
     });
 
-
-    function productDetails(product, imagedata) {
-        product[11] = product[11].replace(/@/g, '"');
-        htmltext = slidertext = '';
-
-        htmltext = '<p><strong>{{trans("file.Type")}}: </strong>'+product[0]+'</p><p><strong>{{trans("file.name")}}: </strong>'+product[1]+'</p><p><strong>{{trans("file.Code")}}: </strong>'+product[2]+ '</p><p><strong>{{trans("file.Brand")}}: </strong>'+product[3]+'</p><p><strong>{{trans("file.category")}}: </strong>'+product[4]+'</p><p><strong>{{trans("file.Quantity")}}: </strong>'+product[16]+'</p><p><strong>{{trans("file.Unit")}}: </strong>'+product[5]+'</p><p><strong>{{trans("file.Cost")}}: </strong>'+product[6]+'</p><p><strong>{{trans("file.Price")}}: </strong>'+product[7]+'</p><p><strong>{{trans("file.Tax")}}: </strong>'+product[8]+'</p><p><strong>{{trans("file.Tax Method")}} : </strong>'+product[9]+'</p><p><strong>{{trans("file.Alert Quantity")}} : </strong>'+product[10]+'</p><p><strong>{{trans("file.Product Details")}}: </strong></p>'+product[11];
-
-        if(product[17]) {
-            var product_image = product[17].split(",");
-            if(product_image.length > 1) {
-                slidertext = '<div id="product-img-slider" class="carousel slide" data-ride="carousel"><div class="carousel-inner">';
-                for (var i = 0; i < product_image.length; i++) {
-                    if(!i)
-                        slidertext += '<div class="carousel-item active"><img src="public/images/product/'+product_image[i]+'" height="300" width="100%"></div>';
-                    else
-                        slidertext += '<div class="carousel-item"><img src="public/images/product/'+product_image[i]+'" height="300" width="100%"></div>';
-                }
-                slidertext += '</div><a class="carousel-control-prev" href="#product-img-slider" data-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#product-img-slider" data-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span></a></div>';
-            }
-            else {
-                slidertext = '<img src="public/images/product/'+product[17]+'" height="300" width="100%">';
-            }
-        }
-        
-        $('#product-content').html(htmltext);
-        $('#slider-content').html(slidertext);
-        $('#product-details').modal('show');
-        $('#product-img-slider').carousel(0);
-    }
-
-
     $(document).ready(function() {
         var table = $('#product-data-table').DataTable( {
             responsive: true,
@@ -479,12 +445,18 @@
                 {
                     'targets':[10],
                     'render' : function(data, type, row, meta){
+                        if (row.created_at == null) {
+                            return '';
+                        }
                         return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                     }
                 },
                 {
                     'targets':[11],
                     'render' : function(data, type, row, meta){
+                        if (row.updated_at == null) {
+                            return '';
+                        }
                         return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                     }
                 },
@@ -542,6 +514,4 @@
         $('#from_search_prod')[0].reset();
         $('#product-data-table').DataTable().ajax.reload();
     });
-
-    // $('select').selectpicker();
-})()
+})();

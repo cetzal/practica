@@ -1,4 +1,17 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/functions.js": "/js/functions.js",
+    "/js/modules/LogModule.js": "/js/modules/LogModule.js",
+    "/js/modules/brand/Brand.js": "/js/modules/brand/Brand.js",
+    "/js/modules/brand/create.js": "/js/modules/brand/create.js",
+    "/js/modules/brand/edit.js": "/js/modules/brand/edit.js",
+    "/js/modules/brand/index.js": "/js/modules/brand/index.js",
+    "/js/modules/product/Product.js": "/js/modules/product/Product.js",
+    "/js/modules/product/create.js": "/js/modules/product/create.js",
+    "/js/modules/product/edit.js": "/js/modules/product/edit.js",
+    "/js/modules/product/index.js": "/js/modules/product/index.js",
+    "/js/modules/user/Users.js": "/js/modules/user/Users.js",
+    "/js/modules/user/create.js": "/js/modules/user/create.js",
+    "/js/modules/user/edit.js": "/js/modules/user/edit.js",
+    "/js/modules/user/index.js": "/js/modules/user/index.js"
 }

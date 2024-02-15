@@ -75,3 +75,8 @@
           </div>
         </div>
     </div>
+
+@section('scripts')
+  @parent
+  <script src="{{ asset('js/modules/user/create.js') }}"></script>
+@endsection

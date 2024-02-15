@@ -1,4 +1,4 @@
-(function(){
+(function() {
     var brand_id = [];
     
     $.ajaxSetup({
@@ -49,28 +49,6 @@
         $('.form_search').removeClass('form_search_active');
     });
 
-    // $('form#from_brand_search').validate({
-    //     rules:{
-    //         name: 'required',
-    //         description : 'required'
-    //     },
-    //     highlight: function (input) {
-    //         $(input).addClass('is-invalid');
-    //     },
-    //     unhighlight: function (input) {
-    //         $(input).removeClass('is-invalid');
-    //     },
-    //     errorPlacement: function ( error, element ) {
-    //         // Add the `invalid-feedback` class to the error element
-    //         error.addClass("invalid-feedback" );
-    //         error.insertAfter(element);
-    //     },
-    //     messages: {
-    //         name: "El nombre es requerido",
-    //         description: "La descripcion es requerido"
-    //     }
-    // });
-
     var table = $('#brand-table').DataTable( {
         responsive: false,
         autoWidth : false,
@@ -85,8 +63,6 @@
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
-
-                console.log('form_data', frm_data);
             }
         },
         "order": [],
@@ -264,7 +240,6 @@
                         content: 'Se activo todo las marcas selecionados ',
                         buttons: {
                             ok: function () {
-                                console.log('activar todas las marcas');
                                 table.ajax.reload();
                                 $("tbody input[type='checkbox']").prop('checked', false);
                             }
@@ -298,7 +273,6 @@
                         content: 'Se desactivo todas los marcas selecionados ',
                         buttons: {
                             ok: function () {
-                                console.log('desactivar todas las marcas');
                                 table.ajax.reload();
                                 $("tbody input[type='checkbox']").prop('checked', false);
                                 // $('#brand-table').DataTable().ajax().reload();
@@ -339,7 +313,7 @@
         event.preventDefault();
         var date_range = $('#range_date').val();
         var type_fecha = $('.brand-date-select').val();
-        console.log(type_fecha);
+
         if(type_fecha=='' && date_range !== ''){
             $.alert({
                 title: 'Filtra datos',
@@ -489,145 +463,7 @@
 
     });
 
-    $('form#new_brand').validate({
-        rules:{
-            name: 'required',
-            description : 'required'
-        },
-        highlight: function (input) {
-            $(input).addClass('is-invalid');
-        },
-        unhighlight: function (input) {
-            $(input).removeClass('is-invalid');
-        },
-        errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            // error.addClass("invalid-feedback" );
-            // error.insertAfter(element);
-            error.addClass('invalid-feedback');
-            element.closest('.form-group').append(error);
-        },
-        messages: {
-            name: "El nombre es requerido",
-            description: "La descripcion es requerido"
-        }
-    });
-
-    $('#createModal').on('show.bs.modal', function (event) {
-        // Encuentra el formulario dentro del modal y limpia los campos
-        $(this).find('form')[0].reset();
-    });
-
-    $('form#new_brand').submit( function(e){
-        e.preventDefault();
-        
-        if ($('form#new_brand').valid()) {
-            var data = new FormData( $('form#new_brand')[ 0 ] );
-            var actionUrl = $(this).attr('action');
-            var method = $( this ).attr( 'method' );
-            $.ajax( {
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                data: data,
-                type: $( this ).attr( 'method' ),
-                url: actionUrl,
-                success: function( response ){
-                    table.ajax.reload();
-                    $.confirm({
-                        title: response.status,
-                        content: response.message,
-                        buttons: {
-                            ok: function () {
-                                $('#createModal').modal('hide');
-                                $('#createModal').modal({backdrop: false});
-                                $('.modal-backdrop').remove();
-                                $("#new_brand").get(0).reset();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                                table.ajax.reload();
-                            }
-                        }
-                    });
-                },
-                error: function(xhr, textStatus, error){
-                    if (xhr.status == 422) {
-                        // let responseText = JSON.parse(xhr.responseText);
-                        // let keys = Object.keys(responseText.errors);
-                        // let message = 'Error desconocido';
-                        // if (keys.length > 0) {
-                        //     message = responseText.errors[keys[0]][0];
-                        // }
-                        // console.log('response', responseText);
-                        // $.alert({
-                        //     title: 'Campos invalidos',
-                        //     content: message,
-                        // });
-                        console.log(xhr.responseJSON.errors);
-                        $.each(xhr.responseJSON.errors,function(field_name,error){
-                            console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
-                            $('input[name="'+field_name+'"]').addClass('is-invalid');
-                            let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
-                            $('input[name="'+field_name+'"]').after(html);
-                        })
-
-                    }
-                }
-            });
-        }
-        
-    });
-
-    $('form#update_brand').validate({
-        rules:{
-            name: 'required',
-            description : 'required'
-        },
-        highlight: function (input) {
-            $(input).addClass('is-invalid');
-        },
-        unhighlight: function (input) {
-            $(input).removeClass('is-invalid');
-        },
-        errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            error.addClass("invalid-feedback" );
-            error.insertAfter(element);
-        },
-        messages: {
-            name: "El nombre es requerido",
-            description: "La descripcion es requerido"
-        }
-    });
-
-    $( 'form#update_brand' ).submit( function(e){
-        e.preventDefault();
-        
-        if ($('#update_brand').valid()) {
-            var data = new FormData( $( 'form#update_brand' )[ 0 ] );
-            var actionUrl = $(this).attr('action');
-            var method = $( this ).attr( 'method' );
-            
-            $.ajax( {
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                data: data,
-                type: $( this ).attr( 'method' ),
-                url: actionUrl,
-                success: function( response ){
-                    table.ajax.reload();
-                    $('#editModal').modal('hide');
-                    $('#editModal').modal({backdrop: false});
-                    $('.modal-backdrop').remove();
-                    $.alert({
-                        title: response.status,
-                        content: response.message,
-                    });
-                }
-            });
-        }
-    });
-
+    //Cerrar los modales de update or create
     $('.bt-close-modal').on('click', function(e){
         $("input[name='name']").val('');
         $("textarea[name='description']").val('');
@@ -649,4 +485,9 @@
         $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
         $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
     });
-})()
+
+    $('#createModal').on('show.bs.modal', function (event) {
+        // Encuentra el formulario dentro del modal y limpia los campos
+        $(this).find('form')[0].reset();
+    });
+})();

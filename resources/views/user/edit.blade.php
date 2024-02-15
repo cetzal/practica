@@ -80,3 +80,8 @@
           </div>
         </div>
     </div>
+
+@section('scripts')
+  @parent
+  <script src="{{ asset('js/modules/user/edit.js') }}"></script>
+@endsection

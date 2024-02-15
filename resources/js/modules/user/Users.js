@@ -54,12 +54,12 @@
 
     
     function escapeHtml(text) {
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     //dropzone portion
@@ -547,6 +547,7 @@ DD
         }
     });
 
+    //Create user
     $('form#new_user').validate({
         rules:{
             email: {
@@ -586,6 +587,7 @@ DD
         ValidatePassword('#btn-password','#new_user');
     });
 
+    //Update user
     $("form#update_user").validate({
         rules:{
             email: {
@@ -671,6 +673,11 @@ DD
                                 $.confirm({
                                     title: 'Crear usuario',
                                     content: 'El usuario se ha creado con exito',
+                                    buttons: {
+                                        ok: function() {
+                                            table.ajax.reload();
+                                        }
+                                    }
                                 });
                               
                             },

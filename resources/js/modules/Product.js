@@ -479,12 +479,18 @@
                 {
                     'targets':[10],
                     'render' : function(data, type, row, meta){
+                        if (row.created_at == null) {
+                            return '';
+                        }
                         return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                     }
                 },
                 {
                     'targets':[11],
                     'render' : function(data, type, row, meta){
+                        if (row.updated_at == null) {
+                            return '';
+                        }
                         return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                     }
                 },

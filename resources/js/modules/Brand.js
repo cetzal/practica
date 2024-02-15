@@ -168,12 +168,18 @@
             },
             {
                 'render': function(data, type, row, meta){
+                    if (row.created_at == null) {
+                        return '';
+                    }
                     return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [5]
             },
             {
                 'render': function(data, type, row, meta){
+                    if (row.created_at == null) {
+                        return '';
+                    }
                     return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 },
                 'targets': [6]
@@ -320,13 +326,10 @@
             });
         }
     });
-
     var verific_checks = function(num){
         $(':checkbox:checked').each(function(i){
-            i+=num;
-            if(i){
-                var brand_data = $(this).closest('tr').data('branch-id');
-                console.log(brand_data);
+            var brand_data = $(this).closest('tr').data('branch-id');
+            if (typeof(brand_data) != "undefined") {
                 brand_ids[i-1] = brand_data;
             }
         });
@@ -369,7 +372,7 @@
 
         $.get(url, function(data) {
             $("input[name='name']").val(data['name']);
-            $("input[name='description']").val(data['description']);
+            $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
 
         });
@@ -499,13 +502,20 @@
         },
         errorPlacement: function ( error, element ) {
             // Add the `invalid-feedback` class to the error element
-            error.addClass("invalid-feedback" );
-            error.insertAfter(element);
+            // error.addClass("invalid-feedback" );
+            // error.insertAfter(element);
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
         },
         messages: {
             name: "El nombre es requerido",
             description: "La descripcion es requerido"
         }
+    });
+
+    $('#createModal').on('show.bs.modal', function (event) {
+        // Encuentra el formulario dentro del modal y limpia los campos
+        $(this).find('form')[0].reset();
     });
 
     $('form#new_brand').submit( function(e){
@@ -538,6 +548,29 @@
                             }
                         }
                     });
+                },
+                error: function(xhr, textStatus, error){
+                    if (xhr.status == 422) {
+                        // let responseText = JSON.parse(xhr.responseText);
+                        // let keys = Object.keys(responseText.errors);
+                        // let message = 'Error desconocido';
+                        // if (keys.length > 0) {
+                        //     message = responseText.errors[keys[0]][0];
+                        // }
+                        // console.log('response', responseText);
+                        // $.alert({
+                        //     title: 'Campos invalidos',
+                        //     content: message,
+                        // });
+                        console.log(xhr.responseJSON.errors);
+                        $.each(xhr.responseJSON.errors,function(field_name,error){
+                            console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
+                            $('input[name="'+field_name+'"]').addClass('is-invalid');
+                            let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
+                            $('input[name="'+field_name+'"]').after(html);
+                        })
+
+                    }
                 }
             });
         }
@@ -593,5 +626,27 @@
                 }
             });
         }
+    });
+
+    $('.bt-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("textarea[name='description']").val('');
+        
+        $('form#new_brand')[0].reset();
+        $('form#update_brand')[0].reset();
+        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
+        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
+    });
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("textarea[name='description']").val('');
+        $('form#new_brand')[0].reset();
+        $('form#update_brand')[0].reset();
+        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
+        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
     });
 })()

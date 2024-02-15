@@ -95,6 +95,16 @@
 
 (function () {
   var host = window.location.origin;
+  function formatErrorUsingClassesAndPopover(element, array_of_problems) {
+    var someHTML = '';
+    array_of_problems.forEach(function (e) {
+      someHTML += '<li>' + element + ': ' + e + '</li>';
+    });
+    // $('#'+element+'_error_section').html('<ul>'+someHTML+'</ul>');
+    // $('#'+element).addClass('is-invalid');
+
+    return '<ul>' + someHTML + '</ul><br>';
+  }
   $("#promotion_price").hide();
   $("#start_date").hide();
   $("#last_date").hide();
@@ -107,8 +117,17 @@
     }
   });
   $('#genbutton').on("click", function () {
-    $.get('{{route("api.product.gencode")}}', function (data) {
+    $.get(host + '/api/product/gencode', function (data) {
       $("input[name='code']").val(data);
+    });
+  });
+  $("input[name='code']").on('blur', function () {
+    $.get(host + '/api/product/code', {
+      code: $("input[name='code']").val()
+    }).done(function (data) {
+      console.log("Solicitud GET exitosa:", data);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      console.error("Error en la solicitud GET:", errorThrown);
     });
   });
 
@@ -125,6 +144,7 @@
   // });
 
   $('select[name="unit_id"]').on('change', function () {
+    console.log('load unit');
     unitID = $(this).val();
     if (unitID) {
       populate_category(unitID);
@@ -140,9 +160,8 @@
   }
   function populate_category(unitID) {
     var url = 'api/product/saleunit/' + unitID;
-    url = url.replace(':id', unitID);
     $.ajax({
-      url: host + url,
+      url: host + '/' + url,
       type: "GET",
       dataType: "json",
       success: function success(data) {
@@ -152,7 +171,7 @@
           $('select[name="sale_unit_id"]').append('<option value="' + key + '">' + value + '</option>');
           $('select[name="purchase_unit_id"]').append('<option value="' + key + '">' + value + '</option>');
         });
-        $('.selectpicker').selectpicker('refresh');
+        //   $('.selectpicker').selectpicker('refresh');
       }
     });
   }
@@ -346,7 +365,7 @@
     paramName: 'image',
     clickable: true,
     method: 'POST',
-    url: '{{route("api.product.store")}}',
+    url: 'api/product',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
@@ -367,7 +386,7 @@
           } else {
             $.ajax({
               type: 'POST',
-              url: "{{route('api.product.store')}}",
+              url: host + "/api/product",
               data: $("#product-form").serialize(),
               success: function success(response) {
                 $.confirm({
@@ -385,6 +404,7 @@
               error: function error(response) {
                 if (response.status == 422) {
                   //toastError(err.responseJSON.message);
+                  console.log('errors', response.responseJSON);
                   var details = response.responseJSON.errors;
                   var content = '';
                   Object.keys(details).forEach(function (field) {

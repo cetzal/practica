@@ -91,6 +91,14 @@ class ProductController extends Controller
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();
+        Log::emergency('brand_list');
+        Log::emergency(print_r($lims_brand_list, true));
+        Log::emergency('lims_category_list');
+        Log::emergency(print_r($lims_category_list, true));
+        Log::emergency('lims_unit_list');
+        Log::emergency(print_r($lims_unit_list, true));
+        Log::emergency('lims_tax_list');
+        Log::emergency(print_r($lims_tax_list, true));
         return view('product.create',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
     }
 
@@ -313,15 +321,20 @@ class ProductController extends Controller
     }
 
     public function validateCode(Request $request)
-    {   
+    {
         if(empty($request->code)){
             return response()->json(true);
             exit;
         }
 
-
         if(DB::table('view_products')->where('code', $request->code)->count() > 0){
-            return response()->json(false);
+            return response()->json([
+                'errors' => [
+                    'code' => [
+                        'The code is being used, please try another'
+                    ]
+                ]
+            ], 422);
             exit;
         }
         return response()->json(true);

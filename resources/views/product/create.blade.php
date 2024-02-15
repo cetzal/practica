@@ -533,7 +533,7 @@
                             data: $("#product-form").serialize(),
                             success:function(response){
                                 $.confirm({
-                                    title: 'Actualizar producto',
+                                    title: 'Agregar producto',
                                     content: 'El producto se ha creado con exito',
                                     autoClose: 'ok|3000',
                                     buttons: {
@@ -570,7 +570,7 @@
                 var data = $("#product-form").serializeArray();
                 $.each(data, function (key, el) {
                     formData.append(el.name, el.value);
-                });
+                })
             });
         },
         error: function (file, response) {

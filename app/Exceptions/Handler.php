@@ -32,6 +32,10 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        //
-    }
+        // $this->renderable(function (\Exception $e, $request) {
+            
+        //     var_dump($request->ajax());
+        //     return response()->json([]);
+        // });
+    }     
 }

@@ -5,11 +5,11 @@ SELECT
   b.name,
   b.description,
   b.is_active,
-  u.id as user_id,
-  u.name as created_by,
+  u.id AS user_id,
+  CONCAT(u.name, ' ', u.last_name) AS created_by,
   b.created_at,
   b.updated_at
 FROM
-   brands as b
-INNER JOIN users u ON u.id = b.created_by
-  where b.deleted_at is NULL;
+   brands AS b
+INNER JOIN users AS u ON u.id = b.created_by
+WHERE b.deleted_at IS NULL;

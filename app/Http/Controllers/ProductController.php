@@ -98,12 +98,14 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'code' => [
+                'required',
                 'max:255',
                     Rule::unique('products')->where(function ($query) {
                     return $query->where('is_active', 1);
                 }),
             ],
             'name' => [
+                'required',
                 'max:255',
                     Rule::unique('products')->where(function ($query) {
                     return $query->where('is_active', 1);

@@ -31,7 +31,8 @@ function readJsFiles(dir) {
 
 // Llamamos a la función con el directorio inicial
 readJsFiles(jsInputPath);
-
+    mix.sass('resources/sass/app.scss', 'public/css')
+    .sourceMaps();
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

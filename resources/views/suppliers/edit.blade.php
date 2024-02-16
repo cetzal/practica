@@ -22,7 +22,3 @@
     </div>
   </div>
 </div>
-@section('scripts')
-  @parent
-  <script src="{{ asset('js/modules/supplier/edit.js') }}"></script>
-@endsection

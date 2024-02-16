@@ -27,15 +27,15 @@ class ClientsControlles extends Controller
             $where[] = ['created_by', 'like', '%'.$request->created_by.'%'];
         }
 
-        if ($request->status != '') {
-            $where[] = ['is_active', '=', $request->status];
+        if ($request->client_status != '') {
+            $where[] = ['is_active', '=', $request->client_status];
         }
 
-        if (!empty($request->range_date) && !empty($request->select_date)) {
-            list($date_from, $date_to) = explode(' - ', $request->range_date);
+        if (!empty($request->date_range) && !empty($request->select_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->date_range);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $whereBetween = [$request->range_date, [$date_from, $date_to]];
+            $whereBetween = [$request->select_date, [$date_from, $date_to]];
         }
 
         $query = DB::table('view_clients');
@@ -73,10 +73,12 @@ class ClientsControlles extends Controller
         ]);
 
         $input = $request->all();
+        if(!isset($input['is_active']))
+            $input['is_active'] = false;
         $input['user_id'] = JWTAuth::toUser()->id;
         $client = Clients::create($input);
         if ($client->getKey()) {
-            $this->log([], $client, 'Clients');
+            $this->log([], $client->getOriginal(), 'Clients');
         }
         return response()->json(['status' => 'succes', 'message' => 'El cliente se guardo con exito']);
 
@@ -94,6 +96,7 @@ class ClientsControlles extends Controller
     }
     
     public function update(Request $request, $id){
+        
         $this->validate($request, [
             'name' => [
                 'max:255',
@@ -106,11 +109,16 @@ class ClientsControlles extends Controller
         $client_data = Clients::findOrFail($id);
         $previous_value = $client_data->getOriginal();
         $client_data->name = $request->name;
+        if(!isset($request->is_active))
+            $client_data->is_active = false;
+        else
+            $client_data->is_active = true;
+
         $client_data->save();
         if ($client_data->getChanges()) {
-            $this->log(Arr::only($previous_value, array_keys($client_data->getChanges())), $client_data->getChanges(), 'Clients', 'Actualizacion');
+            $this->log(Arr::only($previous_value, array_keys($client_data->getChanges())), $previous_value, 'Clients', 'Actualizacion');
         }
-        return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']); 
+        return response()->json(['status' => 'succes', 'message' => 'El cliente se guardo con exito']); 
     }
     
     public function activate($id){
@@ -129,7 +137,7 @@ class ClientsControlles extends Controller
 
     public function deactivateBySelection(Request $request)
     {
-        $clients_id = $request->productIdArray;
+        $clients_id = $request->clientsIdArray;
         foreach ($clients_id as $id) {
             $client_data = Clients::findOrFail($id);
             $client_data->is_active = false;
@@ -141,7 +149,7 @@ class ClientsControlles extends Controller
 
     public function activateBySelection(Request $request)
     {
-        $clients_id = $request->productIdArray;
+        $clients_id = $request->clientsIdArray;
         foreach ($clients_id as $id) {
             $client_data = Clients::findOrFail($id);
             $client_data->is_active = true;
@@ -153,7 +161,7 @@ class ClientsControlles extends Controller
 
     public function deleteBySelection(Request $request)
     {
-        $clients_id = $request->productIdArray;
+        $clients_id = $request->clientsIdArray;
         foreach ($clients_id as $id) {
             $client_data = Clients::findOrFail($id);
             $client_data->is_active = false;

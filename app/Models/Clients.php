@@ -11,5 +11,5 @@ class Clients extends Model
 
     protected $table = 'clients';
 
-    protected $fillable = ['name', 'is_active'];
+    protected $fillable = ['name', 'is_active', 'user_id'];
 }

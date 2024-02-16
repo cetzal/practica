@@ -11,7 +11,7 @@ class Suppliers extends Model
 
     protected $table = 'suppliers';
 
-    protected $fillable = ['name', 'is_active'];
+    protected $fillable = ['name', 'is_active', 'user_id'];
 
     public function brands()
     { 

@@ -81,21 +81,21 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/modules/brand/Brand.js":
-/*!*********************************************!*\
-  !*** ./resources/js/modules/brand/Brand.js ***!
-  \*********************************************/
+/***/ "./resources/js/modules/supplier/index.js":
+/*!************************************************!*\
+  !*** ./resources/js/modules/supplier/index.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 (function () {
-  var brand_id = [];
+  var supplier_ids = [];
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -118,9 +118,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   $('input[name="range_date"]').on('cancel.daterangepicker', function (ev, picker) {
     $(this).val('');
   });
-  brand_ids = [];
-  //Eliminar todas las marcas
-
   $("#select_all").on("change", function () {
     if ($(this).is(':checked')) {
       $("tbody input[type='checkbox']").prop('checked', true);
@@ -135,21 +132,21 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   $('.close_form').on('click', function (e) {
     $('.form_search').removeClass('form_search_active');
   });
-  var table = $('#brand-table').DataTable({
+  var table = $('#supplier-table').DataTable({
     responsive: false,
     autoWidth: false,
     serverSide: true,
     "searching": false,
     "bProcessing": true,
     "ajax": {
-      "url": "api/brand",
+      "url": "api/suppliers",
       "data": function data(d) {
-        var frm_data = $('form#from_brand_search').serializeArray();
+        var frm_data = $('form#from_search_supplier').serializeArray();
         // return frm_data;
         $.each(frm_data, function (key, val) {
           d[val.name] = val.value;
         });
-        console.log('form_data', frm_data);
+        console.log('frmdata', frm_data);
       }
     },
     "order": [],
@@ -162,25 +159,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
       }
     },
-    // 'columns': [
-    //     { 
-    //         data: "", "render": function (data, type, full, meta) {
-    //             return data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
-    //         }
-    //     },
-    //     { data: 'name' },
-    //     { data: 'description' },
-    //     { data: 'accion' , "render": function (data, type, full, meta) {
-
-    //         let $html =  '<a class="btn bg-success m-1 update" data-id="'+data+'"><i class="icon-floppy-disk"></i> Update</a>';
-    //             $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+data+'"><i class="icon-trash"></i> Delete</a>';
-    //             $html +=  '<a class="btn bg-grey m-1 reset" data-id="'+data+'"><i class="icon-reset"></i> Reset</a>';
-    //             return $html;
-    //         }
-    //     },
-    // ],
     'createdRow': function createdRow(row, data, dataIndex) {
-      $(row).attr('data-branch-id', data['id']);
+      $(row).attr('data-supplier-id', data['id']);
     },
     'columnDefs': [{
       "orderable": false,
@@ -201,10 +181,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       },
       'targets': [1]
     }, {
-      'width': '100px',
       'render': function render(data, type, row, meta) {
-        var html = '<p class="text_ellipsis" style="width:250px;">' + row.description + '</p>';
-        return html;
+        return row.total_brands;
       },
       'targets': [2]
     }, {
@@ -233,7 +211,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       'targets': [5]
     }, {
       'render': function render(data, type, row, meta) {
-        if (row.created_at == null) {
+        if (row.updated_at == null) {
           return '';
         }
         return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
@@ -241,16 +219,13 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       'targets': [6]
     }, {
       'render': function render(data, type, row, meta) {
-        // let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></button>';
-        var $html = '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="' + row.id + '"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+        var $html = '<a href="#" class="btn bg-success btn-sm open-EditSupplierDialog" data-id="' + row.id + '"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
         $html += '<a class="btn bg-danger m-1 remove btn-sm" data-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i></a>';
         if (row.is_active == 1) {
           $html += '<a class="btn m-1 desactivar btn-sm" data-id="' + row.id + '"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
         } else {
           $html += '<a class="btn m-1 activar btn-sm" data-id="' + row.id + '"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
         }
-        // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-        // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm " data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
         return $html;
       },
       'targets': [7]
@@ -266,23 +241,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   });
   $(".delete_all").on('click', function (e) {
     e.preventDefault();
-    brand_ids = [];
-    verific_checks(0);
-    if (brand_ids.length) {
+    supplier_ids = [];
+    verific_checks_supplier(0);
+    if (supplier_ids.length) {
       $.ajax({
         type: 'PUT',
-        url: 'api/brand/all/deletebyselection',
+        url: 'api/suppliers/all/deletebyselection',
         data: {
-          brandIdArray: brand_ids
+          brandIdArray: supplier_ids
         },
         success: function success(data) {
           console.log('data', data.messages);
-          var messsage = 'se elimino todo las marcas selecionados';
+          var messsage = 'Se elimino todo los proveedores selecionados';
           if (_typeof(data.messages) != undefined) {
             messsage = data.messages;
           }
           $.confirm({
-            title: 'Eliminar marcas',
+            title: 'Eliminar proveedores',
             content: messsage,
             buttons: {
               ok: function ok() {
@@ -296,30 +271,29 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     } else {
       $.alert({
         title: 'Eliminar marcas',
-        content: 'Seleccione las marcas que deseas eliminar'
+        content: 'Seleccione los proveedores que deseas eliminar'
       });
     }
   });
 
-  //Activar todas las marcas seleccionas
+  //Activar todas las proveedores seleccionas
   $(".active_all").on('click', function (e) {
     e.preventDefault();
-    brand_ids = [];
-    verific_checks(0);
-    if (brand_ids.length) {
+    supplier_ids = [];
+    verific_checks_supplier(0);
+    if (supplier_ids.length) {
       $.ajax({
         type: 'PUT',
-        url: 'api/brand/all/activatebyselection',
+        url: 'api/suppliers/all/activatebyselection',
         data: {
-          brandIdArray: brand_ids
+          brandIdArray: supplier_ids
         },
         success: function success(data) {
           $.confirm({
-            title: 'Activar marcas',
-            content: 'Se activo todo las marcas selecionados ',
+            title: 'Activar proveedores',
+            content: 'Se activo todo los proveedores selecionados ',
             buttons: {
               ok: function ok() {
-                console.log('activar todas las marcas');
                 table.ajax.reload();
                 $("tbody input[type='checkbox']").prop('checked', false);
               }
@@ -329,34 +303,33 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       });
     } else {
       $.alert({
-        title: 'Activar marcas',
-        content: 'Seleccione los marcas que deseas activar'
+        title: 'Activar proveedores',
+        content: 'Seleccione los proveedores que deseas activar'
       });
     }
   });
 
-  // Desactivas todas las marcas seleccionadas
+  // Desactivas todas las prvoeedores seleccionadas
   $(".desactive_all").on('click', function (e) {
     e.preventDefault();
-    brand_ids = [];
-    verific_checks(0);
-    if (brand_ids.length) {
+    supplier_ids = [];
+    verific_checks_supplier(0);
+    if (supplier_ids.length) {
       $.ajax({
         type: 'PUT',
-        url: 'api/brand/all/deactivatebyselection',
+        url: 'api/suppliers/all/deactivatebyselection',
         data: {
-          brandIdArray: brand_ids
+          brandIdArray: supplier_ids
         },
         success: function success(data) {
           $.confirm({
-            title: 'Desactivar marcas',
-            content: 'Se desactivo todas los marcas selecionados ',
+            title: 'Desactivar proveedores',
+            content: 'Se desactivo todas los proveedores selecionados ',
             buttons: {
               ok: function ok() {
-                console.log('desactivar todas las marcas');
                 table.ajax.reload();
                 $("tbody input[type='checkbox']").prop('checked', false);
-                // $('#brand-table').DataTable().ajax().reload();
+                // $('#supplier-table').DataTable().ajax().reload();
               }
               // cancel: function () {
               //     $.alert('Canceled!');
@@ -375,66 +348,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       });
     } else {
       $.alert({
-        title: 'Desactivar marcas',
-        content: 'Seleccione lass marcas que deseas desactivar'
+        title: 'Desactivar proveedores',
+        content: 'Seleccione los proveedores que deseas desactivar'
       });
     }
   });
-  var verific_checks = function verific_checks(num) {
-    $(':checkbox:checked').each(function (i) {
-      var brand_data = $(this).closest('tr').data('branch-id');
-      if (typeof brand_data != "undefined") {
-        brand_ids[i - 1] = brand_data;
-      }
-    });
-  };
-  $("#from_brand_search").on("submit", function (event) {
-    event.preventDefault();
-    var date_range = $('#range_date').val();
-    var type_fecha = $('.brand-date-select').val();
-    console.log(type_fecha);
-    if (type_fecha == '' && date_range !== '') {
-      $.alert({
-        title: 'Filtra datos',
-        content: 'Selecione un tipo de fecha a consultar'
-      });
-      return '';
-    }
-    if (date_range == '' && type_fecha !== '') {
-      $.alert({
-        title: 'Filtra datos',
-        content: 'Selecione el rango de fecha'
-      });
-      return '';
-    }
-    table.ajax.reload();
-  });
-  $('.clear_form').on('click', function (e) {
-    $('#from_brand_search')[0].reset();
-    table.ajax.reload();
-  });
-  $('#brand-table').on('click', '.open-EditbrandDialog ', function () {
-    var url = "api/brand/";
+  $('#supplier-table').on('click', '.remove ', function () {
+    var url = "api/suppliers/";
     var id = $(this).data('id').toString();
-    url = url.concat(id).concat("/edit");
-    $.get(url, function (data) {
-      $("input[name='name']").val(data['name']);
-      $("textarea[name='description']").val(data['description']);
-      $("input[name='brand_id']").val(data['id']);
-    });
-  });
-  $('#brand-table').on('click', '.remove ', function () {
-    var url = "api/brand/";
-    var id = $(this).data('id').toString();
-    url = url.concat(id).concat("/delete");
+    url += id;
     var Jquery = $.Jquery;
     $.confirm({
-      title: 'Delete brand?',
-      content: 'Realmente quieres eliminar la marca',
+      title: 'Delete supplier?',
+      content: 'Realmente quieres eliminar el proveedor',
       // autoClose: 'cancelAction|8000',
       buttons: {
         deleteUser: {
-          text: 'delete brands',
+          text: 'delete suppliers',
           action: function action() {
             $.ajax({
               url: url,
@@ -460,18 +390,18 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     });
   });
-  $('#brand-table').on('click', '.desactivar ', function () {
-    var url = "api/brand/";
+  $('#supplier-table').on('click', '.desactivar ', function () {
+    var url = "api/suppliers/";
     var id = $(this).data('id').toString();
     url = url.concat(id).concat("/deactivate");
     var Jquery = $.Jquery;
     $.confirm({
-      title: 'Descativar marca?',
-      content: 'Realmente quieres desactivar la marca',
+      title: 'Descativar proveedor?',
+      content: 'Realmente quieres desactivar el proveedor',
       // autoClose: 'cancelAction|8000',
       buttons: {
         deleteUser: {
-          text: 'desactivar brands',
+          text: 'desactivar suppliers',
           action: function action() {
             $.ajax({
               url: url,
@@ -492,18 +422,18 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     });
   });
-  $('#brand-table').on('click', '.activar ', function () {
-    var url = "api/brand/";
+  $('#supplier-table').on('click', '.activar ', function () {
+    var url = "api/suppliers/";
     var id = $(this).data('id').toString();
     url = url.concat(id).concat("/activate");
     var Jquery = $.Jquery;
     $.confirm({
       title: 'Activar brand?',
-      content: 'Realmente quieres activar la marca',
+      content: 'Realmente quieres activar el proveedor',
       // autoClose: 'cancelAction|8000',
       buttons: {
         deleteUser: {
-          text: 'activar brands',
+          text: 'activar suppliers',
           action: function action() {
             $.ajax({
               url: url,
@@ -524,171 +454,63 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     });
   });
-  $('form#new_brand').validate({
-    rules: {
-      name: 'required',
-      description: 'required'
-    },
-    highlight: function highlight(input) {
-      $(input).addClass('is-invalid');
-    },
-    unhighlight: function unhighlight(input) {
-      $(input).removeClass('is-invalid');
-    },
-    errorPlacement: function errorPlacement(error, element) {
-      // Add the `invalid-feedback` class to the error element
-      // error.addClass("invalid-feedback" );
-      // error.insertAfter(element);
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
-    },
-    messages: {
-      name: "El nombre es requerido",
-      description: "La descripcion es requerido"
+  var verific_checks_supplier = function verific_checks_supplier(num) {
+    $(':checkbox:checked').each(function (i) {
+      var supplier_data = $(this).closest('tr').data('supplier-id');
+      if (typeof supplier_data != "undefined") {
+        supplier_ids[i - 1] = supplier_data;
+      }
+    });
+  };
+  $("#from_search_supplier").on("submit", function (event) {
+    event.preventDefault();
+    var date_range = $('#range_date').val();
+    var type_fecha = $('.brand-date-select').val();
+    if (type_fecha == '' && date_range !== '') {
+      $.alert({
+        title: 'Filtra datos',
+        content: 'Selecione un tipo de fecha a consultar'
+      });
+      return '';
     }
+    if (date_range == '' && type_fecha !== '') {
+      $.alert({
+        title: 'Filtra datos',
+        content: 'Selecione el rango de fecha'
+      });
+      return '';
+    }
+    table.ajax.reload();
+  });
+  $('.clear_form').on('click', function (e) {
+    $('#from_search_supplier')[0].reset();
+    table.ajax.reload();
+  });
+  $('#supplier-table').on('click', '.open-EditSupplierDialog ', function () {
+    var url = "api/suppliers/";
+    var id = $(this).data('id').toString();
+    url = url.concat(id);
+    $.get(url, function (data) {
+      $("input[name='name']").val(data['data']['name']);
+      $("input[name='supplier_id']").val(data['data']['id']);
+    });
   });
   $('#createModal').on('show.bs.modal', function (event) {
     // Encuentra el formulario dentro del modal y limpia los campos
     $(this).find('form')[0].reset();
   });
-  $('form#new_brand').submit(function (e) {
-    e.preventDefault();
-    if ($('form#new_brand').valid()) {
-      var data = new FormData($('form#new_brand')[0]);
-      var actionUrl = $(this).attr('action');
-      var method = $(this).attr('method');
-      $.ajax({
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        data: data,
-        type: $(this).attr('method'),
-        url: actionUrl,
-        success: function success(response) {
-          table.ajax.reload();
-          $.confirm({
-            title: response.status,
-            content: response.message,
-            buttons: {
-              ok: function ok() {
-                $('#createModal').modal('hide');
-                $('#createModal').modal({
-                  backdrop: false
-                });
-                $('.modal-backdrop').remove();
-                $("#new_brand").get(0).reset();
-                $("tbody input[type='checkbox']").prop('checked', false);
-                table.ajax.reload();
-              }
-            }
-          });
-        },
-        error: function error(xhr, textStatus, _error) {
-          if (xhr.status == 422) {
-            // let responseText = JSON.parse(xhr.responseText);
-            // let keys = Object.keys(responseText.errors);
-            // let message = 'Error desconocido';
-            // if (keys.length > 0) {
-            //     message = responseText.errors[keys[0]][0];
-            // }
-            // console.log('response', responseText);
-            // $.alert({
-            //     title: 'Campos invalidos',
-            //     content: message,
-            // });
-            console.log(xhr.responseJSON.errors);
-            $.each(xhr.responseJSON.errors, function (field_name, error) {
-              console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
-              $('input[name="' + field_name + '"]').addClass('is-invalid');
-              var html = '<label id="name-error" class="error invalid-feedback" for="name" style="">' + xhr.responseJSON.errors[field_name][0] + '</label>';
-              $('input[name="' + field_name + '"]').after(html);
-            });
-          }
-        }
-      });
-    }
-  });
-  $('form#update_brand').validate({
-    rules: {
-      name: 'required',
-      description: 'required'
-    },
-    highlight: function highlight(input) {
-      $(input).addClass('is-invalid');
-    },
-    unhighlight: function unhighlight(input) {
-      $(input).removeClass('is-invalid');
-    },
-    errorPlacement: function errorPlacement(error, element) {
-      // Add the `invalid-feedback` class to the error element
-      error.addClass("invalid-feedback");
-      error.insertAfter(element);
-    },
-    messages: {
-      name: "El nombre es requerido",
-      description: "La descripcion es requerido"
-    }
-  });
-  $('form#update_brand').submit(function (e) {
-    e.preventDefault();
-    if ($('#update_brand').valid()) {
-      var data = new FormData($('form#update_brand')[0]);
-      var actionUrl = $(this).attr('action');
-      var method = $(this).attr('method');
-      $.ajax({
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        data: data,
-        type: $(this).attr('method'),
-        url: actionUrl,
-        success: function success(response) {
-          table.ajax.reload();
-          $('#editModal').modal('hide');
-          $('#editModal').modal({
-            backdrop: false
-          });
-          $('.modal-backdrop').remove();
-          $.alert({
-            title: response.status,
-            content: response.message
-          });
-        }
-      });
-    }
-  });
-  $('.bt-close-modal').on('click', function (e) {
-    $("input[name='name']").val('');
-    $("textarea[name='description']").val('');
-    $('form#new_brand')[0].reset();
-    $('form#update_brand')[0].reset();
-    $("form#new_brand").find("#btn-password").removeClass('is-invalid');
-    $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
-    $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
-    $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
-  });
-  $('.btn-close-modal').on('click', function (e) {
-    $("input[name='name']").val('');
-    $("textarea[name='description']").val('');
-    $('form#new_brand')[0].reset();
-    $('form#update_brand')[0].reset();
-    $("form#new_brand").find("#btn-password").removeClass('is-invalid');
-    $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
-    $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
-    $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
-  });
 })();
 
 /***/ }),
 
-/***/ 4:
-/*!***************************************************!*\
-  !*** multi ./resources/js/modules/brand/Brand.js ***!
-  \***************************************************/
+/***/ 14:
+/*!******************************************************!*\
+  !*** multi ./resources/js/modules/supplier/index.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/brand/Brand.js */"./resources/js/modules/brand/Brand.js");
+module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/supplier/index.js */"./resources/js/modules/supplier/index.js");
 
 
 /***/ })

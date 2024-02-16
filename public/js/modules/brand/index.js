@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -232,7 +232,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       'targets': [5]
     }, {
       'render': function render(data, type, row, meta) {
-        if (row.created_at == null) {
+        if (row.updated_at == null) {
           return '';
         }
         return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
@@ -550,7 +550,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /*!***************************************************!*\
   !*** multi ./resources/js/modules/brand/index.js ***!
   \***************************************************/

@@ -81,23 +81,22 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/modules/brand/edit.js":
-/*!********************************************!*\
-  !*** ./resources/js/modules/brand/edit.js ***!
-  \********************************************/
+/***/ "./resources/js/modules/supplier/create.js":
+/*!*************************************************!*\
+  !*** ./resources/js/modules/supplier/create.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 (function () {
-  $('form#update_brand').validate({
+  $('form#new_supplier').validate({
     rules: {
-      name: 'required',
-      description: 'required'
+      name: 'required'
     },
     highlight: function highlight(input) {
       $(input).addClass('is-invalid');
@@ -107,18 +106,19 @@
     },
     errorPlacement: function errorPlacement(error, element) {
       // Add the `invalid-feedback` class to the error element
-      error.addClass("invalid-feedback");
-      error.insertAfter(element);
+      // error.addClass("invalid-feedback" );
+      // error.insertAfter(element);
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
     },
     messages: {
-      name: "El nombre es requerido",
-      description: "La descripcion es requerido"
+      name: "El nombre es requerido"
     }
   });
-  $('form#update_brand').submit(function (e) {
+  $('form#new_supplier').submit(function (e) {
     e.preventDefault();
-    if ($('#update_brand').valid()) {
-      var data = new FormData($('form#update_brand')[0]);
+    if ($('form#new_supplier').valid()) {
+      var data = new FormData($('form#new_supplier')[0]);
       var actionUrl = $(this).attr('action');
       var method = $(this).attr('method');
       $.ajax({
@@ -129,16 +129,44 @@
         type: $(this).attr('method'),
         url: actionUrl,
         success: function success(response) {
-          table.ajax.reload();
-          $('#editModal').modal('hide');
-          $('#editModal').modal({
-            backdrop: false
-          });
-          $('.modal-backdrop').remove();
-          $.alert({
+          $.confirm({
             title: response.status,
-            content: response.message
+            content: response.message,
+            buttons: {
+              ok: function ok() {
+                $('#createModal').modal('hide');
+                $('#createModal').modal({
+                  backdrop: false
+                });
+                $('.modal-backdrop').remove();
+                $("#new_supplier").get(0).reset();
+                $("tbody input[type='checkbox']").prop('checked', false);
+                $('#supplier-table').DataTable().ajax.reload();
+              }
+            }
           });
+        },
+        error: function error(xhr, textStatus, _error) {
+          if (xhr.status == 422) {
+            // let responseText = JSON.parse(xhr.responseText);
+            // let keys = Object.keys(responseText.errors);
+            // let message = 'Error desconocido';
+            // if (keys.length > 0) {
+            //     message = responseText.errors[keys[0]][0];
+            // }
+            // console.log('response', responseText);
+            // $.alert({
+            //     title: 'Campos invalidos',
+            //     content: message,
+            // });
+            console.log(xhr.responseJSON.errors);
+            $.each(xhr.responseJSON.errors, function (field_name, error) {
+              console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
+              $('input[name="' + field_name + '"]').addClass('is-invalid');
+              var html = '<label id="name-error" class="error invalid-feedback" for="name" style="">' + xhr.responseJSON.errors[field_name][0] + '</label>';
+              $('input[name="' + field_name + '"]').after(html);
+            });
+          }
         }
       });
     }
@@ -147,14 +175,14 @@
 
 /***/ }),
 
-/***/ 6:
-/*!**************************************************!*\
-  !*** multi ./resources/js/modules/brand/edit.js ***!
-  \**************************************************/
+/***/ 12:
+/*!*******************************************************!*\
+  !*** multi ./resources/js/modules/supplier/create.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/brand/edit.js */"./resources/js/modules/brand/edit.js");
+module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/supplier/create.js */"./resources/js/modules/supplier/create.js");
 
 
 /***/ })

@@ -1,10 +1,17 @@
 (function() {
 
     var host = window.location.origin;
-
-    // var product_id = <?php echo json_encode($lims_product_data->id) ?>;
     var product_id = $('#product_id').val();
-    console.log('product_id', product_id);
+
+    function formatErrorUsingClassesAndPopover(element , array_of_problems ){
+        let someHTML = '';
+        array_of_problems.forEach(function(e){someHTML+='<li>'+element +': '+ e+'</li>'});
+        // $('#'+element+'_error_section').html('<ul>'+someHTML+'</ul>');
+        // $('#'+element).addClass('is-invalid');
+
+        return '<ul>'+someHTML+'</ul><br>';
+    }
+    
     $('[data-toggle="tooltip"]').tooltip();
 
     $("select[name='type']").val($("input[name='type_hidden']").val());
@@ -29,7 +36,7 @@
     });
 
     $('#genbutton').on("click", function(){
-      $.get('{{route("api.product.gencode")}}', function(data){
+      $.get(host + '/api/product/gencode', function(data){
         $("input[name='code']").val(data);
       });
     });
@@ -104,10 +111,10 @@
     }
 
     function populate_unit_second(unitID){
-        var url = '{{ route("api.product.saleUnit", [":id"]) }}';
+        var url = 'api/product/saleunit/' + unitID;
         url = url.replace(':id', unitID);
         $.ajax({
-            url: url,
+            url: host + '/' + url,
             type: "GET",
             dataType: "json",
             success:function(data) {

@@ -22,7 +22,7 @@ function readJsFiles(dir) {
         if (stat.isDirectory()) {
             // Si es un directorio, llamamos recursivamente a la función para explorar sus archivos
             readJsFiles(filePath);
-        } else if (path.extname(file) === '.js' && file != 'bootstrap.js') {
+        } else if (path.extname(file) === '.js') {
             // Si es un archivo JavaScript, lo compilamos
             mix.js(filePath, path.join(jsOutputPath, path.relative(jsInputPath, dir)));
         }

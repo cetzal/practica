@@ -131,6 +131,15 @@
         }, 
     });
 
+    $('.show_form_search').on('click', function(e){
+        e.preventDefault();
+        $('.form_search').toggleClass('form_search_active');
+    });
+
+    $('.close_form').on('click', function(e){
+        $('.form_search').removeClass('form_search_active');
+    });
+
     $( "#from_search_client" ).on( "submit", function( event ) {
         event.preventDefault();
         var date_range = $('#date_range').val();

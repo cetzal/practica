@@ -321,7 +321,6 @@
                                 $.confirm({
                                     title: 'Actualizar producto',
                                     content: 'El producto se ha actualizado con exito',
-                                    autoClose: 'ok|3000',
                                     buttons: {
                                         ok: function () {
                                             window.location.replace('/product');

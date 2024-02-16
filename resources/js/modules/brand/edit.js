@@ -37,10 +37,8 @@
                 type: $( this ).attr( 'method' ),
                 url: actionUrl,
                 success: function( response ){
-                    table.ajax.reload();
-                    $('#editModal').modal('hide');
-                    $('#editModal').modal({backdrop: false});
-                    $('.modal-backdrop').remove();
+                    $('#brand-table').DataTable().ajax.reload();
+                    $('.btn-close-modal').trigger('click');
                     $.alert({
                         title: response.status,
                         content: response.message,

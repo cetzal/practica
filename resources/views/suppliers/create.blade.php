@@ -12,6 +12,10 @@
                 <label>{{trans('file.name')}} *</label>
                 <input type="text" name="name" required class="form-control" value="" placeholder="Type supplier name...">
             </div>
+            <div class="form-group">
+                <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
+                <label class="mt-2"><strong>{{trans('file.Active')}}</strong></label>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">Close</button>

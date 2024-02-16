@@ -16,6 +16,10 @@
                     <input type="text" class="form-control" placeholder="Brand name" name="brand_name">
                 </div>
                 <div class="col">
+                    <label for="name">{{trans('file.supplier')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.supplier')}}" name="supplier_name">
+                </div>
+                <div class="col">
                     <label for="created_by">{{trans('file.created_by')}}</label>
                     <input type="text" class="form-control" placeholder="Created by" name="created_by">
                 </div>
@@ -54,6 +58,11 @@
                     </div>
                 </div>
                 <div class="col">
+                    <div class="form-group">
+                        
+                    </div>
+                </div>
+                <div class="col">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
                     <button type="button" class="btn btn-primary mt-4 clear_form">Clear</button>
@@ -71,6 +80,7 @@
                     </th>
                     <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.Description')}}</th>
+                    <th>{{trans('file.supplier')}}</th>
                     <th>{{trans('file.Status')}}</th>
                     <th>{{trans('file.created_by')}}</th>
                     <th>{{trans('file.created_at')}}</th>

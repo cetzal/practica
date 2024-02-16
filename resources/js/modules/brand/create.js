@@ -76,8 +76,4 @@
         }
         
     });
-
-    $("#suppliers_id").multiselect({
-        enableHTML:false,
-    });
 })();

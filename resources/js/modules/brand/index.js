@@ -125,6 +125,12 @@
                 'targets': [2]
             },
             {
+                targets: [3],
+                render : function(data, type, row, meta){
+                    return row.supplier_name;
+                }
+            },
+            {
                 'render': function(data, type, row, meta){
                     is_active = row.is_active == 1 ? 'Activo' : 'Desactivado';
                     class_text = "text-success";
@@ -134,13 +140,13 @@
                     data = '<span class="'+ class_text +'">'+ is_active +'</span>'
                     return data;
                 },
-                'targets': [3]
+                'targets': [4]
             },
             {
                 'render': function(data, type, row, meta){
                     return row.created_by;
                 },
-                'targets': [4]
+                'targets': [5]
             },
             {
                 'render': function(data, type, row, meta){
@@ -149,7 +155,7 @@
                     }
                     return moment(row.created_at).format('DD/MM/YYYY HH:mm:ss');
                 },
-                'targets': [5]
+                'targets': [6]
             },
             {
                 'render': function(data, type, row, meta){
@@ -158,7 +164,7 @@
                     }
                     return moment(row.updated_at).format('DD/MM/YYYY HH:mm:ss');
                 },
-                'targets': [6]
+                'targets': [7]
             },
             {
                 'render': function(data, type, row, meta){
@@ -175,7 +181,7 @@
                     return $html;
                 
                 },
-                'targets': [7]
+                'targets': [8]
             },
             { targets: [1], className: "text-center"},
             {targets: [0, 1, 2, 3], searchable: false}
@@ -339,9 +345,10 @@
         table.ajax.reload();
     });
 
-    $('#brand-table').on('click', '.open-EditbrandDialog ', function() {
-       
+    $('#brand-table').on('click', '.open-EditbrandDialog ', function(e) {
+       e.preventDefault();
         $('#update_brand')[0].reset();
+        $('#suppliersup_id').find('option').remove();
         load_combobox("#suppliersup_id");
         var url = "api/brand/"
         var id = $(this).data('id').toString();
@@ -351,7 +358,7 @@
             $("input[name='name']").val(data['name']);
             $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
-
+            $('#suppliersup_id option[value="'+data['supplier_id']+'"]').prop('selected', true);
         });
 
     });
@@ -490,21 +497,27 @@
         $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
     });
 
-    $('#createModal').on('show.bs.modal', function (event) {
-        // Encuentra el formulario dentro del modal y limpia los campos
-        $(this).find('form')[0].reset();
+    // $('#createModal').on('show.bs.modal', function (event) {
+        
+    //     // Encuentra el formulario dentro del modal y limpia los campos
+    //     $(this).find('form')[0].reset();
+    //     load_combobox("#suppliers_id");
+    // });
+
+    // $(document).on('show.bs.modal','#createModal', function (event) {
+    //     event.preventDefault();
+    //     $(this).find('form')[0].reset();
+    //     load_combobox("#suppliers_id");
+    // });
+
+    $('.open-modal-brand').on('click', function(e){
+        e.preventDefault();
+        $('form#new_brand')[0].reset();
         load_combobox("#suppliers_id");
     });
 
-    $("#suppliers_id").multiselect({
-        enableHTML:false,
-    });
-
-    $('#suppliersup_id').multiselect({
-        enableHTML:false,
-    });
-
     var load_combobox = function(input){
+        $(input).append('<option value="">Select suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -513,14 +526,10 @@
             url: 'api/suppliers/all/combobox',
             success: function( response ){
                 if(response.length != 0){
-                    var options = [];
+                    
                     $.each(response, function(index, row) {
-                        
-                        options.push({label: row.name, value: row.id});
-
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
-                    $(input).multiselect('dataprovider', options);
-
               }
             },
             error: function(xhr, textStatus, error){

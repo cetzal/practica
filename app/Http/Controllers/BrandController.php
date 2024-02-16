@@ -28,9 +28,15 @@ class BrandController extends Controller
         if (!empty($request->brand_name)) {
             $where[] = ['name', 'like', '%'.$request->brand_name.'%'];
         }
+
+        if (!empty($request->supplier_name)) {
+            $where[] = ['supplier_name', 'like', '%'.$request->supplier_name.'%'];
+        }
+
         if (!empty($request->created_by)) {
             $where[] = ['created_by', 'like', '%'.$request->created_by.'%'];
         }
+
 
         if ($request->status != '') {
             $where[] = ['is_active', '=', $request->status];
@@ -45,7 +51,7 @@ class BrandController extends Controller
         }
         
         $data = DB::table('view_brands')
-                ->select(['id', 'name', 'description', 'is_active', 'created_by', 'created_at', 'updated_at'])
+                ->select(['id', 'name', 'description', 'is_active', 'created_by', 'supplier_name', 'created_at', 'updated_at'])
                 ->where($where)
                 ->get();
         
@@ -85,9 +91,6 @@ class BrandController extends Controller
         $input['is_active'] = true;
         $input['created_by'] = JWTAuth::toUser()->id;
         $brand = Brand::create($input);
-        if(!empty($request->suppliers_id)){
-            $brand->suppliers()->attach($request->suppliers_id);
-        }
 
         if ($brand->getKey()) {
             LogModule::create($this->logFormat(
@@ -104,7 +107,7 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        $brand_data = DB::table('view_brands')->select(['id', 'name', 'description'])
+        $brand_data = DB::table('view_brands')->select(['id', 'name', 'description', 'supplier_id'])
                         ->find($id);
         return $brand_data;
     }
@@ -125,15 +128,10 @@ class BrandController extends Controller
         $previous_value = $brand_data->getOriginal();
         $brand_data->name = $request->name;
         $brand_data->description = $request->description;
-        
+        $brand_data->supplier_id = $request->supplier_id;
         $brand_data->save();
-        if(!empty($request->suppliers_id)){
-            $brand_data->suppliers()->detach();
-            $brand_data->suppliers()->attach($request->suppliers_id);
-        }else{
-            $brand_data->suppliers()->detach();
-        }
-        
+       
+
         if ($brand_data->getChanges()) {
             LogModule::create($this->logFormat(
                 [

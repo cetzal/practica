@@ -87,18 +87,11 @@ class ProductController extends Controller
     
     public function create()
     {
-        $lims_brand_list = DB::table('view_brands_active')->get();
+        $lims_brand_list = DB::table('view_products_brands_edit')->get();
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();
-        Log::emergency('brand_list');
-        Log::emergency(print_r($lims_brand_list, true));
-        Log::emergency('lims_category_list');
-        Log::emergency(print_r($lims_category_list, true));
-        Log::emergency('lims_unit_list');
-        Log::emergency(print_r($lims_unit_list, true));
-        Log::emergency('lims_tax_list');
-        Log::emergency(print_r($lims_tax_list, true));
+
         return view('product.create',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
     }
 

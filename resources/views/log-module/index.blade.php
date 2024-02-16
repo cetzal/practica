@@ -67,7 +67,5 @@
 </section>
 @endsection
 @section('scripts')
-<script type="text/javascript">
-    
-</script>
+    <script src="{{ asset('js/modules/log-module/index.js') }}"></script>
 @endsection

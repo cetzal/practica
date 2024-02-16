@@ -19379,6 +19379,16 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+(function () {
+  $(document).delegate(".show_form_search", "click", function (e) {
+    e.preventDefault();
+    $('.form_search').toggleClass('form_search_active');
+  });
+  $(document).delegate(".close_form", "click", function (e) {
+    e.preventDefault();
+    $('.form_search').toggleClass('form_search_active');
+  });
+})();
 
 /***/ }),
 

@@ -125,7 +125,15 @@ class BrandController extends Controller
         $previous_value = $brand_data->getOriginal();
         $brand_data->name = $request->name;
         $brand_data->description = $request->description;
+        
         $brand_data->save();
+        if(!empty($request->suppliers_id)){
+            $brand_data->suppliers()->detach();
+            $brand_data->suppliers()->attach($request->suppliers_id);
+        }else{
+            $brand_data->suppliers()->detach();
+        }
+        
         if ($brand_data->getChanges()) {
             LogModule::create($this->logFormat(
                 [

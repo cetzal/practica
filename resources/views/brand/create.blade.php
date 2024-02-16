@@ -13,6 +13,10 @@
                 <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
             </div>
             <div class="form-group">
+                <label>{{trans('file.supplier')}}</label>
+                <select class="form-select" name="suppliers_id[]" id="suppliers_id" multiple="multiple"></select>
+            </div>
+            <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>
                 <textarea name="description" required class="form-control" value="" placeholder="Type brand description..." rows="3"></textarea>
                 <!-- <input type="textarea" name="description" required class="form-control" value="" placeholder="Type brand description..."> -->

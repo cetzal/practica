@@ -41,4 +41,4 @@
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
-
+<link href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}" rel="stylesheet" type="text/css" />

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use JWTAuth;
-use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\LogModule;
 use App\Traits\LogModuleTrait;
-use Illuminate\Support\Arr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BrandController extends Controller
 {
@@ -85,6 +85,10 @@ class BrandController extends Controller
         $input['is_active'] = true;
         $input['created_by'] = JWTAuth::toUser()->id;
         $brand = Brand::create($input);
+        if(!empty($request->suppliers_id)){
+            $brand->suppliers()->attach($request->suppliers_id);
+        }
+
         if ($brand->getKey()) {
             LogModule::create($this->logFormat(
                 [

@@ -340,6 +340,9 @@
     });
 
     $('#brand-table').on('click', '.open-EditbrandDialog ', function() {
+       
+        $('#update_brand')[0].reset();
+        load_combobox("#suppliersup_id");
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/edit");
@@ -350,6 +353,7 @@
             $("input[name='brand_id']").val(data['id']);
 
         });
+
     });
 
     $('#brand-table').on('click', '.remove ', function() {
@@ -489,5 +493,41 @@
     $('#createModal').on('show.bs.modal', function (event) {
         // Encuentra el formulario dentro del modal y limpia los campos
         $(this).find('form')[0].reset();
+        load_combobox("#suppliers_id");
     });
+
+    $("#suppliers_id").multiselect({
+        enableHTML:false,
+    });
+
+    $('#suppliersup_id').multiselect({
+        enableHTML:false,
+    });
+
+    var load_combobox = function(input){
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: 'api/suppliers/all/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    var options = [];
+                    $.each(response, function(index, row) {
+                        
+                        options.push({label: row.name, value: row.id});
+
+                    }); 
+                    $(input).multiselect('dataprovider', options);
+
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+   
+
 })();

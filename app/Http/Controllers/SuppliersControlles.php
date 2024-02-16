@@ -192,4 +192,9 @@ class SuppliersControlles extends Controller
         return response()->json(['status' => 'success', 'messages' => 'El proveedor se ha eliminado con exito']);
     }
 
+    public function combobox(){
+        $data = DB::table('view_suppliers_active')->get();
+        return $data;
+    }
+
 }

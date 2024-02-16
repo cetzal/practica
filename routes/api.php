@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/suppliers', [App\Http\Controllers\SuppliersControlles::class, 'store'])->name('api.suppliers.store');
     Route::get('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'edit'])->name('api.suppliers.edit');
     Route::put('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'update'])->name('api.suppliers.update');
+    Route::get('/suppliers/all/combobox', [App\Http\Controllers\SuppliersControlles::class, 'combobox'])->name('api.supliers.combobox');
     Route::delete('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'destroy'])->name('api.suppliers.destroy');
     Route::put('/suppliers/{id}/activate', [App\Http\Controllers\SuppliersControlles::class, 'activate'])->name('api.suppliers.activate');
     Route::put('/suppliers/{id}/deactivate', [App\Http\Controllers\SuppliersControlles::class, 'deactivate'])->name('api.suppliers.deactivate');

@@ -38,18 +38,19 @@
                 type: $( this ).attr( 'method' ),
                 url: actionUrl,
                 success: function( response ){
-                    table.ajax.reload();
+                    
                     $.confirm({
                         title: response.status,
                         content: response.message,
                         buttons: {
                             ok: function () {
-                                $('#createModal').modal('hide');
-                                $('#createModal').modal({backdrop: false});
-                                $('.modal-backdrop').remove();
+                                // $('#createModal').modal('hide');
+                                // $('#createModal').modal({backdrop: false});
+                                // $('.modal-backdrop').remove();
+                                $('.btn-close-modal').trigger('click');
                                 $("#new_brand").get(0).reset();
                                 $("tbody input[type='checkbox']").prop('checked', false);
-                                table.ajax.reload();
+                                $('#brand-table').DataTable().ajax.reload();
                             }
                         }
                     });
@@ -80,5 +81,9 @@
             });
         }
         
+    });
+
+    $("#suppliers_id").multiselect({
+        enableHTML:false,
     });
 })();

@@ -16,4 +16,9 @@ class Brand extends Model
     	return $this->hasMany('App/Product');
     	
     }
+
+    public function suppliers()
+    { 
+        return $this->belongsToMany(Brand::class,'brands_suppliers','brand_id', 'supplier_id');
+    }
 }

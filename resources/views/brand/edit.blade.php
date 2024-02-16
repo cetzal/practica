@@ -9,11 +9,16 @@
       <div class="modal-body">
         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
           <div class="form-group">
-            <label>{{trans('file.Title')}} *</label>
+            <label>{{trans('file.name')}} *</label>
             <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
            
         </div>
+
         <input type="hidden" name="brand_id">
+        <div class="form-group">
+                <label>{{trans('file.supplier')}}</label>
+                <select class="form-select" name="suppliers_id[]" id="suppliersup_id" multiple="multiple"></select>
+        </div>
         <div class="form-group">
             <label>{{trans('file.Description')}} *</label>
            
@@ -21,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">Close</button>
-            <input type="submit" value="{{trans('file.save')}}" class="btn btn-primary">
+            <input type="submit" value="{{trans('file.Save')}}" class="btn btn-primary">
         </div>
       {{ Form::close() }}
     </div>

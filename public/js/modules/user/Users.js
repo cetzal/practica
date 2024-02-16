@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1038,7 +1038,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 /***/ }),
 
-/***/ 15:
+/***/ 18:
 /*!**************************************************!*\
   !*** multi ./resources/js/modules/user/Users.js ***!
   \**************************************************/

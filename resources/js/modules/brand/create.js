@@ -56,24 +56,18 @@
                 },
                 error: function(xhr, textStatus, error){
                     if (xhr.status == 422) {
-                        // let responseText = JSON.parse(xhr.responseText);
-                        // let keys = Object.keys(responseText.errors);
-                        // let message = 'Error desconocido';
-                        // if (keys.length > 0) {
-                        //     message = responseText.errors[keys[0]][0];
-                        // }
-                        // console.log('response', responseText);
-                        // $.alert({
-                        //     title: 'Campos invalidos',
-                        //     content: message,
-                        // });
-                        console.log(xhr.responseJSON.errors);
+                        let message = ''
                         $.each(xhr.responseJSON.errors,function(field_name,error){
-                            console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
-                            $('input[name="'+field_name+'"]').addClass('is-invalid');
-                            let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
-                            $('input[name="'+field_name+'"]').after(html);
+                            // $('input[name="'+field_name+'"]').addClass('is-invalid');
+                            // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
+                            // $('input[name="'+field_name+'"]').after(html);
+                            message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
                         })
+
+                        $.alert({
+                            title: 'Field invalid',
+                            content: message,
+                        });
 
                     }
                 }

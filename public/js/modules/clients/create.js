@@ -81,23 +81,24 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/modules/brand/create.js":
-/*!**********************************************!*\
-  !*** ./resources/js/modules/brand/create.js ***!
-  \**********************************************/
+/***/ "./resources/js/modules/clients/create.js":
+/*!************************************************!*\
+  !*** ./resources/js/modules/clients/create.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 (function () {
-  $('form#new_brand').validate({
+  $('form#new_client').validate({
     rules: {
-      name: 'required',
-      description: 'required'
+      name: {
+        required: true
+      }
     },
     highlight: function highlight(input) {
       $(input).addClass('is-invalid');
@@ -105,80 +106,74 @@
     unhighlight: function unhighlight(input) {
       $(input).removeClass('is-invalid');
     },
+    errorElement: 'span',
     errorPlacement: function errorPlacement(error, element) {
-      // Add the `invalid-feedback` class to the error element
-      // error.addClass("invalid-feedback" );
-      // error.insertAfter(element);
       error.addClass('invalid-feedback');
       element.closest('.form-group').append(error);
     },
     messages: {
-      name: "El nombre es requerido",
-      description: "La descripcion es requerido"
+      name: 'The name is requerid'
     }
   });
-  $('form#new_brand').submit(function (e) {
+  $('#new_client').on('submit', function (e) {
     e.preventDefault();
-    if ($('form#new_brand').valid()) {
-      var data = new FormData($('form#new_brand')[0]);
-      var actionUrl = $(this).attr('action');
-      var method = $(this).attr('method');
+    if ($(this).valid()) {
       $.ajax({
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        data: data,
-        type: $(this).attr('method'),
-        url: actionUrl,
+        type: 'POST',
+        url: "api/clients",
+        data: $("#new_client").serialize(),
         success: function success(response) {
-          table.ajax.reload();
+          $("input[name='name']").val('');
+          $('.btn-close-modal').trigger('click');
           $.confirm({
-            title: response.status,
-            content: response.message,
+            title: 'Crear cliente',
+            content: 'El cliente se ha creado con exito',
             buttons: {
               ok: function ok() {
-                $('#createModal').modal('hide');
-                $('#createModal').modal({
-                  backdrop: false
-                });
-                $('.modal-backdrop').remove();
-                $("#new_brand").get(0).reset();
-                $("tbody input[type='checkbox']").prop('checked', false);
-                table.ajax.reload();
+                $('#clients-data-table').DataTable().ajax.reload();
               }
             }
           });
         },
-        error: function error(xhr, textStatus, _error) {
-          if (xhr.status == 422) {
-            var message = '';
-            $.each(xhr.responseJSON.errors, function (field_name, error) {
-              // $('input[name="'+field_name+'"]').addClass('is-invalid');
-              // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
-              // $('input[name="'+field_name+'"]').after(html);
-              message += '<b>' + field_name + '</b>: ' + xhr.responseJSON.errors[field_name][0] + '<br>';
+        error: function error(response) {
+          if (response.status == 422) {
+            //toastError(err.responseJSON.message);
+            var details = response.responseJSON.errors;
+            var content = '';
+            Object.keys(details).forEach(function (field) {
+              content += formatErrorUsingClassesAndPopover(field, details[field]);
             });
             $.alert({
-              title: 'Field invalid',
-              content: message
+              title: 'Error',
+              content: content
             });
           }
         }
       });
     }
   });
+  function formatErrorUsingClassesAndPopover(element, array_of_problems) {
+    var someHTML = '';
+    array_of_problems.forEach(function (e) {
+      someHTML += '<li>' + element + ': ' + e + '</li>';
+    });
+    // $('#'+element+'_error_section').html('<ul>'+someHTML+'</ul>');
+    // $('#'+element).addClass('is-invalid');
+
+    return '<ul>' + someHTML + '</ul><br>';
+  }
 })();
 
 /***/ }),
 
-/***/ 5:
-/*!****************************************************!*\
-  !*** multi ./resources/js/modules/brand/create.js ***!
-  \****************************************************/
+/***/ 8:
+/*!******************************************************!*\
+  !*** multi ./resources/js/modules/clients/create.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/brand/create.js */"./resources/js/modules/brand/create.js");
+module.exports = __webpack_require__(/*! /usr/local/var/www/practica/resources/js/modules/clients/create.js */"./resources/js/modules/clients/create.js");
 
 
 /***/ })

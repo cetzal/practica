@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -127,7 +127,14 @@
     }).done(function (data) {
       console.log("Solicitud GET exitosa:", data);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-      console.error("Error en la solicitud GET:", errorThrown);
+      var message = '';
+      $.each(jqXHR.responseJSON.errors, function (field_name, error) {
+        message += '<b>' + field_name + '</b>: ' + jqXHR.responseJSON.errors[field_name][0] + '<br>';
+      });
+      $.alert({
+        title: 'Field invalid',
+        content: message
+      });
     });
   });
 
@@ -404,15 +411,13 @@
               error: function error(response) {
                 if (response.status == 422) {
                   //toastError(err.responseJSON.message);
-                  console.log('errors', response.responseJSON);
-                  var details = response.responseJSON.errors;
-                  var content = '';
-                  Object.keys(details).forEach(function (field) {
-                    content += formatErrorUsingClassesAndPopover(field, details[field]);
+                  var message = '';
+                  $.each(response.responseJSON.errors, function (field_name, error) {
+                    message += '<b>' + field_name + '</b>: ' + response.responseJSON.errors[field_name][0] + '<br>';
                   });
                   $.alert({
-                    title: 'Error',
-                    content: content
+                    title: 'Field invalid',
+                    content: message
                   });
                 }
               }
@@ -431,14 +436,22 @@
     error: function error(file, response) {
       if (response.status == 422) {
         //toastError(err.responseJSON.message);
-        var details = response.responseJSON.errors;
-        var content = '';
-        Object.keys(details).forEach(function (field) {
-          content += formatErrorUsingClassesAndPopover(field, details[field]);
+        // let details = response.responseJSON.errors ;
+        // let content = '';
+        // Object.keys(details).forEach(field => {
+        //     content += formatErrorUsingClassesAndPopover(field,details[field]);
+        // });
+
+        var message = '';
+        $.each(response.responseJSON.errors, function (field_name, error) {
+          // $('input[name="'+field_name+'"]').addClass('is-invalid');
+          // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+response.responseJSON.errors[field_name][0]+'</label>';
+          // $('input[name="'+field_name+'"]').after(html);
+          message += '<b>' + field_name + '</b>: ' + response.responseJSON.errors[field_name][0] + '<b>';
         });
         $.alert({
-          title: 'Error',
-          content: content
+          title: 'Field invalid',
+          content: message
         });
       }
       // console.log(response);
@@ -502,7 +515,7 @@
 
 /***/ }),
 
-/***/ 9:
+/***/ 12:
 /*!******************************************************!*\
   !*** multi ./resources/js/modules/product/create.js ***!
   \******************************************************/

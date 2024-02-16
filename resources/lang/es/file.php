@@ -567,6 +567,9 @@ return [
 	"Save" => "Guardar",
 	"Close" => "Cerrar",
 	"Filter" => "Filtrar",
-	"LastName" => "Apellidos"
+	"LastName" => "Apellidos",
+	"supplier" => "Proveedor",
+	"total_brands" => "Total marcas",
+	"add_supplier" => 'Agregar proveedor',
 ];
 ?>

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Suppliers;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\Suppliers;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class SuppliersControlles extends Controller
 {
@@ -88,7 +89,7 @@ class SuppliersControlles extends Controller
         return response()->json(['status' => 'succes', 'message' => 'El proveedor se guardo con exito']);
     }
 
-    public function show($id){
+    public function edit($id){
         $data = DB::table('view_suppliers')->where('id',$id)->first();
         
         if(!$data){
@@ -102,13 +103,14 @@ class SuppliersControlles extends Controller
         $this->validate($request, [
             'name' => [
                 'max:255',
-                Rule::unique('view_clients')->ignore($id)->where(function ($query) {
+                Rule::unique('view_suppliers')->ignore($id)->where(function ($query) {
                     return $query->where('is_active', 1);
                 }),
             ]
         ]);
 
         $supplier_data = Suppliers::findOrFail($id);
+
         $previous_value = $supplier_data->getOriginal();
         $supplier_data->name = $request->name;
         if(!isset($input['is_active']))

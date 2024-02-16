@@ -567,6 +567,9 @@ return [
 	"Save" => "Save",
 	"Close" => "Close",
 	"Filter" => "Filter",
-
+	"supplier" => "Supplier",
+	"total_brands" => "Total brands",
+	"add_supplier" => 'Add supplier',
+	'update_supplier' => 'Update Supplier',
 ];
 ?>

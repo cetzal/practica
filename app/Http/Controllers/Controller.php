@@ -17,7 +17,7 @@ class Controller extends BaseController
         LogModule::create($this->logFormat(
             [
                 'previous' => $previous_data,
-                'current' => $current_data->getOriginal(),
+                'current' => $current_data,
                 'module' => $module,
                 'movement_type' => $movement_type
             ]

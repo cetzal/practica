@@ -1,5 +1,5 @@
 (function() {
-    var brand_id = [];
+    var supplier_ids = [];
     
     $.ajaxSetup({
         headers: {
@@ -27,10 +27,6 @@
         $(this).val('');
     });
 
-    brand_ids = [];
-    //Eliminar todas las marcas
-    
-
     $( "#select_all" ).on( "change", function() {
         if ($(this).is(':checked')) {
             $("tbody input[type='checkbox']").prop('checked', true);
@@ -49,20 +45,21 @@
         $('.form_search').removeClass('form_search_active');
     });
 
-    var table = $('#brand-table').DataTable( {
+    var table = $('#supplier-table').DataTable( {
         responsive: false,
         autoWidth : false,
         serverSide: true,
         "searching": false,
         "bProcessing": true,
         "ajax" : {
-            "url": "api/brand",
+            "url": "api/suppliers",
             "data": function(d) {
-                var frm_data = $('form#from_brand_search').serializeArray();
+                var frm_data = $('form#from_search_supplier').serializeArray();
                 // return frm_data;
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
+                console.log('frmdata', frm_data);
             }
         },
         "order": [],
@@ -75,25 +72,8 @@
                 'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         },
-        // 'columns': [
-        //     { 
-        //         data: "", "render": function (data, type, full, meta) {
-        //             return data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
-        //         }
-        //     },
-        //     { data: 'name' },
-        //     { data: 'description' },
-        //     { data: 'accion' , "render": function (data, type, full, meta) {
-                        
-        //         let $html =  '<a class="btn bg-success m-1 update" data-id="'+data+'"><i class="icon-floppy-disk"></i> Update</a>';
-        //             $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+data+'"><i class="icon-trash"></i> Delete</a>';
-        //             $html +=  '<a class="btn bg-grey m-1 reset" data-id="'+data+'"><i class="icon-reset"></i> Reset</a>';
-        //             return $html;
-        //         }
-        //     },
-        // ],
         'createdRow': function(row, data, dataIndex) {
-            $(row).attr('data-branch-id', data['id']);
+            $(row).attr('data-supplier-id', data['id']);
         },
         'columnDefs': [
             {
@@ -110,17 +90,16 @@
                    'selectRow': true,
                    'selectAllRender': '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>'
                 },
-            },{
+            },
+            {
                 'render': function(data, type, row, meta){
                    return row.name;
                 },
                 'targets': [1]
             },
             {
-                'width': '100px',
                 'render': function(data, type, row, meta){
-                    let html = '<p class="text_ellipsis" style="width:250px;">'+row.description+'</p>';
-                   return html;
+                   return row.total_brands;
                 },
                 'targets': [2]
             },
@@ -161,17 +140,14 @@
                 'targets': [6]
             },
             {
-                'render': function(data, type, row, meta){
-                    // let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></button>';
-                    let $html =  '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                'render': function(data, type, row, meta) {
+                    let $html =  '<a href="#" class="btn bg-success btn-sm open-EditSupplierDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                     $html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     if(row.is_active == 1){
                         $html +=  '<a class="btn m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
                     }else{
                         $html +=  '<a class="btn m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                     }
-                    // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-                    // let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm " data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                     return $html;
                 
                 },
@@ -187,23 +163,23 @@
 
     $(".delete_all").on('click', function(e){
         e.preventDefault();
-        brand_ids = [];
-        verific_checks(0);
-        if(brand_ids.length) {
+        supplier_ids = [];
+        verific_checks_supplier(0);
+        if(supplier_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'api/brand/all/deletebyselection',
+                url:'api/suppliers/all/deletebyselection',
                 data:{
-                    brandIdArray: brand_ids
+                    brandIdArray: supplier_ids
                 },
                 success:function(data){
                     console.log('data', data.messages);
-                    var messsage = 'se elimino todo las marcas selecionados';
+                    var messsage = 'Se elimino todo los proveedores selecionados';
                     if (typeof data.messages != undefined) {
                         messsage = data.messages;
                     }
                     $.confirm({
-                        title: 'Eliminar marcas',
+                        title: 'Eliminar proveedores',
                         content: messsage,
                         buttons: {
                             ok: function () {
@@ -217,27 +193,27 @@
         }else{
             $.alert({
                 title: 'Eliminar marcas',
-                content: 'Seleccione las marcas que deseas eliminar',
+                content: 'Seleccione los proveedores que deseas eliminar',
             });
         }
     });
 
-    //Activar todas las marcas seleccionas
+    //Activar todas las proveedores seleccionas
     $(".active_all").on('click', function(e){
         e.preventDefault();
-        brand_ids = [];
-        verific_checks(0);
-        if(brand_ids.length) {
+        supplier_ids = [];
+        verific_checks_supplier(0);
+        if(supplier_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'api/brand/all/activatebyselection',
+                url:'api/suppliers/all/activatebyselection',
                 data:{
-                    brandIdArray: brand_ids
+                    brandIdArray: supplier_ids
                 },
                 success:function(data){
                     $.confirm({
-                        title: 'Activar marcas',
-                        content: 'Se activo todo las marcas selecionados ',
+                        title: 'Activar proveedores',
+                        content: 'Se activo todo los proveedores selecionados ',
                         buttons: {
                             ok: function () {
                                 table.ajax.reload();
@@ -249,33 +225,33 @@
             });
         }else{
             $.alert({
-                title: 'Activar marcas',
-                content: 'Seleccione los marcas que deseas activar',
+                title: 'Activar proveedores',
+                content: 'Seleccione los proveedores que deseas activar',
             });
         }
     });
 
-    // Desactivas todas las marcas seleccionadas
+    // Desactivas todas las prvoeedores seleccionadas
     $(".desactive_all").on('click', function(e){
         e.preventDefault();
-        brand_ids = [];
-        verific_checks(0);
-        if(brand_ids.length) {
+        supplier_ids = [];
+        verific_checks_supplier(0);
+        if(supplier_ids.length) {
             $.ajax({
                 type:'PUT',
-                url:'api/brand/all/deactivatebyselection',
+                url:'api/suppliers/all/deactivatebyselection',
                 data:{
-                    brandIdArray: brand_ids
+                    brandIdArray: supplier_ids
                 },
                 success:function(data){
                     $.confirm({
-                        title: 'Desactivar marcas',
-                        content: 'Se desactivo todas los marcas selecionados ',
+                        title: 'Desactivar proveedores',
+                        content: 'Se desactivo todas los proveedores selecionados ',
                         buttons: {
                             ok: function () {
                                 table.ajax.reload();
                                 $("tbody input[type='checkbox']").prop('checked', false);
-                                // $('#brand-table').DataTable().ajax().reload();
+                                // $('#supplier-table').DataTable().ajax().reload();
                             }
                             // cancel: function () {
                             //     $.alert('Canceled!');
@@ -295,76 +271,25 @@
             });
         }else{
             $.alert({
-                title: 'Desactivar marcas',
-                content: 'Seleccione lass marcas que deseas desactivar',
+                title: 'Desactivar proveedores',
+                content: 'Seleccione los proveedores que deseas desactivar',
             });
         }
     });
-    var verific_checks = function(num){
-        $(':checkbox:checked').each(function(i){
-            var brand_data = $(this).closest('tr').data('branch-id');
-            if (typeof(brand_data) != "undefined") {
-                brand_ids[i-1] = brand_data;
-            }
-        });
-    }
 
-    $( "#from_brand_search" ).on("submit", function( event ) {
-        event.preventDefault();
-        var date_range = $('#range_date').val();
-        var type_fecha = $('.brand-date-select').val();
-
-        if(type_fecha=='' && date_range !== ''){
-            $.alert({
-                title: 'Filtra datos',
-                content:'Selecione un tipo de fecha a consultar',
-            });
-
-            return '';
-        }
-        
-        if(date_range == '' && type_fecha !== ''){
-            $.alert({
-                title: 'Filtra datos',
-                content:'Selecione el rango de fecha',
-            });
-
-            return '';
-        }
-        table.ajax.reload();
-    });
-
-    $('.clear_form').on('click', function(e){
-        $('#from_brand_search')[0].reset();
-        table.ajax.reload();
-    });
-
-    $('#brand-table').on('click', '.open-EditbrandDialog ', function() {
-        var url = "api/brand/"
+    $('#supplier-table').on('click', '.remove ', function() {
+        var url = "api/suppliers/"
         var id = $(this).data('id').toString();
-        url = url.concat(id).concat("/edit");
-
-        $.get(url, function(data) {
-            $("input[name='name']").val(data['name']);
-            $("textarea[name='description']").val(data['description']);
-            $("input[name='brand_id']").val(data['id']);
-
-        });
-    });
-
-    $('#brand-table').on('click', '.remove ', function() {
-        var url = "api/brand/"
-        var id = $(this).data('id').toString();
-        url = url.concat(id).concat("/delete");
+        url+=id;
         var Jquery = $.Jquery;
        
         $.confirm({
-            title: 'Delete brand?',
-            content: 'Realmente quieres eliminar la marca',
+            title: 'Delete supplier?',
+            content: 'Realmente quieres eliminar el proveedor',
             // autoClose: 'cancelAction|8000',
             buttons: {
                 deleteUser: {
-                    text: 'delete brands',
+                    text: 'delete suppliers',
                     action: function () {
                         $.ajax({
                             url: url,
@@ -393,19 +318,19 @@
     });
 
 
-    $('#brand-table').on('click', '.desactivar ', function() {
-        var url = "api/brand/"
+    $('#supplier-table').on('click', '.desactivar ', function() {
+        var url = "api/suppliers/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/deactivate");
         var Jquery = $.Jquery;
        
         $.confirm({
-            title: 'Descativar marca?',
-            content: 'Realmente quieres desactivar la marca',
+            title: 'Descativar proveedor?',
+            content: 'Realmente quieres desactivar el proveedor',
             // autoClose: 'cancelAction|8000',
             buttons: {
                 deleteUser: {
-                    text: 'desactivar brands',
+                    text: 'desactivar suppliers',
                     action: function () {
                         $.ajax({
                             url: url,
@@ -428,19 +353,19 @@
 
     });
 
-    $('#brand-table').on('click', '.activar ', function() {
-        var url = "api/brand/"
+    $('#supplier-table').on('click', '.activar ', function() {
+        var url = "api/suppliers/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/activate");
         var Jquery = $.Jquery;
        
         $.confirm({
             title: 'Activar brand?',
-            content: 'Realmente quieres activar la marca',
+            content: 'Realmente quieres activar el proveedor',
             // autoClose: 'cancelAction|8000',
             buttons: {
                 deleteUser: {
-                    text: 'activar brands',
+                    text: 'activar suppliers',
                     action: function () {
                         $.ajax({
                             url: url,
@@ -462,32 +387,60 @@
         });
 
     });
+    var verific_checks_supplier = function(num){
+        $(':checkbox:checked').each(function(i){
+            var supplier_data = $(this).closest('tr').data('supplier-id');
+            if (typeof(supplier_data) != "undefined") {
+                supplier_ids[i-1] = supplier_data;
+            }
+        });
+    }
 
-    //Cerrar los modales de update or create
-    $('.bt-close-modal').on('click', function(e){
-        $("input[name='name']").val('');
-        $("textarea[name='description']").val('');
+    $( "#from_search_supplier" ).on("submit", function( event ) {
+        event.preventDefault();
+        var date_range = $('#range_date').val();
+        var type_fecha = $('.brand-date-select').val();
+
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
         
-        $('form#new_brand')[0].reset();
-        $('form#update_brand')[0].reset();
-        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
-        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
-        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
-        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
+        table.ajax.reload();
     });
-    $('.btn-close-modal').on('click', function(e){
-        $("input[name='name']").val('');
-        $("textarea[name='description']").val('');
-        $('form#new_brand')[0].reset();
-        $('form#update_brand')[0].reset();
-        $("form#new_brand").find("#btn-password").removeClass('is-invalid');
-        $("form#new_brand").find("#btn-password").attr('aria-invalid', false);
-        $("form#update_brand").find("#btn-password-up").removeClass('is-invalid');
-        $("form#update_brand").find("#btn-password-up").attr('aria-invalid', false);
+
+    $('.clear_form').on('click', function(e){
+        $('#from_search_supplier')[0].reset();
+        table.ajax.reload();
+    });
+
+    $('#supplier-table').on('click', '.open-EditSupplierDialog ', function() {
+        var url = "api/suppliers/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id);
+
+        $.get(url, function(data) {
+            $("input[name='name']").val(data['data']['name']);
+            $("input[name='supplier_id']").val(data['data']['id']);
+
+        });
     });
 
     $('#createModal').on('show.bs.modal', function (event) {
         // Encuentra el formulario dentro del modal y limpia los campos
         $(this).find('form')[0].reset();
     });
+
 })();

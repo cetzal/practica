@@ -91,4 +91,6 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/modules/supplier/index.js') }}"></script>
+    <script src="{{ asset('js/modules/supplier/create.js') }}"></script>
+    <script src="{{ asset('js/modules/supplier/edit.js') }}"></script>
 @endsection

@@ -31,8 +31,3 @@
       </div>
     </div>
 </div>
-
-@section('scripts')
-  @parent
-  <script src="{{ asset('js/modules/brand/create.js') }}"></script>
-@endsection

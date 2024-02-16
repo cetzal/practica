@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\LogModule;
 use App\Models\Suppliers;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Traits\LogModuleTrait;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Log;
 
 class SuppliersControlles extends Controller
 {
+    use LogModuleTrait;
+
     public function index(){
         return view('suppliers.index');
     }
@@ -84,7 +88,15 @@ class SuppliersControlles extends Controller
             $suppliers->brands()->attach($input['brands_id']);
         
         if ($suppliers->getKey()) {
-            $this->log([], $suppliers, 'Suppliers');
+            // $this->log([], $suppliers, 'Suppliers');
+            LogModule::create($this->logFormat(
+                [
+                    'previous' => [],
+                    'current' => $suppliers->getOriginal(),
+                    'module' => 'Marcas',
+                    'movement_type' => 'Creacion'
+                ]
+            ));
         }
         return response()->json(['status' => 'succes', 'message' => 'El proveedor se guardo con exito']);
     }

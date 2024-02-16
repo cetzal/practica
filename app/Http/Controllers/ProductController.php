@@ -87,7 +87,7 @@ class ProductController extends Controller
     
     public function create()
     {
-        $lims_brand_list = DB::table('view_products_brands_edit')->get();
+        $lims_brand_list = DB::table('view_brands_active')->get();
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();
@@ -155,7 +155,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         // $lims_product_list = Product::where([ ['is_active', true], ['type', 'standard'] ])->get();
-        $lims_brand_list = DB::table('view_brands_active')->get();
+        $lims_brand_list = DB::table('view_products_brands_edit')->get();
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -378,7 +378,6 @@
                 $.confirm({
                   title: 'Actualizar producto',
                   content: 'El producto se ha actualizado con exito',
-                  autoClose: 'ok|3000',
                   buttons: {
                     ok: function ok() {
                       window.location.replace('/product');
@@ -453,7 +452,7 @@
 
 /***/ }),
 
-/***/ 10:
+/***/ 15:
 /*!****************************************************!*\
   !*** multi ./resources/js/modules/product/edit.js ***!
   \****************************************************/

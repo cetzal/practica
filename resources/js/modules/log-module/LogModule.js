@@ -151,7 +151,6 @@
     });
     $( "#from_search_log" ).on( "submit", function( event ) {
         event.preventDefault();
-        console.log('submit');
         $('#log-data-table').DataTable().ajax.reload();
     });
     

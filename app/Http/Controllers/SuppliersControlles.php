@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Enum\ModuleEnum;
 use App\Models\LogModule;
 use App\Models\Suppliers;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
 use App\Traits\LogModuleTrait;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -88,15 +90,13 @@ class SuppliersControlles extends Controller
             $suppliers->brands()->attach($input['brands_id']);
         
         if ($suppliers->getKey()) {
-            // $this->log([], $suppliers, 'Suppliers');
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => [],
-                    'current' => $suppliers->getOriginal(),
-                    'module' => 'Marcas',
-                    'movement_type' => 'Creacion'
-                ]
-            ));
+            $this->log(
+                [], 
+                Arr::except($suppliers->getOriginal(), ['id']),
+                $suppliers->getKey(),
+                ModuleEnum::SUPPLIERS,
+                MovementTypeEnum::CREATION
+            );
         }
         return response()->json(['status' => 'succes', 'message' => 'El proveedor se guardo con exito']);
     }
@@ -136,22 +136,53 @@ class SuppliersControlles extends Controller
 
         
         if ($supplier_data->getChanges()) {
-            $this->log(Arr::only($previous_value, array_keys($supplier_data->getChanges())), $supplier_data->getChanges(), 'Clients', 'Actualizacion');
+            $current_values = Arr::except($supplier_data->getChanges(), ['id']);
+            $this->log(
+                Arr::only($previous_value, array_keys($current_values)), 
+                $current_values,
+                $supplier_data->getKey(),
+                ModuleEnum::SUPPLIERS,
+                MovementTypeEnum::UPDATING
+            );
         }
+
         return response()->json(['status' => 'succes', 'message' => 'La proveedor se guardo con exito']); 
     }
 
     public function activate($id){
         $supplier_data = Suppliers::find($id);
+        $previous_value = Arr::except($supplier_data->getOriginal(), ['id']);
         $supplier_data->is_active = true;
         $supplier_data->save();
+
+        if ($current_value = $supplier_data->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $supplier_data->getKey(),
+                ModuleEnum::SUPPLIERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
         return response()->json(['status' => 'success', 'message' => 'El proveeedor se ha activado con exito']);
     }
 
     public function deactivate($id) {
         $supplier_data = Suppliers::find($id);
+        $previous_value = Arr::except($supplier_data->getOriginal(), ['id']);
         $supplier_data->is_active = false;
         $supplier_data->save();
+
+        if ($current_value = $supplier_data->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $supplier_data->getKey(),
+                ModuleEnum::SUPPLIERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El proveedor se ha desactivado con exito']);
     }
 

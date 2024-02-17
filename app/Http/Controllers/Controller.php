@@ -13,13 +13,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, LogModuleTrait;
 
-    public function log($previous_data = [], $current_data, $module = '', $movement_type = 'Creacion'){
+    public function log($previous_data = [], $current_data, $modified_record_id, $module_id, $movement_type_id){
         LogModule::create($this->logFormat(
             [
                 'previous' => $previous_data,
                 'current' => $current_data,
-                'module' => $module,
-                'movement_type' => $movement_type
+                'modified_record_id' => $modified_record_id,
+                'module_id' => $module_id,
+                'movement_type_id' => $movement_type_id
             ]
         ));
     }

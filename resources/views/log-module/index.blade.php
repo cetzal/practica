@@ -8,17 +8,29 @@
         <form id="from_search_log">
             <div class="row">
                 <div class="col">
-                    <label for="code_prod">Module</label>
-                    <input type="text" class="form-control" placeholder="Module" name="search_module">
+                    <div class="form-group">
+                        <label>Module</strong> </label>
+                        <div class="input-group">
+                            <select name="module_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Module...">
+                            <option value="">Select a Module</option>  
+                            @foreach($modules_list as $module)
+                                <option value="{{$module->id}}">{{$module->name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Movement type</label>
-                        <select class="form-select" name="select_movement">
-                            <option selected value="">Seleccione</option>
-                            <option value="Creacion">Creacion</option>
-                            <option value="Actualizacion">Actualizacion</option>
-                        </select>
+                        <label>Module</strong> </label>
+                        <div class="input-group">
+                            <select name="movement_type_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Movement type...">
+                            <option value="">Select a Movement type</option>  
+                            @foreach($movement_types_list as $movement_type)
+                                <option value="{{$movement_type->id}}">{{$movement_type->name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="col">

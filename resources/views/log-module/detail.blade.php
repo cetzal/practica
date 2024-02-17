@@ -1,5 +1,5 @@
 <div id="detailLogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal modal-md fade text-left">
-  <div role="document" class="modal-dialog">
+  <div role="document" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 id="exampleModalLabel" class="modal-title"> {{trans('file.detail_log')}}</h5>

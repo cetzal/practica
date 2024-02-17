@@ -7,17 +7,19 @@ use Carbon\Carbon;
 use Keygen\Keygen;
 use App\Models\User;
 use App\Models\Roles;
+use App\Enum\ModuleEnum;
 use App\Models\ViewUser;
 use App\Models\LogModule;
 use Illuminate\Support\Arr;
 use Tymon\JWTAuth\JWTGuard;
 use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
 use App\Traits\LogModuleTrait;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -145,14 +147,13 @@ class UserController extends Controller
         $user = User::create($data);
 
         if ($user->getKey()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => [],
-                    'current' => $user->getOriginal(),
-                    'module' => 'Usuarios',
-                    'movement_type' => 'Creacion'
-                ]
-            ));
+            $this->log(
+                [], 
+                Arr::except($user->getOriginal(), ['id']),
+                $user->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::CREATION
+            );
         }
 
         return response()->json(['status' => 'success', 'message' => 'El usuario fue creado con exito']);
@@ -242,14 +243,14 @@ class UserController extends Controller
         $user_data->update($input);
 
         if ($user_data->getChanges()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => Arr::only($previous_value, array_keys($user_data->getChanges())),
-                    'current' => $user_data->getChanges(),
-                    'module' => 'Usuarios',
-                    'movement_type' => 'Actualizacion'
-                ]
-            ));
+            $current_values = Arr::except($user_data->getChanges(), ['id']);
+            $this->log(
+                Arr::only($previous_value, array_keys($current_values)), 
+                $current_values,
+                $user_data->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::UPDATING
+            );
         }
 
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha actualizado con exito']);
@@ -258,15 +259,39 @@ class UserController extends Controller
 
     public function activate($id){
         $data_user = User::find($id);
+        $previous_value = Arr::except($data_user->getOriginal(), ['id']);
         $data_user->is_active = true;
         $data_user->save();
+        
+        if ($current_value = $data_user->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_user->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha activado con exito']);
     }
 
     public function deactivate($id) {
         $data_user = User::find($id);
+        $previous_value = Arr::except($data_user->getOriginal(), ['id']);
         $data_user->is_active = false;
         $data_user->save();
+
+        if ($current_value = $data_user->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_user->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha desactivado con exito']);
     }
 

@@ -65,13 +65,13 @@
                     },
                     {
                         'render' : function(data, type, row, meta){
-                            return row.module;
+                            return row.module_name;
                         },
                         'targets': [0]
                     },
                     {
                         'render' : function(data, type, row, meta){
-                            return row.movement_type;
+                            return row.movement_type_name;
                         },
                         'targets': [1],
                     },
@@ -109,10 +109,11 @@
             let previous_value = details.previous_value;
             let current_value = details.current_value;
             console.log('current value', current_value);
-            let html='<table>'
-            +'<thead><tr><th></th><th>Previous</th><th>Current</th></tr></thead>';
-            var tr = '<tbody>';
+            let html =''
             if (previous_value != null) {
+                html='<table>'
+                +'<thead><tr><th></th><th>Previous</th><th>Current</th></tr></thead>';
+                var tr = '<tbody>';
                 let keys_previous = Object.keys(previous_value);
                 for (let index = 0; index < keys_previous.length; index++) {
                     if (typeof previous_value[keys_previous[index]] != undefined) {
@@ -121,8 +122,9 @@
                     }
                 }
             } else {
-                let html='<table>'
+                html='<table>'
                 +'<thead><tr><th></th><th>Current</th></tr></thead>';
+                var tr = '<tbody>';
                 let keys_current = Object.keys(current_value);
                 for (let index = 0; index < keys_current.length; index++) {
                     if (typeof current_value[keys_current[index]] != undefined) {
@@ -155,11 +157,11 @@
     $('.show_form_search').on('click', function(e){
         e.preventDefault();
         console.log('click a form');
-        $('.form_search_log').toggleClass('form_search_active');
+        $('.form_search').toggleClass('form_search_active');
     });
     
     $('.close_form').on('click', function(e){
-        $('.form_search_log').removeClass('form_search_active');
+        $('.form_search').removeClass('form_search_active');
     });
     $( "#from_search_log" ).on( "submit", function( event ) {
         event.preventDefault();

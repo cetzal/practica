@@ -12,19 +12,21 @@ class LogModuleController extends Controller
     //
     public function index()
     {
-        return view('log-module.index');
+        $modules_list = DB::table('view_modules_combo')->get();
+        $movement_types_list = DB::table('view_movement_types_combo')->get();
+        return view('log-module.index', compact('modules_list', 'movement_types_list'));
     }
 
     public function list(Request $request)
     {
         $where = [];
 
-        if (!empty($request->search_module)) {
-            $where[] = ['module', 'like', '%'.$request->search_module.'%'];
+        if (!empty($request->module_id)) {
+            $where[] = ['module_id', 'like', '%'.$request->module_id.'%'];
         }
 
-        if (!empty($request->select_movement)) {
-            $where[] = ['movement_type', 'like', '%'.$request->select_movement.'%'];
+        if (!empty($request->movement_type_id)) {
+            $where[] = ['movement_type_id', 'like', '%'.$request->movement_type_id.'%'];
         }
         
         if (!empty($request->user_created)) {
@@ -56,9 +58,31 @@ class LogModuleController extends Controller
         return response()->json($json_data);
     }
 
-    public function edit($id) {
+    public function edit($id) 
+    {
         $log_data = DB::table('view_log_modules')->select(['details', 'movement_date' ])
                     ->find($id);
         return $log_data;
+    }
+
+    public function showRecord(Request $request, $id) 
+    {
+        $record_name = $request->record_name;
+        $module_name = '';
+
+        
+        $logs = DB::table('view_log_modules')
+            ->select(['id', 'module_name'])
+            ->where('modified_record_id',$id)
+            ->get();
+        
+        Log::emergency('logs');
+        Log::emergency(print_r($logs, true));
+        
+        
+        if ($logs->count()) {
+            $module_name = $logs->first()['module_name'];
+        }
+        return view('log-module.log-record', compact('record_name', 'module_name'));
     }
 }

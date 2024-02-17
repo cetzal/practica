@@ -16,8 +16,9 @@ trait LogModuleTrait
 
         return [
             'user_id' => JWTAuth::toUser()->id,
-            'module'  => $data['module'],
-            'movement_type' => $data['movement_type'],
+            'module_id'  => $data['module_id'],
+            'movement_type_id' => $data['movement_type_id'],
+            'modified_record_id' => $data['modified_record_id'],
             'details' => $this->formatDetails($data['previous'], $data['current']),
             'movement_date' => date('Y-m-d H:i:s'),
         ];

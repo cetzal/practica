@@ -1,0 +1,8 @@
+CREATE TABLE movement_types(
+	id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP,
+	deleted_at TIMESTAMP,
+	PRIMARY KEY (id)
+);

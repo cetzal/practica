@@ -10,11 +10,13 @@ use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Enum\ModuleEnum;
 use App\Models\Category;
 use App\Models\LogModule;
-use App\Traits\LogModuleTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
+use App\Traits\LogModuleTrait;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -139,14 +141,13 @@ class ProductController extends Controller
         $product = Product::create($data);
 
         if ($product->getKey()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => [],
-                    'current' => $product->getOriginal(),
-                    'module' => 'Productos',
-                    'movement_type' => 'Creacion'
-                ]
-            ));
+            $this->log(
+                [], 
+                Arr::except($product->getOriginal(), ['id']),
+                $product->getKey(),
+                ModuleEnum::PRODUCTS,
+                MovementTypeEnum::CREATION
+            );
         }
         
         return response()->json(['status' => 'success', 'messages' => 'El producto se guardo con exito']);
@@ -155,7 +156,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         // $lims_product_list = Product::where([ ['is_active', true], ['type', 'standard'] ])->get();
-        $lims_brand_list = DB::table('view_products_brands_edit')->get();
+        $lims_brand_list = DB::table('view_brands_for_edit')->get();
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();
@@ -182,7 +183,7 @@ class ProductController extends Controller
             ]
         ]);
         $product_data = Product::findOrFail($id);
-        $previous_value = $product_data->getOriginal();
+        $previous_value = Arr::except($product_data->getOriginal(), ['id']);
         $data = $request->except('image', '_method');
         $data['product_details'] = str_replace('"', '@', $data['product_details']);
         $data['product_details'] = $data['product_details'];
@@ -213,14 +214,14 @@ class ProductController extends Controller
         $product_data->update($data);
 
         if ($product_data->getChanges()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => Arr::only($previous_value, array_keys($product_data->getChanges())),
-                    'current' => $product_data->getChanges(),
-                    'module' => 'Productos',
-                    'movement_type' => 'Actualizacion'
-                ]
-            ));
+            $current_values = Arr::except($product_data->getChanges(), ['id']);
+            $this->log(
+                Arr::only($previous_value, array_keys($current_values)), 
+                $current_values,
+                $product_data->getKey(),
+                ModuleEnum::PRODUCTS,
+                MovementTypeEnum::UPDATING
+            );
         }
         return response()->json(['status' => 'success', 'messages' => 'El producto se actualizado con exito']);
     }
@@ -245,15 +246,39 @@ class ProductController extends Controller
 
     public function activate($id){
         $data_user = Product::find($id);
+        $previous_value = Arr::except($data_user->getOriginal(), ['id']);
         $data_user->is_active = true;
         $data_user->save();
+
+        if($current_value = $data_user->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_user->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El producto se ha activado con exito']);
     }
 
     public function deactivate($id) {
         $data_user = Product::find($id);
+        $previous_value = Arr::except($data_user->getOriginal(), ['id']);
         $data_user->is_active = false;
         $data_user->save();
+
+        if($current_value = $data_user->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_user->getKey(),
+                ModuleEnum::USERS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El producto se ha desactivado con exito']);
     }
 

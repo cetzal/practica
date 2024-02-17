@@ -15,8 +15,9 @@ class LogModule extends Model
 
     protected $fillable = [
         'user_id',
-        'module',
-        'movement_type',
+        'module_id',
+        'movement_type_id',
+        'modified_record_id',
         'details',
         'movement_date',
     ];

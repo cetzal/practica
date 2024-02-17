@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\Clients;
+use App\Enum\ModuleEnum;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ClientsControlles extends Controller
@@ -78,7 +80,13 @@ class ClientsControlles extends Controller
         $input['user_id'] = JWTAuth::toUser()->id;
         $client = Clients::create($input);
         if ($client->getKey()) {
-            $this->log([], $client->getOriginal(), 'Clients');
+            $this->log(
+                [], 
+                Arr::except($client->getOriginal(), ['id']),
+                $client->getKey(),
+                ModuleEnum::CLIENTS,
+                MovementTypeEnum::CREATION
+            );
         }
         return response()->json(['status' => 'succes', 'message' => 'El cliente se guardo con exito']);
 
@@ -116,22 +124,53 @@ class ClientsControlles extends Controller
 
         $client_data->save();
         if ($client_data->getChanges()) {
-            $this->log(Arr::only($previous_value, array_keys($client_data->getChanges())), $previous_value, 'Clients', 'Actualizacion');
+            $current_values = Arr::except($client_data->getChanges(), ['id']);
+            $this->log(
+                Arr::only($previous_value, array_keys($current_values)), 
+                $current_values,
+                $client_data->getKey(),
+                ModuleEnum::CLIENTS,
+                MovementTypeEnum::UPDATING
+            );
         }
         return response()->json(['status' => 'succes', 'message' => 'El cliente se guardo con exito']); 
     }
     
     public function activate($id){
         $data_client = Clients::find($id);
+        $previous_value = Arr::except($data_client->getOriginal(), ['id']);
         $data_client->is_active = true;
         $data_client->save();
+
+        if ($current_value = $data_client->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_client->getKey(),
+                ModuleEnum::CLIENTS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El cliente se ha activado con exito']);
     }
 
     public function deactivate($id) {
         $data_client = Clients::find($id);
+        $previous_value = Arr::except($data_client->getOriginal(), ['id']);
         $data_client->is_active = false;
         $data_client->save();
+
+        if ($current_value = $data_client->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $data_client->getKey(),
+                ModuleEnum::CLIENTS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'success', 'message' => 'El cliente se ha desactivado con exito']);
     }
 

@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\LogModule;
-use App\Traits\LogModuleTrait;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\Brand;
+use App\Enum\ModuleEnum;
+use App\Models\LogModule;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
+use App\Traits\LogModuleTrait;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
@@ -93,14 +95,13 @@ class BrandController extends Controller
         $brand = Brand::create($input);
 
         if ($brand->getKey()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => [],
-                    'current' => $brand->getOriginal(),
-                    'module' => 'Marcas',
-                    'movement_type' => 'Creacion'
-                ]
-            ));
+            $this->log(
+                [], 
+                Arr::except($brand->getOriginal(), ['id']),
+                $brand->getKey(),
+                ModuleEnum::BRANDS,
+                MovementTypeEnum::CREATION
+            );
         }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']);
     }
@@ -133,14 +134,14 @@ class BrandController extends Controller
        
 
         if ($brand_data->getChanges()) {
-            LogModule::create($this->logFormat(
-                [
-                    'previous' => Arr::only($previous_value, array_keys($brand_data->getChanges())),
-                    'current' => $brand_data->getChanges(),
-                    'module' => 'Marcas',
-                    'movement_type' => 'Actualizacion'
-                ]
-            ));
+            $current_values = Arr::except($brand_data->getChanges(), ['id']);
+            $this->log(
+                Arr::only($previous_value, array_keys($current_values)), 
+                $current_values,
+                $brand_data->getKey(),
+                ModuleEnum::BRANDS,
+                MovementTypeEnum::UPDATING
+            );
         }
         return response()->json(['status' => 'succes', 'message' => 'La marca se guardo con exito']); 
     }
@@ -199,16 +200,39 @@ class BrandController extends Controller
     public function deactivate($id)
     {
         $brand_data = Brand::findOrFail($id);
+        $previous_value = Arr::except($brand_data->getOriginal(), ['id']);
         $brand_data->is_active = false;
         $brand_data->save();
+
+        if ($current_value = $brand_data->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $brand_data->getKey(),
+                ModuleEnum::BRANDS,
+                MovementTypeEnum::UPDATING
+            );
+        }
+
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido desactiva']);
     }
 
     public function activate($id)
     {
         $brand_data = Brand::findOrFail($id);
+        $previous_value = Arr::except($brand_data->getOriginal(), ['id']);
         $brand_data->is_active = true;
         $brand_data->save();
+
+        if ($current_value = $brand_data->getChanges()) {
+            $this->log(
+                $previous_value,
+                Arr::except($current_value, ['id']),
+                $brand_data->getKey(),
+                ModuleEnum::BRANDS,
+                MovementTypeEnum::UPDATING
+            );
+        }
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido activado']); 
     }
 

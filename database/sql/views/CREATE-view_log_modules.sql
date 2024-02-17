@@ -1,13 +1,14 @@
-
 CREATE OR REPLACE VIEW view_log_modules AS
-SELECT
-    lg.id,
-    lg.module,
-    lg.movement_type,
-    lg.movement_date,
-    lg.details,
-    u.id AS user_id
-    CONCAT(u2.name, ' ', u2.last_name) AS user_name
-FROM
-    log_modules lg
-INNER JOIN users AS u ON u.id = lg.user_id
+    SELECT
+        lg.id,
+        lg.details,
+        lg.user_id,
+        lg.modified_record_id,
+        lg.movement_date,
+        (SELECT CONCAT(u.name, ' ', u.last_name) FROM users u WHERE u.id = lg.user_id) AS user_name,
+        lg.module_id,
+        (SELECT m.name FROM modules m WHERE m.id = lg.module_id) AS module_name,
+        lg.movement_type_id,
+        (SELECT mt.name FROM movement_types mt WHERE mt.id = lg.movement_type_id) AS movement_type_name
+    FROM
+        log_modules lg;

@@ -57,8 +57,8 @@
     var barcode_symbology = $("input[name='barcode_symbology_hidden']").val();
     $('select[name=barcode_symbology]').val(barcode_symbology);
 
-    var brand = $("input[name='brand']").val();
-    $('select[name=brand_id]').val(brand);
+    
+  
 
     var cat = $("input[name='category']").val();
     $('select[name=category_id]').val(cat);
@@ -282,8 +282,8 @@
         }
     });
 
-    var url_update = '{{ route("api.product.update", [":id"]) }}';
-    url_update = url_update.replace(':id', product_id);
+    var url_update = host +'/api/product/';
+    url_update = url_update.concat(product_id);
     myDropzone = new Dropzone('div#imageUpload', {
         addRemoveLinks: true,
         autoProcessQueue: false,
@@ -316,7 +316,7 @@
                         $.ajax({
                             type:'POST',
                             url:url_update,
-                            data: $("#product-form").serialize()  ,
+                            data: $("#product-form").serialize(),
                             success:function(response){
                                 $.confirm({
                                     title: 'Actualizar producto',
@@ -397,5 +397,71 @@
             this.removeAllFiles(true);
         }
     });
+
+    
+    var brand = $("input[name='brand']").val();
+    var supplier = $("input[name='supplier']").val();
+    $(document).ready(function() {
+        load_combobox(".select-supplier");
+        brandsBySupplier(supplier);
+    });
+
+    var load_combobox = function(input){
+        
+        $(input).append('<option value="">Select suppliers</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: host + '/api/suppliers/all/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+
+                    $('select[name="supplier_id"]').val(supplier);
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+    $('select[name="supplier_id"]').on('change', function(e) {
+        e.preventDefault();
+        supplier_id = $(this).val();
+        if(supplier_id) {
+            brandsBySupplier(supplier_id);
+        }                     
+    });
+
+    function brandsBySupplier(supplier_id){
+        var url = 'api/brand/supplier/'+ supplier_id;
+        $('select[name="brand_id"]').empty();
+        $('select[name="brand_id"]').append('<option value="">Select brand</option>');
+        $.ajax({
+            url: host +'/'+ url,
+            type: "GET",
+            dataType: "json",
+            success:function(response) {
+                $.each(response, function(index, row) {
+                    
+                    
+                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    if(row.id == parseInt(brand)){
+                        $('select[name="brand_id"]').val(brand);
+                    }
+                }); 
+
+                
+               
+                
+            },
+        });
+    }
 
 })();

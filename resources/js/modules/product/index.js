@@ -9,6 +9,8 @@
         }
     });
 
+    //$("a.sub-btn").siblings().attr('aria-expanded','true');
+
     function escapeHtml(text) {
         return text
             .replace(/&/g, "&amp;")
@@ -375,6 +377,7 @@
                 {"data": "picture"},
                 {"data": "name"},
                 {"data": "code"},
+                {"data": "supplier_name"},
                 {"data": "brand_name"},
                 {"data": "category_name"},
                 {"data": "qty"},
@@ -429,7 +432,7 @@
                     }
                 },
                 {
-                    'targets':[9],
+                    'targets':[10],
                     'render' : function(data, type, row, meta){
                         //return row.is_active == 1 ? 'Activo' : 'Desactivado';
 
@@ -443,7 +446,7 @@
                     }
                 },
                 {
-                    'targets':[10],
+                    'targets':[11],
                     'render' : function(data, type, row, meta){
                         if (row.created_at == null) {
                             return '';
@@ -452,7 +455,7 @@
                     }
                 },
                 {
-                    'targets':[11],
+                    'targets':[12],
                     'render' : function(data, type, row, meta){
                         if (row.updated_at == null) {
                             return '';
@@ -461,7 +464,7 @@
                     }
                 },
                 {
-                    'targets': [12],
+                    'targets': [13],
                     'render' : function(data, type, row, meta){
                         var url_edit = "product/:id/edit";
                         url_edit = url_edit.replace(':id', row.id);

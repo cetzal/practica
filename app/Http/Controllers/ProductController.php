@@ -55,6 +55,10 @@ class ProductController extends Controller
         if(!empty($request->user_created)){
             $where[] = ['asuser_name', 'like', '%'.$request->user_created.'%'];
         }
+
+        if (!empty($request->supplier_name)) {
+            $where[] = ['supplier_name', 'like', '%'.$request->supplier_name.'%'];
+        }
         
         if (!empty($request->date_range) && !empty($request->select_date)) {
             list($start_date, $end_date)= explode(' - ', $request->date_range);
@@ -68,7 +72,7 @@ class ProductController extends Controller
 
         $data = DB::table('view_products')
                  ->select([
-                    'id','name', 'code', 'brand_name', 'category_name',
+                    'id','name', 'code', 'supplier_name','brand_name', 'category_name',
                     'picture', 'qty', 'unit_name', 'price',
                     'is_active','created_at', 'updated_at'
                 ])
@@ -89,12 +93,12 @@ class ProductController extends Controller
     
     public function create()
     {
-        $lims_brand_list = DB::table('view_brands_active')->get();
+        //$lims_brand_list = DB::table('view_brands_active')->get();
         $lims_category_list = DB::table('view_categories_active')->get();
         $lims_unit_list = DB::table('view_units_active')->get();
         $lims_tax_list = DB::table('view_taxes_active')->get();
 
-        return view('product.create',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
+        return view('product.create',compact( 'lims_category_list', 'lims_unit_list', 'lims_tax_list'));
     }
 
     public function store(Request $request)
@@ -155,14 +159,13 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        // $lims_product_list = Product::where([ ['is_active', true], ['type', 'standard'] ])->get();
-        $lims_brand_list = DB::table('view_brands_for_edit')->get();
-        $lims_category_list = DB::table('view_categories_active')->get();
-        $lims_unit_list = DB::table('view_units_active')->get();
-        $lims_tax_list = DB::table('view_taxes_active')->get();
-        $lims_product_data = DB::table('view_products')->where('id', $id)->first();
+        $brand_list = DB::table('view_brands_for_edit')->get();
+        $category_list = DB::table('view_categories_active')->get();
+        $unit_list = DB::table('view_units_active')->get();
+        $tax_list = DB::table('view_taxes_active')->get();
+        $product_data = DB::table('view_products')->where('id', $id)->first();
 
-        return view('product.edit',compact('lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list', 'lims_product_data'));
+        return view('product.edit',compact('brand_list','category_list', 'unit_list', 'tax_list', 'product_data'));
     }
 
     public function update( $id, Request $request)

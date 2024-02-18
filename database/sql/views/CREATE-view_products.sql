@@ -27,11 +27,13 @@ SELECT
     p.updated_at,
     p.deleted_at AS deleted_at,
     p.user_id AS user_id,
-    (SELECT b.name FROM brands AS b WHERE b.id = p.brand_id) AS brand_name,
+    b.supplier_id,
+    b.name AS brand_name,
+    (SELECT s.name FROM suppliers AS s WHERE s.id = b.supplier_id) AS supplier_name,
     (SELECT c.name FROM categories AS c WHERE c.id = p.category_id ) AS category_name,
     (SELECT ut.unit_name FROM units AS ut WHERE ut.id = p.unit_id) AS unit_name,
-    concat(u.name, ' ', u.last_name) AS asuser_name
+    (SELECT CONCAT(u.name, ' ', u.last_name) FROM users AS u WHERE u.id = p.user_id) AS asuser_name
 FROM
    pruebas.products AS p
-INNER JOIN pruebas.users AS u on p.user_id = u.id
+INNER JOIN brands AS b ON p.brand_id = b.id
 WHERE p.deleted_at IS NULL;

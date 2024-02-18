@@ -57,21 +57,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <div class="col-md-4">
+                                    <label>{{trans('file.supplier')}}</strong> </label>
+                                    <div class="input-group">
+                                        <select class="form-control selectpicker form-select select-supplier" name="supplier_id"> 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>{{trans('file.Brand')}}</strong> </label>
                                         <div class="input-group">
                                           <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                                           <option value="">Select a brand</option>  
-                                          @foreach($lims_brand_list as $brand)
-                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
-                                            @endforeach
+                                          
                                           </select>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>{{trans('file.category')}}</strong> </label>
                                         <div class="input-group">
@@ -165,14 +169,14 @@
                                     <div class="form-group mt-3">
                                     </div> 
                                 </div>                             
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="img">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Image')}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
                                         <div id="imageUpload" class="dropzone"></div>
                                         <span class="validation-msg" id="image-error"></span>
                                     </div>
                                 </div>                            
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="detail">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Details')}}</label>
                                         <textarea name="product_details" class="form-control" rows="3"></textarea>

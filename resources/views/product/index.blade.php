@@ -21,6 +21,10 @@
                     <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="name_prod">
                 </div>
                 <div class="col">
+                    <label for="name">{{trans('file.supplier')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.supplier')}}" name="supplier_name">
+                </div>
+                <div class="col">
                     <div class="form-group">
                         <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
@@ -46,13 +50,14 @@
                         </div>
                     </div>
                 </div>
+               
+            </div>
+            <div class="row">
                 <div class="col">
                     <label for="last_name">{{trans('file.Created By')}}</label>
                     <input type="text" class="form-control" placeholder="{{trans('file.Created By')}}" name="user_created">
                 </div>
-            </div>
-            <div class="row">
-            <div class="col">
+                <div class="col">
                     <div class="form-group">
                         <label>Select Date</label>
                         <select class="form-select product-select-date" name="select_date">
@@ -105,6 +110,9 @@
                         </select>
                     </div>
                 </div>
+                
+            </div>
+            <div class="row float-right">
                 <div class="col">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data"> {{ trans('file.Filter') }}</button>
@@ -124,6 +132,7 @@
                     <th>{{trans('file.Image')}}</th>
                     <th>{{trans('file.name')}}</th>
                     <th>{{trans('file.Code')}}</th>
+                    <th>{{trans('file.supplier')}}</th>
                     <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.category')}}</th>
                     <th>{{trans('file.Quantity')}}</th>

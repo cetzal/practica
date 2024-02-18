@@ -46,20 +46,8 @@
           });
     });
 
-    // tinymce.init({
-    //   selector: 'textarea',
-    //   height: 130,
-    //   plugins: [
-    //     'advlist autolink lists link image charmap print preview anchor textcolor',
-    //     'searchreplace visualblocks code fullscreen',
-    //     'insertdatetime media table contextmenu paste code wordcount'
-    //   ],
-    //   toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-    //   branding:false
-    // });
-
-    $('select[name="unit_id"]').on('change', function() {
-        console.log('load unit');
+    $('select[name="unit_id"]').on('change', function(e) {
+        e.preventDefault();
         unitID = $(this).val();
         if(unitID) {
             populate_category(unitID);
@@ -118,12 +106,7 @@
             format: 'DD/MM/YYYY'
         },
     });
-    // starting_date.datepicker({
-    //     format: "dd-mm-yyyy",
-    //     startDate: "<?php //echo date('d-m-Y'); ?>",
-    //     autoclose: true,
-    //     todayHighlight: true
-    // });
+    
 
     var ending_date = $('#ending_date');
     ending_date.daterangepicker({
@@ -134,12 +117,7 @@
             format: 'DD/MM/YYYY'
         },
     });
-    // ending_date.datepicker({
-    //     format: "dd-mm-yyyy",
-    //     startDate: "<?php //echo date('d-m-Y'); ?>",
-    //     autoclose: true,
-    //     todayHighlight: true
-    // });
+    
 
     $(window).keydown(function(e){
         if (e.which == 13) {
@@ -448,4 +426,56 @@
             this.removeAllFiles(true);
         }
     });
+
+    var load_combobox = function(input){
+        $(input).append('<option value="">Select suppliers</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: host + '/api/suppliers/all/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+    $(document).ready(function() {
+        load_combobox(".select-supplier");
+    });
+
+    $('select[name="supplier_id"]').on('change', function(e) {
+        e.preventDefault();
+        supplier_id = $(this).val();
+        if(supplier_id) {
+            brandsBySupplier(supplier_id);
+        }else{    
+            $('select[name="supplier_id"]').empty();
+        }                        
+    });
+
+    function brandsBySupplier(supplier_id){
+        var url = 'api/brand/supplier/'+ supplier_id;
+        $('select[name="brand_id"]').empty();
+        $('select[name="brand_id"]').append('<option value="">Select brand</option>');
+        $.ajax({
+            url: host +'/'+ url,
+            type: "GET",
+            dataType: "json",
+            success:function(response) {
+                $.each(response, function(index, row) {
+                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            },
+        });
+    }
 })();

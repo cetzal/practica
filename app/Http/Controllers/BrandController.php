@@ -246,4 +246,9 @@ class BrandController extends Controller
         $brand_data->save();
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 
     }
+
+    public function brandBySupplier($id){
+        $data = DB::table('view_brands')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        return $data;
+    }
 }

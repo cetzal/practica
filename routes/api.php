@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/brand/all/activatebyselection', [App\Http\Controllers\BrandController::class, 'activateBySelection'])->name('api.brand.all_active');
     Route::put('/brand/all/deactivatebyselection', [App\Http\Controllers\BrandController::class, 'deactivateBySelection'])->name('api.brand.all_desactive');
     Route::put('/brand/all/deletebyselection', [App\Http\Controllers\BrandController::class, 'deleteBySelection'])->name('api.brand.all_delete');
+    Route::get('/brand/supplier/{id}', [App\Http\Controllers\BrandController::class, 'brandBySupplier'])->name('api.brand.supplier');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {

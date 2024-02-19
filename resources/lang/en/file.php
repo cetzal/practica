@@ -571,5 +571,30 @@ return [
 	"total_brands" => "Total brands",
 	"add_supplier" => 'Add supplier',
 	'update_supplier' => 'Update Supplier',
+	//Brand form search index
+	'placeholder_search_brand_name' => 'Brand name',
+	'placeholder_search_created_by' => 'Created by',
+	'search_select_brand' => 'Select a brand',
+	//Brand form create/edit
+	'placeholder_brand_name' => 'Type brand name...',
+	'placeholder_brand_description' => 'Type brand description...',
+	//Supplier form create/edit
+	'placeholder_supplier_name' => 'Type supplier name...',
+	'placeholder_supplier_description' => 'Type supplier description...',
+	//Product form search index
+	'search_product_select_category' => 'Select a category',
+	//Generales
+	'close' => 'Close',
+	'clear' => 'Clear',
+	'filter' => 'Filter',
+	'all' => 'All',
+	'active' => 'Active',
+	'inactive' => 'Inactive',
+	'select' => 'Select',
+	'select_date' => 'Select date',
+	'date_create' => 'Date create',
+	'date_update' => 'Date update',
+	'status' => 'Status',
+
 ];
 ?>

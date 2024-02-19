@@ -10,7 +10,7 @@
         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
           <div class="form-group">
             <label>{{trans('file.name')}} *</label>
-            <input type="text" name="name" required class="form-control" value="" placeholder="Type supplier name...">
+            <input type="text" name="name" required class="form-control" value="" placeholder="{{trans('file.placeholder_supplier_name')}}">
         </div>
         <div class="form-group">
             <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
@@ -18,7 +18,7 @@
         </div>
         <input type="hidden" name="supplier_id">
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
             <input type="submit" value="{{trans('file.save')}}" class="btn btn-primary">
         </div>
       {{ Form::close() }}

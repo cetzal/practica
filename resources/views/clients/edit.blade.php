@@ -18,7 +18,7 @@
             </div>
         <input type="hidden" name="client_id">
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
             <input type="submit" value="{{trans('file.Save')}}" class="btn btn-primary">
         </div>
       {{ Form::close() }}

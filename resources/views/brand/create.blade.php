@@ -10,7 +10,7 @@
           <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
             <div class="form-group">
                 <label>{{trans('file.name')}} *</label>
-                <input type="text" name="name" required class="form-control" value="" placeholder="Type brand name...">
+                <input type="text" name="name" required class="form-control" value="" placeholder="{{trans('file.placeholder_brand_name')}}">
             </div>
             <div class="form-group">
                 <label>{{trans('file.supplier')}}</label>
@@ -18,13 +18,13 @@
             </div>
             <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>
-                <textarea name="description" required class="form-control" value="" placeholder="Type brand description..." rows="3"></textarea>
+                <textarea name="description" required class="form-control" value="" placeholder="{{trans('file.placeholder_brand_description')}}" rows="3"></textarea>
                 <!-- <input type="textarea" name="description" required class="form-control" value="" placeholder="Type brand description..."> -->
             </div>
             
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
             <input type="submit" value="{{trans('file.Save')}}" class="btn btn-primary">
         </div>
         {{ Form::close() }}

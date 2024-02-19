@@ -446,6 +446,31 @@
         }
     });
 
+     //Cerrar los modales de update or create
+     $('.bt-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $('form#new_client')[0].reset();
+        $('form#update_client')[0].reset();
+        $("form#new_client").find("#btn-password").removeClass('is-invalid');
+        $("form#new_client").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_client").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_client").find("#btn-password-up").attr('aria-invalid', false);
+    });
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $('form#new_client')[0].reset();
+        $('form#update_client')[0].reset();
+        $("form#new_client").find("#btn-password").removeClass('is-invalid');
+        $("form#new_client").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_client").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_client").find("#btn-password-up").attr('aria-invalid', false);
+    });
+
+    $('#createModal').on('show.bs.modal', function (event) {
+        // Encuentra el formulario dentro del modal y limpia los campos
+        $(this).find('form')[0].reset();
+    });
+
     
 })();
 

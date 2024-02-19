@@ -29,7 +29,7 @@
                         <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
                             <select name="brand_prod" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                            <option value="">Select a Brand</option>  
+                            <option value="">{{trans('file.search_select_brand')}}</option>  
                             @foreach($lims_product_brand_list as $brand)
                                 <option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
                             @endforeach
@@ -39,10 +39,10 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Category</strong> </label>
+                        <label>{{trans('file.category')}}</strong> </label>
                         <div class="input-group">
                             <select name="category_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
-                            <option value="">Select a category</option>  
+                            <option value="">{{trans('file.search_product_select_category')}}</option>  
                             @foreach($lims_product_category_list as $category)
                                 <option value="{{$category->category_id}}">{{$category->category_name}}</option>
                             @endforeach
@@ -59,17 +59,17 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Select Date</label>
+                        <label>{{trans('file.select_date')}}</label>
                         <select class="form-select product-select-date" name="select_date">
-                            <option selected value="">Seleccione</option>
-                            <option value="created_at">Fecha creacion</option>
-                            <option value="updated_at">Fecha actualizacion</option>
+                            <option selected value="">{{trans('file.select')}}</option>
+                            <option value="created_at">{{trans('file.date_create')}}</option>
+                            <option value="updated_at">{{trans('file.date_update')}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Range Date</label>
+                        <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
@@ -102,11 +102,11 @@
                 </div> -->
                 <div class="col">
                     <div class="form-group">
-                        <label>Status</label>
+                        <label>{{trans('file.status')}}</label>
                         <select class="form-select" name="prod_status">
-                            <option selected value="">All</option>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option selected value="">{{trans('file.all')}}</option>
+                            <option value="1">{{trans('file.active')}}</option>
+                            <option value="0">{{trans('file.inactive')}}</option>
                         </select>
                     </div>
                 </div>

@@ -1,0 +1,2 @@
+ALTER TABLE clients
+ DROP INDEX name;

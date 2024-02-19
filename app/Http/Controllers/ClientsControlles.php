@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Enum\MovementTypeEnum;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ClientsControlles extends Controller
@@ -108,9 +109,15 @@ class ClientsControlles extends Controller
         $this->validate($request, [
             'name' => [
                 'max:255',
-                Rule::unique('view_clients')->ignore($id)->where(function ($query) {
-                    return $query->where('is_active', 1);
-                }),
+                function($attribute, $value, $fail) use($id) {
+                    if (empty($value)) {
+                        return;
+                    }
+                    
+                    if (DB::table('view_clients')->where('name', $value)->where('id', '<>', $id)->count() > 0) {
+                        $fail("The brand name already exists, by try another name.");
+                    }
+                }
             ]
         ]);
 
@@ -201,11 +208,12 @@ class ClientsControlles extends Controller
     public function deleteBySelection(Request $request)
     {
         $clients_id = $request->clientsIdArray;
+        $delete_date = date('Y-m-d H:i:s');
         foreach ($clients_id as $id) {
             $client_data = Clients::findOrFail($id);
             $client_data->is_active = false;
+            $client_data->deleted_at = $delete_date;
             $client_data->save();
-            $client_data->delete();
         }
        
         return response()->json(['status' => 'success', 'messages' => 'Los clientes selecionado se ha eliminado con exito']);
@@ -216,9 +224,8 @@ class ClientsControlles extends Controller
     {
         $client_data = Clients::findOrFail($id);
         $client_data->is_active = false;
-        
+        $client_data->deleted_at = date('Y-m-d H:i:s');
         $client_data->save();
-        $client_data->delete();
      
         return response()->json(['status' => 'success', 'messages' => 'El cliente se ha eliminado con exito']);
     }

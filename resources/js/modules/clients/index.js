@@ -206,11 +206,15 @@
                             url: url,
                             type: 'DELETE',
                             success: function(response) {
-                                $.alert({
+                                $.confirm({
                                     title: response.status,
-                                    content: response.message,
+                                    content: response.messages,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
                                 });
-                                table.ajax.reload();
                             }
                         });
                     }
@@ -339,13 +343,17 @@
                                     clientsIdArray: clients_id
                                 },
                                 success:function(data){
-                                    clients_id = [];
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Eliminar clientes seleccionados',
                                         content: 'se elimino todo los clientes selecionados ',
+                                        buttons: {
+                                            ok: function () {
+                                                clients_id = [];
+                                                $( "#select_all" ).prop('checked', false);
+                                                $('#clients-data-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#clients-data-table').DataTable().ajax.reload();
                                 }
                             });
                         }
@@ -379,13 +387,17 @@
                                     clientsIdArray: clients_id
                                 },
                                 success:function(data){
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Activar clientes',
                                         content: 'se activado todo los clientes selecionados ',
+                                        buttons: {
+                                            ok: function () {
+                                                clients_id = [];
+                                                $( "#select_all" ).prop('checked', false);
+                                                $('#clients-data-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    clients_id = [];
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#clients-data-table').DataTable().ajax.reload();
                                 }
                             });
                         }
@@ -421,13 +433,17 @@
                                     clientsIdArray: clients_id
                                 },
                                 success:function(data){
-                                    clients_id = [];
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Desactiva clientes',
                                         content: 'Se desactivo todo los clientes selecionados ',
+                                        buttons: {
+                                            ok: function () {
+                                                clients_id = [];
+                                                $( "#select_all" ).prop('checked', false);
+                                                $('#clients-data-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#clients-data-table').DataTable().ajax.reload();
                                 }
                             });
                         }

@@ -581,8 +581,14 @@ return [
 	//Suppler form create/edit
 	'placeholder_supplier_name' => 'Introduzca el nombre de la proveedor...',
 	'placeholder_supplier_description' => 'Introduzca el description...',
-	//Product form search index
+	//Log Module form search index
 	'search_product_select_category' => 'Seleccione una categoria',
+	'log_module_form_search_module' => 'Modulo',
+	'log_module_form_search_select_module' => 'Selecciona un Modulo',
+	'select_movement' => 'Selecciona un tipo movimiento',
+	'movement_type' => 'Tipo movimiento',
+	'movement_date' => 'Fecha movimiento',
+	'record' => 'Nombre',
 	//Generales
 	'close' => 'Cerrar',
 	'clear' => 'Limpiar',

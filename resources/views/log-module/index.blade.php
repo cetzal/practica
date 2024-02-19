@@ -1,6 +1,7 @@
 @extends('template.app') 
 @section('content')
 <section>
+    
     <div class="container-fluid mb-2">
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
@@ -9,10 +10,10 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>Module</strong> </label>
+                        <label>{{trans('file.log_module_form_search_module')}}</strong> </label>
                         <div class="input-group">
                             <select name="module_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Module...">
-                            <option value="">Select a Module</option>  
+                            <option value="">{{trans('file.log_module_form_search_select_module')}}</option>  
                             @foreach($modules_list as $module)
                                 <option value="{{$module->id}}">{{$module->name}}</option>
                             @endforeach
@@ -22,10 +23,10 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Module</strong> </label>
+                        <label>{{trans('file.movement_type')}}</strong> </label>
                         <div class="input-group">
                             <select name="movement_type_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Movement type...">
-                            <option value="">Select a Movement type</option>  
+                            <option value="">{{trans('file.select_movement')}}</option>  
                             @foreach($movement_types_list as $movement_type)
                                 <option value="{{$movement_type->id}}">{{$movement_type->name}}</option>
                             @endforeach
@@ -35,7 +36,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Rango fecha</label>
+                        <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
@@ -47,14 +48,14 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="last_name">Usuario alta</label>
-                    <input type="text" class="form-control" placeholder="User" name="user_created">
+                    <label for="last_name">{{trans('file.Created By')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.created_by')}}" name="user_created">
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form">Clear</button>
-                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">{{trans('file.filter')}}</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form">{{trans('file.active')}}</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">{{trans('file.inactive')}}</button>
                 </div>
             </div>
         </form>
@@ -67,7 +68,7 @@
                     <th>{{trans('file.module')}}</th>
                     <th>{{trans('file.movement_type')}}</th>
                     <th>{{trans('file.User')}}</th>
-                    <th>Movement date</th>
+                    <th>{{trans('file.movement_date')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>

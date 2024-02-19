@@ -181,7 +181,6 @@
         $.get(url, function(response) {
             if(response.status == "success"){
                 $("input[name='name']").val(response.data.name);
-                
                 $("input[name='is_active']").prop( "checked", response.data.is_active );
             }
             

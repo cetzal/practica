@@ -10,9 +10,6 @@
             $(input).removeClass('is-invalid');
         },
         errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            // error.addClass("invalid-feedback" );
-            // error.insertAfter(element);
             error.addClass('invalid-feedback');
             element.closest('.form-group').append(error);
         },
@@ -51,6 +48,15 @@
                 },
                 error: function(xhr, textStatus, error){
                     if (xhr.status == 422) {
+                        let message = ''
+                        $.each(xhr.responseJSON.errors,function(field_name,error){
+                            message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                        })
+
+                        $.alert({
+                            title: 'Field invalid',
+                            content: message,
+                        });
                         // let responseText = JSON.parse(xhr.responseText);
                         // let keys = Object.keys(responseText.errors);
                         // let message = 'Error desconocido';
@@ -62,13 +68,13 @@
                         //     title: 'Campos invalidos',
                         //     content: message,
                         // });
-                        console.log(xhr.responseJSON.errors);
-                        $.each(xhr.responseJSON.errors,function(field_name,error){
-                            console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
-                            $('input[name="'+field_name+'"]').addClass('is-invalid');
-                            let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
-                            $('input[name="'+field_name+'"]').after(html);
-                        })
+                        // console.log(xhr.responseJSON.errors);
+                        // $.each(xhr.responseJSON.errors,function(field_name,error){
+                        //     console.log(field_name, xhr.responseJSON.errors[field_name][0], error);
+                        //     $('input[name="'+field_name+'"]').addClass('is-invalid');
+                        //     let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
+                        //     $('input[name="'+field_name+'"]').after(html);
+                        // })
 
                     }
                 }

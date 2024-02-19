@@ -173,34 +173,49 @@
         supplier_ids = [];
         verific_checks_supplier(0);
         console.log('suppliers', supplier_ids);
-        if(supplier_ids.length) {
-            $.ajax({
-                type:'PUT',
-                url:'api/suppliers/all/deletebyselection',
-                data:{
-                    supplierIdArray: supplier_ids
-                },
-                success:function(data){
-                    console.log('data', data.messages);
-                    var messsage = 'Se elimino todo los proveedores selecionados';
-                    if (typeof data.messages != undefined) {
-                        messsage = data.messages;
-                    }
-                    $.confirm({
-                        title: 'Eliminar proveedores',
-                        content: messsage,
-                        buttons: {
-                            ok: function () {
-                                table.ajax.reload();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                            }
+        if(supplier_ids.length > 0) {
+            $.confirm({
+                title: 'Eliminar proveedrores',
+                content: 'Realmente quieres eliminar los proveedores selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, eliminar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/suppliers/all/deletebyselection',
+                                data:{
+                                    supplierIdArray: supplier_ids
+                                },
+                                success:function(data){
+                                    console.log('data', data.message);
+                                    var messsage = 'Se elimino todo los proveedores selecionados';
+                                    if (typeof(data.message) != 'undefined') {
+                                        messsage = data.message;
+                                    }
+                                    $.confirm({
+                                        title: 'Eliminar proveedores',
+                                        content: messsage,
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $("table input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    });
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.alert({
-                title: 'Eliminar marcas',
+                title: 'Eliminar proveedores',
                 content: 'Seleccione los proveedores que deseas eliminar',
             });
         }
@@ -211,26 +226,41 @@
         e.preventDefault();
         supplier_ids = [];
         verific_checks_supplier(0);
-        if(supplier_ids.length) {
-            $.ajax({
-                type:'PUT',
-                url:'api/suppliers/all/activatebyselection',
-                data:{
-                    supplierIdArray: supplier_ids
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Activar proveedores',
-                        content: 'Se activo todo los proveedores selecionados ',
-                        buttons: {
-                            ok: function () {
-                                table.ajax.reload();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                            }
+        if(supplier_ids.length > 0) {
+            $.confirm({
+                title: 'Activar proveedrores',
+                content: 'Realmente quieres activar los proveedores selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/suppliers/all/activatebyselection',
+                                data:{
+                                    supplierIdArray: supplier_ids
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar proveedores',
+                                        content: 'Se activo todo los proveedores selecionados ',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $("table input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    });
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.alert({
                 title: 'Activar proveedores',
@@ -244,39 +274,43 @@
         e.preventDefault();
         supplier_ids = [];
         verific_checks_supplier(0);
-        if(supplier_ids.length) {
-            $.ajax({
-                type:'PUT',
-                url:'api/suppliers/all/deactivatebyselection',
-                data:{
-                    supplierIdArray: supplier_ids
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Desactivar proveedores',
-                        content: 'Se desactivo todas los proveedores selecionados ',
-                        buttons: {
-                            ok: function () {
-                                table.ajax.reload();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                                // $('#supplier-table').DataTable().ajax().reload();
-                            }
-                            // cancel: function () {
-                            //     $.alert('Canceled!');
-                            // },
-                            // somethingElse: {
-                            //     text: 'Something else',
-                            //     btnClass: 'btn-blue',
-                            //     keys: ['enter', 'shift'],
-                            //     action: function(){
-                            //         $.alert('Something else?');
-                            //     }
-                            // }
+        if(supplier_ids.length > 0) {
+            $.confirm({
+                title: 'Desactivar proveedrores',
+                content: 'Realmente quieres desactivar los proveedores selecionados',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, desactivar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/suppliers/all/deactivatebyselection',
+                                data:{
+                                    supplierIdArray: supplier_ids
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactivar proveedores',
+                                        content: 'Se desactivo todas los proveedores selecionados ',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $("table input[type='checkbox']").prop('checked', false);
+                                                
+                                            }
+                                        }
+                                    });
+                                    
+                                }
+                            });
                         }
-                    });
-                    
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
+            
         }else{
             $.alert({
                 title: 'Desactivar proveedores',

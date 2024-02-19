@@ -41,9 +41,7 @@
                         content: response.message,
                         buttons: {
                             ok: function () {
-                                $('#createModal').modal('hide');
-                                $('#createModal').modal({backdrop: false});
-                                $('.modal-backdrop').remove();
+                                $('.btn-close-modal').trigger('click');
                                 $("#new_supplier").get(0).reset();
                                 $("tbody input[type='checkbox']").prop('checked', false);
                                 $('#supplier-table').DataTable().ajax.reload();

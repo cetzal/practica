@@ -19,7 +19,7 @@
         <input type="hidden" name="supplier_id">
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
-            <input type="submit" value="{{trans('file.save')}}" class="btn btn-primary">
+            <button type="submit" value="" class="btn btn-primary">{{trans('file.Save')}}</button>
         </div>
       {{ Form::close() }}
     </div>

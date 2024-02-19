@@ -38,15 +38,11 @@ class SuppliersControlles extends Controller
             $where[] = ['is_active', '=', $request->status];
         }
 
-        if (!empty($request->brand_name)) {
-            $where[] = ['brand_name', 'like', '%'.$request->brand_name.'%'];
-        }
-
         if (!empty($request->range_date) && !empty($request->select_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $whereBetween = [$request->range_date, [$date_from, $date_to]];
+            $whereBetween = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), [$date_from, $date_to]];
         }
 
         $query = DB::table('view_suppliers')->where($where);
@@ -74,9 +70,7 @@ class SuppliersControlles extends Controller
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('view_suppliers')->where(function ($query) {
-                    return $query->where('is_active', 1);
-                }),
+                Rule::unique('view_suppliers'),
             ]
         ]);
 
@@ -115,9 +109,7 @@ class SuppliersControlles extends Controller
         $this->validate($request, [
             'name' => [
                 'max:255',
-                Rule::unique('view_suppliers')->ignore($id)->where(function ($query) {
-                    return $query->where('is_active', 1);
-                }),
+                Rule::unique('view_suppliers')->ignore($id),
             ]
         ]);
 
@@ -195,7 +187,7 @@ class SuppliersControlles extends Controller
             $supplier_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los proveedores selecionado se ha desactivado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los proveedores selecionado se ha desactivado con exito']);
     }
 
     public function activateBySelection(Request $request)
@@ -207,7 +199,7 @@ class SuppliersControlles extends Controller
             $supplier_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los proveedores selecionado se ha activado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los proveedores selecionado se ha activado con exito']);
     }
 
     public function deleteBySelection(Request $request)
@@ -221,7 +213,7 @@ class SuppliersControlles extends Controller
             $supplier_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los proveedores selecionado se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los proveedores selecionado se ha eliminado con exito']);
     }
 
    
@@ -233,7 +225,7 @@ class SuppliersControlles extends Controller
         $supplier_data->save();
         $supplier_data->delete();
      
-        return response()->json(['status' => 'success', 'messages' => 'El proveedor se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El proveedor se ha eliminado con exito']);
     }
 
     public function combobox(){

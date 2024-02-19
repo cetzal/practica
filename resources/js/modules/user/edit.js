@@ -47,22 +47,21 @@
                             url:url_user_up,
                             data: $("#update_user").serialize(),
                             success:function(response){
-                                
-                                $("input[name='id']").val('');
-                                $("input[name='name']").val('');
-                                $("input[name='last_name']").val('');
-                                $("input[name='email']").val('');
-                                //$('#editModal').modal('hide');
-                                $('.btn-close-modal').trigger('click');
                                 $.confirm({
                                     title: 'Actualizar usuario',
                                     content: 'El usuario se ha actualizado con exito',
+                                    buttons: {
+                                        ok: function () {
+                                            $("input[name='id']").val('');
+                                            $("input[name='name']").val('');
+                                            $("input[name='last_name']").val('');
+                                            $("input[name='email']").val('');
+                                            //$('#editModal').modal('hide');
+                                            $('.btn-close-modal').trigger('click');
+                                            $('#user-table').DataTable().ajax.reload();
+                                        }
+                                    }
                                 });
-                                //$('#editModal').modal({backdrop: false});
-                                //$('.modal-backdrop').remove();
-                                $('#user-table').DataTable().ajax.reload();
-
-                                // location.href = '../user';
                             },
                             error:function(response) {
                                 if (response.status == 422) { 
@@ -91,42 +90,37 @@
             });
         },
         error: function (file, response, xhr) {
-
-            console.log('file', file);
-            console.log('response', response);
-            console.log('xhr', xhr);
-
             if (xhr.status == 422) { 
-                console.log('jsonObject', JSON.parse(xhr.response));
-                //toastError(err.responseJSON.message);
-                // let details = response.responseJSON.errors ;
-                // let content = '';
-                // Object.keys(details).forEach(field => {
-                //     content += formatErrorUsingClassesAndPopover(field,details[field]);
-                // });
+                let response = JSON.parse(xhr.response);
+                let message = ''
+                $.each(response.errors,function(field_name,error){
+                    message+='<b>'+field_name+'</b>: '+response.errors[field_name][0]+'<br>';
+                })
 
-                // $.alert({
-                //     title: 'Error',
-                //     content: content
-
-                // });
-                // let message = ''
-                // $.each(xhr.responseJSON.errors,function(field_name,error){
-                //     message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
-                // })
-
-                // $.alert({
-                //     title: 'Field invalid',
-                //     content: message,
-                // });
+                $.alert({
+                    title: 'Field invalid',
+                    content: message,
+                });
             }
         },
         successmultiple: function (file, response) {
             $.confirm({
                 title: 'Actualizar usuario',
                 content: 'El usuario se ha actualizado con exito',
+                buttons: {
+                    ok: function () {
+                        $("input[name='id']").val('');
+                        $("input[name='name']").val('');
+                        $("input[name='last_name']").val('');
+                        $("input[name='email']").val('');
+                        //$('#editModal').modal('hide');
+                        $('.btn-close-modal').trigger('click');
+                        $('#user-table').DataTable().ajax.reload();
+                        location.href = '../user';
+                    }
+                }
             });
-            location.href = '../user';
+            // location.href = '../user';
             //console.log(file, response);
         },
         completemultiple: function (file, response) {
@@ -146,7 +140,7 @@
         distance: 20,
         tolerance: 'pointer',
         stop: function () {
-          var queue = myDropzone1.getAcceptedFiles();
+          var queue = myDropzone2.getAcceptedFiles();
           newQueue = [];
           $('#imageUpload .dz-preview .dz-filename [data-dz-name]').each(function (count, el) {           
                 var name = el.innerHTML;
@@ -156,7 +150,7 @@
                     }
                 });
           });
-          myDropzone1.files = newQueue;
+          myDropzone2.files = newQueue;
         }
     });
 

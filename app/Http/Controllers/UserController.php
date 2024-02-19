@@ -238,12 +238,12 @@ class UserController extends Controller
                 $image->move('public/images/user', $imageName);
                 $image_names[] = $imageName;
             }
-            if($user_data->picture != 'zummXD2dvAtI.png') {
-                $input['picture'] = $user_data->picture.','.implode(",", $image_names);
-            }
-            else{
+            // if($user_data->picture != 'zummXD2dvAtI.png') {
+            //     $input['picture'] = $user_data->picture.','.implode(",", $image_names);
+            // }
+            // else{
                 $input['picture'] = implode(",", $image_names);
-            }
+            // }
         }
         else {
             $input['picture'] = $user_data->picture;

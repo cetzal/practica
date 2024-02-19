@@ -76,17 +76,16 @@
                             url:url_user,
                             data: $("#new_user").serialize(),
                             success:function(response){
-                                $("input[name='id']").val('');
-                                $("input[name='name']").val('');
-                                $("input[name='last_name']").val('');
-                                $("input[name='email']").val('');
-                                $('.btn-close-modal').trigger('click');
                                 $.confirm({
                                     title: 'Crear usuario',
                                     content: 'El usuario se ha creado con exito',
                                     buttons: {
-                                        ok: function() {
-                                            console.log('creacion de usuario cargo la tabla');
+                                        ok: function () {
+                                            $("input[name='id']").val('');
+                                            $("input[name='name']").val('');
+                                            $("input[name='last_name']").val('');
+                                            $("input[name='email']").val('');
+                                            $('.btn-close-modal').trigger('click');
                                             $('#user-table').DataTable().ajax.reload();
                                         }
                                     }
@@ -94,19 +93,15 @@
                               
                             },
                             error:function(response) {
-
-                                if (response.status == 422) { 
-                                    //toastError(err.responseJSON.message);
-                                    let details = response.responseJSON.errors ;
-                                    let content = '';
-                                    Object.keys(details).forEach(field => {
-                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
-                                    });
+                                if (response.status == 422) {
+                                    let message = ''
+                                    $.each(response.responseJSON.errors,function(field_name,error){
+                                        message+='<b>'+field_name+'</b>: '+response.responseJSON.errors[field_name][0]+'<br>';
+                                    })
 
                                     $.alert({
-                                        title: 'Error',
-                                        content: content
-
+                                        title: 'Field invalid',
+                                        content: message,
                                     });
                                 }
                             },
@@ -123,19 +118,17 @@
                 });
             });
         },
-        error: function (file, response) {
-            if (response.status == 422) { 
-                //toastError(err.responseJSON.message);
-                let details = response.responseJSON.errors ;
-                let content = '';
-                Object.keys(details).forEach(field => {
-                    content += formatErrorUsingClassesAndPopover(field,details[field]);
-                });
+        error: function (file, response, xhr) {
+            if (xhr.status == 422) { 
+                let response = JSON.parse(xhr.response);
+                let message = ''
+                $.each(response.errors,function(field_name,error){
+                    message+='<b>'+field_name+'</b>: '+response.errors[field_name][0]+'<br>';
+                })
 
                 $.alert({
-                    title: 'Error',
-                    content: content
-
+                    title: 'Field invalid',
+                    content: message,
                 });
             }
         },
@@ -144,8 +137,21 @@
                 title: 'Agregar usuario',
                 content: 'El usuario se ha creado con exito',
             });
-            //location.href = '../user';
-            //console.log(file, response);
+            $.confirm({
+                title: 'Agregar usuario',
+                content: 'El usuario se ha creado con exito',
+                buttons: {
+                    ok: function () {
+                        $("input[name='id']").val('');
+                        $("input[name='name']").val('');
+                        $("input[name='last_name']").val('');
+                        $("input[name='email']").val('');
+                        $('.btn-close-modal').trigger('click');
+                        $('#user-table').DataTable().ajax.reload();
+                        location.href = '../user';
+                    }
+                }
+            });
         },
         completemultiple: function (file, response) {
             console.log(file, response, "completemultiple");

@@ -2,6 +2,7 @@
     $('form#new_brand').validate({
         rules:{
             name: 'required',
+            supplier_id : 'required',
             description : 'required'
         },
         highlight: function (input) {
@@ -11,14 +12,12 @@
             $(input).removeClass('is-invalid');
         },
         errorPlacement: function ( error, element ) {
-            // Add the `invalid-feedback` class to the error element
-            // error.addClass("invalid-feedback" );
-            // error.insertAfter(element);
             error.addClass('invalid-feedback');
             element.closest('.form-group').append(error);
         },
         messages: {
             name: "El nombre es requerido",
+            supplier_id : "El proveedor es requerido",
             description: "La descripcion es requerido"
         }
     });
@@ -44,9 +43,6 @@
                         content: response.message,
                         buttons: {
                             ok: function () {
-                                // $('#createModal').modal('hide');
-                                // $('#createModal').modal({backdrop: false});
-                                // $('.modal-backdrop').remove();
                                 $('.btn-close-modal').trigger('click');
                                 $("#new_brand").get(0).reset();
                                 $("tbody input[type='checkbox']").prop('checked', false);
@@ -59,9 +55,6 @@
                     if (xhr.status == 422) {
                         let message = ''
                         $.each(xhr.responseJSON.errors,function(field_name,error){
-                            // $('input[name="'+field_name+'"]').addClass('is-invalid');
-                            // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
-                            // $('input[name="'+field_name+'"]').after(html);
                             message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
                         })
 

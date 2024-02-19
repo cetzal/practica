@@ -204,28 +204,48 @@ class SuppliersControlles extends Controller
 
     public function deleteBySelection(Request $request)
     {
-        $suppliers_id = $request->supplierIdArray;
-        $deleted_date =  date('Y-m-d H:i:s');
-        foreach ($suppliers_id as $id) {
-            $supplier_data = Suppliers::findOrFail($id);
-            $supplier_data->is_active = false;
-            $supplier_data->deleted_at = $deleted_date;
-            $supplier_data->save();
+        
+        $this->validate($request, [
+            'supplierIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        $brands = DB::table('view_brands')->select(['id', 'name', 'supplier_id', 'supplier_name'])->whereIn('supplier_id', $request->supplierIdArray)->get();
+        $supplier_ids = [];
+        $supplier_names = [];
+        if ($brands->count() > 0) {
+            $supplier_ids = array_values(array_unique($brands->pluck('supplier_id')->toArray()));
+            $supplier_names = array_values(array_unique($brands->pluck('supplier_name')->toArray()));
         }
-       
-        return response()->json(['status' => 'success', 'message' => 'Los proveedores selecionado se ha eliminado con exito']);
+        
+        $message = 'Se borraron todas los proveedores seleccionadas';
+        $supplier_deletes = array_diff($request->supplierIdArray, $supplier_ids);
+
+        if (count($supplier_ids) > 0) {
+            $supplier = $supplier_names[0];
+            if (count($supplier_names) > 1) {
+                $supplier.=', '.$supplier_names[1].'...';
+            }
+            $message = 'Se borraron '. count($supplier_deletes) .' Proveedores. No se borraron {'.$supplier.'} porque cuentan con marcas asignados';
+        }
+        
+        Suppliers::whereIn('id', $supplier_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
+
+        return response()->json(['status' => 'success', 'message' => $message]);
+    
     }
 
    
     public function destroy($id)
     {
         $supplier_data = Suppliers::findOrFail($id);
-        $supplier_data->is_active = false;
-        
+        $brands = DB::table('view_brands')->select(['id'])->where('supplier_id', $supplier_data->getKey())->get();
+        if (count($brands) > 0) {
+            return response()->json(['status' => 'warning', 'message' => 'El proveedor no se puede eliminar, tiene uno o varias marcas asignados.']); 
+        }
+        $supplier_data->deleted_at = date('Y-m-d H:i:s');
         $supplier_data->save();
-        $supplier_data->delete();
-     
-        return response()->json(['status' => 'success', 'message' => 'El proveedor se ha eliminado con exito']);
+        return response()->json(['status' => 'succes', 'message' => 'El proveedor ha sido eliminado']); 
+    
     }
 
     public function combobox(){

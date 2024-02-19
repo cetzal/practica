@@ -13,7 +13,7 @@
                 <input type="text" name="name" required class="form-control" value="" placeholder="{{trans('file.placeholder_brand_name')}}">
             </div>
             <div class="form-group">
-                <label>{{trans('file.supplier')}}</label>
+                <label>{{trans('file.supplier')}} *</label>
                 <select class="form-select" name="supplier_id" id="suppliers_id"></select>
             </div>
             <div class="form-group">

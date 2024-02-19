@@ -38,7 +38,7 @@ class ClientsControlles extends Controller
             list($date_from, $date_to) = explode(' - ', $request->date_range);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $whereBetween = [$request->select_date, [$date_from, $date_to]];
+            $whereBetween = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), [$date_from, $date_to]];
         }
 
         $query = DB::table('view_clients');
@@ -69,9 +69,7 @@ class ClientsControlles extends Controller
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('view_clients')->where(function ($query) {
-                    return $query->where('is_active', 1);
-                }),
+                Rule::unique('view_clients'),
             ]
         ]);
 
@@ -190,7 +188,7 @@ class ClientsControlles extends Controller
             $client_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los clientes selecionado se ha desactivado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los clientes selecionado se ha desactivado con exito']);
     }
 
     public function activateBySelection(Request $request)
@@ -202,7 +200,7 @@ class ClientsControlles extends Controller
             $client_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los clientes selecionado se ha activado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los clientes selecionado se ha activado con exito']);
     }
 
     public function deleteBySelection(Request $request)
@@ -216,7 +214,7 @@ class ClientsControlles extends Controller
             $client_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los clientes selecionado se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los clientes selecionado se ha eliminado con exito']);
     }
 
    
@@ -227,6 +225,6 @@ class ClientsControlles extends Controller
         $client_data->deleted_at = date('Y-m-d H:i:s');
         $client_data->save();
      
-        return response()->json(['status' => 'success', 'messages' => 'El cliente se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El cliente se ha eliminado con exito']);
     }
 }

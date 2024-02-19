@@ -208,7 +208,7 @@
                             success: function(response) {
                                 $.confirm({
                                     title: response.status,
-                                    content: response.messages,
+                                    content: response.message,
                                     buttons: {
                                         ok: function () {
                                             table.ajax.reload();

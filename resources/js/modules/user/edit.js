@@ -66,17 +66,14 @@
                             },
                             error:function(response) {
                                 if (response.status == 422) { 
-                                    //toastError(err.responseJSON.message);
-                                    let details = response.responseJSON.errors ;
-                                    let content = '';
-                                    Object.keys(details).forEach(field => {
-                                        content += formatErrorUsingClassesAndPopover(field,details[field]);
-                                    });
+                                    let message = ''
+                                    $.each(response.responseJSON.errors,function(field_name,error){
+                                        message+='<b>'+field_name+'</b>: '+response.responseJSON.errors[field_name][0]+'<br>';
+                                    })
 
                                     $.alert({
-                                        title: 'Error',
-                                        content: content
-
+                                        title: 'Field invalid',
+                                        content: message,
                                     });
                                 }
                             },
@@ -93,20 +90,35 @@
                 });
             });
         },
-        error: function (file, response) {
-            if (response.status == 422) { 
+        error: function (file, response, xhr) {
+
+            console.log('file', file);
+            console.log('response', response);
+            console.log('xhr', xhr);
+
+            if (xhr.status == 422) { 
+                console.log('jsonObject', JSON.parse(xhr.response));
                 //toastError(err.responseJSON.message);
-                let details = response.responseJSON.errors ;
-                let content = '';
-                Object.keys(details).forEach(field => {
-                    content += formatErrorUsingClassesAndPopover(field,details[field]);
-                });
+                // let details = response.responseJSON.errors ;
+                // let content = '';
+                // Object.keys(details).forEach(field => {
+                //     content += formatErrorUsingClassesAndPopover(field,details[field]);
+                // });
 
-                $.alert({
-                    title: 'Error',
-                    content: content
+                // $.alert({
+                //     title: 'Error',
+                //     content: content
 
-                });
+                // });
+                // let message = ''
+                // $.each(xhr.responseJSON.errors,function(field_name,error){
+                //     message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                // })
+
+                // $.alert({
+                //     title: 'Field invalid',
+                //     content: message,
+                // });
             }
         },
         successmultiple: function (file, response) {

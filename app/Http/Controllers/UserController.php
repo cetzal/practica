@@ -207,7 +207,7 @@ class UserController extends Controller
                         return;
                     }
                     
-                    if (DB::table('users')->where('email', $value)->where('id', '<>', $id)->count() > 0) {
+                    if (DB::table('view_users')->where('email', $value)->where('id', '<>', $id)->count() > 0) {
                         $fail("The email name already exists, by try another name.");
                     }
                 }

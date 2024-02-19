@@ -475,9 +475,10 @@
         url = url.concat(id);
 
         $.get(url, function(data) {
+          
             $("input[name='name']").val(data['data']['name']);
             $("input[name='supplier_id']").val(data['data']['id']);
-            $("input[name='is_active']").prop( "checked", parseInt(data['is_active']) );
+            $("input[name='is_active']").prop( "checked", parseInt(data['data']['is_active']) );
 
         });
     });

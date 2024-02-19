@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,7 +97,7 @@ eval("(function () {\n  var qty = [];\n  var htmltext;\n  var slidertext;\n  var
 
 /***/ }),
 
-/***/ 17:
+/***/ 16:
 /*!*****************************************************!*\
   !*** multi ./resources/js/modules/product/index.js ***!
   \*****************************************************/

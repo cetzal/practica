@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,7 +97,7 @@ eval("(function () {\n  $('form#new_supplier').validate({\n    rules: {\n      n
 
 /***/ }),
 
-/***/ 17:
+/***/ 18:
 /*!*******************************************************!*\
   !*** multi ./resources/js/modules/supplier/create.js ***!
   \*******************************************************/

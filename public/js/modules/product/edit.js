@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,7 +97,7 @@ eval("(function () {\n  var host = window.location.origin;\n  var product_id = $
 
 /***/ }),
 
-/***/ 16:
+/***/ 15:
 /*!****************************************************!*\
   !*** multi ./resources/js/modules/product/edit.js ***!
   \****************************************************/

@@ -13,19 +13,19 @@
             <div class="row">
                 <div class="col">
                     <label for="name">{{trans('file.name')}}</label>
-                    <input type="text" class="form-control" placeholder="Supplier name" name="supplier_name">
+                    <input type="text" class="form-control" placeholder="{{trans('file.supplier')}}" name="supplier_name">
                 </div>
                 <div class="col">
                     <label for="created_by">{{trans('file.created_by')}}</label>
-                    <input type="text" class="form-control" placeholder="Created by" name="created_by">
+                    <input type="text" class="form-control" placeholder="{{trans('file.created_by')}}" name="created_by">
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.status')}}</label>
                         <select class="form-select" name="status">
-                            <option selected value="">All</option>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option selected value="">{{trans('file.all')}}</option>
+                            <option value="1">{{trans('file.active')}}</option>
+                            <option value="0">{{trans('file.inactive')}}</option>
                         </select>
                     </div>
                 </div>
@@ -36,9 +36,9 @@
                     <div class="form-group">
                         <label>{{trans('file.date')}}</label>
                         <select class="form-select brand-date-select" name="select_date">
-                            <option selected value="">Seleccione</option>
-                            <option value="created_at">Fecha creacion</option>
-                            <option value="updated_at">Fecha actualizacion</option>
+                            <option selected value="">{{trans('file.select')}}</option>
+                            <option value="created_at">{{trans('file.date_create')}}</option>
+                            <option value="updated_at">{{trans('file.date_update')}}</option>
                         </select>
                     </div>
                 </div>
@@ -55,9 +55,9 @@
                 </div>
                 <div class="col">
                     <label for=""></label>
-                    <button type="submit" class="btn btn-primary mt-4 filter_data">Filter</button>
-                    <button type="button" class="btn btn-primary mt-4 clear_form">Clear</button>
-                    <button type="button" class="btn btn-primary mt-4 close_form">Close</button>
+                    <button type="submit" class="btn btn-primary mt-4 filter_data">{{trans('file.filter')}}</button>
+                    <button type="button" class="btn btn-primary mt-4 clear_form">{{trans('file.clear')}}</button>
+                    <button type="button" class="btn btn-primary mt-4 close_form">{{trans('file.close')}}</button>
                 </div>
             </div>
         </form>

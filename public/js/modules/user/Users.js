@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -98,7 +98,7 @@ eval("\n\nfunction _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"
 
 /***/ }),
 
-/***/ 21:
+/***/ 20:
 /*!**************************************************!*\
   !*** multi ./resources/js/modules/user/Users.js ***!
   \**************************************************/

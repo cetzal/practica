@@ -487,7 +487,7 @@
     $('.bt-close-modal').on('click', function(e){
         $("input[name='name']").val('');
         $("textarea[name='description']").val('');
-        
+        $('#suppliers_id').empty();
         $('form#new_brand')[0].reset();
         $('form#update_brand')[0].reset();
         $("form#new_brand").find("#btn-password").removeClass('is-invalid');
@@ -498,6 +498,7 @@
     $('.btn-close-modal').on('click', function(e){
         $("input[name='name']").val('');
         $("textarea[name='description']").val('');
+        $('#suppliers_id').empty();
         $('form#new_brand')[0].reset();
         $('form#update_brand')[0].reset();
         $("form#new_brand").find("#btn-password").removeClass('is-invalid');

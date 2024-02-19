@@ -43,6 +43,23 @@
                         title: response.status,
                         content: response.message,
                     });
+                },
+                error: function(xhr, textStatus, error){
+                    if (xhr.status == 422) {
+                        let message = ''
+                        $.each(xhr.responseJSON.errors,function(field_name,error){
+                            // $('input[name="'+field_name+'"]').addClass('is-invalid');
+                            // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+xhr.responseJSON.errors[field_name][0]+'</label>';
+                            // $('input[name="'+field_name+'"]').after(html);
+                            message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                        })
+
+                        $.alert({
+                            title: 'Field invalid',
+                            content: message,
+                        });
+
+                    }
                 }
             });
         }

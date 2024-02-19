@@ -84,13 +84,17 @@
                                     userIdArray: user_id
                                 },
                                 success:function(data){
-                                    user_id = [];
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Eliminar usuarios seleccionados',
                                         content: 'se elimino todo los usuarios selecionados ',
+                                        buttons: {
+                                            ok:function() {
+                                                user_id = [];
+                                                $( "#select_all").prop('checked', false);
+                                                $('#user-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#user-table').DataTable().ajax.reload();
                                 }
                             });
                         }
@@ -124,13 +128,17 @@
                                     userIdArray: user_id
                                 },
                                 success:function(data){
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Activar usuario',
                                         content: 'se activado todo los usuario selecionados ',
+                                        buttons: {
+                                            ok:function() {
+                                                user_id = [];
+                                                $( "#select_all" ).prop('checked', false);
+                                                $('#user-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    user_id = [];
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#user-table').DataTable().ajax.reload();
                                 }
                             });
                         }
@@ -166,13 +174,17 @@
                                     userIdArray: user_id
                                 },
                                 success:function(data){
-                                    user_id = [];
-                                    $.alert({
+                                    $.confirm({
                                         title: 'Desactiva usuario',
                                         content: 'Se desactivo todo los usuario selecionados ',
+                                        buttons: {
+                                            ok:function() {
+                                                user_id = [];
+                                                $( "#select_all" ).prop('checked', false);
+                                                $('#user-table').DataTable().ajax.reload();
+                                            }
+                                        }
                                     });
-                                    $( "#select_all" ).prop('checked', false);
-                                    $('#user-table').DataTable().ajax.reload();
                                 }
                             });
                         }

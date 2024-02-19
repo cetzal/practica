@@ -202,9 +202,18 @@ class UserController extends Controller
             'email' => [
                 'email',
                 'max:255',
-                    Rule::unique('users')->ignore($id)->where(function ($query) use($id) {
-                    return $query->where('is_active', false);
-                }),
+                function($attribute, $value, $fail) use($id) {
+                    if (empty($value)) {
+                        return;
+                    }
+                    
+                    if (DB::table('users')->where('email', $value)->where('id', '<>', $id)->count() > 0) {
+                        $fail("The email name already exists, by try another name.");
+                    }
+                }
+                // Rule::unique('users')->ignore($id)->where(function ($query) use($id) {
+                //     return $query->where('is_active', false);
+                // }),
             ],
             'password' => ['sometimes', 'max:30'],
             'is_active' => ['boolean'],

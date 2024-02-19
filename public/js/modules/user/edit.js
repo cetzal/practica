@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,7 +97,7 @@ eval("(function () {\n  var url_path_user = 'api/user';\n  var url_user_up = url
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /*!*************************************************!*\
   !*** multi ./resources/js/modules/user/edit.js ***!
   \*************************************************/

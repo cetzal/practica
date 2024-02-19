@@ -3,6 +3,8 @@
     var htmltext;
     var slidertext;
     var product_id = [];
+    var module = 'products';
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -468,15 +470,16 @@
                     'render' : function(data, type, row, meta){
                         var url_edit = "product/:id/edit";
                         url_edit = url_edit.replace(':id', row.id);
-                        let $html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-                        $html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                        let html =  '<a href="'+url_edit+'" class="btn bg-success btn-sm" data-id="'+row.id+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                        html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                        html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
                         if(row.is_active == 1){
-                            $html +=  '<a class="btn bg-grey m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
+                            html +=  '<a class="btn bg-grey m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
                         }else{
-                            $html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
+                            html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                         }
-                        //$html += '<a class="btn bs-info m-1 view"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
-                        return $html;
+                        //html += '<a class="btn bs-info m-1 view"><i class="fa fa-info-circle" aria-hidden="true"></i></a>';
+                        return html;
                     }
                 }
             ],
@@ -486,6 +489,12 @@
         } );
 
     } );
+
+    $('#product-data-table').on('click', '.redirect-record-log', function() {
+        let record_id = $(this).data('record-id').toString();
+        let record_name = $(this).data('record-name').toString();
+        window.location.href = window.location.origin +'/log-record/'+record_id+'?record_name='+record_name+'&module_name='+module;
+    });
 
 
     $( "#from_search_prod" ).on( "submit", function( event ) {

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,7 +97,7 @@ eval("function _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"func
 
 /***/ }),
 
-/***/ 12:
+/***/ 11:
 /*!********************************************************!*\
   !*** multi ./resources/js/modules/log-module/index.js ***!
   \********************************************************/

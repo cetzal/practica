@@ -9,4 +9,13 @@ class ModuleEnum
     const PRODUCTS = 3;
     const SUPPLIERS = 5;
     const CLIENTS = 6;
+
+    public static function getValueConstant($constante)
+    {
+        if (defined("self::$constante")) {
+            return constant("self::$constante");
+        }
+
+        return null;
+    }
 }

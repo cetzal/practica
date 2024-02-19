@@ -1,6 +1,6 @@
 (function() {
     var brand_id = [];
-    
+    var module = 'brands';
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -168,13 +168,14 @@
                     // let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></button>';
                     let html =  '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                     html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                    html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+
                     if(row.is_active == 1){
                         html +=  '<a class="btn m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
                     }else{
                         html +=  '<a class="btn m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                     }
 
-                    html +=  '<a href="#" class="btn bg-success btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
 
 
                     
@@ -368,7 +369,7 @@
     $('#brand-table').on('click', '.redirect-record-log', function() {
         let record_id = $(this).data('record-id').toString();
         let record_name = $(this).data('record-name').toString();
-        window.location.href = window.location.origin +'/log-module/'+record_id+'/record?record_name='+record_name;
+        window.location.href = window.location.origin +'/log-record/'+record_id+'?record_name='+record_name+'&module_name='+module;
     });
 
     $('#brand-table').on('click', '.remove ', function() {

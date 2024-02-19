@@ -44,11 +44,13 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/product/create', [App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
     Route::get('/product/{id}/edit', [App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
     Route::get('/log-module', [App\Http\Controllers\LogModuleController::class, 'index'])->name('logs.index');
-    Route::get('/log-module/{id}/record', [App\Http\Controllers\LogModuleController::class, 'showRecord'])->name('logs.record.show');
+    // Route::get('/log-module/{id}/record', [App\Http\Controllers\LogModuleController::class, 'showRecord'])->name('logs.record.show');
     Route::get('/suppliers', [App\Http\Controllers\SuppliersControlles::class, 'index'])->name('suppliers.index');
     Route::get('/clients', [App\Http\Controllers\ClientsControlles::class, 'index'])->name('clients.index');
     Route::get('/product/code', [App\Http\Controllers\ProductController::class, 'validateCode'])->name('api.product.validate_code');
     Route::get('/purchases', [App\Http\Controllers\PurchaseController::class, 'index'])->name('purchases.index');
     Route::get('/purchases/create', [App\Http\Controllers\PurchaseController::class, 'create'])->name('purchases.create');
+    Route::get('/log-record/{id}', [App\Http\Controllers\LogRecordController::class, 'index'])->name('api.log-record.index');
+
 });
 

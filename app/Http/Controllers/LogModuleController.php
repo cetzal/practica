@@ -67,12 +67,16 @@ class LogModuleController extends Controller
 
     public function showRecord(Request $request, $id) 
     {
+        $record_id = $id;
         $record_name = $request->record_name;
         $module_name = '';
 
         
         $logs = DB::table('view_log_modules')
-            ->select(['id', 'module_name'])
+            ->select([
+                'id', 'module_id','module_name', 
+                'movement_type_name', 'user_name','movement_date'
+            ])
             ->where('modified_record_id',$id)
             ->get();
         
@@ -81,8 +85,25 @@ class LogModuleController extends Controller
         
         
         if ($logs->count()) {
-            $module_name = $logs->first()['module_name'];
+            $module_name = $logs->first()->module_name;
         }
-        return view('log-module.log-record', compact('record_name', 'module_name'));
+
+        $totalData = $logs->count();
+        $totalFiltered = $logs->count();
+      
+        $draw            = intval($request->draw);
+        $recordsTotal    = intval($totalData);
+        $recordsFiltered = intval($totalFiltered);
+        $data            = $logs;
+
+        return view('log-module.log-record', compact(
+            'record_id',
+            'record_name',
+            'module_name', 
+            'draw',
+            'recordsTotal',
+            'recordsFiltered',
+            'data',
+        ));
     }
 }

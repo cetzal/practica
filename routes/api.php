@@ -71,6 +71,12 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/log-module/{id}/edit', [App\Http\Controllers\LogModuleController::class, 'edit'])->name('api.logs.edit');
 });
 
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/log-record/{id}/list', [App\Http\Controllers\LogRecordController::class, 'list'])->name('api.logs.record.list');
+    Route::get('/log-record/{id}/show/{id_log}', [App\Http\Controllers\LogRecordController::class, 'show'])->name('api.logs.record.list');
+    http://127.0.0.1:8000/api/log-record/24/show/28
+});
+
 
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/suppliers', [App\Http\Controllers\SuppliersControlles::class, 'list'])->name('api.suppliers.list');

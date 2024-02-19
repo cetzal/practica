@@ -98,9 +98,6 @@
         'columnDefs': [
             {
                 "orderable": false,
-                'targets': [0]
-            },
-            {
                 'render': function(data, type, row, meta){
                     data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
                    return data;

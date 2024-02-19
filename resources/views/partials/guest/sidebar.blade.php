@@ -3,6 +3,7 @@
 <div class="side-bar active">
     <div class="menu">
     <div class="item"><a href="#"><i class="fas fa-desktop"></i>Dashboard</a></div>
+    <div class="item"><a href="{{route('purchases.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.Purchase') }}</a></div>
     <div class="item"><a href="{{route('suppliers.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.Supplier') }}</a></div>
     <div class="item"><a href="{{route('clients.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.customer') }}</a></div>
     <div class="item" id="">

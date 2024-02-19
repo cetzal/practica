@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,6 +48,7 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/suppliers', [App\Http\Controllers\SuppliersControlles::class, 'index'])->name('suppliers.index');
     Route::get('/clients', [App\Http\Controllers\ClientsControlles::class, 'index'])->name('clients.index');
     Route::get('/product/code', [App\Http\Controllers\ProductController::class, 'validateCode'])->name('api.product.validate_code');
-
+    Route::get('/purchases', [App\Http\Controllers\PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/purchases/create', [App\Http\Controllers\PurchaseController::class, 'create'])->name('purchases.create');
 });
 

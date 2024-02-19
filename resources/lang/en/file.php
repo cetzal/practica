@@ -583,6 +583,13 @@ return [
 	'placeholder_supplier_description' => 'Type supplier description...',
 	//Product form search index
 	'search_product_select_category' => 'Select a category',
+	//Log Module form search
+	'log_module_form_search_module' => 'Module',
+	'log_module_form_search_select_module' => 'Select a Module',
+	'select_movement' => 'Select a Movement type',
+	'movement_type' => 'Movement type',
+	'movement_date' => 'Movement date',
+	'record' => 'Record',
 	//Generales
 	'close' => 'Close',
 	'clear' => 'Clear',

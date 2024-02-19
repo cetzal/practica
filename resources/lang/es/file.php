@@ -571,5 +571,29 @@ return [
 	"supplier" => "Proveedor",
 	"total_brands" => "Total marcas",
 	"add_supplier" => 'Agregar proveedor',
+	//Brand form search index
+	'placeholder_search_brand_name' => 'Nombre marca',
+	'placeholder_search_created_by' => 'Usuario alta',
+	'search_select_brand' => 'Seleccione una marca',
+	//Brand form create/edit
+	'placeholder_brand_name' => 'Introduzca el nombre de la marca...',
+	'placeholder_brand_description' => 'Introduzca el description...',
+	//Suppler form create/edit
+	'placeholder_supplier_name' => 'Introduzca el nombre de la proveedor...',
+	'placeholder_supplier_description' => 'Introduzca el description...',
+	//Product form search index
+	'search_product_select_category' => 'Seleccione una categoria',
+	//Generales
+	'close' => 'Cerrar',
+	'clear' => 'Limpiar',
+	'filter' => 'Filtrar',
+	'all' => 'Todos',
+	'active' => 'Activo',
+	'inactive' => 'Inactivo',
+	'select' => 'Seleccione',
+	'select_date' => 'Seleccione fecha',
+	'date_create' => 'Fecha creacion',
+	'date_update' => 'Fecha actualizacion',
+	'status' => 'Estatus',
 ];
 ?>

@@ -1,5 +1,6 @@
 (function(){
     var clients_id = [];
+    var module = 'clients';
     $( "#date_range" ).daterangepicker({
         maxDate : moment().endOf(),
         showApplyButton: false,
@@ -102,20 +103,16 @@
                 targets : [6],
                 render: function (data, type, row, meta) {
                         
-                    let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
-                    $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                    
+                    let html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                    html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                    html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
                     if(row.is_active == 1){
-                        $html +=  '<a class="btn bg-grey m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
+                        html +=  '<a class="btn bg-grey m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
                     }else{
-                        $html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
+                        html +=  '<a class="btn bg-grey m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
                     }
-                    // if(row.is_active == 1){
-                    //     $html +=  '<a class="btn bg-grey m-1 desactivar" data-id="'+row.id+'"><i class="icon-reset"></i> Desactivar</a>';
-                    // }else{
-                    //     $html +=  '<a class="btn bg-grey m-1 activar" data-id="'+row.id+'"><i class="icon-reset"></i> Activar</a>';
-                    // }
-                    return $html;
+                    
+                    return html;
                  }
             },
         ],
@@ -129,6 +126,12 @@
                     'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         }, 
+    });
+
+    $('#clients-data-table').on('click', '.redirect-record-log', function() {
+        let record_id = $(this).data('record-id').toString();
+        let record_name = $(this).data('record-name').toString();
+        window.location.href = window.location.origin +'/log-record/'+record_id+'?record_name='+record_name+'&module_name='+module;
     });
 
     $('.show_form_search').on('click', function(e){
@@ -441,6 +444,31 @@
                 content: 'Selecciones los clientes que deseas desactivar',
             });
         }
+    });
+
+     //Cerrar los modales de update or create
+     $('.bt-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $('form#new_client')[0].reset();
+        $('form#update_client')[0].reset();
+        $("form#new_client").find("#btn-password").removeClass('is-invalid');
+        $("form#new_client").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_client").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_client").find("#btn-password-up").attr('aria-invalid', false);
+    });
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $('form#new_client')[0].reset();
+        $('form#update_client')[0].reset();
+        $("form#new_client").find("#btn-password").removeClass('is-invalid');
+        $("form#new_client").find("#btn-password").attr('aria-invalid', false);
+        $("form#update_client").find("#btn-password-up").removeClass('is-invalid');
+        $("form#update_client").find("#btn-password-up").attr('aria-invalid', false);
+    });
+
+    $('#createModal').on('show.bs.modal', function (event) {
+        // Encuentra el formulario dentro del modal y limpia los campos
+        $(this).find('form')[0].reset();
     });
 
     

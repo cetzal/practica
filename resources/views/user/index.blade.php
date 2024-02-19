@@ -17,7 +17,7 @@
                 </div>
                 <div class="col">
                     <label for="last_name">{{trans('file.LastName')}}</label>
-                    <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                    <input type="text" class="form-control" placeholder="{{trans('file.LastName')}}" name="last_name">
                 </div>
                 <div class="col">
                     <label for="email">Email</label>
@@ -31,17 +31,17 @@
             <div class="row">
             <div class="col">
                     <div class="form-group">
-                        <label>Seleccione fecha</label>
+                        <label>{{trans('file.select_date')}}</label>
                         <select class="form-select  user-select-date" name="select_date">
-                            <option selected value="">Seleccione</option>
-                            <option value="created_at">Fecha creacion</option>
-                            <option value="updated_at">Fecha actualizacion</option>
+                            <option selected value="">{{trans('file.select')}}</option>
+                            <option value="created_at">{{trans('file.date_create')}}</option>
+                            <option value="updated_at">{{trans('file.date_update')}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>Fecha inicio y fin</label>
+                        <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
@@ -63,11 +63,11 @@
                 </div> -->
                 <div class="col">
                     <div class="form-group">
-                        <label>status</label>
+                        <label>{{trans('file.status')}}</label>
                         <select class="form-select" name="user_status">
-                            <option selected value="">All</option>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option selected value="">{{trans('file.all')}}</option>
+                            <option value="1">{{trans('file.active')}}</option>
+                            <option value="0">{{trans('file.inactive')}}</option>
                         </select>
                     </div>
                 </div>

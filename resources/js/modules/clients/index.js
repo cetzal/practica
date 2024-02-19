@@ -316,7 +316,7 @@
         $(':checkbox.checkbox_client:checked').each(function(i){
             var client_data = $(this).closest('tr').data('client');
             if(typeof(client_data) !== 'undefined'){
-                clients_id[i] = client_data.id;
+                clients_id.push(client_data.id);
             }
         });
     }

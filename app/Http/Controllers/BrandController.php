@@ -178,12 +178,12 @@ class BrandController extends Controller
         $brand_names = [];
         if ($products->count() > 0) {
             $brand_ids = array_values(array_unique($products->pluck('brand_id')->toArray()));
-            $brand_names = array_unique($products->pluck('brand_name')->toArray());
+            $brand_names = array_values(array_unique($products->pluck('brand_name')->toArray()));
         }
         
         $message = 'Se borraron todas las marcas seleccionadas';
         $brand_deletes = array_diff($request->brandIdArray, $brand_ids);
-        
+
         if (count($brand_ids) > 0) {
             $brand = $brand_names[0];
             if (count($brand_names) > 1) {

@@ -23,17 +23,16 @@ SELECT
     p.image AS picture,
     p.product_details AS product_details,
     p.is_active AS is_active,
-    p.created_at,
-    p.updated_at,
+    p.created_at AS created_at,
+    p.updated_at AS updated_at,
     p.deleted_at AS deleted_at,
     p.user_id AS user_id,
-    b.supplier_id,
+    b.supplier_id AS supplier_id,
     b.name AS brand_name,
-    (SELECT s.name FROM suppliers AS s WHERE s.id = b.supplier_id) AS supplier_name,
-    (SELECT c.name FROM categories AS c WHERE c.id = p.category_id ) AS category_name,
-    (SELECT ut.unit_name FROM units AS ut WHERE ut.id = p.unit_id) AS unit_name,
-    (SELECT CONCAT(u.name, ' ', u.last_name) FROM users AS u WHERE u.id = p.user_id) AS asuser_name
-FROM
-   pruebas.products AS p
-INNER JOIN brands AS b ON p.brand_id = b.id
+    (SELECT s.name FROM suppliers s WHERE (s.id = b.supplier_id)) AS supplier_name,
+    (SELECT c.name FROM categories c WHERE (c.id = p.category_id)) AS category_name,
+    (SELECT ut.unit_name FROM units ut WHERE (ut.id = p.unit_id)) AS unit_name,
+    (SELECT concat(u.name, ' ', u.last_name) FROM users u WHERE (u.id = p.user_id)) AS asuser_name
+FROM products p
+JOIN brands b ON p.brand_id = b.id
 WHERE p.deleted_at IS NULL;

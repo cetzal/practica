@@ -188,7 +188,7 @@ class SuppliersControlles extends Controller
 
     public function deactivateBySelection(Request $request)
     {
-        $suppliers_id = $request->productIdArray;
+        $suppliers_id = $request->supplierIdArray;
         foreach ($suppliers_id as $id) {
             $supplier_data = Suppliers::findOrFail($id);
             $supplier_data->is_active = false;
@@ -199,8 +199,8 @@ class SuppliersControlles extends Controller
     }
 
     public function activateBySelection(Request $request)
-    {
-        $suppliers_id = $request->productIdArray;
+    {   
+        $suppliers_id = $request->supplierIdArray;
         foreach ($suppliers_id as $id) {
             $supplier_data = Suppliers::findOrFail($id);
             $supplier_data->is_active = true;
@@ -212,12 +212,13 @@ class SuppliersControlles extends Controller
 
     public function deleteBySelection(Request $request)
     {
-        $suppliers_id = $request->productIdArray;
+        $suppliers_id = $request->supplierIdArray;
+        $deleted_date =  date('Y-m-d H:i:s');
         foreach ($suppliers_id as $id) {
             $supplier_data = Suppliers::findOrFail($id);
             $supplier_data->is_active = false;
+            $supplier_data->deleted_at = $deleted_date;
             $supplier_data->save();
-            $supplier_data->delete();
         }
        
         return response()->json(['status' => 'success', 'messages' => 'Los proveedores selecionado se ha eliminado con exito']);

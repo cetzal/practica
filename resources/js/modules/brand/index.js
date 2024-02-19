@@ -1,5 +1,5 @@
 (function() {
-    var brand_id = [];
+    var brand_ids = [];
     var module = 'brands';
     $.ajaxSetup({
         headers: {
@@ -198,6 +198,7 @@
         e.preventDefault();
         brand_ids = [];
         verific_checks(0);
+        console.log('brand_is', brand_ids);
         if(brand_ids.length) {
             $.ajax({
                 type:'PUT',
@@ -269,6 +270,7 @@
         e.preventDefault();
         brand_ids = [];
         verific_checks(0);
+        console.log('brands ids', brand_ids);
         if(brand_ids.length) {
             $.ajax({
                 type:'PUT',
@@ -313,7 +315,7 @@
         $(':checkbox:checked').each(function(i){
             var brand_data = $(this).closest('tr').data('branch-id');
             if (typeof(brand_data) != "undefined") {
-                brand_ids[i-1] = brand_data;
+                brand_ids.push(brand_data);
             }
         });
     }

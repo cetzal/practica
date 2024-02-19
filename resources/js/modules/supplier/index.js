@@ -172,12 +172,13 @@
         e.preventDefault();
         supplier_ids = [];
         verific_checks_supplier(0);
+        console.log('suppliers', supplier_ids);
         if(supplier_ids.length) {
             $.ajax({
                 type:'PUT',
                 url:'api/suppliers/all/deletebyselection',
                 data:{
-                    brandIdArray: supplier_ids
+                    supplierIdArray: supplier_ids
                 },
                 success:function(data){
                     console.log('data', data.messages);
@@ -215,7 +216,7 @@
                 type:'PUT',
                 url:'api/suppliers/all/activatebyselection',
                 data:{
-                    brandIdArray: supplier_ids
+                    supplierIdArray: supplier_ids
                 },
                 success:function(data){
                     $.confirm({
@@ -248,7 +249,7 @@
                 type:'PUT',
                 url:'api/suppliers/all/deactivatebyselection',
                 data:{
-                    brandIdArray: supplier_ids
+                    supplierIdArray: supplier_ids
                 },
                 success:function(data){
                     $.confirm({
@@ -394,11 +395,12 @@
         });
 
     });
+
     var verific_checks_supplier = function(num){
         $(':checkbox:checked').each(function(i){
             var supplier_data = $(this).closest('tr').data('supplier-id');
-            if (typeof(supplier_data) != "undefined") {
-                supplier_ids[i-1] = supplier_data;
+            if (typeof(supplier_data) !== 'undefined') {
+                supplier_ids.push(supplier_data);
             }
         });
     }

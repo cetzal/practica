@@ -216,12 +216,9 @@
 
     var verific_checks_prod = function(num){
         $(':checkbox:checked').each(function(i){
-            i+=num;
-            if(i){
-                var product_data = $(this).closest('tr').data('product');
-                console.log(product_data);
-                product_id[i-1] = product_data.id;
-            }
+            var product_data = $(this).closest('tr').data('product');
+            if(typeof(product_data) !== 'undefined')
+            product_id.push(product_data.id);
         });
     }
     $(document).on("click", "tr.product-link td:not(:first-child, :last-child)", function() {

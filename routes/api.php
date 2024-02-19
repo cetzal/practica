@@ -87,7 +87,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::delete('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'destroy'])->name('api.suppliers.destroy');
     Route::put('/suppliers/{id}/activate', [App\Http\Controllers\SuppliersControlles::class, 'activate'])->name('api.suppliers.activate');
     Route::put('/suppliers/{id}/deactivate', [App\Http\Controllers\SuppliersControlles::class, 'deactivate'])->name('api.suppliers.deactivate');
-    Route::put('/suppliers/all/activarbyselection', [App\Http\Controllers\SuppliersControlles::class, 'activateBySelection'])->name('api.suppliers.all_active');
+    Route::put('/suppliers/all/activatebyselection', [App\Http\Controllers\SuppliersControlles::class, 'activateBySelection'])->name('api.suppliers.all_active');
     Route::put('/suppliers/all/deactivatebyselection', [App\Http\Controllers\SuppliersControlles::class, 'deactivateBySelection'])->name('api.suppliers.all_desactive');
     Route::put('/suppliers/all/deletebyselection', [App\Http\Controllers\SuppliersControlles::class, 'deleteBySelection'])->name('api.suppliers.all_delete');
 });

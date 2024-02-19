@@ -529,7 +529,7 @@ DD
         $(':checkbox.checkbox_user:checked').each(function(i){
             var user_data = $(this).closest('tr').data('user');
             if(typeof(user_data) !== 'undefined'){
-                user_id[i] = user_data.id;
+                user_id.push(user_data.id);
             }
         });
     }

@@ -117,9 +117,10 @@ class SuppliersControlles extends Controller
 
         $previous_value = $supplier_data->getOriginal();
         $supplier_data->name = $request->name;
-        if(!isset($input['is_active']))
-            $input['is_active'] = false;
-
+        if(!isset($request->is_active))
+            $supplier_data->is_active= false;
+        else
+            $supplier_data->is_active= true;
         
         $supplier_data->save();
         if(!empty($request->brands_id))

@@ -16,15 +16,22 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>{{trans('file.date')}}</label>
+                                            <label>{{trans('file.Date')}}</label>
                                             <input type="button" class="form-control" name="purchase_date" value="">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Supplier')}}</label>
-                                            <select name="supplier_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            <select name="supplier_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>{{trans('file.brands')}}</label>
+                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
                                             </select>
                                         </div>
                                     </div>
@@ -41,22 +48,14 @@
                                             </select>
                                         </div>
                                     </div>
+                                   
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{trans('file.Attach Document')}}</label> <i class="dripicons-question" data-toggle="tooltip" title="Only jpg, jpeg, png, gif, pdf, csv, docx, xlsx and txt file is supported"></i>
-                                            <input type="file" name="document" class="form-control" >
-                                            @if($errors->has('extension'))
-                                                <span>
-                                                   <strong>{{ $errors->first('extension') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mt-3">
                                         <label>{{trans('file.Select Product')}}</label>
                                         <div class="search-box input-group">
-                                            <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
-                                            <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Please type product code and select..." class="form-control" />
+                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            </select>
+                                            <!-- <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
+                                            <input type="text" name="product_code_name" id="productcodeSearch" placeholder="Please type product code and select..." class="form-control" /> -->
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +191,7 @@
             <td><strong>{{trans('file.Shipping Cost')}}</strong>
                 <span class="pull-right" id="shipping_cost">0.00</span>
             </td>
-            <td><strong>{{trans('file.grand total')}}</strong>
+            <td><strong>{{trans('file.Total')}}</strong>
                 <span class="pull-right" id="grand_total">0.00</span>
             </td>
         </table>

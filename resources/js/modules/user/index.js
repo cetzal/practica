@@ -310,7 +310,7 @@ DD
                 targets : [10]
                 , "render": function (data, type, row, meta) {
                         
-                let html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                let html =  '<button type="button" class="open-EditUserDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
                     html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
 
@@ -372,16 +372,17 @@ DD
         table.ajax.reload();
     });
 
-    $('#user-table').on('click', '.open-EditbrandDialog ', function() {
+    $('#user-table').on('click', '.open-EditUserDialog ', function() {
         var url = "api/user/"
         var id = $(this).data('id').toString();
         url = url.concat(id);
         $("input[name='id']").val(id);
         $.get(url, function(data) {
+            console.log('get user', data);
             $("input[name='name']").val(data['name']);
             $("input[name='last_name']").val(data['last_name']);
             $("input[name='email']").val(data['email']);
-            $("input[name='role_id']").val(data['role_id']);
+            $("select[name='role_id']").val(data['role_id']);
             up_user_id = data['id'];
         });
     });

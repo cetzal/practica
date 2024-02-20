@@ -192,7 +192,7 @@ class BrandController extends Controller
             $message = 'Se borraron '. count($brand_deletes) .' Marcas. No se borraron {'.$brand.'} porque cuentan con productos';
         }
         
-        Brand::whereIn('id', $brand_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
+        Brand::whereIn('id', $brand_deletes)->update(['deleted_at' => date('Y-m-d H:i:s'), 'is_active' => false]);
 
         return response()->json(['status' => 'success', 'messages' => $message]);
     }
@@ -243,6 +243,7 @@ class BrandController extends Controller
             return response()->json(['status' => 'warning', 'message' => 'La marca no se puede eliminar, tiene uno o varios productos asignados.']); 
         }
         $brand_data->deleted_at = date('Y-m-d H:i:s');
+        $brand_data->is_active = false;
         $brand_data->save();
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 
     }
@@ -253,7 +254,7 @@ class BrandController extends Controller
     }
 
     public function allBrandsBySupplier($id){
-        $data = DB::table('view_brands')->select(['id', 'name', 'is_active'])->where('supplier_id', $id)->get();
+        $data = DB::table('view_brands_for_edit')->select(['id', 'name', 'is_active'])->where('supplier_id', $id)->get();
         return $data;
     }
 }

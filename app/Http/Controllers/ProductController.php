@@ -56,8 +56,8 @@ class ProductController extends Controller
             $where[] = ['asuser_name', 'like', '%'.$request->user_created.'%'];
         }
 
-        if (!empty($request->supplier_name)) {
-            $where[] = ['supplier_name', 'like', '%'.$request->supplier_name.'%'];
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', 'like', '%'.$request->supplier_id.'%'];
         }
         
         if (!empty($request->date_range) && !empty($request->select_date)) {

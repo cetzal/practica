@@ -343,13 +343,14 @@
                 header: true,
                 footer: true
             },
+            fixedColumns: true,
             fixedColumns: {
-                left: 1,
-                right: 1
+                start: 1,
+                end: 1
             },
             scrollCollapse: true,
             scrollX: true,
-            scrollY: 300,
+            //scrollY: 300,
             "processing": true,
             "serverSide": true,
             "ajax":{

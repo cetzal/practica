@@ -388,7 +388,7 @@
     });
 
     var load_combobox = function(input){
-        $(input).append('<option value="">Select suppliers</option>');
+        $(input).append('<option value="">Select a suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -418,9 +418,7 @@
         supplier_id = $(this).val();
         if(supplier_id) {
             brandsBySupplier(supplier_id);
-        }else{    
-            $('select[name="supplier_id"]').empty();
-        }                        
+        }                 
     });
 
     function brandsBySupplier(supplier_id){

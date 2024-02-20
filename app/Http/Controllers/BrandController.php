@@ -32,7 +32,7 @@ class BrandController extends Controller
         }
 
         if (!empty($request->supplier_id)) {
-            $where[] = ['supplier_id', 'like', '%'.$request->supplier_id.'%'];
+            $where[] = ['supplier_id', '=', $request->supplier_id];
         }
 
         if (!empty($request->created_by)) {

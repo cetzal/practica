@@ -57,7 +57,7 @@ class ProductController extends Controller
         }
 
         if (!empty($request->supplier_id)) {
-            $where[] = ['supplier_id', 'like', '%'.$request->supplier_id.'%'];
+            $where[] = ['supplier_id', '=', $request->supplier_id];
         }
         
         if (!empty($request->date_range) && !empty($request->select_date)) {
@@ -370,5 +370,9 @@ class ProductController extends Controller
             exit;
         }
         return response()->json(true);
+    }
+    public function productByIdBrandCombo($id){
+        $data = DB::table('view_products_active')->where('brand_id', $id)->get();
+        return $data;
     }
 }

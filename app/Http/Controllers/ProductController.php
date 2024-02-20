@@ -139,7 +139,7 @@ class ProductController extends Controller
             $data['image'] = implode(",", $image_names);
         }
         else {
-            $data['image'] = 'zummXD2dvAtI.png';
+            $data['image'] = 'dummy2.png';
         }
         
         $product = Product::create($data);
@@ -154,7 +154,7 @@ class ProductController extends Controller
             );
         }
         
-        return response()->json(['status' => 'success', 'messages' => 'El producto se guardo con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El producto se guardo con exito']);
     }
 
     public function edit($id)
@@ -202,7 +202,7 @@ class ProductController extends Controller
                 $image->move('public/images/product', $imageName);
                 $image_names[] = $imageName;
             }
-            if($product_data->image != 'zummXD2dvAtI.png') {
+            if($product_data->image != 'dummy2.png') {
                 $data['image'] = $product_data->image.','.implode(",", $image_names);
             }
             else{
@@ -226,7 +226,7 @@ class ProductController extends Controller
                 MovementTypeEnum::UPDATING
             );
         }
-        return response()->json(['status' => 'success', 'messages' => 'El producto se actualizado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El producto se actualizado con exito']);
     }
 
     public function generateCode()
@@ -294,7 +294,7 @@ class ProductController extends Controller
             $lims_product_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los productos selecionado se ha desactivado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los productos selecionado se ha desactivado con exito']);
     }
 
     public function activateBySelection(Request $request)
@@ -306,39 +306,51 @@ class ProductController extends Controller
             $lims_product_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los productos selecionado se ha activado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los productos selecionado se ha activado con exito']);
     }
 
     public function deleteBySelection(Request $request)
     {
         $product_id = $request->productIdArray;
+        $delete_date = date('Y-m-d H:i:s');
         foreach ($product_id as $id) {
-            $lims_product_data = Product::findOrFail($id);
-            $lims_product_data->is_active = false;
-            $lims_product_data->save();
-            $lims_product_data->delete();
+            $product_data = Product::findOrFail($id);
+            $product_data->is_active = false;
+            if($product_data->image != 'dummy2.png') {
+                $images = explode(",", $product_data->image);
+                foreach ($images as $key => $image) {
+                    if(file_exists('public/images/product/'.$image)){
+                        unlink('public/images/product/'.$image);
+                    }
+                }
+                $product_data->image = 'dummy2.png';
+            }
+            $product_data->deleted_at = $delete_date;
+            $product_data->save();
         }
        
-        return response()->json(['status' => 'success', 'messages' => 'Los productos selecionado se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'Los productos selecionado se ha eliminado con exito']);
     }
 
    
     public function destroy($id)
     {
-        $lims_product_data = Product::findOrFail($id);
-        $lims_product_data->is_active = false;
-        if($lims_product_data->image != 'zummXD2dvAtI.png') {
-            // $images = explode(",", $lims_product_data->image);
-            // foreach ($images as $key => $image) {
-            //     if(file_exists('public/images/product/'.$image)){
-            //         unlink('public/images/product/'.$image);
-            //     }
-            // }
+        $product_data = Product::findOrFail($id);
+        $product_data->is_active = false;
+        if($product_data->image != 'dummy2.png') {
+            $images = explode(",", $product_data->image);
+            foreach ($images as $key => $image) {
+                if(file_exists('public/images/product/'.$image)){
+                    unlink('public/images/product/'.$image);
+                }
+            }
+            $product_data->image = 'dummy2.png';
         }
-        $lims_product_data->save();
-        $lims_product_data->delete();
+        
+        $product_data->deleted_at = date('Y-m-d H:i:s');
+        $product_data->save();
      
-        return response()->json(['status' => 'success', 'messages' => 'El producto se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'El producto se ha eliminado con exito']);
     }
 
     public function validateCode(Request $request)

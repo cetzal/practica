@@ -418,7 +418,10 @@
         supplier_id = $(this).val();
         if(supplier_id) {
             brandsBySupplier(supplier_id);
-        }                 
+        }else{    
+            $('select[name="brand_id"]').empty();
+            $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+        }                
     });
 
     function brandsBySupplier(supplier_id){

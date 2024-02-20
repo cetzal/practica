@@ -16,28 +16,17 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>{{trans('file.Date')}}</label>
+                                            <label>{{trans('file.Reference No')}}</label>
                                             <input type="button" class="form-control" name="purchase_date" value="">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>{{trans('file.Supplier')}}</label>
-                                            <select name="supplier_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                                               
-                                            </select>
+                                            <label>{{trans('file.purchase date')}}</label>
+                                            <input type="button" class="form-control" name="purchase_date" id="purchase_date" value="">
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group">
-                                            <label>{{trans('file.brands')}}</label>
-                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">  
-                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{trans('file.Purchase Status')}}</label>
                                             <select name="status" class="form-control">
@@ -48,11 +37,30 @@
                                             </select>
                                         </div>
                                     </div>
-                                   
-                                    <div class="col-md-6">
+                                    
+                                </div>
+                                <div class="row">  
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>{{trans('file.Supplier')}}</label>
+                                            <select name="supplier_id" class="selectpicker-suppliers form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                               
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>{{trans('file.brands')}}</label>
+                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                                <option value="">Select a brand</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
                                         <label>{{trans('file.Select Product')}}</label>
                                         <div class="search-box input-group">
-                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                                <option value="">Select a product</option>
                                             </select>
                                             <!-- <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
                                             <input type="text" name="product_code_name" id="productcodeSearch" placeholder="Please type product code and select..." class="form-control" /> -->
@@ -243,4 +251,7 @@
         </div>
     </div>
 </section>
+@endsection
+@section('scripts')
+    <script src="{{ asset('js/modules/purchases/index.js') }}"></script>
 @endsection

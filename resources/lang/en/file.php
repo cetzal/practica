@@ -602,6 +602,7 @@ return [
 	'date_create' => 'Date create',
 	'date_update' => 'Date update',
 	'status' => 'Status',
+	'purchase date' => 'Purchase Date',
 
 ];
 ?>

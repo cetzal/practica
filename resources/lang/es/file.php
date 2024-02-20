@@ -601,5 +601,6 @@ return [
 	'date_create' => 'Fecha creacion',
 	'date_update' => 'Fecha actualizacion',
 	'status' => 'Estatus',
+	'purchase date' => 'Fecha de compra',
 ];
 ?>

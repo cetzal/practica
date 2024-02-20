@@ -46,7 +46,7 @@ class ProductController extends Controller
         }
 
         if(!empty($request->brand_prod)){
-            $where[] = ['brand_id', 'like', '%'.$request->brand_prod.'%'];
+            $where[] = ['brand_id', '=', $request->brand_prod];
         }
         if(!empty($request->category_id)){
             $where[] = ['category_id', '=', '%'.$request->category_id.'%'];
@@ -57,7 +57,7 @@ class ProductController extends Controller
         }
 
         if (!empty($request->supplier_id)) {
-            $where[] = ['supplier_id', 'like', '%'.$request->supplier_id.'%'];
+            $where[] = ['supplier_id', '=', $request->supplier_id];
         }
         
         if (!empty($request->date_range) && !empty($request->select_date)) {

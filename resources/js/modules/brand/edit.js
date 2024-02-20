@@ -2,6 +2,7 @@
     $('form#update_brand').validate({
         rules:{
             name: 'required',
+            supplier_id: 'required',
             description : 'required'
         },
         highlight: function (input) {
@@ -17,7 +18,8 @@
         },
         messages: {
             name: "El nombre es requerido",
-            description: "La descripcion es requerido"
+            supplier_id: "El proveedor es requerido",
+            description: "La descripcion es requerido",
         }
     });
 

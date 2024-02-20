@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <label>{{trans('file.supplier')}} *</label>
-                <select class="form-select" name="supplier_id" id="suppliers_id"></select>
+                <select class="form-select" name="supplier_id" id="suppliers_id" required></select>
             </div>
             <div class="form-group">
                 <label>{{trans('file.Description')}} *</label>

@@ -90,7 +90,8 @@
             });
         },
         error: function (file, response, xhr) {
-            if (xhr.status == 422) { 
+            if (xhr.status == 422) {
+                this.emit('success', file);
                 let response = JSON.parse(xhr.response);
                 let message = ''
                 $.each(response.errors,function(field_name,error){
@@ -124,6 +125,7 @@
             //console.log(file, response);
         },
         completemultiple: function (file, response) {
+            this.emit('success', file);
             console.log(file, response, "completemultiple");
         },
         reset: function () {

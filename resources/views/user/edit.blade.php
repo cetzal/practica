@@ -56,9 +56,9 @@
                         <div class="form-group">
                             <label><strong>{{trans('file.Role')}} *</strong></label>
                             <input type="hidden" name="role_id_hidden" value="">
-                            <select name="role_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Role...">
+                            <select name="role_id" required class="form-control" title="Select Role...">
                                 <option value="1">ADMIN</option>
-                                <option value="2 ">CUSTOMER</option>
+                                <option value="2">CUSTOMER</option>
                             </select>
                         </div>
                         <div class="form-group">

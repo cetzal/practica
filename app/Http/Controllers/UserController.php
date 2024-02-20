@@ -315,11 +315,11 @@ class UserController extends Controller
         if ($user_data->picture != 'dummy-user.jpeg') {
             $images = explode(",", $user_data->image);
             foreach ($images as $key => $image) {
-                if(file_exists('public/images/user/'.$image)){
+                if (!empty($image) && file_exists('public/images/user/'.$image)){
                     unlink('public/images/user/'.$image);
                 }
             }
-            $user_data->image = 'dummy-user.jpeg';
+            $user_data->picture = 'dummy-user.jpeg';
         }
         $user_data->save();
         $user_data->delete();

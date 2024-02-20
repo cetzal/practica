@@ -312,6 +312,7 @@ class ProductController extends Controller
     public function deleteBySelection(Request $request)
     {
         $product_id = $request->productIdArray;
+        $delete_date = date('Y-m-d H:i:s');
         foreach ($product_id as $id) {
             $product_data = Product::findOrFail($id);
             $product_data->is_active = false;
@@ -324,8 +325,8 @@ class ProductController extends Controller
                 }
                 $product_data->image = 'dummy2.png';
             }
+            $product_data->deleted_at = $delete_date;
             $product_data->save();
-            $product_data->delete();
         }
        
         return response()->json(['status' => 'success', 'message' => 'Los productos selecionado se ha eliminado con exito']);
@@ -346,8 +347,8 @@ class ProductController extends Controller
             $product_data->image = 'dummy2.png';
         }
         
+        $product_data->deleted_at = date('Y-m-d H:i:s');
         $product_data->save();
-        $product_data->delete();
      
         return response()->json(['status' => 'success', 'message' => 'El producto se ha eliminado con exito']);
     }

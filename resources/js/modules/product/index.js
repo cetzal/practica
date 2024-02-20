@@ -1,4 +1,6 @@
 (function() {
+
+    var host = window.location.origin;
     var qty = [];
     var htmltext;
     var slidertext;
@@ -337,6 +339,9 @@
     });
 
     $(document).ready(function() {
+        // load suppliers
+       
+        load_combobox_filter(".selectpicker-suppliers");
         var table = $('#product-data-table').DataTable( {
             responsive: true,
             "searching": false,
@@ -523,4 +528,75 @@
         $('#from_search_prod')[0].reset();
         $('#product-data-table').DataTable().ajax.reload();
     });
+
+    var load_combobox = function(input){
+        $(input).append('<option value="">Select suppliers</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: host + '/api/suppliers/all/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+    var load_combobox_filter = function(input){
+        $(input).append('<option value="">Select suppliers</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: 'api/suppliers/filter/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+
+    $('select[name="supplier_id"]').on('change', function(e) {
+        e.preventDefault();
+        supplier_id = $(this).val();
+        if(supplier_id) {
+            all_brandsBySupplier(supplier_id);
+        }else{    
+            $('select[name="supplier_id"]').empty();
+        }                        
+    });
+
+    function all_brandsBySupplier(supplier_id){
+        var url = 'api/brand/all/supplier/'+ supplier_id;
+        $('select[name="brand_prod"]').empty();
+        $('select[name="brand_prod"]').append('<option value="">Select a brand</option>');
+        $.ajax({
+            url: host +'/'+ url,
+            type: "GET",
+            dataType: "json",
+            success:function(response) {
+                $.each(response, function(index, row) {
+                    $('select[name="brand_prod"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            },
+        });
+    }
 })();

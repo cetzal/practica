@@ -17,7 +17,8 @@
                 </div>
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
-                    <input type="text" class="form-control" placeholder="{{trans('file.supplier')}}" name="supplier_name">
+                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
+                    </select>
                 </div>
                 <div class="col">
                     <label for="created_by">{{trans('file.created_by')}}</label>

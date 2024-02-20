@@ -402,11 +402,11 @@
     var brand = $("input[name='brand']").val();
     var supplier = $("input[name='supplier']").val();
     $(document).ready(function() {
-        load_combobox(".select-supplier");
-        brandsBySupplier(supplier);
+        load_combobox_filter(".select-supplier");
+        all_brandsBySupplier(supplier);
     });
 
-    var load_combobox = function(input){
+    var load_combobox_filter = function(input){
         
         $(input).append('<option value="">Select suppliers</option>');
         $.ajax( {
@@ -414,12 +414,17 @@
             contentType: false,
             dataType: 'json',
             type: "GET",
-            url: host + '/api/suppliers/all/combobox',
+            url: host + '/api/suppliers/filter/combobox',
             success: function( response ){
                 if(response.length != 0){
                     
                     $.each(response, function(index, row) {
-                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                        if(row.is_active == 1){
+                            $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                        }else{
+                            $(input).append('<option value=' + row.id + ' disabled>' + row.name + '</option>');
+                        }
+                        
                     }); 
 
                     $('select[name="supplier_id"]').val(supplier);
@@ -435,23 +440,26 @@
         e.preventDefault();
         supplier_id = $(this).val();
         if(supplier_id) {
-            brandsBySupplier(supplier_id);
+            all_brandsBySupplier(supplier_id);
         }                     
     });
 
-    function brandsBySupplier(supplier_id){
-        var url = 'api/brand/supplier/'+ supplier_id;
+    function all_brandsBySupplier(supplier_id){
+        var url = 'api/brand/all/supplier/'+ supplier_id;
         $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select brand</option>');
+        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
         $.ajax({
             url: host +'/'+ url,
             type: "GET",
             dataType: "json",
             success:function(response) {
                 $.each(response, function(index, row) {
-                    
-                    
-                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    if(row.is_active == 1){
+                        $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }else{
+                        $('select[name="brand_id"]').append('<option value=' + row.id + ' disabled>' + row.name + '</option>');
+                    }
+                   
                     if(row.id == parseInt(brand)){
                         $('select[name="brand_id"]').val(brand);
                     }

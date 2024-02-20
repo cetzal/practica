@@ -22,17 +22,16 @@
                 </div>
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
-                    <input type="text" class="form-control" placeholder="{{trans('file.supplier')}}" name="supplier_name">
+                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
+                    </select>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
-                            <select name="brand_prod" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
+                            <select name="brand_prod" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                             <option value="">{{trans('file.search_select_brand')}}</option>  
-                            @foreach($lims_product_brand_list as $brand)
-                                <option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
-                            @endforeach
+                           
                             </select>
                         </div>
                     </div>

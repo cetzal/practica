@@ -31,8 +31,8 @@ class BrandController extends Controller
             $where[] = ['name', 'like', '%'.$request->brand_name.'%'];
         }
 
-        if (!empty($request->supplier_name)) {
-            $where[] = ['supplier_name', 'like', '%'.$request->supplier_name.'%'];
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', 'like', '%'.$request->supplier_id.'%'];
         }
 
         if (!empty($request->created_by)) {
@@ -248,7 +248,12 @@ class BrandController extends Controller
     }
 
     public function brandBySupplier($id){
-        $data = DB::table('view_brands')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        $data = DB::table('view_brands_active')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        return $data;
+    }
+
+    public function allBrandsBySupplier($id){
+        $data = DB::table('view_brands')->select(['id', 'name', 'is_active'])->where('supplier_id', $id)->get();
         return $data;
     }
 }

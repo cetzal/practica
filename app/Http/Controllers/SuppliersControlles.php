@@ -254,4 +254,9 @@ class SuppliersControlles extends Controller
         return $data;
     }
 
+    public function combobox_filters(){
+        $data = DB::table('view_suppliers')->select(['id', 'name', 'is_active'])->get();
+        return $data;
+    }
+
 }

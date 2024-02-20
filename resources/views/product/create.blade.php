@@ -218,9 +218,9 @@
                                     </div>  
                                 </div> 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group float-right">
+                                <a href="{{route('products.index')}}" class="btn btn-info">Atras</a>
                                 <input type="button" value="{{trans('file.Save')}}" id="submit-btn" class="btn btn-primary">
-                                <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                             </div>
                         </form>
                     </div>

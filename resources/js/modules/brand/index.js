@@ -288,17 +288,6 @@
                                 $("tbody input[type='checkbox']").prop('checked', false);
                                 // $('#brand-table').DataTable().ajax().reload();
                             }
-                            // cancel: function () {
-                            //     $.alert('Canceled!');
-                            // },
-                            // somethingElse: {
-                            //     text: 'Something else',
-                            //     btnClass: 'btn-blue',
-                            //     keys: ['enter', 'shift'],
-                            //     action: function(){
-                            //         $.alert('Something else?');
-                            //     }
-                            // }
                         }
                     });
                     
@@ -549,6 +538,32 @@
             }
         });
     };
+
+    var load_combobox_filter = function(input){
+        $(input).append('<option value="">Select suppliers</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: 'api/suppliers/filter/combobox',
+            success: function( response ){
+                if(response.length != 0){
+                    
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+    $(document).ready(function() {
+        load_combobox_filter(".selectpicker-suppliers");
+    });
    
 
 })();

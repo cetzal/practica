@@ -466,7 +466,7 @@
     function brandsBySupplier(supplier_id){
         var url = 'api/brand/supplier/'+ supplier_id;
         $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select brand</option>');
+        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
         $.ajax({
             url: host +'/'+ url,
             type: "GET",

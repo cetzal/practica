@@ -20,7 +20,7 @@
                                     <div class="form-group">
                                         <label>{{trans('file.Product Type')}} *</strong> </label>
                                         <div class="input-group">
-                                            <select name="type" required class="form-control selectpicker" id="type">
+                                            <select name="type" required class="form-control" id="type">
                                                 <option value="standard">Standard</option>
                                             </select>
                                             <input type="hidden" name="type_hidden" value="{{$product_data->type}}">
@@ -214,9 +214,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
+                                    <div class="form-group float-right">
+                                        <a href="{{route('products.index')}}" class="btn btn-info">Atras</a>
                                         <input type="button" value="{{trans('file.Save')}}" class="btn btn-primary" id="submit-btn">
-                                        <a href="{{route('products.index')}}" class="btn btn-warning">Atras</a>
                                     </div>
                                 </div>
                             </div>

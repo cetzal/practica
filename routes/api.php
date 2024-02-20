@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/brand/all/deactivatebyselection', [App\Http\Controllers\BrandController::class, 'deactivateBySelection'])->name('api.brand.all_desactive');
     Route::put('/brand/all/deletebyselection', [App\Http\Controllers\BrandController::class, 'deleteBySelection'])->name('api.brand.all_delete');
     Route::get('/brand/supplier/{id}', [App\Http\Controllers\BrandController::class, 'brandBySupplier'])->name('api.brand.supplier');
+    Route::get('/brand/all/supplier/{id}', [App\Http\Controllers\BrandController::class, 'allBrandsBySupplier'])->name('api.brand.all.supplier');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'edit'])->name('api.suppliers.edit');
     Route::put('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'update'])->name('api.suppliers.update');
     Route::get('/suppliers/all/combobox', [App\Http\Controllers\SuppliersControlles::class, 'combobox'])->name('api.supliers.combobox');
+    Route::get('/suppliers/filter/combobox', [App\Http\Controllers\SuppliersControlles::class, 'combobox_filters'])->name('suppliers.filtres.combo');
     Route::delete('/suppliers/{id}', [App\Http\Controllers\SuppliersControlles::class, 'destroy'])->name('api.suppliers.destroy');
     Route::put('/suppliers/{id}/activate', [App\Http\Controllers\SuppliersControlles::class, 'activate'])->name('api.suppliers.activate');
     Route::put('/suppliers/{id}/deactivate', [App\Http\Controllers\SuppliersControlles::class, 'deactivate'])->name('api.suppliers.deactivate');

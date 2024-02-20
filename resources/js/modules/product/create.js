@@ -31,7 +31,7 @@
     $("input[name='code']").on('blur', function() {
         $.get(host+'/api/product/code',{ code: $("input[name='code']").val()})
           .done(function(data) {
-            console.log("Solicitud GET exitosa:", data);
+            
           })
           .fail(function(jqXHR, textStatus, errorThrown) {
                 let message = ''
@@ -253,28 +253,6 @@
         return true;
     }
 
-    $(".dropzone").sortable({
-        items:'.dz-preview',
-        cursor: 'grab',
-        opacity: 0.5,
-        containment: '.dropzone',
-        distance: 20,
-        tolerance: 'pointer',
-        stop: function () {
-          var queue = myDropzone.getAcceptedFiles();
-          newQueue = [];
-          $('#imageUpload .dz-preview .dz-filename [data-dz-name]').each(function (count, el) {           
-                var name = el.innerHTML;
-                queue.forEach(function(file) {
-                    if (file.name === name) {
-                        newQueue.push(file);
-                    }
-                });
-          });
-          myDropzone.files = newQueue;
-        }
-    });
-
     myDropzone = new Dropzone('div#imageUpload', {
         addRemoveLinks: true,
         autoProcessQueue: false,
@@ -284,7 +262,7 @@
         paramName: 'image',
         clickable: true,
         method: 'POST',
-        url: 'api/product',
+        url: host + '/api/product',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -349,18 +327,11 @@
         },
         error: function (file, response) {
             if (response.status == 422) { 
-                //toastError(err.responseJSON.message);
-                // let details = response.responseJSON.errors ;
-                // let content = '';
-                // Object.keys(details).forEach(field => {
-                //     content += formatErrorUsingClassesAndPopover(field,details[field]);
-                // });
+               
 
                 let message = ''
                 $.each(response.responseJSON.errors,function(field_name,error){
-                    // $('input[name="'+field_name+'"]').addClass('is-invalid');
-                    // let html = '<label id="name-error" class="error invalid-feedback" for="name" style="">'+response.responseJSON.errors[field_name][0]+'</label>';
-                    // $('input[name="'+field_name+'"]').after(html);
+                   
                     message+='<b>'+field_name+'</b>: '+response.responseJSON.errors[field_name][0]+'<b>';
                 })
 
@@ -369,40 +340,7 @@
                     content: message,
                 });
             }
-            // console.log(response);
-            // if(response.errors.name) {
-            //   $("#name-error").text(response.errors.name);
-            //   this.removeAllFiles(true);
-            // }
-            // else if(response.errors.code) {
-            //   $("#code-error").text(response.errors.code);
-            //   this.removeAllFiles(true);
-            // }
-            // else {
-            //   try {
-            //       var res = JSON.parse(response);
-            //       if (typeof res.message !== 'undefined' && !$modal.hasClass('in')) {
-            //           $("#success-icon").attr("class", "fas fa-thumbs-down");
-            //           $("#success-text").html(res.message);
-            //           $modal.modal("show");
-            //       } else {
-            //           if ($.type(response) === "string")
-            //               var message = response; //dropzone sends it's own error messages in string
-            //           else
-            //               var message = response.message;
-            //           file.previewElement.classList.add("dz-error");
-            //           _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-            //           _results = [];
-            //           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            //               node = _ref[_i];
-            //               _results.push(node.textContent = message);
-            //           }
-            //           return _results;
-            //       }
-            //   } catch (error) {
-            //       console.log(error);
-            //   }
-            // }
+            
         },
         successmultiple: function (file, response) {
             $.confirm({
@@ -424,6 +362,28 @@
         reset: function () {
             console.log("resetFiles");
             this.removeAllFiles(true);
+        }
+    });
+
+     $(".dropzone").sortable({
+        items:'.dz-preview',
+        cursor: 'grab',
+        opacity: 0.5,
+        containment: '.dropzone',
+        distance: 20,
+        tolerance: 'pointer',
+        stop: function () {
+          var queue = myDropzone.getAcceptedFiles();
+          newQueue = [];
+          $('#imageUpload .dz-preview .dz-filename [data-dz-name]').each(function (count, el) {           
+                var name = el.innerHTML;
+                queue.forEach(function(file) {
+                    if (file.name === name) {
+                        newQueue.push(file);
+                    }
+                });
+          });
+          myDropzone.files = newQueue;
         }
     });
 

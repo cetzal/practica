@@ -45,13 +45,6 @@
     });
 
     $('input[name="date_range"]').on('apply.daterangepicker', function(ev, picker) {
-        var type_fecha = $('.form-select').val();
-        if(type_fecha==''){
-            $.alert({
-                title: 'Filtra datos',
-                content:'Selecrione un tipo de fecha a consultar',
-            });
-        }
       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 

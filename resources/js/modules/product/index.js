@@ -574,7 +574,8 @@
         if(supplier_id) {
             all_brandsBySupplier(supplier_id);
         }else{    
-            $('select[name="supplier_id"]').empty();
+            $('select[name="brand_prod"]').empty();
+            $('select[name="brand_prod"]').append('<option value="">Select a brand</option>');
         }                        
     });
 

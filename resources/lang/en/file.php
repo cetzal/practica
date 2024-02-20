@@ -578,6 +578,8 @@ return [
 	//Brand form create/edit
 	'placeholder_brand_name' => 'Type brand name...',
 	'placeholder_brand_description' => 'Type brand description...',
+	//Supplier form search
+	'supplier_select_supplier' => 'Select supplier',
 	//Supplier form create/edit
 	'placeholder_supplier_name' => 'Type supplier name...',
 	'placeholder_supplier_description' => 'Type supplier description...',
@@ -602,7 +604,8 @@ return [
 	'date_create' => 'Date create',
 	'date_update' => 'Date update',
 	'status' => 'Status',
-	'purchase date' => 'Purchase Date',
-
+	//Sale
+	'sale' => 'Sale',
+	'add_sale' => 'Add sale',
 ];
 ?>

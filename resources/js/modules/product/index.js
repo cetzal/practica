@@ -334,7 +334,7 @@
     $(document).ready(function() {
         // load suppliers
        
-        load_combobox_filter(".selectpicker-suppliers");
+        // load_combobox_filter(".selectpicker-suppliers");
         var table = $('#product-data-table').DataTable( {
             responsive: true,
             "searching": false,

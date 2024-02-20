@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use DNS1D;
 use Carbon\Carbon;
 use Keygen\Keygen;
-use App\Models\Tax;
 use App\Models\Unit;
-use App\Models\Brand;
 use App\Models\Product;
 use App\Enum\ModuleEnum;
-use App\Models\Category;
-use App\Models\LogModule;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Enum\MovementTypeEnum;
@@ -29,8 +23,10 @@ class ProductController extends Controller
     public function index()
     {
         // $lims_product_brand_list = DB::table('view_products_brands')->get();
+        $lims_supplier_products_list = DB::table('view_suppliers_products_list')->get();
+        $lims_brands_products_list = DB::table('view_brands_products_list')->select('id', 'name')->get();
         $lims_product_category_list = DB::table('view_products_categories')->get();
-        return view('product.index', compact('lims_product_category_list'));
+        return view('product.index', compact('lims_supplier_products_list','lims_brands_products_list', 'lims_product_category_list'));
     }
 
     public function list(Request $request)

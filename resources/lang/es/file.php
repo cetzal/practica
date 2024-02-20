@@ -578,6 +578,8 @@ return [
 	//Brand form create/edit
 	'placeholder_brand_name' => 'Introduzca el nombre de la marca...',
 	'placeholder_brand_description' => 'Introduzca el description...',
+	//Supplier form search
+	'supplier_select_supplier' => 'Selecciona proveedor',
 	//Suppler form create/edit
 	'placeholder_supplier_name' => 'Introduzca el nombre de la proveedor...',
 	'placeholder_supplier_description' => 'Introduzca el description...',
@@ -602,5 +604,7 @@ return [
 	'date_update' => 'Fecha actualizacion',
 	'status' => 'Estatus',
 	'purchase date' => 'Fecha de compra',
+	'sale' => 'Ventas',
+	'add_sale' => 'Agregar venta',
 ];
 ?>

@@ -23,6 +23,10 @@
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
+                            <option value="">{{trans('file.supplier_select_supplier')}}</option>  
+                            @foreach($lims_supplier_products_list as $supplier)
+                                <option value="{{$supplier->id}}">{{$supplier->name}}</option>
+                            @endforeach
                     </select>
                 </div>
                 <div class="col">
@@ -31,7 +35,9 @@
                         <div class="input-group">
                             <select name="brand_prod" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                             <option value="">{{trans('file.search_select_brand')}}</option>  
-                           
+                            @foreach($lims_brands_products_list as $brand)
+                                <option value="{{$brand->id}}">{{$brand->name}}</option>
+                            @endforeach
                             </select>
                         </div>
                     </div>

@@ -1,0 +1,8 @@
+CREATE OR REPLACE VIEW view_suppliers_products_list AS
+SELECT id, name
+FROM suppliers
+WHERE id IN(
+    SELECT supplier_id
+    FROM view_products
+    GROUP BY supplier_id
+);

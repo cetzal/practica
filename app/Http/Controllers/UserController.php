@@ -189,7 +189,12 @@ class UserController extends Controller
             'userIdArray' => ['required', 'array', 'min:1']
         ]);
 
-        User::destroy($request->userIdArray);
+        User::whereIn('id', $request->userIdArray)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+                'is_active' => false,
+                'picture' => 'dummy-user.jpeg'
+            ]);
        
         return response()->json(['status' => 'success', 'message' => 'Los usuario selecionado se ha eliminado con exito']);
     }
@@ -304,9 +309,18 @@ class UserController extends Controller
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha desactivado con exito']);
     }
 
-    public function delete($id){
+    public function destroy($id){
         $user_data =User::find($id);
         $user_data->is_active = false;
+        if ($user_data->picture != 'dummy-user.jpeg') {
+            $images = explode(",", $user_data->image);
+            foreach ($images as $key => $image) {
+                if (!empty($image) && file_exists('public/images/user/'.$image)){
+                    unlink('public/images/user/'.$image);
+                }
+            }
+            $user_data->picture = 'dummy-user.jpeg';
+        }
         $user_data->save();
         $user_data->delete();
         return response()->json(['status' => 'success', 'message' => 'El usuario se ha eliminado con exito']);

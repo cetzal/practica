@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth.jwt']],function(){
     Route::post('/user', [App\Http\Controllers\UserController::class, 'store'])->name('api.user.store');
     Route::get('/user/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('api.user.show');
     Route::put('/user/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('api.user.update');
-    Route::delete('/user/{id}', [App\Http\Controllers\UserController::class, 'delete'])->name('api.user.delete');
+    Route::delete('/user/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('api.user.delete');
     Route::put('/user/{id}/activate', [App\Http\Controllers\UserController::class, 'activate'])->name('api.brand.activate');
     Route::put('/user/{id}/deactivate', [App\Http\Controllers\UserController::class, 'deactivate'])->name('api.brand.deactivate');
     Route::put('/user/all/activatebyselection', [App\Http\Controllers\UserController::class, 'activateBySelection'])->name('api.user.all_active');

@@ -82,7 +82,10 @@
                 },
                 {
                     'render' : function(data, type, row, meta){
-                        return row.movement_date;
+                        if (row.movement_date == null) {
+                            return '';
+                        }
+                        return moment(row.movement_date).format('DD/MM/YYYY HH:mm:ss');
                     },
                     'targets': [2]
                 },

@@ -47,14 +47,13 @@ class LogRecordController extends Controller
         $where[]=['module_id', $module_id];
         $where[]=['modified_record_id',$id];
 
-        Log::emergency('where');
-        Log::emergency(print_r($where, true));
         $data = DB::table('view_log_modules')
                 ->select([
                     'id', 'module_id','module_name', 
                     'movement_type_name', 'user_name','movement_date'
                 ])
                 ->where($where)
+                ->orderBy('movement_date', 'DESC')
                 ->get();
 
         $totalData = $data->count();

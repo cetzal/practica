@@ -42,6 +42,7 @@ class LogModuleController extends Controller
         }
         $data = DB::table('view_log_modules')
                     ->where($where)
+                    ->orderByDesc('movement_date')
                     ->get();
        
 

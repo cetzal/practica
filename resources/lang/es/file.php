@@ -614,5 +614,7 @@ return [
 	'select_client' => 'Seleccione cliente',
 	'select_non_branded' => 'Sin marcas',
 	'select_without_products' => 'Sin productos',
+	'total_items' => 'Total articulos',
+	'total_cost' => 'Costo total',
 ];
 ?>

@@ -59,7 +59,7 @@
         let total_sale = 0;
         let total_quantity = 0;
         let total_subtotal = 0;
-        $('#product-table tbody tr').each(function() {
+        $('#product-detail-table tbody tr').each(function() {
             let subtotal = parseFloat($(this).find('.subtotal').text());
             let quantity = parseInt($(this).find('.quantity').val());
             if (!isNaN(subtotal)) {
@@ -78,7 +78,7 @@
         let product_exist = false;
         let quantity = 1;
 
-        $('#product-table tbody tr').each(function() {
+        $('#product-detail-table tbody tr').each(function() {
             let product_code = $(this).find('.product-code').text();
             if (product_code == data.code) {
                 let exist_quantity = parseInt($(this).find('.quantity').val());
@@ -98,7 +98,7 @@
             fila.append('<td class="unit_cost">'+ data.price +'</td>');
             fila.append('<td class="subtotal">'+ data.price +'</td>');
             fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
-            $('#product-table tbody').append(fila);
+            $('#product-detail-table tbody').append(fila);
         }
         calculateTotalSale();
     }
@@ -166,7 +166,7 @@
         // })
     });
 
-    $('#product-table').on('input', 'input.quantity', function() {
+    $('#product-detail-table').on('input', 'input.quantity', function() {
         let row = $(this).closest('tr');
         let stock_alert = row.data('stock-alert').toString();
         let quantity = parseInt(row.find('.quantity').val());
@@ -184,7 +184,7 @@
         }
     });
 
-    $('#product-table tbody').on('click', '.remove-row', function(event) {
+    $('#product-detail-table tbody').on('click', '.remove-row', function(event) {
         let row = $(this).closest("tr");
         $.confirm({
             title: '',
@@ -203,7 +203,7 @@
 
     $('#save-sale').on('click', function() {
         let product_details = [];
-        $('#product-table tbody tr').each(function() {
+        $('#product-detail-table tbody tr').each(function() {
             let product = {
                 product_id: parseInt($(this).data('product-id').toString()),
                 quantity: parseInt($(this).find('.quantity').val()),
@@ -241,6 +241,19 @@
                         title : '',
                         content: response.message
                     })
+                },
+                error: function(xhr, textStatus, error){
+                    if (xhr.status == 422) {
+                        let message = ''
+                        $.each(xhr.responseJSON.errors,function(field_name,error){
+                            message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                        })
+
+                        $.alert({
+                            title: 'Field invalid',
+                            content: message,
+                        });
+                    }
                 }
             });
         }

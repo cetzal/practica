@@ -615,5 +615,8 @@ return [
 	'select_client' => 'Select client',
 	'select_non_branded' => 'Non-branded',
 	'select_without_products' => 'Without products',
+	'total_items' => 'Total items',
+	'total_cost' => 'Total cost',
+
 ];
 ?>

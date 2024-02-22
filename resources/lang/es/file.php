@@ -604,6 +604,7 @@ return [
 	'date_update' => 'Fecha actualizacion',
 	'status' => 'Estatus',
 	'purchase date' => 'Fecha de compra',
+	'back' => 'Atras',
 	//Sale
 	'sale' => 'Ventas',
 	'add_sale' => 'Agregar venta',

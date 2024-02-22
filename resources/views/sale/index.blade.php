@@ -32,3 +32,6 @@
     </div>
 </section>
 @endsection
+@section('scripts')
+    <script src="{{ asset('js/modules/sale/index.js') }}"></script>
+@endsection

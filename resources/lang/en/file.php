@@ -608,5 +608,12 @@ return [
 	'sale' => 'Sale',
 	'add_sale' => 'Add sale',
 	'purchase date' => 'Fecha de compra',
+	'add' => 'Add',
+	'unit_cost' => 'Unit Price',
+	'total' => 'Total',
+	'select_supplier' => 'Select supplier',
+	'select_client' => 'Select client',
+	'select_non_branded' => 'Non-branded',
+	'select_without_products' => 'Without products',
 ];
 ?>

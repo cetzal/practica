@@ -372,4 +372,16 @@ class ProductController extends Controller
         $data = DB::table('view_products_active')->where('brand_id', $id)->get();
         return $data;
     }
+
+    public function getProductById($id)
+    {
+        $product = DB::table('view_products')
+                    ->select(['id', 'code', 'name', 'price', 'alert_quantity'])
+                    ->where([
+                        ['is_active', '=', 1],
+                        ['id', '=', $id]
+                    ])
+                    ->first();
+        return $product;
+    }
 }

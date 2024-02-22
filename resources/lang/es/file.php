@@ -604,7 +604,15 @@ return [
 	'date_update' => 'Fecha actualizacion',
 	'status' => 'Estatus',
 	'purchase date' => 'Fecha de compra',
+	//Sale
 	'sale' => 'Ventas',
 	'add_sale' => 'Agregar venta',
+	'add' => 'Agregar',
+	'unit_cost' => 'Costo Unitario',
+	'total' => 'Total',
+	'select_supplier' => 'Seleccione proveedor',
+	'select_client' => 'Seleccione cliente',
+	'select_non_branded' => 'Sin marcas',
+	'select_without_products' => 'Sin productos',
 ];
 ?>

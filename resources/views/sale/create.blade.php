@@ -69,7 +69,7 @@
                                     <div class="col-md-12">
                                         <h5>Tabla de productos *</h5>
                                         <div class="table-responsive mt-3">
-                                            <table id="product-table" class="table table-hover order-list">
+                                            <table id="product-detail-table" class="table table-hover order-list">
                                                 <thead>
                                                     <tr>
                                                         <th>{{trans('file.Code')}}</th>

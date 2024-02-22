@@ -17,8 +17,20 @@ class PurchaseController extends Controller
         return view('purchases.create');
     }
 
-    public function list(){
-        
+    public function list(Request $request){
+        $query = DB::table('view_purchases')->select(DB::raw('purchase_date, supplier_id, supplier_name, GROUP_CONCAT( DISTINCT brand_name) as brands_name, SUM(qty) as qty, SUM(total) as toital'));
+
+        $data = $query->groupBy('purchase_date')->groupBy('supplier_id')->get();
+        $totalData = $data->count();
+        $totalFiltered = $data->count();
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+            
+        echo json_encode($json_data);
     }
 
     public function store(Request $request){

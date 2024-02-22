@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 });
 
 Route::group(['middleware' => ['auth.jwt']], function(){
+    Route::get('/purchase', [App\Http\Controllers\PurchaseController::class, 'list'])->name('api.purchase.list');
     Route::post('/purchase',[App\Http\Controllers\PurchaseController::class, 'store'])->name('api.purchase.store');
     Route::get('/purchase/productSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'productSearchById'])->name('api.purchase.productSearch');
 });

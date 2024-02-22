@@ -15,6 +15,8 @@
         },
     });
 
+    $("#sale_date").prop('disabled', true);
+
     $('#select_supplier').on('change', function() {
         let supplier_id = $(this).val();
         let url = '/api/sales/getBrandsBySupplierId/'+supplier_id;

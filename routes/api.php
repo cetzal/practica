@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/product/saleunit/{id}', [App\Http\Controllers\ProductController::class, 'saleUnit'])->name('api.product.saleUnit');
     Route::get('/product/gencode', [App\Http\Controllers\ProductController::class, 'generateCode'])->name('api.product.gencode');
     Route::post('/product', [App\Http\Controllers\ProductController::class, 'store'])->name('api.product.store');
+    Route::get('/product/{id}', [App\Http\Controllers\ProductController::class, 'getProductById'])->name('api.product.show');
     Route::put('/product/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('api.product.update');
     Route::delete('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('api.product.destroy');
     Route::put('/product/{id}/activate', [App\Http\Controllers\ProductController::class, 'activate'])->name('api.product.activate');
@@ -106,4 +107,11 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/clients/all/activarbyselection', [App\Http\Controllers\ClientsControlles::class, 'activateBySelection'])->name('api.clients.all_active');
     Route::put('/clients/all/deactivatebyselection', [App\Http\Controllers\ClientsControlles::class, 'deactivateBySelection'])->name('api.clients.all_desactive');
     Route::put('/clients/all/deletebyselection', [App\Http\Controllers\ClientsControlles::class, 'deleteBySelection'])->name('api.clients.all_delete');
+});
+
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::post('/sales', [\App\Http\Controllers\SaleController::class, 'store'])->name('api.sales.store');
+    Route::post('/sales/list', [\App\Http\Controllers\SaleController::class, 'list'])->name('api.sales.list');
+    Route::get('/sales/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleController::class, 'getBrandsBySupplierId'])->name('api.sales.brand-combo');
+    Route::get('/sales/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleController::class, 'getProductsByBrandId'])->name('api.sales.brand-combo');
 });

@@ -15,10 +15,6 @@ function readJsFiles(dir) {
         const filePath = path.join(dir, file);
         const stat = fs.statSync(filePath);
         
-        console.log('filePath', filePath);
-        console.log('stat', stat);
-        console.log('file', file);
-
         if (stat.isDirectory()) {
             // Si es un directorio, llamamos recursivamente a la función para explorar sus archivos
             readJsFiles(filePath);

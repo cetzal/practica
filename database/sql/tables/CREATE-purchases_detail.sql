@@ -1,0 +1,19 @@
+CREATE TABLE purchases_detail(
+    id INT NOT NULL AUTO_INCREMENT,
+    purchase_id INT UNSIGNED NOT NULL,
+    product_id INT UNSIGNED NOT NULL,
+    qty INT DEFAULT 0,
+    unit_price DECIMAL(10, 2) DEFAULT 0,
+    total DECIMAL(10,2) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL,
+    CONSTRAINT purchases_detail_pk PRIMARY KEY (id),
+    FOREIGN KEY (id)
+      REFERENCES purchases(id)
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (product_id)
+      REFERENCES products(id)
+      ON UPDATE CASCADE ON DELETE RESTRICT
+    
+);

@@ -607,5 +607,6 @@ return [
 	//Sale
 	'sale' => 'Sale',
 	'add_sale' => 'Add sale',
+	'purchase date' => 'Fecha de compra',
 ];
 ?>

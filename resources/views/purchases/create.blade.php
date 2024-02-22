@@ -17,23 +17,22 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Reference No')}}</label>
-                                            <input type="button" class="form-control" name="purchase_date" value="">
+                                            <input type="text" class="form-control" name="reference_no" value="">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.purchase date')}}</label>
-                                            <input type="button" class="form-control" name="purchase_date" id="purchase_date" value="">
+                                            <input type="text" class="form-control" name="purchase_date" id="purchase_date" value="">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Purchase Status')}}</label>
                                             <select name="status" class="form-control">
+                                                <option value="">{{ trans('file.select') }}</option>
                                                 <option value="1">{{trans('file.Recieved')}}</option>
-                                                <option value="2">{{trans('file.Partial')}}</option>
-                                                <option value="3">{{trans('file.Pending')}}</option>
-                                                <option value="4">{{trans('file.Ordered')}}</option>
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -43,7 +42,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Supplier')}}</label>
-                                            <select name="supplier_id" class="selectpicker-suppliers form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            <select name="supplier_id" class="selectpicker-suppliers form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a supplier...">
                                                
                                             </select>
                                         </div>
@@ -51,7 +50,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.brands')}}</label>
-                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a brand...">
                                                 <option value="">Select a brand</option>
                                             </select>
                                         </div>
@@ -59,7 +58,7 @@
                                     <div class="col">
                                         <label>{{trans('file.Select Product')}}</label>
                                         <div class="search-box input-group">
-                                            <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                                            <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a product...">
                                                 <option value="">Select a product</option>
                                             </select>
                                             <!-- <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
@@ -77,11 +76,8 @@
                                                         <th>{{trans('file.name')}}</th>
                                                         <th>{{trans('file.Code')}}</th>
                                                         <th>{{trans('file.Quantity')}}</th>
-                                                        <th class="recieved-product-qty d-none">{{trans('file.Recieved')}}</th>
-                                                        <th>{{trans('file.Net Unit Cost')}}</th>
-                                                        <th>{{trans('file.Discount')}}</th>
-                                                        <th>{{trans('file.Tax')}}</th>
-                                                        <th>{{trans('file.Subtotal')}}</th>
+                                                        <th>{{trans('file.Unit Price')}}</th>
+                                                        <th>Sub total</th>
                                                         <th><i class="dripicons-trash"></i></th>
                                                     </tr>
                                                 </thead>
@@ -90,10 +86,7 @@
                                                 <tfoot class="tfoot active">
                                                     <th colspan="2">{{trans('file.Total')}}</th>
                                                     <th id="total-qty">0</th>
-                                                    <th class="recieved-product-qty d-none"></th>
                                                     <th></th>
-                                                    <th id="total-discount">0.00</th>
-                                                    <th id="total-tax">0.00</th>
                                                     <th id="total">0.00</th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>
@@ -109,12 +102,12 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <input type="hidden" name="total_discount" />
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <input type="hidden" name="total_tax" />
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -125,43 +118,18 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <input type="hidden" name="item" />
-                                            <input type="hidden" name="order_tax" />
+                
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <input type="hidden" name="grand_total" />
-                                            <input type="hidden" name="paid_amount" value="0.00" />
-                                            <input type="hidden" name="payment_status" value="1" />
+                                           
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>{{trans('file.Order Tax')}}</label>
-                                            <select class="form-control" name="order_tax_rate">
-                                                <option value="0">{{trans('file.No Tax')}}</option>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>
-                                                <strong>{{trans('file.Discount')}}</strong>
-                                            </label>
-                                            <input type="number" name="order_discount" class="form-control" step="any" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>
-                                                <strong>{{trans('file.Shipping Cost')}}</strong>
-                                            </label>
-                                            <input type="number" name="shipping_cost" class="form-control" step="any" />
-                                        </div>
-                                    </div>
+                                    
+                                    
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -172,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" id="submit-btn">{{trans('file.submit')}}</button>
+                                    <button type="submit" class="btn btn-primary float-right" id="submit-btn">{{trans('file.Save')}}</button>
                                 </div>
                             </div>
                         </div>
@@ -183,26 +151,7 @@
         </div>
     </div>
     <div class="container-fluid">
-        <table class="table table-bordered table-condensed totals">
-            <td><strong>{{trans('file.Items')}}</strong>
-                <span class="pull-right" id="item">0.00</span>
-            </td>
-            <td><strong>{{trans('file.Total')}}</strong>
-                <span class="pull-right" id="subtotal">0.00</span>
-            </td>
-            <td><strong>{{trans('file.Order Tax')}}</strong>
-                <span class="pull-right" id="order_tax">0.00</span>
-            </td>
-            <td><strong>{{trans('file.Order Discount')}}</strong>
-                <span class="pull-right" id="order_discount">0.00</span>
-            </td>
-            <td><strong>{{trans('file.Shipping Cost')}}</strong>
-                <span class="pull-right" id="shipping_cost">0.00</span>
-            </td>
-            <td><strong>{{trans('file.Total')}}</strong>
-                <span class="pull-right" id="grand_total">0.00</span>
-            </td>
-        </table>
+        
     </div>
     <div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
@@ -253,5 +202,5 @@
 </section>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/modules/purchases/index.js') }}"></script>
+    <script src="{{ asset('js/modules/purchases/create.js') }}"></script>
 @endsection

@@ -107,3 +107,9 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/clients/all/deactivatebyselection', [App\Http\Controllers\ClientsControlles::class, 'deactivateBySelection'])->name('api.clients.all_desactive');
     Route::put('/clients/all/deletebyselection', [App\Http\Controllers\ClientsControlles::class, 'deleteBySelection'])->name('api.clients.all_delete');
 });
+
+
+Route::group(['middleware' => ['auth.jwt']], function(){
+    Route::post('/purchase',[App\Http\Controllers\PurchaseController::class, 'store'])->name('api.purchase.store');
+    Route::get('/purchase/productSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'productSearchById'])->name('api.purchase.productSearch');
+});

@@ -237,10 +237,15 @@
                 async: false,
                 data: data,
                 success: function (response) {
-                    $.alert({
+                    $.confirm({
                         title : '',
-                        content: response.message
-                    })
+                        content: response.message,
+                        buttons: {
+                            ok: function() {
+                                window.location.replace('/sales');
+                            }
+                        }
+                    });
                 },
                 error: function(xhr, textStatus, error){
                     if (xhr.status == 422) {

@@ -105,7 +105,6 @@
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
-                console.log('frmdata', frm_data);
             }
         },
         "order": [],

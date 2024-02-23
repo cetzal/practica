@@ -308,26 +308,30 @@
                 type:'POST',
                 url: host + "/api/purchase",
                 data: data,
-                success:function(response){
-
+                success: function (response) {
+                    $.confirm({
+                        title: 'Agregar compra',
+                        content: response.message,
+                        buttons: {
+                            ok: function () {
+                                window.location.replace('/purchases');
+                            }
+                        }
+                    });
                 },
-                error:function(response) {
-
-                    if (response.status == 422) { 
-                        //toastError(err.responseJSON.message);
-                        let details = response.responseJSON.errors ;
-                        let content = '';
-                        Object.keys(details).forEach(field => {
-                            content += formatErrorUsingClassesAndPopover(field,details[field]);
-                        });
+                error: function(xhr, textStatus, error){
+                    if (xhr.status == 422) {
+                        let message = ''
+                        $.each(xhr.responseJSON.errors,function(field_name,error){
+                            message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                        })
 
                         $.alert({
-                            title: 'Error',
-                            content: content
-
+                            title: 'Field invalid',
+                            content: message,
                         });
                     }
-                },
+                }
             })
         }
        

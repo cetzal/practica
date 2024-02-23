@@ -38,7 +38,7 @@ BEGIN
     DECLARE exit handler for sqlstate '45000'
     BEGIN
         ROLLBACK;
-        SELECT 'Error durante la compra. Se ha realizado un rollback 2.' AS mensaje;
+        SELECT 'Error durante la compra. Se ha realizado un rollback 2.' AS message;
     END;
 
     START TRANSACTION;
@@ -75,7 +75,7 @@ BEGIN
 	    END WHILE;
 
     COMMIT;
-    SELECT 'Compra realizada exitosamente.' AS mensaje;
+    SELECT 'Compra realizada exitosamente.' AS message;
 END $$
 
 DELIMITER ;

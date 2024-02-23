@@ -17,7 +17,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Reference No')}}</label>
-                                            <input type="text" class="form-control" name="reference_no" value="">
+                                            <input type="text" class="form-control" name="reference_no" value="pr-{{date('Ymd')}}-{{date('his')}}">
                                         </div>
                                     </div>
                                     <div class="col">
@@ -142,7 +142,7 @@
                                 <div class="form-group">
                                     <div class="float-right">
                                         <a href="{{route('purchases.index')}}" class="btn btn-info">Atras</a>
-                                        <bußtton type="submit" class="btn btn-primary" id="submit-btn">{{trans('file.Save')}}</button>
+                                        <button type="submit" class="btn btn-primary" id="submit-btn">{{trans('file.Save')}}</button>
                                     </div>
                                 </div>
                             </div>

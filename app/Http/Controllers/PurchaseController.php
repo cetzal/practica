@@ -90,13 +90,14 @@ class PurchaseController extends Controller
                     'max:255',
                     Rule::unique('purchases')
                 ],
-                'supplier_id' => [
-                    'required'
-                ],
-                'purchase_date' => [
-                    'required'
-                ],
+                'supplier_id' =>  'required',
+                'purchase_date' => 'required',
                 'status' => 'required',
+                'purchase_detail' => ['required', 'array', 'min:1'],
+                'purchase_detail.*.product_id' => ['required'],
+                'purchase_detail.*.product_qty' => ['required'],
+                'purchase_detail.*.product_unit_price' => ['required'],
+                'purchase_detail.*.product_subtotal' => ['required']
                 
             ]
         );
@@ -109,10 +110,39 @@ class PurchaseController extends Controller
         $purchase_item = $request->item;
         $total_qty = $request->total_qty;
         $total = $request->total;
+        $note = $request->note;
         $product_detail = $request->purchase_detail;
        
-        $data = DB::select('CALL guardar_compra(?,?,?,?,?,?,?,?,?,?)', [ $purchase_date, $reference_no, $supplier_id, $purchase_item, $total_qty, $total, $purchase_status, 'omar',JWTAuth::toUser()->id, json_encode($product_detail)]);
-        return $data;
+        $save = DB::select(
+            'CALL add_purchases(?,?,?,?,?,?,?,?,?,?)', 
+            [ 
+                $purchase_date, 
+                $reference_no, 
+                $supplier_id, 
+                $purchase_item, 
+                $total_qty, 
+                $total, 
+                $purchase_status, 
+                $note,
+                JWTAuth::toUser()->id, 
+                json_encode($product_detail)
+            ]
+        );
+        $save = current($save);
+        if (isset($save->message)) {
+            return response()->json(['status' => 'succes', 'message' => $save->message]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The sale could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
     }
 
     public function productSearchById($product_id){

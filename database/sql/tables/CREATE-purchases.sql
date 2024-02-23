@@ -1,20 +1,17 @@
-CREATE TABLE purchases(
-    id INT NOT NULL AUTO_INCREMENT,
-    reference_no VARCHAR(250) NULL,
-    supplier_id INT,
-    item INT DEFAULT 0,
-    total_qty INT DEFAULT 0,
-    total_discount DECIMAL(10,2) DEFAULT 0,
-    total_tax DECIMAL(10,2) DEFAULT 0,
-    total_cost DECIMAL(10,2) DEFAULT 0,
-    order_tax_rate DECIMAL(10,2) DEFAULT 0,
-    order_tax DECIMAL(10,2) DEFAULT 0,
-    order_discount DECIMAL(10,2) DEFAULT 0,
-    shipping_cost DECIMAL(10,2) DEFAULT 0,
-    total DECIMAL(10,2) DEFAULT 0,
-    paid_amount DECIMAL(10,2) DEFAULT 0,
-    status INT DEFAULT 1,
-    payment_status INT DEFAULT 1,
-    note VARCHAR(250),
-    CONSTRAINT purchases_pk PRIMARY KEY (id)
-)
+
+CREATE TABLE `purchases` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `purchase_date` date DEFAULT NULL,
+  `reference_no` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `supplier_id` int DEFAULT NULL,
+  `item` int DEFAULT '0',
+  `total_qty` int DEFAULT '0',
+  `total` decimal(10,2) DEFAULT '0.00',
+  `status` int DEFAULT '1',
+  `note` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ;

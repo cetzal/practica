@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -10,7 +11,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class PurchaseController extends Controller
 {
     public function index(){
-        return view('purchases.index');
+        $purchase_suppliers_list = DB::table('view_purchase_suppliers_list')->get();
+        $purchase_brands_list = DB::table('view_purchase_brands_list')->select(['id', 'name'])->get();
+        $purchase_products_list = DB::table('view_purchase_products_list')->select(['id', 'name'])->get();
+        
+        return view('purchases.index', compact('purchase_suppliers_list', 'purchase_brands_list', 'purchase_products_list'));
     }
 
     public function create(){
@@ -18,9 +23,34 @@ class PurchaseController extends Controller
     }
 
     public function list(Request $request){
-        $query = DB::table('view_purchases')->select(DB::raw('purchase_date, supplier_id, supplier_name, GROUP_CONCAT( DISTINCT brand_name) as brands_name, SUM(qty) as qty, SUM(total) as toital'));
 
-        $data = $query->groupBy('purchase_date')->groupBy('supplier_id')->get();
+        $where = [];
+        
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+
+        if (!empty($request->brand_id)) {
+            $where[] = ['brand_id', '=', $request->brand_id];
+        }
+
+        if (!empty($request->product_id)) {
+            $where[] = ['product_id', '=', $request->product_id];
+        }
+
+        if (!empty($request->range_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->range_date);
+            $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
+            $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
+            $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '<=', trim($date_to)];
+        }
+        
+
+        $query = DB::table('view_purchase_details')
+        ->select(DB::raw('purchase_date, supplier_id, supplier_name, SUM(qty) as qty, SUM(total) as toital'));
+
+        $data = $query->where($where)->groupBy('purchase_date')->groupBy('supplier_id')->get();
         $totalData = $data->count();
         $totalFiltered = $data->count();
         $json_data = array(

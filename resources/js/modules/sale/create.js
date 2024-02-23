@@ -123,7 +123,8 @@
                 let new_quantity = exist_quantity + quantity;
                 let unit_cost = $(this).find('.unit_cost').text();
                 $(this).find('.quantity').val(new_quantity);
-                $(this).find('.subtotal').text((new_quantity * unit_cos).toFixed(2));
+                $(this).find('.subtotal').text((new_quantity * unit_cost).toFixed(2));
+                $(this).attr('data-stock-alert', data.alert_quantity);
                 product_exist = true;
                 return false;
             }
@@ -132,8 +133,8 @@
         if (!product_exist) {
             let unit_price = parseFloat(data.price);
             let subtotal = 1 * unit_price;
-            fila.append('<td class="product-code">'+ data.code +'</td>');
             fila.append('<td>'+ data.name +'</td>');
+            fila.append('<td class="product-code">'+ data.code +'</td>');
             fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
             fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
             fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');

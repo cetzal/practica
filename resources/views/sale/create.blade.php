@@ -64,8 +64,8 @@
                                             <table id="product-detail-table" class="table table-hover order-list">
                                                 <thead>
                                                     <tr>
-                                                        <th>{{trans('file.Code')}}</th>
                                                         <th>{{trans('file.name')}}</th>
+                                                        <th>{{trans('file.Code')}}</th>
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="recieved-product-qty d-none">{{trans('file.Recieved')}}</th>
                                                         <th>{{trans('file.unit_cost')}}</th>

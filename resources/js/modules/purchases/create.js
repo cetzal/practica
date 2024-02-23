@@ -36,7 +36,8 @@
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
                 }else{
-                    $(input).append('<option value="">Sin porveedores</option>');
+                    $(input).empty();
+                    $(input).append('<option value="">Without supplier</option>');
                 }
             },
             error: function(xhr, textStatus, error){

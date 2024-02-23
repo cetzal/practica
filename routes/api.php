@@ -116,13 +116,13 @@ Route::group(['middleware' => ['auth.jwt']], function(){
     Route::get('/purchase/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getBrandsBySupplierId'])->name('api.purchase.brand-combo');
     Route::get('/purchase/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getProductsByBrandId'])->name('api.purchase.brand-combo');
     
-    Route::get('/purchase/load/serach/suppliers', [\App\Http\Controllers\SaleController::class, 'loadSearchComboSuppliers'])->name('api.purchase.load.combo.suppliers');
-    Route::get('/purchase/load/serach/brands', [\App\Http\Controllers\SaleController::class, 'loadSearchComboBrands'])->name('api.purchase.load.combo.brands');
-    Route::get('/purchase/load/search/products', [\App\Http\Controllers\SaleController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
-    Route::get('/purchase/load/search/clients', [\App\Http\Controllers\SaleController::class, 'loadSearchComboClients'])->name('api.purchase.load.combo.clients');
-   
-    
+    Route::get('/purchase/load/serach/suppliers', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboSuppliers'])->name('api.purchase.load.combo.suppliers');
+    Route::get('/purchase/load/serach/brands', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboBrands'])->name('api.purchase.load.combo.brands');
+    Route::get('/purchase/load/search/products', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
+
     Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
+    Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandId'])->name('api.purchase.search-product');
+    Route::get('/purchase/getbrandSearchById', [App\Http\Controllers\PurchaseController::class, 'searchBrandBySupplierId'])->name('api.purchase.search-brand');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {

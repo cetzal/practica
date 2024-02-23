@@ -51,7 +51,7 @@
                                         <div class="form-group">
                                             <label>{{trans('file.brands')}}</label>
                                             <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a brand...">
-                                                <option value="">Select a brand</option>
+                                                <option value="">Without brands</option>
                                             </select>
                                         </div>
                                     </div>
@@ -59,7 +59,7 @@
                                         <label>{{trans('file.Select Product')}}</label>
                                         <div class="search-box input-group">
                                             <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a product...">
-                                                <option value="">Select a product</option>
+                                                <option value="">Without products</option>
                                             </select>
                                             <!-- <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
                                             <input type="text" name="product_code_name" id="productcodeSearch" placeholder="Please type product code and select..." class="form-control" /> -->

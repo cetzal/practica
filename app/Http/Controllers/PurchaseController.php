@@ -145,7 +145,27 @@ class PurchaseController extends Controller
         }
     }
 
-    public function productSearchById($product_id){
+    public function loadCreateComboSuppliers()
+    {
+        $suppliers = DB::table('view_suppliers_purchase_create')->get();
+        return $suppliers;
+    }
+
+    public function getBrandsBySupplierId($id)
+    {
+        $brands = DB::table('view_brands_purchase_create')->select(['id', 'name'])->where('supplier_id', $id)->get();
+
+        return $brands;
+    }
+
+    public function getProductsByBrandId($id)
+    {
+        $brands = DB::table('view_products_list')->select(['id', 'name'])->where('brand_id', $id)->get();
+
+        return $brands;
+    }
+
+    public function getproductSearchById($product_id){
         $data = DB::table('view_products_for_purchase')->where('id', $product_id)->first();
         return $data;
     }

@@ -20,20 +20,24 @@
     });
 
     var load_combobox = function(input){
+       
         $(input).append('<option value="">Select a suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
             dataType: 'json',
             type: "GET",
-            url: host + '/api/suppliers/all/combobox',
+            url: host + '/api/purchase/load/create/suppliers',
             success: function( response ){
+               
                 if(response.length != 0){
                     
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
-              }
+                }else{
+                    $(input).append('<option value="">Sin porveedores</option>');
+                }
             },
             error: function(xhr, textStatus, error){
               
@@ -53,7 +57,7 @@
     });
 
     function brandsBySupplier(supplier_id){
-        var url = 'api/brand/supplier/'+ supplier_id;
+        var url = 'api/purchase/getBrandsBySupplierId/'+ supplier_id;
         $('select[name="brand_id"]').empty();
         $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
         $.ajax({
@@ -61,9 +65,14 @@
             type: "GET",
             dataType: "json",
             success:function(response) {
-                $.each(response, function(index, row) {
-                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
-                }); 
+                if(response.length != 0){
+                    $.each(response, function(index, row) {
+                        $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+                }else{
+                    $('select[name="brand_id"]').empty();
+                    $('select[name="brand_id"]').append('<option value="">Sin marcas</option>');
+                }
             },
         });
     }
@@ -80,17 +89,22 @@
     });
 
     function getProductByIdbrand(brand_id){
-        var url = 'api/product/productByIdBrandCombo/'+ brand_id;
+        var url = 'api/purchase/getProductsByBrandId/'+ brand_id;
         $('select[name="product_id"]').empty();
-        $('select[name="product_id"]').append('<option value="">Select a brand</option>');
+        $('select[name="product_id"]').append('<option value="">Select a product</option>');
         $.ajax({
             url: host +'/'+ url,
             type: "GET",
             dataType: "json",
             success:function(response) {
-                $.each(response, function(index, row) {
-                    $('select[name="product_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
-                }); 
+                if(response.length !=0){
+                    $.each(response, function(index, row) {
+                        $('select[name="product_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+                }else{
+                    $('select[name="product_id"]').empty();
+                    $('select[name="product_id"]').append('<option value="">Sin productos</option>');
+                }
             },
         });
     }
@@ -105,7 +119,7 @@
         
         $.ajax({
             type: 'GET',
-            url: host + '/api/purchase/productSearch/' + product_id ,
+            url: host + '/api/purchase/getProductSearch/' + product_id ,
             success: function(data) {
                 //console.log(data);
                 var flag = 1;

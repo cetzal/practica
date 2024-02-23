@@ -161,11 +161,13 @@
         let url = '/api/purchase/getStockAlert';
         $.get(url, function(response) {
             if (response.length) {
-                let message = ''
+                let message = '<ul>'
                 $.each(response,function(index, row){
                     console.log(row);
-                    message+='<b> El producto "' +row.name+ '" cuanta con la cantidad stock minimo de : '+row.stock_min+' de la marca "'+ row.brand_name +'"</b>: <br>';
-                })
+                    message+='<li> El producto <b>"' +row.name+ '"</b> cuanta con la cantidad stock minimo de : <b>'+row.stock_min+'</b> de la marca </b>"'+ row.brand_name +'"<b></li>';
+                });
+
+                message+='</ul>'
 
                 $.alert({
                     title: 'Alerta de stock',

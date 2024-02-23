@@ -70,8 +70,8 @@
                     <!-- <th class="not-exported"></th> -->
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.customer')}}</th>
-                    <th>{{trans('file.total_items')}}</th>
-                    <th>{{trans('file.total_cost')}}</th>
+                    <th>{{trans('file.Items')}}</th>
+                    <th>{{trans('file.Total')}}</th>
                     <!-- <th>{{trans('file.Created By')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th> -->
                 </tr>

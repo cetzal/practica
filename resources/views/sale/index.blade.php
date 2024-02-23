@@ -11,10 +11,6 @@
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" id="select_supplier" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
-                            <option value="">{{trans('file.supplier_select_supplier')}}</option>  
-                            @foreach($lims_sales_suppliers_list as $supplier)
-                                <option value="{{$supplier->id}}">{{$supplier->name}}</option>
-                            @endforeach
                     </select>
                 </div>
                 <div class="col">
@@ -22,10 +18,6 @@
                         <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
                             <select name="brand_id" id="select_brand" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                            <option value="">{{trans('file.search_select_brand')}}</option>  
-                            @foreach($lims_sales_brands_list as $brand)
-                                <option value="{{$brand->id}}">{{$brand->name}}</option>
-                            @endforeach
                             </select>
                         </div>
                     </div>
@@ -35,10 +27,6 @@
                         <label>{{ trans('file.products') }}</strong> </label>
                         <div class="input-group">
                             <select name="product_id" id="select_product" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                            <option value="">{{trans('file.Select Product')}}</option>  
-                            @foreach($lims_sales_products_list as $product)
-                                <option value="{{$product->id}}">{{$product->name}}</option>
-                            @endforeach
                             </select>
                         </div>
                     </div>
@@ -47,12 +35,8 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>{{trans('file.customer')}}</label>
-                        <select name="client_id" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                            <option value="">{{trans('file.select_client')}}</option>
-                            @foreach($lims_sales_clients_list as $client)
-                                <option value="{{$client->id}}">{{$client->name}}</option>
-                            @endforeach
+                        <label>{{trans('file.client')}}</label>
+                        <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
                         </select>
                     </div>
                 </div>

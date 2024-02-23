@@ -22,12 +22,8 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>{{trans('file.customer')}}</label>
-                                            <select name="client_id" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                                                <option value="">{{trans('file.select_client')}}</option>
-                                                @foreach($lims_clients_list as $client)
-                                                    <option value="{{$client->id}}">{{$client->name}}</option>
-                                                @endforeach
+                                            <label>{{trans('file.client')}}</label>
+                                            <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
                                             </select>
                                         </div>
                                     </div>
@@ -35,10 +31,6 @@
                                         <div class="form-group">
                                             <label>{{trans('file.Supplier')}}</label>
                                             <select name="supplier_id" id="select_supplier" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                                            <option value="">{{trans('file.select_supplier')}}</option>
-                                                @foreach($lims_suppliers_list as $supplier)
-                                                    <option value="{{$supplier->id}}">{{$supplier->name}}</option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

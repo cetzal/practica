@@ -605,6 +605,7 @@ return [
 	'status' => 'Estatus',
 	'purchase date' => 'Fecha de compra',
 	'back' => 'Atras',
+	'client' => 'Cliente',
 	//Sale
 	'sale' => 'Ventas',
 	'add_sale' => 'Agregar venta',

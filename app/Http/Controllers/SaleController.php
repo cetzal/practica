@@ -11,19 +11,11 @@ class SaleController extends Controller
 {
     public function index()
     {  
-        $lims_sales_suppliers_list = DB::table('view_sales_suppliers_list')->get();
-        $lims_sales_brands_list = DB::table('view_sales_brands_list')->select(['id', 'name'])->get();
-        $lims_sales_products_list = DB::table('view_sales_products_list')->select(['id', 'name'])->get();
-        $lims_sales_clients_list = DB::table('view_sales_clients_list')->get();
-        return view(
-            'sale.index', 
-            compact(
-                'lims_sales_suppliers_list',
-                'lims_sales_brands_list',
-                'lims_sales_products_list',
-                'lims_sales_clients_list'
-            )
-        );
+        // $lims_sales_suppliers_list = DB::table('view_sales_suppliers_list')->get();
+        // $lims_sales_brands_list = DB::table('view_sales_brands_list')->select(['id', 'name'])->get();
+        // $lims_sales_products_list = DB::table('view_sales_products_list')->select(['id', 'name'])->get();
+        // $lims_sales_clients_list = DB::table('view_sales_clients_list')->get();
+        return view('sale.index');
     }
 
     public function list(Request $request)
@@ -78,9 +70,9 @@ class SaleController extends Controller
     
     public function create()
     {
-        $lims_clients_list = DB::table('view_clients_active')->get();
-        $lims_suppliers_list = DB::table('view_suppliers_sales_create')->get();
-        return view('sale.create', compact('lims_clients_list', 'lims_suppliers_list'));
+        // $lims_clients_list = DB::table('view_clients_active')->get();
+        // $lims_suppliers_list = DB::table('view_suppliers_sales_create')->get();
+        return view('sale.create');
     }
 
     public function store(Request $request)
@@ -157,5 +149,41 @@ class SaleController extends Controller
                     ->where('brand_id', $request->brand_id)
                     ->get();
         return $brands;
+    }
+
+    public function loadCreateComboSuppliers()
+    {
+        $suppliers = DB::table('view_suppliers_sales_create')->get();
+        return $suppliers;
+    }
+
+    public function loadCreateComboClients()
+    {
+        $clients = DB::table('view_clients_active')->get();
+        return $clients;
+    }
+    
+    public function loadSearchComboSuppliers()
+    {
+        $suppliers = DB::table('view_sales_suppliers_list')->get();
+        return $suppliers;
+    }
+
+    public function loadSearchComboBrands()
+    {
+        $brands = DB::table('view_sales_brands_list')->select(['id', 'name'])->get();
+        return $brands;
+    }
+
+    public function loadSearchComboProducts()
+    {
+        $producs = DB::table('view_sales_products_list')->select(['id', 'name'])->get();
+        return $producs;
+    }
+
+    public function loadSearchComboClients()
+    {
+        $clients = DB::table('view_sales_clients_list')->get();
+        return $clients;
     }
 }

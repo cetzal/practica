@@ -545,7 +545,7 @@
     };
 
     var load_combobox_edit = function(input){       
-        $(input).append('<option value="">Without suppliers</option>');
+        $(input).append('<option value="">Without brands</option>');
 
         $.ajax( {
             processData: false,
@@ -584,7 +584,7 @@
             success: function( response ){
                 if(response.length != 0){
                     $(input).empty();
-                    $(input).append('<option value="">Selct a brand</option>');
+                    $(input).append('<option value="">Select a brand</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

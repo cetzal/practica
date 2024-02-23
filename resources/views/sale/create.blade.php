@@ -69,7 +69,7 @@
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="recieved-product-qty d-none">{{trans('file.Recieved')}}</th>
                                                         <th>{{trans('file.unit_cost')}}</th>
-                                                        <th>{{trans('file.total')}}</th>
+                                                        <th>{{trans('file.Subtotal')}}</th>
                                                         <th><i class="dripicons-trash"></i></th>
                                                     </tr>
                                                 </thead>
@@ -79,7 +79,7 @@
                                                     <th colspan="2">{{trans('file.Total')}}</th>
                                                     <th id="total-quantity">0</th>
                                                     <th class="recieved-product-qty d-none"></th>
-                                                    <th id="total-subtotal">0.00</th>
+                                                    <th></th>
                                                     <th id="total-sale">0.00</th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>

@@ -164,7 +164,7 @@
                 let message = '<ul>'
                 $.each(response,function(index, row){
                     console.log(row);
-                    message+='<li> El producto <b>"' +row.name+ '"</b> cuanta con la cantidad stock minimo de : <b>'+row.stock_min+'</b> de la marca </b>"'+ row.brand_name +'"<b></li>';
+                    message+='<li> El producto <b>"' +row.name+ '"</b> cuanta con la cantidad stock minimo de : <b>'+row.stock_min+'</b> de la marca <b>"'+ row.brand_name +'"</b></li>';
                 });
 
                 message+='</ul>'

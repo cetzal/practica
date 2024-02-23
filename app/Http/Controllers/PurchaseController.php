@@ -114,7 +114,7 @@ class PurchaseController extends Controller
         $product_detail = $request->purchase_detail;
        
         $save = DB::select(
-            'CALL add_purchases(?,?,?,?,?,?,?,?,?,?)', 
+            'CALL create_purchases(?,?,?,?,?,?,?,?,?,?)', 
             [ 
                 $purchase_date, 
                 $reference_no, 

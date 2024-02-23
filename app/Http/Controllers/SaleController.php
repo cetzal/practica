@@ -97,7 +97,7 @@ class SaleController extends Controller
         ]);        
 
         $save = DB::select(
-                    "CALL save_sale(?,?,?,?,?)", 
+                    "CALL create_sale(?,?,?,?,?)", 
                     [
                         $request->client_id, 
                         $request->date,

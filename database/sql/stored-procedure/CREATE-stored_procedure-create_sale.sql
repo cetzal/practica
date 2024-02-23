@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS save_sale;
+DROP PROCEDURE IF EXISTS create_sale;
 
 DELIMITER $$
 
-CREATE PROCEDURE save_sale(
+CREATE PROCEDURE create_sale(
 	IN param_client_id INT,
     IN param_date DATE,
     IN param_total DECIMAL(10,2),

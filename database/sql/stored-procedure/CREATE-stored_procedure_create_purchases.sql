@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS add_purchases;
+DROP PROCEDURE IF EXISTS create_purchases;
 
 DELIMITER $$
 
-CREATE PROCEDURE add_purchases (
+CREATE PROCEDURE create_purchases (
     IN param_purchase_date DATE,
     IN param_reference_no VARCHAR(250),
     IN param_supplier_id INT,

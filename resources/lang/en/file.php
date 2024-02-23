@@ -605,6 +605,7 @@ return [
 	'date_update' => 'Date update',
 	'status' => 'Status',
 	'back' => 'Return',
+	'client' => 'Client',
 	//Sale
 	'sale' => 'Sale',
 	'add_sale' => 'Add sale',

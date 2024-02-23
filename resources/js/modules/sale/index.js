@@ -41,6 +41,75 @@
         $('.form_search').removeClass('form_search_active');
     });
 
+    function loadSearchComboSuppliers() {
+        let input = '#select_supplier';
+        let url = '/api/sales/load/serach/suppliers';
+        $(input).append('<option value="">Witout suppliers</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select supplier</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+    function loadSearchComboBrands() {
+        let input = '#select_brand';
+        let url = '/api/sales/load/serach/brands';
+        $(input).append('<option value="">Non-brands</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select brand</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    function loadSearchComboProducts() {
+        let input = '#select_product';
+        let url = '/api/sales/load/search/products';
+        $(input).append('<option value="">Without products</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select product</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+    function loadSearchComboClients() {
+        let input = '#select_client';
+        let url = '/api/sales/load/search/clients';
+        $(input).append('<option value="">Without clients</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select client</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        loadSearchComboProducts();
+        loadSearchComboClients();
+    });
+
     $('#select_supplier').on('change', function() {
         let supplier_id = $(this).val();
         let url = '/api/sales/brandSearch?supplier_id='+supplier_id;
@@ -90,7 +159,7 @@
         $('.form_search').toggleClass('form_search_active');
         window.location.replace('/sales');
     });
-
+    
     var table = $('#sale-table').DataTable( {
         responsive: false,
         autoWidth : false,

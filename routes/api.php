@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::delete('/product/{id}/delete', [App\Http\Controllers\ProductController::class, 'destroy'])->name('api.product.destroy');
     Route::put('/product/{id}/activate', [App\Http\Controllers\ProductController::class, 'activate'])->name('api.product.activate');
     Route::put('/product/{id}/deactivate', [App\Http\Controllers\ProductController::class, 'deactivate'])->name('api.product.deactivate');
-    Route::put('/product/all/activarbyselection', [App\Http\Controllers\ProductController::class, 'activarBySelection'])->name('api.product.all_active');
+    Route::put('/product/all/activatebyselection', [App\Http\Controllers\ProductController::class, 'activateBySelection'])->name('api.product.all_active');
     Route::put('/product/all/deactivatebyselection', [App\Http\Controllers\ProductController::class, 'deactivateBySelection'])->name('api.product.all_desactive');
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');
     Route::get('/product/code', [App\Http\Controllers\ProductController::class, 'validateCode'])->name('api.product.validate_code');
@@ -119,6 +119,18 @@ Route::group(['middleware' => ['auth.jwt']], function(){
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/sales', [\App\Http\Controllers\SaleController::class, 'store'])->name('api.sales.store');
     Route::get('/sales/list', [\App\Http\Controllers\SaleController::class, 'list'])->name('api.sales.list');
+    Route::get('/sales/load/create/suppliers', [\App\Http\Controllers\SaleController::class, 'loadCreateComboSuppliers'])->name('api.sales.load.create.combo-supliers');
+    Route::get('/sales/load/create/clients', [\App\Http\Controllers\SaleController::class, 'loadCreateComboClients'])->name('api.sales.load.create.combo-clients');
+    /**
+     * Rutas para cargar los cambos de la vista index
+     */
+    Route::get('/sales/load/serach/suppliers', [\App\Http\Controllers\SaleController::class, 'loadSearchComboSuppliers'])->name('api.sales.load.combo.suppliers');
+    Route::get('/sales/load/serach/brands', [\App\Http\Controllers\SaleController::class, 'loadSearchComboBrands'])->name('api.sales.load.combo.brands');
+    Route::get('/sales/load/search/products', [\App\Http\Controllers\SaleController::class, 'loadSearchComboProducts'])->name('api.sales.load.combo.products');
+    Route::get('/sales/load/search/clients', [\App\Http\Controllers\SaleController::class, 'loadSearchComboClients'])->name('api.sales.load.combo.clients');
+    /**
+     * End combos de la vista index
+     */
     Route::get('/sales/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleController::class, 'getBrandsBySupplierId'])->name('api.sales.brand-combo');
     Route::get('/sales/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleController::class, 'getProductsByBrandId'])->name('api.sales.brand-combo');
     Route::get('/sales/brandSearch', [App\Http\Controllers\SaleController::class, 'searchBrandBySupplierId'])->name('api.sales.search-brand');

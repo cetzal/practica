@@ -57,6 +57,44 @@
         }
     });
 
+    function loadComboSuppliers() {
+        let input = '#select_supplier';
+        let url = '/api/sales/load/create/suppliers';
+        $(input).append('<option value="">Without suppliers</option>');
+
+        $.get(url, function(response) {
+            console.log('load combo suppliers', response);
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select supplier</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    function loadComboClients() {
+        let input = '#select_client';
+        let url = '/api/sales/load/create/clients';
+        $(input).append('<option value="">Without clients</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select client</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        loadComboSuppliers();
+        loadComboClients();
+    });
+
     function calculateTotalSale() {
         let total_sale = 0;
         let total_quantity = 0;

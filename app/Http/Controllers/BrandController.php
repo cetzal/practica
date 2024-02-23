@@ -266,7 +266,7 @@ class BrandController extends Controller
     }
 
     public function allBrandsBySupplier($id){
-        $data = DB::table('view_brands_supplier_list')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        $data = DB::table('view_brands_suppliers_list')->select(['id', 'name'])->where('supplier_id', $id)->get();
         return $data;
     }
 }

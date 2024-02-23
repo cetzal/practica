@@ -249,13 +249,24 @@ class BrandController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La marca ha sido eliminado']); 
     }
 
+    public function loadSearchComboSuppliers()
+    {
+        $suppliers = DB::table('view_brands_suppliers_list')->get();
+        return $suppliers;
+    }
+
+    public function loadEditComboSuppliers(){
+        $suppliers = DB::table('view_brands_suppliers_edit')->get();
+        return $suppliers;
+    }
+
     public function brandBySupplier($id){
         $data = DB::table('view_brands_active')->select(['id', 'name'])->where('supplier_id', $id)->get();
         return $data;
     }
 
     public function allBrandsBySupplier($id){
-        $data = DB::table('view_brands_products_list')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        $data = DB::table('view_brands_supplier_list')->select(['id', 'name'])->where('supplier_id', $id)->get();
         return $data;
     }
 }

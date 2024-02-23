@@ -26,7 +26,12 @@
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
-                            <option value="">{{trans('file.supplier_select_supplier')}}</option>  
+                            
+                            @if(count($lims_supplier_products_list) > 0 )
+                                <option value="">{{trans('file.supplier_select_supplier')}}</option>  
+                            @else
+                                <option value="">Without suppliers</option>
+                            @endif
                             @foreach($lims_supplier_products_list as $supplier)
                                 <option value="{{$supplier->id}}">{{$supplier->name}}</option>
                             @endforeach
@@ -37,7 +42,12 @@
                         <label>{{ trans('file.Brand') }}</strong> </label>
                         <div class="input-group">
                             <select name="brand_prod" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                            <option value="">{{trans('file.search_select_brand')}}</option>  
+                            
+                            @if(count($lims_brands_products_list) > 0 )
+                                <option value="">{{trans('file.search_select_brand')}}</option>  
+                            @else
+                                <option value="">Without Brands</option>
+                            @endif
                             @foreach($lims_brands_products_list as $brand)
                                 <option value="{{$brand->id}}">{{$brand->name}}</option>
                             @endforeach
@@ -50,7 +60,11 @@
                         <label>{{trans('file.category')}}</strong> </label>
                         <div class="input-group">
                             <select name="category_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
-                            <option value="">{{trans('file.search_product_select_category')}}</option>  
+                            @if(count($lims_product_category_list) > 0 )
+                                <option value="">{{trans('file.search_product_select_category')}}</option>  
+                            @else
+                                <option value="">Without Category</option>
+                            @endif
                             @foreach($lims_product_category_list as $category)
                                 <option value="{{$category->category_id}}">{{$category->category_name}}</option>
                             @endforeach

@@ -343,7 +343,7 @@
        e.preventDefault();
         $('#update_brand')[0].reset();
         $('#suppliersup_id').find('option').remove();
-        load_combobox("#suppliersup_id");
+        load_combobox_edit("#suppliersup_id");
         var url = "api/brand/"
         var id = $(this).data('id').toString();
         url = url.concat(id).concat("/edit");
@@ -544,17 +544,47 @@
         });
     };
 
-    var load_combobox_filter = function(input){
-        $(input).append('<option value="">Select suppliers</option>');
+    var load_combobox_edit = function(input){       
+        $(input).append('<option value="">Without suppliers</option>');
+
         $.ajax( {
             processData: false,
             contentType: false,
             dataType: 'json',
             type: "GET",
-            url: 'api/suppliers/filter/combobox',
+            url: 'api/brand/load/edit/suppliers',
             success: function( response ){
                 if(response.length != 0){
-                    
+                    $(input).find('option').remove().end();
+                    $(input).append('<option value="">Select supplier</option>');
+                    $.each(response, function(index, row) {
+                        if(row.is_active == 0){
+                            $(input).append('<option value=' + row.id + ' disabled>' + row.name + '</option>');
+                        }else{
+                            $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                        }
+                        
+                    }); 
+              }
+            },
+            error: function(xhr, textStatus, error){
+              
+            }
+        });
+    };
+
+    var load_combobox_filter = function(input){
+        $(input).append('<option value="">Without products</option>');
+        $.ajax( {
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            type: "GET",
+            url: '/api/brand/load/serach/suppliers',
+            success: function( response ){
+                if(response.length != 0){
+                    $(input).empty();
+                    $(input).append('<option value="">Selct a brand</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

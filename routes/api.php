@@ -49,6 +49,10 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/brand/all/deletebyselection', [App\Http\Controllers\BrandController::class, 'deleteBySelection'])->name('api.brand.all_delete');
     Route::get('/brand/supplier/{id}', [App\Http\Controllers\BrandController::class, 'brandBySupplier'])->name('api.brand.supplier');
     Route::get('/brand/all/supplier/{id}', [App\Http\Controllers\BrandController::class, 'allBrandsBySupplier'])->name('api.brand.all.supplier');
+    
+    Route::get('/brand/load/create/suppliers', [\App\Http\Controllers\BrandController::class, 'loadCreateComboSuppliers'])->name('api.brand.load.create.combo-supliers');
+    Route::get('/brand/load/edit/suppliers', [\App\Http\Controllers\BrandController::class, 'loadEditComboSuppliers'])->name('api.brand.load.edit.combo-supliers');
+    Route::get('/brand/load/serach/suppliers', [\App\Http\Controllers\BrandController::class, 'loadSearchComboSuppliers'])->name('api.brand.load.combo.suppliers');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {

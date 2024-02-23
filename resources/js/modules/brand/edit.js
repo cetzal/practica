@@ -25,8 +25,10 @@
 
     $( 'form#update_brand' ).submit( function(e){
         e.preventDefault();
-        
+        //$(this).find("select[name='supplier_id'] option:not(:selected)").attr('disabled', false);
         if ($('#update_brand').valid()) {
+            
+           
             var data = new FormData( $( 'form#update_brand' )[ 0 ] );
             var actionUrl = $(this).attr('action');
             var method = $( this ).attr( 'method' );

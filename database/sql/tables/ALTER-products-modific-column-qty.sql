@@ -1,1 +1,1 @@
-ALTER TABLE pruebas.products MODIFY COLUMN qty double DEFAULT 0;
+ALTER TABLE products MODIFY COLUMN qty double DEFAULT 0;

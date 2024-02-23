@@ -162,7 +162,8 @@
        
     } );
 
-    $('#supplier-table').on('click', '.redirect-record-log', function() {
+    $('#supplier-table').on('click', '.redirect-record-log', function(e) {
+        e.preventDefault();
         let record_id = $(this).data('record-id').toString();
         let record_name = $(this).data('record-name').toString();
         // window.location.href = window.location.origin +'/log-record/'+record_id+'?record_name='+record_name+'&module_name='+module;

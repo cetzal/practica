@@ -11,11 +11,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class PurchaseController extends Controller
 {
     public function index(){
-        $purchase_suppliers_list = DB::table('view_purchase_suppliers_list')->get();
-        $purchase_brands_list = DB::table('view_purchase_brands_list')->select(['id', 'name'])->get();
-        $purchase_products_list = DB::table('view_purchase_products_list')->select(['id', 'name'])->get();
+       
         
-        return view('purchases.index', compact('purchase_suppliers_list', 'purchase_brands_list', 'purchase_products_list'));
+        return view('purchases.index');
     }
 
     public function create(){
@@ -64,24 +62,6 @@ class PurchaseController extends Controller
     }
 
     public function store(Request $request){
-        // 'product_id' => [
-        //     'required|array'
-        // ],
-        // 'product_id.*' => [
-        //     'required|array'
-        // ],
-        // 'product_code' => [
-        //     'required|array'
-        // ],
-        // 'net_unit_cost' => [
-        //     'required|array'
-        // ],
-        // 'qty' => [
-        //     'required|array'
-        // ],
-        // 'subtotal' => [
-        //     'required|array'
-        // ],
         $this->validate(
             $request,
             [
@@ -169,4 +149,42 @@ class PurchaseController extends Controller
         $data = DB::table('view_products_for_purchase')->where('id', $product_id)->first();
         return $data;
     }
+
+    public function searchBrandBySupplierId(Request $request)
+    {
+        $brands = DB::table('view_purchase_brands_list')
+                    ->select(['id', 'name'])
+                    ->where('supplier_id', $request->supplier_id)
+                    ->get();
+        return $brands;
+    }
+
+    public function searchProductByBrandId(Request $request)
+    {
+        $brands = DB::table('view_purchase_products_list')
+                    ->select(['id', 'name'])
+                    ->where('brand_id', $request->brand_id)
+                    ->get();
+        return $brands;
+    }
+
+    public function loadSearchComboSuppliers()
+    {
+        $suppliers = DB::table('view_purchase_suppliers_list')->get();
+        return $suppliers;
+    }
+
+    public function loadSearchComboBrands()
+    {
+        $brands = DB::table('view_purchase_brands_list')->select(['id', 'name'])->get();
+        return $brands;
+    }
+
+    public function loadSearchComboProducts()
+    {
+        $producs = DB::table('view_purchase_products_list')->select(['id', 'name'])->get();
+        return $producs;
+    }
+
+    
 }

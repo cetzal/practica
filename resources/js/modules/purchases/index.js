@@ -106,4 +106,98 @@
     $('.clear_form_purchases').on('click', function(e){
         location.reload();
     });
+
+    function loadSearchComboSuppliers() {
+        let input = '.selectpicker-suppliers';
+        let url = '/api/purchase/load/serach/suppliers';
+        $(input).append('<option value="">Witout suppliers</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select supplier</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+    function loadSearchComboBrands() {
+        let input = '.selectpicker-brands';
+        let url = '/api/purchase/load/serach/brands';
+        $(input).append('<option value="">Non-brands</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select brand</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    function loadSearchComboProducts() {
+        let input = '.selectpicker-product';
+        let url = '/api/purchase/load/search/products';
+        $(input).append('<option value="">Without products</option>');
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select product</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    $('select[name="supplier_id"]').on('change', function(e) {
+        e.preventDefault();
+        let supplier_id = $(this).val();
+        let url = '/api/purchase/getbrandSearchById?supplier_id='+supplier_id;
+        let input_brand = '.selectpicker-brands';
+        let input_product = '.selectpicker-product';
+
+        if (supplier_id != '') {
+            $(input_product).find('option').remove().end();
+            $(input_product).append('<option value="">Witout product</option>');
+            $.get(url, function(response) {
+                if (response) {
+                    // $(input).find('option').get(0).remove();
+                    $(input_brand).find('option').remove().end();
+                    $(input_brand).append('<option value="">Select brand</option>');
+                    $.each(response, function(index, row) {
+                        $(input_brand).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+                }
+            })
+        }   
+    });
+
+    $('select[name="brand_id"]').on('change', function(e) {
+        let brand_id = $(this).val();
+        let url = '/api/purchase/productSearch?brand_id='+brand_id;
+        let input = '.selectpicker-product';
+        if (brand_id != '') {
+            $.get(url, function(response) {
+                if (response) {
+                    // $(input).find('option').get(0).remove();
+                    $(input).find('option').remove().end();
+                    $(input).append('<option value="">Select product</option>');
+                    $.each(response, function(index, row) {
+                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+                }
+            })
+        }
+    });
+
+    $(document).ready(function(){
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        loadSearchComboProducts();
+    });
 })();

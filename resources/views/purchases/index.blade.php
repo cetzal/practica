@@ -18,9 +18,7 @@
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
                             <option value="">{{trans('file.supplier_select_supplier')}}</option>  
-                            @foreach($purchase_suppliers_list as $supplier)
-                                <option value="{{$supplier->id}}">{{$supplier->name}}</option>
-                            @endforeach
+                           
                     </select>
                 </div>
                 <div class="col">
@@ -29,9 +27,7 @@
                         <div class="input-group">
                             <select name="brand_id" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                             <option value="">{{trans('file.search_select_brand')}}</option>  
-                            @foreach($purchase_brands_list as $brand)
-                                <option value="{{$brand->id}}">{{$brand->name}}</option>
-                            @endforeach
+                           
                             </select>
                         </div>
                     </div>
@@ -40,11 +36,9 @@
                     <div class="form-group">
                         <label>{{trans('file.product')}}</strong> </label>
                         <div class="input-group">
-                            <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
+                            <select name="product_id" class="selectpicker-product form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
                             <option value="">{{trans('file.select')}}</option>  
-                            @foreach($purchase_products_list as $product)
-                                <option value="{{$product->id}}">{{$product->name}}</option>
-                            @endforeach
+                           
                             </select>
                         </div>
                     </div>

@@ -349,10 +349,12 @@
         url = url.concat(id).concat("/edit");
 
         $.get(url, function(data) {
+            console.log('get brand ', data);
             $("input[name='name']").val(data['name']);
             $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
             $('#suppliersup_id option[value="'+data['supplier_id']+'"]').prop('selected', true);
+            $("input[name='is_active']").prop( "checked", parseInt(data['is_active']) );
         });
 
     });
@@ -517,8 +519,9 @@
         load_combobox("#suppliers_id");
     });
 
-    var load_combobox = function(input){
-        $(input).append('<option value="">Select suppliers</option>');
+    var load_combobox = function(input){       
+        $(input).append('<option value="">Without suppliers</option>');
+
         $.ajax( {
             processData: false,
             contentType: false,
@@ -527,7 +530,8 @@
             url: 'api/suppliers/all/combobox',
             success: function( response ){
                 if(response.length != 0){
-                    
+                    $(input).find('option').remove().end();
+                    $(input).append('<option value="">Select supplier</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

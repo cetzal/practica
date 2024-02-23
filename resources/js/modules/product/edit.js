@@ -408,7 +408,8 @@
 
     var load_combobox_filter = function(input){
         
-        $(input).append('<option value="">Select suppliers</option>');
+        // $(input).append('<option value="">Select suppliers</option>');
+        $(input).append('<option value="">Without suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -417,7 +418,8 @@
             url: host + '/api/suppliers/filter/combobox',
             success: function( response ){
                 if(response.length != 0){
-                    
+                    $(input).find('option').remove().end();
+                    $(input).append('<option value="">Select supplier</option>');
                     $.each(response, function(index, row) {
                         if(row.is_active == 1){
                             $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
@@ -442,22 +444,22 @@
         if(supplier_id) {
             all_brandsBySupplier(supplier_id);
         }else{
-             
-            $('select[name="brand_id"]').empty();
-            $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
-            
+            $('select[name="brand_id"]').find('option').remove().end();
+            $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
         }                    
     });
 
     function all_brandsBySupplier(supplier_id){
-        var url = 'api/brand/all/supplier/'+ supplier_id;
-        $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+        var url = 'api/product/brand/supplier/'+ supplier_id;
+        $('select[name="brand_id"]').find('option').remove().end();
+        $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
         $.ajax({
             url: host +'/'+ url,
             type: "GET",
             dataType: "json",
             success:function(response) {
+                $('select[name="brand_id"]').find('option').remove().end();
+                $('select[name="brand_id"]').append('<option value="">Select brand</option>');
                 $.each(response, function(index, row) {
                     if(row.is_active == 1){
                         $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');

@@ -140,7 +140,7 @@ class PurchaseController extends Controller
 
     public function getProductsByBrandId($id)
     {
-        $brands = DB::table('view_products_list')->select(['id', 'name'])->where('brand_id', $id)->get();
+        $brands = DB::table('view_products_purchase_list')->select(['id', 'name'])->where('brand_id', $id)->get();
 
         return $brands;
     }

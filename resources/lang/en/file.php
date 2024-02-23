@@ -618,6 +618,6 @@ return [
 	'select_without_products' => 'Without products',
 	'total_items' => 'Total items',
 	'total_cost' => 'Total cost',
-
+	'Brands list' => 'Brands List',
 ];
 ?>

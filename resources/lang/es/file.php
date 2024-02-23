@@ -617,5 +617,6 @@ return [
 	'select_without_products' => 'Sin productos',
 	'total_items' => 'Total articulos',
 	'total_cost' => 'Costo total',
+	'Brands list' => 'Lista de marcas',
 ];
 ?>

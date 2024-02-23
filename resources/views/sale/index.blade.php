@@ -1,7 +1,10 @@
 @extends('template.app') 
 @section('content')
 <section>
-    <div class="container-fluid mb-2">
+    <div class="container-fluid mb-2 p-1">
+        <h4>{{trans('file.Sale List')}}</h4>
+    </div>
+    <div class="container-fluid mb-2 p-1">
         <a href="{{ route('sales.create') }}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.add_sale')}}</a>
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>

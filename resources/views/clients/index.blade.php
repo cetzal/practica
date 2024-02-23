@@ -1,7 +1,10 @@
 @extends('template.app') 
 @section('content')
 <section>
-    <div class="container-fluid mb-2">
+    <div class="container-fluid mb-2 p-1">
+        <h4>{{trans('file.Customer List')}}</h4>
+    </div>
+    <div class="container-fluid mb-2 p-1">
             <a href="#" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{ trans('file.Add Customer') }}</a>
             <a href="#" class="btn btn-danger delete_all_client"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
             <a href="#" class="btn btn-success active_all_client"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>

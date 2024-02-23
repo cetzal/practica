@@ -110,6 +110,7 @@
     function loadSearchComboSuppliers() {
         let input = '.selectpicker-suppliers';
         let url = '/api/purchase/load/serach/suppliers';
+        $(input).empty();
         $(input).append('<option value="">Witout suppliers</option>');
 
         $.get(url, function(response) {
@@ -125,6 +126,7 @@
     function loadSearchComboBrands() {
         let input = '.selectpicker-brands';
         let url = '/api/purchase/load/serach/brands';
+        $(input).empty();
         $(input).append('<option value="">Non-brands</option>');
 
         $.get(url, function(response) {
@@ -141,6 +143,7 @@
     function loadSearchComboProducts() {
         let input = '.selectpicker-product';
         let url = '/api/purchase/load/search/products';
+        $(input).empty();
         $(input).append('<option value="">Without products</option>');
 
         $.get(url, function(response) {
@@ -162,7 +165,7 @@
         let input_product = '.selectpicker-product';
 
         if (supplier_id != '') {
-            $(input_product).find('option').remove().end();
+            $(input_product).empty();
             $(input_product).append('<option value="">Witout product</option>');
             $.get(url, function(response) {
                 if (response) {

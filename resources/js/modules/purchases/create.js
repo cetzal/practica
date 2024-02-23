@@ -179,9 +179,23 @@
     // delete item
     $("table.order-list tbody").on("click", ".ibtnDel", function(event) {
         rowindex = $(this).closest('tr').index();
-        $(this).closest("tr").remove();
-        $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', false);
-        calculateTotal();
+        let that = this;
+        $.confirm({
+            title: '',
+            content: 'Desea eliminar el producto?',
+            buttons: {
+                ok: function () {
+                   
+                    $(that).closest("tr").remove();
+                    $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', false);
+                    calculateTotal();
+                },
+                cancel: function() {
+
+                }
+            }
+        });
+       
     });
 
     function calculateRowProductData(quantity) {

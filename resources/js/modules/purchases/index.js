@@ -157,6 +157,25 @@
         })
     }
 
+    function loadStockAlert(){
+        let url = '/api/purchase/getStockAlert';
+        $.get(url, function(response) {
+            if (response.length) {
+                let message = ''
+                $.each(response,function(index, row){
+                    console.log(row);
+                    message+='<b> El producto "' +row.name+ '" cuanta con la cantidad stock minimo de : '+row.stock_min+' de la marca "'+ row.brand_name +'"</b>: <br>';
+                })
+
+                $.alert({
+                    title: 'Alerta de stock',
+                    content: message,
+                });
+            }
+        })
+
+    }
+
     $('select[name="supplier_id"]').on('change', function(e) {
         e.preventDefault();
         let supplier_id = $(this).val();
@@ -198,7 +217,9 @@
         }
     });
 
+
     $(document).ready(function(){
+        loadStockAlert();
         loadSearchComboSuppliers();
         loadSearchComboBrands();
         loadSearchComboProducts();

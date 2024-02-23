@@ -127,6 +127,8 @@ Route::group(['middleware' => ['auth.jwt']], function(){
     Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
     Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandId'])->name('api.purchase.search-product');
     Route::get('/purchase/getbrandSearchById', [App\Http\Controllers\PurchaseController::class, 'searchBrandBySupplierId'])->name('api.purchase.search-brand');
+
+    Route::get('/purchase/getStockAlert', [App\Http\Controllers\PurchaseController::class, 'getStockAlert'])->name('api.purchase.stockAlert');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {

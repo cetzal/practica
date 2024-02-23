@@ -186,5 +186,10 @@ class PurchaseController extends Controller
         return $producs;
     }
 
+    public function getStockAlert(){
+        $data = DB::table('view_products_stock_alert')->get();
+        return $data;
+    }
+
     
 }

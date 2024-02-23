@@ -139,6 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group float-right">
+                                    <a href="{{route('sales.index')}}" class="btn btn-info">{{trans('file.back')}}</a>
                                     <button type="button" class="btn btn-primary" id="save-sale">{{trans('file.submit')}}</button>
                                 </div>
                             </div>

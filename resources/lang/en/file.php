@@ -604,6 +604,7 @@ return [
 	'date_create' => 'Date create',
 	'date_update' => 'Date update',
 	'status' => 'Status',
+	'back' => 'Return',
 	//Sale
 	'sale' => 'Sale',
 	'add_sale' => 'Add sale',

@@ -87,8 +87,8 @@
     });
 
     $('.clear_form').on('click', function(e){
-        $('#from_search_sale')[0].reset();
-        table.ajax.reload();
+        $('.form_search').toggleClass('form_search_active');
+        window.location.replace('/sales');
     });
 
     var table = $('#sale-table').DataTable( {
@@ -105,7 +105,6 @@
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
-                console.log('frmdata', frm_data);
             }
         },
         "order": [],

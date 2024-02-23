@@ -384,4 +384,13 @@ class ProductController extends Controller
                     ->first();
         return $product;
     }
+
+    public function getBrandsBySupplierId($id)
+    {
+        $brands = DB::table('view_products_brands_edit')
+                    ->select(['id', 'name', 'is_active'])
+                    ->where('supplier_id', $id)
+                    ->get();
+        return $brands;
+    }
 }

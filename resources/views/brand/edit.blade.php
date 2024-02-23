@@ -24,6 +24,10 @@
            
             <textarea name="description" required class="form-control" value="" placeholder="{{trans('file.placeholder_brand_description')}}" rows="3"></textarea>
         </div>
+        <div class="form-group">
+            <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
+            <label class="mt-2"><strong>{{trans('file.Active')}}</strong></label>
+        </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
             <input type="submit" value="{{trans('file.Save')}}" class="btn btn-primary">

@@ -1,6 +1,6 @@
 (function() {
     var host = window.location.origin;
-    
+
     function formatErrorUsingClassesAndPopover(element , array_of_problems ){
         let someHTML = '';
         array_of_problems.forEach(function(e){someHTML+='<li>'+element +': '+ e+'</li>'});
@@ -388,7 +388,7 @@
     });
 
     var load_combobox = function(input){
-        $(input).append('<option value="">Select a suppliers</option>');
+        $(input).append('<option value="">Without suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -396,8 +396,10 @@
             type: "GET",
             url: host + '/api/suppliers/all/combobox',
             success: function( response ){
-                if(response.length != 0){
-                    
+                console.log('response suppliers', response);
+                if(response.length != 0) {
+                    $(input).find('option').remove().end();
+                    $(input).append('<option value="">Select supplier</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
@@ -419,8 +421,8 @@
         if(supplier_id) {
             brandsBySupplier(supplier_id);
         }else{    
-            $('select[name="brand_id"]').empty();
-            $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+            $('select[name="brand_id"]').find('option').remove().end();
+            $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
         }                
     });
 
@@ -433,9 +435,15 @@
             type: "GET",
             dataType: "json",
             success:function(response) {
-                $.each(response, function(index, row) {
-                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
-                }); 
+                $('select[name="brand_id"]').find('option').remove().end();
+                $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
+                if (response.length) {
+                    $('select[name="brand_id"]').find('option').remove().end();
+                    $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+                    $.each(response, function(index, row) {
+                        $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                    }); 
+                }
             },
         });
     }

@@ -90,7 +90,8 @@ class BrandController extends Controller
         ]);
         
         $input = $request->except('image');
-        $input['is_active'] = true;
+        if(!isset($input['is_active']))
+            $input['is_active'] = false;
         $input['created_by'] = JWTAuth::toUser()->id;
         $brand = Brand::create($input);
 
@@ -108,7 +109,7 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        $brand_data = DB::table('view_brands')->select(['id', 'name', 'description', 'supplier_id'])
+        $brand_data = DB::table('view_brands')->select(['id', 'name', 'description', 'supplier_id', 'is_active'])
                         ->find($id);
         return $brand_data;
     }

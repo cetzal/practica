@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::put('/product/all/deletebyselection', [App\Http\Controllers\ProductController::class, 'deleteBySelection'])->name('api.product.all_delete');
     Route::get('/product/code', [App\Http\Controllers\ProductController::class, 'validateCode'])->name('api.product.validate_code');
     Route::get('/product/productByIdBrandCombo/{id}', [App\Http\Controllers\ProductController::class, 'productByIdBrandCombo'])->name('api.product.productByIdBrandCombo');
+    Route::get('/product/brand/supplier/{id}', [App\Http\Controllers\ProductController::class, 'getBrandsBySupplierId'])->name('api.product.brand.supplier');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {

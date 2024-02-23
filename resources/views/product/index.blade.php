@@ -173,5 +173,8 @@
 </div>
 @endsection
 @section('scripts')
+    <script>
+        // var current_language  = "{{ app()->getLocale() }}";
+    </script>
     <script src="{{ asset('js/modules/product/index.js') }}"></script>
 @endsection

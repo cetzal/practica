@@ -76,7 +76,7 @@
                                         <div class="input-group">
                                             <input type="hidden" name="brand" value="{{ $product_data->brand_id}}">
                                             <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                                                <option value="">Select a brand</option> 
+                                                <option value="">Without Brands</option> 
                                             
                                             </select>
                                       </div>

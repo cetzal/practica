@@ -346,7 +346,7 @@
             $.confirm({
                 title: 'Agregar producto',
                 content: 'El producto se ha creado con exito',
-                autoClose: 'ok|3000',
+                //autoClose: 'ok|3000',
                 buttons: {
                     ok: function () {
                         window.location.replace('/product');

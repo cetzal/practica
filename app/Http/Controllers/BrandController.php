@@ -131,6 +131,11 @@ class BrandController extends Controller
         $brand_data->name = $request->name;
         $brand_data->description = $request->description;
         $brand_data->supplier_id = $request->supplier_id;
+        if(!isset($request->is_active))
+            $brand_data->is_active= false;
+        else
+            $brand_data->is_active= true;
+
         $brand_data->save();
        
 

@@ -86,8 +86,8 @@ class SaleController extends Controller
             'product_details.*.quantity' => ['required'],
             'product_details.*.unit_price' => ['required'],
             'product_details.*.total' => ['required']
-        ]);        
-
+        ]);
+        
         $save = DB::select(
                     "CALL create_sale(?,?,?,?,?)", 
                     [
@@ -98,12 +98,30 @@ class SaleController extends Controller
                         json_encode($request->product_details)
                     ]
                 );
-        Log::emergency('sale');
-        Log::emergency(print_r($save, true));
         $save = current($save);
 
         if (isset($save->message)) {
-            return response()->json(['status' => 'succes', 'message' => $save->message]); 
+            $product_ids = array_column($request->product_details, 'product_id');
+            $products = DB::table('view_products')
+                        ->select('name', 'qty', 'alert_quantity')
+                        ->whereIn('id', $product_ids)
+                        ->where('alert_quantity', '>', 'qty')
+                        ->get();
+            $message[] =  $save->message;
+            if ($products->count()) {
+                $message  = array_merge (
+                    $message, 
+                    array_map(function($item) {
+                        return 'El producto <b>'.$item->name.'</b> en existencia cuenta con <b>'.$item->qty.'</b>'
+                                .', se recomienda realizar el punto de reorden esta por debajo de <b>'.$item->alert_quantity.'</b>.';
+                    }, $products->toArray())
+                );
+            }
+
+            return response()->json([
+                'status' => 'succes',
+                'message' => implode('<br>', $message)
+            ]); 
         }
 
         if(isset($save->error)) {
@@ -128,7 +146,8 @@ class SaleController extends Controller
 
     public function getProductsByBrandId($id)
     {
-        $brands = DB::table('view_products_list')->select(['id', 'name'])->where('brand_id', $id)->get();
+        // $brands = DB::table('view_products_list')->select(['id', 'name'])->where('brand_id', $id)->get();
+        $brands = DB::table('view_products_sales_create')->select(['id', 'name'])->where('brand_id', $id)->get();
 
         return $brands;
     }

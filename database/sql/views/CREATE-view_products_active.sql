@@ -1,4 +1,37 @@
 CREATE OR REPLACE VIEW view_products_active AS
-	SELECT id, name, brand_id
+	SELECT
+		id,
+    	code,
+    	name,
+    	brand_id,
+    	category_id,
+    	type,
+    	barcode_symbology,
+    	unit_id,
+    	purchase_unit_id,
+    	sale_unit_id,
+    	cost,
+    	price,
+    	qty,
+    	alert_quantity,
+    	promotion,
+    	promotion_price,
+    	starting_date,
+    	last_date,
+    	tax_id,
+    	tax_method,
+    	picture,
+    	product_details,
+    	is_active,
+    	created_at,
+    	updated_at,
+    	deleted_at,
+    	user_id,
+    	supplier_id,
+    	brand_name,
+    	supplier_name,
+    	category_name,
+    	unit_name,
+    	asuser_name
 	FROM view_products
 	WHERE is_active = 1;

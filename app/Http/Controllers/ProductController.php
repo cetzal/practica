@@ -369,14 +369,14 @@ class ProductController extends Controller
         return response()->json(true);
     }
     public function productByIdBrandCombo($id){
-        $data = DB::table('view_products_active')->where('brand_id', $id)->get();
+        $data = DB::table('view_products_active')->select(['id', 'name', 'brand_id'])->where('brand_id', $id)->get();
         return $data;
     }
 
     public function getProductById($id)
     {
         $product = DB::table('view_products')
-                    ->select(['id', 'code', 'name', 'price', 'alert_quantity'])
+                    ->select(['id', 'code', 'name', 'price', 'qty', 'alert_quantity'])
                     ->where([
                         ['is_active', '=', 1],
                         ['id', '=', $id]

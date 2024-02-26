@@ -1,3 +1,4 @@
+
 (function(){
     var host = window.location.origin;
     var product_cost = [];
@@ -11,6 +12,7 @@
 
     var row_product_cost;
     $("#purchase_date").daterangepicker({
+        maxDate : moment().endOf(),
         singleDatePicker: true,
         showDropdowns: true,
         minYear: 1901,
@@ -46,48 +48,16 @@
         });
     };
 
-    $('select[name="supplier_id"]').on('change', function(e) {
-        e.preventDefault();
-        supplier_id = $(this).val();
-        if(supplier_id) {
-            brandsBySupplier(supplier_id);
-        }else{    
-            $('select[name="brand_id"]').empty();
-            $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
-        }                
-    });
-
-    function brandsBySupplier(supplier_id){
-        var url = 'api/purchase/getBrandsBySupplierId/'+ supplier_id;
-        $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
-        $.ajax({
-            url: host +'/'+ url,
-            type: "GET",
-            dataType: "json",
-            success:function(response) {
-                if(response.length != 0){
-                    $.each(response, function(index, row) {
-                        $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
-                    }); 
-                }else{
-                    $('select[name="brand_id"]').empty();
-                    $('select[name="brand_id"]').append('<option value="">Sin marcas</option>');
-                }
-            },
-        });
-    }
-
-    $('select[name="brand_id"]').on('change', function(e) {
-        e.preventDefault();
-        brand_id = $(this).val();
-        if(brand_id) {
-            getProductByIdbrand(brand_id);
-        }else{    
-            $('select[name="product_id"]').empty();
-            $('select[name="product_id"]').append('<option value="">Select a brand</option>');
-        }                
-    });
+    // $('select[name="supplier_id"]').on('change', function(e) {
+    //     e.preventDefault();
+    //     supplier_id = $(this).val();
+    //     if(supplier_id) {
+    //         brandsBySupplier(supplier_id);
+    //     }else{    
+    //         $('select[name="brand_id"]').empty();
+    //         $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+    //     }                
+    // });
 
     function getProductByIdbrand(brand_id){
         var url = 'api/purchase/getProductsByBrandId/'+ brand_id;
@@ -110,11 +80,11 @@
         });
     }
 
-    $('select[name="product_id"]').on('change', function(e) {
-        e.preventDefault();
-        let product_id = $(this).val();
-        productSearch(product_id);
-    });
+    // $('select[name="product_id"]').on('change', function(e) {
+    //     e.preventDefault();
+    //     let product_id = $(this).val();
+    //     productSearch(product_id);
+    // });
 
     function productSearch(product_id) {
         
@@ -365,6 +335,23 @@
         }
        
         
+    });
+
+    $("#open-search-product").on("click", function(e){
+        e.preventDefault();
+        supplier_id = $("select[name='supplier_id']").val();
+        if(supplier_id == ""){
+            $.alert({
+                title : "Compres",
+                content : "Selecione un proveedor"
+            });
+
+            return;
+        }
+        $("input[name='supplier_id']").val(supplier_id);
+        //$('#serchModal').data('suppier_id', supplier_id);
+        $('#serchModal').modal('show');
+
     });
 
 

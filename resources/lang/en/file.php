@@ -620,5 +620,6 @@ return [
 	'total_items' => 'Total items',
 	'total_cost' => 'Total cost',
 	'Brands list' => 'Brands List',
+	'search products' => 'Search products',
 ];
 ?>

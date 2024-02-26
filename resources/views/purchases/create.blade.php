@@ -14,31 +14,14 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>{{trans('file.Reference No')}}</label>
-                                            <input type="text" class="form-control" name="reference_no" value="pr-{{date('Ymd')}}-{{date('his')}}">
-                                        </div>
-                                    </div>
+                                  
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.purchase date')}}</label>
                                             <input type="text" class="form-control" name="purchase_date" id="purchase_date" value="">
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>{{trans('file.Purchase Status')}}</label>
-                                            <select name="status" class="form-control">
-                                                <option value="">{{ trans('file.select') }}</option>
-                                                <option value="1">{{trans('file.Recieved')}}</option>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                                <div class="row">  
+                                  
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.Supplier')}}</label>
@@ -47,7 +30,14 @@
                                             </select>
                                         </div>
                                     </div>
+                                   
                                     <div class="col">
+                                        <button class="btn btn-primary mt-4" id="open-search-product">{{ trans('file.search products') }}</button>
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    
+                                    <!-- <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.brands')}}</label>
                                             <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a brand...">
@@ -61,10 +51,9 @@
                                             <select name="product_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a product...">
                                                 <option value="">Without products</option>
                                             </select>
-                                            <!-- <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
-                                            <input type="text" name="product_code_name" id="productcodeSearch" placeholder="Please type product code and select..." class="form-control" /> -->
+                                            
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-12">
@@ -153,55 +142,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
-        
-    </div>
-    <div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
-        <div role="document" class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modal-header" class="modal-title"></h5>
-                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label>{{trans('file.Quantity')}}</label>
-                            <input type="number" name="edit_qty" class="form-control" step="any">
-                        </div>
-                        <div class="form-group">
-                            <label>{{trans('file.Unit Discount')}}</label>
-                            <input type="number" name="edit_discount" class="form-control" step="any">
-                        </div>
-                        <div class="form-group">
-                            <label>{{trans('file.Unit Cost')}}</label>
-                            <input type="number" name="edit_unit_cost" class="form-control" step="any">
-                        </div>
-                        <?php
-                // $tax_name_all[] = 'No Tax';
-                // $tax_rate_all[] = 0;
-                // foreach($lims_tax_list as $tax) {
-                //     $tax_name_all[] = $tax->name;
-                //     $tax_rate_all[] = $tax->rate;
-                // }
-            ?>
-                            <div class="form-group">
-                                <label>{{trans('file.Tax Rate')}}</label>
-                                <select name="edit_tax_rate" class="form-control selectpicker">
-                                   
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>{{trans('file.Product Unit')}}</label>
-                                <select name="edit_unit" class="form-control selectpicker">
-                                </select>
-                            </div>
-                            <button type="button" name="update_btn" class="btn btn-primary">{{trans('file.update')}}</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('purchases.search')
 </section>
 @endsection
 @section('scripts')

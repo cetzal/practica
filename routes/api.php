@@ -150,4 +150,5 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/sales/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleController::class, 'getProductsByBrandId'])->name('api.sales.brand-combo');
     Route::get('/sales/brandSearch', [App\Http\Controllers\SaleController::class, 'searchBrandBySupplierId'])->name('api.sales.search-brand');
     Route::get('/sales/productSearch', [App\Http\Controllers\SaleController::class, 'searchProductByBrandId'])->name('api.sales.search-product');
+    Route::get('/sales/modalProductSearch', [App\Http\Controllers\SaleController::class, 'searchProduct'])->name('api.sales.modal.search-product');
 });

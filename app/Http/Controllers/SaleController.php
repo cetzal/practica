@@ -205,4 +205,45 @@ class SaleController extends Controller
         $clients = DB::table('view_sales_clients_list')->get();
         return $clients;
     }
+
+    public function searchProduct(Request $request)
+    {
+        $where = [];
+
+        if(!empty($request->code_prod)){
+            $where[] = ['code', 'like', '%'.$request->code_prod.'%'];
+        }
+
+        if(!empty($request->name_prod)){
+            $where[] = ['name', 'like', '%'.$request->name_prod.'%'];
+        }
+
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+
+        if(!empty($request->brand_id)){
+            $where[] = ['brand_id', '=', $request->brand_id];
+        }
+
+        $where[] = [
+            'qty', '>', 0
+        ];
+        
+        $data = DB::table('view_products_active')
+                 ->select(['id','name', 'code', 'qty','price', 'alert_quantity'])
+                ->where($where)
+                ->get();
+
+        $totalData = $data->count();
+        $totalFiltered = $data->count();
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+        );
+            
+        return response()->json($json_data);
+    }
 }

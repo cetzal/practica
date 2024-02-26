@@ -56,6 +56,14 @@
                                     <div class="col-md-2">
                                         <input type="button" value="{{trans('file.add')}}" id="add-product" class="btn btn-primary position-absolute bottom-0">
                                     </div>
+                                    <div class="col-md-2">
+                                        <input 
+                                            type="button" 
+                                            value="Buscar productos" 
+                                            id="open-search-product"
+                                            class="btn btn-primary position-absolute bottom-0">
+                                    </div>
+
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-12">
@@ -142,8 +150,10 @@
             </div>
         </div>
     </div>
+    @include('sale.add-product')
 </section>
 @endsection
 @section('scripts')
     <script src="{{ asset('js/modules/sale/create.js') }}"></script>
+    <script src="{{ asset('js/modules/sale/add-product.js') }}"></script>
 @endsection

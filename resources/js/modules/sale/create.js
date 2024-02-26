@@ -6,6 +6,7 @@
     });
 
     $("#sale_date").daterangepicker({
+        maxDate : moment().endOf(),
         singleDatePicker: true,
         showDropdowns: false,
         showOnFocus: false,
@@ -15,7 +16,7 @@
         },
     });
 
-    $("#sale_date").prop('disabled', true);
+    // $("#sale_date").prop('disabled', true);
 
     $('#select_supplier').on('change', function() {
         let supplier_id = $(this).val();
@@ -148,43 +149,34 @@
     }
 
     function addRows(data) {
-        data.each(function(index, row) {
-            let fila = $('<tr>')
-                    .attr('data-product-id', row.id)
-                    .attr('data-stock-alert', row.alert_quantity)
-                    .attr('data-product-quantity', row.qty);
-            let quantity = 1;
-            let product_code = $(this).find('.product-code').text();
-            
-            if (product_code == row.code) {
-                let exist_quantity = parseInt($(this).find('.quantity').val());
-                let new_quantity = exist_quantity + quantity;
-                let unit_cost = $(this).find('.unit_cost').text();
-                $(this).find('.quantity').val(new_quantity);
-                $(this).find('.subtotal').text((new_quantity * unit_cost).toFixed(2));
-                $(this).attr('data-stock-alert', row.alert_quantity);
-            } else {
-                let unit_price = parseFloat(row.price);
-                let subtotal = 1 * unit_price;
-                fila.append('<td>'+ row.name +'</td>');
-                fila.append('<td class="product-code">'+ row.code +'</td>');
-                fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
-                fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
-                fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
-                fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
-                $('#product-detail-table tbody').append(fila);
-            }
-        });
+        if ($('#product-detail-table tbody tr').length) {
+            $.each(data,function(index, row) {
+                addRow(row);
+            });
+        } else {
+            $.each(data,function(index, row) {
+                let fila = $('<tr>')
+                        .attr('data-product-id', row.id)
+                        .attr('data-stock-alert', row.alert_quantity)
+                        .attr('data-product-quantity', row.qty);
+                        
+                    let unit_price = parseFloat(row.price);
+                    let subtotal = 1 * unit_price;
+                    fila.append('<td>'+ row.name +'</td>');
+                    fila.append('<td class="product-code">'+ row.code +'</td>');
+                    fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
+                    fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
+                    fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
+                    fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
+                    $('#product-detail-table tbody').append(fila);
+            });
+        }
     }
     
     $("#sale-form").validate({
         rules : {
             sale_date: 'required',
-            client_id: 'required',
-            supplier_id: 'required',
-            brand_id: 'required',
-            product_id: 'required'
-            
+            client_id: 'required'
         },
         onfocusout: false,
         invalidHandler: function(form, validator) {
@@ -206,10 +198,7 @@
         },
         messages: {
             sale_date : 'The date is required',
-            client_id: 'The client is required',
-            supplier_id: 'The supplier is required',
-            brand_id: 'The brand is required',
-            product_id: 'The product is required'
+            client_id: 'The client is required'
         }
     });
 
@@ -227,17 +216,6 @@
                 // alert("error(fail)");
             });
         }
-        // addRow();
-        // $.get(url, function(response) {
-        //     if (response) {
-        //         // $(input).find('option').get(0).remove();
-        //         $(input).find('option').remove().end();
-        //         $(input).append('<option value="">Select product</option>');
-        //         $.each(response, function(index, row) {
-        //             $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
-        //         }); 
-        //     }
-        // })
     });
 
     $('#product-detail-table').on('input', 'input.quantity', function() {
@@ -246,21 +224,20 @@
         let product_quantity = row.data('product-quantity').toString();
         let quantity = parseInt(row.find('.quantity').val());
         let alert_reorden = product_quantity - quantity;
-        console.log('product quantity inicial', product_quantity);
-        console.log('punto reorden inicial', alert_reorden);
+
         if (quantity > product_quantity) {
             alert_reorden = product_quantity - quantity;
             let message = 'La cantidad del producto permitida es de <b>'+product_quantity+ '</b>.';
-            if (stock_alert > alert_reorden) {
-                message +='<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.';
-            }
+            // if (stock_alert > alert_reorden) {
+            //     message +='<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.';
+            // }
             $.alert({
                 title: '',
                 content: message
             });
-            row.find('.quantity').val(product_quantity);
+            row.find('.quantity').val(1);
         } else if (stock_alert > alert_reorden) {
-            console.log('punto reorden inicial elseif', alert_reorden);
+            
             $.alert({
                 title: '',
                 content: '<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.'
@@ -294,7 +271,7 @@
         });
     });
 
-    $('#save-sale').on('click', function() {
+    $('#save-sale').on('click', function(event) {
         let product_details = [];
         $('#product-detail-table tbody tr').each(function() {
             let product = {
@@ -313,7 +290,7 @@
                 title: '',
                 content: 'No hay productos agregados'
             });
-        } else {
+        } else if ($('form#sale-form').valid()) {
             let data = {
                 date: moment($("#sale_date").val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
                 client_id: parseInt($("select[name='client_id']").val()),
@@ -321,8 +298,7 @@
                 product_details: product_details,
             };
     
-            $.ajax
-            ({
+            $.ajax({
                 type: "POST",
                 url: '/api/sales',
                 dataType: 'json',
@@ -354,17 +330,32 @@
                 }
             });
         }
+
+        let exist_error = false;
+        $(this).find('input, select').each(function() {
+            if (!$(this).val()) {
+                exist_error = true;
+            } 
+        });
+        
+        if (exist_error) {
+            var first_error = $(this).find('.error').first();
+            if (first_error.length) { 
+              $('html, body').animate({
+                scrollTop: first_error.offset().top
+              }, 500);
+              event.preventDefault();
+            }
+          }
     });
 
     //Para cargar los cambos del modal searchProduct
     function loadSearchComboSuppliers() {
-        console.log('load combo suppliers');
         let input = '#select_search_supplier';
         let url = '/api/sales/load/create/suppliers';
         $(input).append('<option value="">Without suppliers</option>');
 
         $.get(url, function(response) {
-            console.log('response supplier', response);
             if (response.length) {
                 $(input).find('option').remove().end();
                 $(input).append('<option value="">Select supplier</option>');
@@ -376,7 +367,6 @@
     }
 
     $(document).on('listen-searchModal', function(event, datos) {
-        console.log('Datos recibidos desde el modal:', datos);
         if (datos.data.length) {
             addRows(datos.data);
         }

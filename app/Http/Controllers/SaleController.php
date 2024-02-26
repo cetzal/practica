@@ -105,7 +105,7 @@ class SaleController extends Controller
             $products = DB::table('view_products')
                         ->select('name', 'qty', 'alert_quantity')
                         ->whereIn('id', $product_ids)
-                        ->where('alert_quantity', '>', 'qty')
+                        ->where('qty', '<', 'alert_quantity')
                         ->get();
             $message[] =  $save->message;
             if ($products->count()) {

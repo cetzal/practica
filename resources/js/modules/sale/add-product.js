@@ -78,6 +78,7 @@
         $("input[name='name_prod']").val(''),
         $("#select_search_supplier").val(''),
         $("#select_search_brand").val('')
+        $( "#select_all" ).prop('checked', false);
         $('#product-search-data-table tbody').empty();
     })
 
@@ -91,14 +92,6 @@
         }
         // user_id = [];
         // verific_checks_users(0);
-    });
-
-    $('#user-table').on('click', "tbody input[type='checkbox']", function(e) {
-        if (!$(this).is(":checked")) { //If the checkbox is checked
-            user_id = [];
-        }
-        // verific_checks_users(1);
-        
     });
 
     function selectedProducts() {
@@ -130,7 +123,9 @@
             $("#select_search_supplier").val(''),
             $("#select_search_brand").val('')
             $('#product-search-data-table tbody').empty();
+            $( "#select_all" ).prop('checked', false);
             $(document).trigger('listen-searchModal', {data: selected_products});
+
             $('#searchProduct').modal('hide');
         } else {
             $.alert({

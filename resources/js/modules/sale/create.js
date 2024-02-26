@@ -147,6 +147,35 @@
         calculateTotalSale();
     }
 
+    function addRows(data) {
+        data.each(function(index, row) {
+            let fila = $('<tr>')
+                    .attr('data-product-id', row.id)
+                    .attr('data-stock-alert', row.alert_quantity)
+                    .attr('data-product-quantity', row.qty);
+            let quantity = 1;
+            let product_code = $(this).find('.product-code').text();
+            
+            if (product_code == row.code) {
+                let exist_quantity = parseInt($(this).find('.quantity').val());
+                let new_quantity = exist_quantity + quantity;
+                let unit_cost = $(this).find('.unit_cost').text();
+                $(this).find('.quantity').val(new_quantity);
+                $(this).find('.subtotal').text((new_quantity * unit_cost).toFixed(2));
+                $(this).attr('data-stock-alert', row.alert_quantity);
+            } else {
+                let unit_price = parseFloat(row.price);
+                let subtotal = 1 * unit_price;
+                fila.append('<td>'+ row.name +'</td>');
+                fila.append('<td class="product-code">'+ row.code +'</td>');
+                fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
+                fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
+                fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
+                fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
+                $('#product-detail-table tbody').append(fila);
+            }
+        });
+    }
     
     $("#sale-form").validate({
         rules : {
@@ -325,5 +354,39 @@
                 }
             });
         }
+    });
+
+    //Para cargar los cambos del modal searchProduct
+    function loadSearchComboSuppliers() {
+        console.log('load combo suppliers');
+        let input = '#select_search_supplier';
+        let url = '/api/sales/load/create/suppliers';
+        $(input).append('<option value="">Without suppliers</option>');
+
+        $.get(url, function(response) {
+            console.log('response supplier', response);
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select supplier</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    $(document).on('listen-searchModal', function(event, datos) {
+        console.log('Datos recibidos desde el modal:', datos);
+        if (datos.data.length) {
+            addRows(datos.data);
+        }
+    });
+
+
+    //Open modal add product
+    $('#open-search-product').on('click', function(e) {
+        e.preventDefault();
+        loadSearchComboSuppliers();
+        $('#searchProduct').modal('show');
     });
 })();

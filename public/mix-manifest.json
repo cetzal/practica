@@ -19,6 +19,7 @@
     "/js/modules/product/index.js": "/js/modules/product/index.js",
     "/js/modules/purchases/create.js": "/js/modules/purchases/create.js",
     "/js/modules/purchases/index.js": "/js/modules/purchases/index.js",
+    "/js/modules/sale/add-product.js": "/js/modules/sale/add-product.js",
     "/js/modules/sale/create.js": "/js/modules/sale/create.js",
     "/js/modules/sale/index.js": "/js/modules/sale/index.js",
     "/js/modules/supplier/create.js": "/js/modules/supplier/create.js",

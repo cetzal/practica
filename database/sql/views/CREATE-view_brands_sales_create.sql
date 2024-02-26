@@ -1,9 +1,10 @@
 CREATE OR REPLACE VIEW view_brands_sales_create AS
-SELECT b.id, b.name, b.supplier_id
-FROM brands b
-WHERE b.id IN(
-    SELECT vp.brand_id
-    FROM view_products vp
-    WHERE vp.is_active = 1
-    GROUP BY vp.brand_id
+SELECT vba.id, vba.name, vba.supplier_id
+FROM view_brands_active vba
+WHERE vba.id IN(
+    SELECT vpa.brand_id
+    FROM view_products_active vpa
+    WHERE vpa.brand_id = vba.id
+) AND vba.supplier_id IN (
+	SELECT vsa.id FROM view_suppliers_active vsa WHERE vsa.id = vba.supplier_id
 );

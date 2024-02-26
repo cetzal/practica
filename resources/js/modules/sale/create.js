@@ -112,7 +112,10 @@
         $('#total-quantity').text(total_quantity);
     }
     function addRow(data) {
-        let fila = $('<tr>').attr('data-product-id', data.id).attr('data-stock-alert', data.alert_quantity);
+        let fila = $('<tr>')
+                    .attr('data-product-id', data.id)
+                    .attr('data-stock-alert', data.alert_quantity)
+                    .attr('data-product-quantity', data.qty);
         let product_exist = false;
         let quantity = 1;
 
@@ -144,6 +147,7 @@
         calculateTotalSale();
     }
 
+    
     $("#sale-form").validate({
         rules : {
             sale_date: 'required',
@@ -210,14 +214,32 @@
     $('#product-detail-table').on('input', 'input.quantity', function() {
         let row = $(this).closest('tr');
         let stock_alert = row.data('stock-alert').toString();
+        let product_quantity = row.data('product-quantity').toString();
         let quantity = parseInt(row.find('.quantity').val());
-        
-        if (quantity > stock_alert) {
+        let alert_reorden = product_quantity - quantity;
+        console.log('product quantity inicial', product_quantity);
+        console.log('punto reorden inicial', alert_reorden);
+        if (quantity > product_quantity) {
+            alert_reorden = product_quantity - quantity;
+            let message = 'La cantidad del producto permitida es de <b>'+product_quantity+ '</b>.';
+            if (stock_alert > alert_reorden) {
+                message +='<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.';
+            }
             $.alert({
                 title: '',
-                content: 'El producto excede la cantidad permitida'
+                content: message
             });
-            row.find('.quantity').val(quantity - 1);
+            row.find('.quantity').val(product_quantity);
+        } else if (stock_alert > alert_reorden) {
+            console.log('punto reorden inicial elseif', alert_reorden);
+            $.alert({
+                title: '',
+                content: '<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.'
+            });
+            let unit_cost = parseFloat(row.find('.unit_cost').text());
+            let subtotal = quantity * unit_cost;
+            row.find('.subtotal').text(subtotal.toFixed(2));
+            calculateTotalSale();
         } else {
             let unit_cost = parseFloat(row.find('.unit_cost').text());
             let subtotal = quantity * unit_cost;

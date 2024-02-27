@@ -177,6 +177,7 @@
                     fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
                     $('#product-detail-table tbody').append(fila);
             });
+            calculateTotalSale();
         }
     }
     

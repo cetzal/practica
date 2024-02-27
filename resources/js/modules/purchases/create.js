@@ -1,3 +1,4 @@
+const { result } = require("lodash");
 
 (function(){
     var host = window.location.origin;
@@ -160,6 +161,8 @@
                 cols += '<input type="hidden" class="product-id" name="product_id[]" value="' + data['id'] + '"/>';
                 cols += '<input type="hidden" class="net_unit_cost" name="net_unit_cost[]" />';
                 cols += '<input type="hidden" class="subtotal-value" name="subtotal[]" />';
+                cols += '<input type="hidden" class="alert-qty" name="alert_quantity[]" value="' + data['alert_quantity'] + '" />';
+                cols += '<input type="hidden" class="t-qty" name="t_qty[]" value="' + data['qty'] + '"/>';
     
                 newRow.append(cols);
                 $("table.order-list tbody").append(newRow);
@@ -316,14 +319,41 @@
 
         return true;
     }
+
+    function alert_purchase_form(response){
+        let message = '<ul>'
+        $.each(response,function(index, row){
+            message+='<li>'+row.message+'</li>';
+        });
+
+        message+='</ul>'
+
+        $.alert({
+            title: 'Alerta de stock',
+            content: message,
+        });
+    }
+
+    // envio de formulario de compras
    
     $('#purchase-form').on('submit',function(e){
         e.preventDefault();
         $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
         if($(this).valid() && check_ored_table()){
             let purchase_detail = [];
+            let message = [];
             $('table.order-list tbody tr').each(function() {
-               
+                
+                let add_qty = parseInt($(this).find('input[name="qty[]"]').val());
+                let current_qty = parseInt($(this).find('input[name="t_qty[]"]').val());
+                let alert_q = parseInt($(this).find('input[name="alert_quantity[]"]').val());
+                let name =  $(this).find('td:eq(0)').text();
+
+                if( (add_qty + current_qty) <= alert_q ){
+                    message.push({'message' : 'El producto "<b>'+ name +'</b>" no se puedes comprar menos del punto de reorden ' + alert_q + '.'});
+                }
+
+
                 let product = {
                     product_id : parseInt($(this).find('input[name="product_id[]"]').val()),
                     product_code : parseInt($(this).find('input[name="product_code[]"]').val()),
@@ -334,14 +364,15 @@
                 purchase_detail.push(product);
             });
 
+            if(message.length > 0){
+                alert_purchase_form(message);
+                return;
+            }
+
             let data = {
                 reference_no : $('input[name="reference_no"]').val(),
                 purchase_date: moment($("#purchase_date").val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
                 supplier_id: parseInt($("select[name='supplier_id']").val()),
-                status : $('select[name="status"]').val(),
-                item : $('input[name="item"]').val(),
-                total_qty : $('input[name="total_qty"]').val(),
-                total: parseFloat($('input[name="total_cost"]').val()).toFixed(2),
                 note: $('input[name="note"]').text(),
                 purchase_detail: purchase_detail,
             };

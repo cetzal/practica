@@ -114,7 +114,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api(),
-            columns = [6]; // Add columns here
+            columns = [5,6]; // Add columns here
 
         for (var i = 0; i < columns.length; i++) {
             

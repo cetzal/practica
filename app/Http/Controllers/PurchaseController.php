@@ -216,10 +216,6 @@ class PurchaseController extends Controller
         if(!empty($request->brand_id)){
             $where[] = ['brand_id', '=', $request->brand_id];
         }
-
-        $where[] = [
-            'qty', '>', 0
-        ];
         
         $data = DB::table('view_products_active')
                  ->select(['id','name', 'code', 'qty','price', 'alert_quantity'])

@@ -1,3 +1,10 @@
+jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+        var x = parseFloat(a) || 0;
+        var y = parseFloat(b) || 0;
+        return x + y
+    }, 0 );
+} );
 (function() {
     $.ajaxSetup({
         headers: {
@@ -202,62 +209,72 @@
         'createdRow': function(row, data, dataIndex) {
             $(row).attr('data-supplier-id', data['id']);
         },
+        'columns': [
+            {
+                data: 'date',
+                render: function(data, type, row, meta){
+                   return moment(row.date).format('DD/MM/YYYY');
+                }
+            },
+            {
+                data: 'client_name',
+                render: function(data, type, row, meta){
+                   return row.client_name;
+                }
+            },
+            {
+                data: 'product_code',
+                render: function(data, type, row, meta){
+                    return row.product_code;
+                }
+            },
+            {
+                data: 'product_name',
+                render: function(data, type, row, meta){
+                    return row.product_name;
+                }
+            },
+            {
+                data: 'supplier_name',
+                render: function(data, type, row, meta){
+                    return row.supplier_name;
+                }
+            },
+            {
+                data: 'brand_name',
+                render: function(data, type, row, meta){
+                    return row.brand_name;
+                }
+            },
+            {
+                data: 'quantity',
+                render: function(data, type, row, meta){
+                    return row.quantity;
+                }
+            },
+            {
+                data: 'total',
+                render: function(data, type, row, meta){
+                    return row.total;
+                }
+            },
+        ],
         'columnDefs': [
             {
                 "orderable": false,
                 'targets': [0]
-            },
-            {
-                'render': function(data, type, row, meta){
-                   return moment(row.date).format('DD/MM/YYYY');
-                },
-                'targets': [0]
-            },
-            {
-                'render': function(data, type, row, meta){
-                   return row.client_name;
-                },
-                'targets': [1]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.product_code;
-                },
-                'targets': [2]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.product_name;
-                },
-                'targets': [3]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.supplier_name;
-                },
-                'targets': [4]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.brand_name;
-                },
-                'targets': [5]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.quantity;
-                },
-                'targets': [6]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    return row.total;
-                },
-                'targets': [7]
-            },
-            { targets: [1], className: "text-center"},
-            {targets: [0, 1, 2, 3], searchable: false}
+            }
         ],
+        "footerCallback": function (tfoot, data, start, end, display) {
+            var api = this.api(),
+            columns = [7]; // Add columns here
+
+            for (var i = 0; i < columns.length; i++) {
+                
+                $('tfoot th').eq(columns[i]).html( api.column(columns[i], {page:'current'}).data().sum() + '<br>');
+            
+            }
+        },
         // 'select': { style: 'multi',  selector: 'td:first-child'},
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        

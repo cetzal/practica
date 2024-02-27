@@ -198,9 +198,10 @@
             content: 'Desea eliminar el producto?',
             buttons: {
                 ok: function () {
-                   
+                    if(check_ored_table() ==  false){
+                        $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', false);
+                    }
                     $(that).closest("tr").remove();
-                    $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', false);
                     calculateTotal();
                 },
                 cancel: function() {
@@ -391,13 +392,13 @@
 
             return;
         }
+        $("input[name='supplier_id']").val('');
         $("input[name='supplier_id']").val(supplier_id);
         //$('#serchModal').data('suppier_id', supplier_id);
         $('#serchModal').modal('show');
        
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');
-        $("input[name='supplier_id']").val('');
         $("input[name='brand_id']").val('');
 
     });

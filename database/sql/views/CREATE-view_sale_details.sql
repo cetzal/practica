@@ -3,19 +3,19 @@ SELECT
 	s.id,
 	s.date,
 	s.client_id,
-	(SELECT c.name FROM clients c WHERE c.id = s.client_id) as client_name,
+	(SELECT vc.name FROM view_clients vc WHERE vc.id = s.client_id) as client_name,
 	sd.id AS sale_detail_id,
 	sd.product_id,
-	p.code as product_code,
-	p.name AS product_name,
-	b.id as brand_id,
-	b.name AS brand_name,
-	b.supplier_id,
-	(SELECT s.name FROM suppliers s WHERE s.id = b.supplier_id) as supplier_name,
+	vp.code as product_code,
+	vp.name AS product_name,
+	vb.id as brand_id,
+	vb.name AS brand_name,
+	vb.supplier_id,
+	(SELECT vs.name FROM view_suppliers vs WHERE vs.id = vb.supplier_id) as supplier_name,
 	sd.quantity,
 	sd.unit_price,
 	sd.total
 FROM sales s
 INNER JOIN sale_details sd ON sd.sale_id = s.id
-INNER JOIN products p ON p.id = sd.product_id
-INNER JOIN brands b ON b.id = p.brand_id;
+INNER JOIN view_products vp ON vp.id = sd.product_id
+INNER JOIN view_brands vb ON vb.id = vp.brand_id;

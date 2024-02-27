@@ -191,5 +191,37 @@ class PurchaseController extends Controller
         return $data;
     }
 
+    public function searchProduct(Request $request)
+    {
+        $where = [];
+
+        if(!empty($request->code_prod)){
+            $where[] = ['code', 'like', '%'.$request->code_prod.'%'];
+        }
+
+        if(!empty($request->name_prod)){
+            $where[] = ['name', 'like', '%'.$request->name_prod.'%'];
+        }
+
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+
+        if(!empty($request->brand_id)){
+            $where[] = ['brand_id', '=', $request->brand_id];
+        }
+
+        $where[] = [
+            'qty', '>', 0
+        ];
+        
+        $data = DB::table('view_products_active')
+                 ->select(['id','name', 'code', 'qty','price', 'alert_quantity'])
+                ->where($where)
+                ->get();
+            
+        return response()->json($data);
+    }
+
     
 }

@@ -623,5 +623,8 @@ return [
 	'product_table' => 'Tabla de productos *',
 	'search_products' => 'Buscar productos',
 	'add_products' => 'Agregar productos',
+	'without_suppliers' => 'Sin proveedores',
+	'select_brand' => 'Seleccione marca',
+	'without_clients' => 'Sin clientes',
 ];
 ?>

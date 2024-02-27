@@ -1,25 +1,35 @@
 (function() {
 
+    function loadSearchComboBrands() {
+        let input = '#select_search_brand';
+        let url = '/api/sales/load/create/brands';
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
     //Load initial combos
     $('#select_search_supplier').on('change', function() {
         let supplier_id = $(this).val();
         let url = '/api/sales/getBrandsBySupplierId/'+supplier_id;
         let input_brand = '#select_search_brand';
-        let input_product = '#select_product';
 
         if (supplier_id != '') {
-            // $(input_product).find('option').remove().end();
-            // $(input_product).append('<option value="">Sin productos</option>');
             $.get(url, function(response) {
                 if (response) {
-                    // $(input).find('option').get(0).remove();
                     $(input_brand).find('option').remove().end();
-                    $(input_brand).append('<option value="">Select brand</option>');
                     $.each(response, function(index, row) {
                         $(input_brand).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
                 }
             })
+        } else {
+            loadSearchComboBrands();
         }
     });
 
@@ -30,7 +40,6 @@
         if (brand_id != '') {
             $.get(url, function(response) {
                 if (response) {
-                    // $(input).find('option').get(0).remove();
                     $(input).find('option').remove().end();
                     $(input).append('<option value="">Select product</option>');
                     $.each(response, function(index, row) {
@@ -90,8 +99,6 @@
         else {
             $("tbody input[type='checkbox']").prop('checked', false);
         }
-        // user_id = [];
-        // verific_checks_users(0);
     });
 
     function selectedProducts() {

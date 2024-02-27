@@ -3,4 +3,4 @@
 	FROM view_products_active vpa 
 	WHERE vpa.brand_id in (
 		SELECT vbsc.id FROM view_brands_sales_create vbsc WHERE vbsc.id = vpa.brand_id
-	)
+	) AND vpa.price > 0;

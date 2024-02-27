@@ -400,6 +400,7 @@
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');
         $("input[name='brand_id']").val('');
+        $('#table-prod-search tbody').empty();
 
     });
 

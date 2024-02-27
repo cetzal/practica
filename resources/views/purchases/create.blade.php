@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="float-right">
-                                        <a href="{{route('purchases.index')}}" class="btn btn-info">Atras</a>
+                                        <a href="{{route('purchases.index')}}" class="btn btn-info">{{trans('file.back')}}</a>
                                         <button type="submit" class="btn btn-primary" id="submit-btn">{{trans('file.Save')}}</button>
                                     </div>
                                 </div>

@@ -615,7 +615,7 @@ return [
 	'total' => 'Total',
 	'select_supplier' => 'Select supplier',
 	'select_client' => 'Select client',
-	'select_non_branded' => 'Non-branded',
+	'select_non_branded' => 'Without brands',
 	'select_without_products' => 'Without products',
 	'total_items' => 'Total items',
 	'total_cost' => 'Total cost',

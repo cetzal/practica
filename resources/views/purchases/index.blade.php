@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col">
                     <a href="#" id="show-product-dilay" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-                        Ver porductos por comprar
+                    {{trans('file.see_products_to_buy')}}
                     </a>
                 </div>
             </div>

@@ -626,5 +626,6 @@ return [
 	'without_suppliers' => 'Sin proveedores',
 	'select_brand' => 'Seleccione marca',
 	'without_clients' => 'Sin clientes',
+	'see_products_to_buy' => 'Ver productos por comprar',
 ];
 ?>

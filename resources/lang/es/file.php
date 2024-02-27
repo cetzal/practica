@@ -612,6 +612,7 @@ return [
 	'add' => 'Agregar',
 	'unit_cost' => 'Costo Unitario',
 	'total' => 'Total',
+	'select_product' => 'Seleciona producto',
 	'select_supplier' => 'Seleccione proveedor',
 	'select_client' => 'Seleccione cliente',
 	'select_non_branded' => 'Sin marcas',

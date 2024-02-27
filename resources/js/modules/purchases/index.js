@@ -156,12 +156,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         let input = '.selectpicker-suppliers';
         let url = '/api/purchase/load/serach/suppliers';
         $(input).empty();
-        $(input).append('<option value="">Witout suppliers</option>');
 
         $.get(url, function(response) {
             if (response.length) {
-                $(input).find('option').remove().end();
-                $(input).append('<option value="">Select supplier</option>');
+                
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -172,12 +170,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         let input = '.selectpicker-brands';
         let url = '/api/purchase/load/serach/brands';
         $(input).empty();
-        $(input).append('<option value="">Non-brands</option>');
-
         $.get(url, function(response) {
             if (response.length) {
-                $(input).find('option').remove().end();
-                $(input).append('<option value="">Select brand</option>');
+              
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -189,12 +184,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         let input = '.selectpicker-product';
         let url = '/api/purchase/load/search/products';
         $(input).empty();
-        $(input).append('<option value="">Without products</option>');
-
         $.get(url, function(response) {
             if (response.length) {
-                $(input).find('option').remove().end();
-                $(input).append('<option value="">Select product</option>');
+               
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -219,16 +211,12 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         let supplier_id = $('select[name="supplier_id"]').val();
         let url = '/api/purchase/getbrandSearchById?supplier_id='+supplier_id;
         let input_brand = '.selectpicker-brands';
-        let input_product = '.selectpicker-product';
-
+        $(input_brand).empty();
         if (supplier_id != '') {
-            $(input_product).empty();
-            $(input_product).append('<option value="">Witout product</option>');
+           
             $.get(url, function(response) {
                 if (response) {
-                    // $(input).find('option').get(0).remove();
-                    $(input_brand).find('option').remove().end();
-                    $(input_brand).append('<option value="">Select brand</option>');
+                   
                     $.each(response, function(index, row) {
                         $(input_brand).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
@@ -240,14 +228,19 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     function searchProductBySupplierid(){
         let brand_id = $('select[name="brand_id"]').val();
         let supplier_id = $('select[name="supplier_id"]').val();
+        console.log(typeof(brand_id));
+        if(typeof(brand_id) === 'object'){
+            brand_id = '';
+        }
+       
 
         let url = '/api/purchase/productSearch?brand_id='+brand_id+'&supplier_id='+supplier_id;
         let input = '.selectpicker-product';
+        $(input).empty();
         $.get(url, function(response) {
             if (response) {
                 // $(input).find('option').get(0).remove();
-                $(input).find('option').remove().end();
-                $(input).append('<option value="">Select product</option>');
+               
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 

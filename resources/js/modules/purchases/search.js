@@ -54,6 +54,11 @@
                         fila.append('<td>'+ row.price +'</td>');
                         $('#table-prod-search tbody').append(fila);
                     }); 
+                }else{
+                    $.alert({
+                        title : '',
+                        content : 'No se encontraron datos'
+                    })
                 }
             });
     });

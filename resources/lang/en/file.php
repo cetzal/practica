@@ -613,6 +613,7 @@ return [
 	'add' => 'Add',
 	'unit_cost' => 'Unit Price',
 	'total' => 'Total',
+	'select_product' => 'Select product',
 	'select_supplier' => 'Select supplier',
 	'select_client' => 'Select client',
 	'select_non_branded' => 'Without brands',

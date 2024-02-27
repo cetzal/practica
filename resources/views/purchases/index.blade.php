@@ -43,8 +43,7 @@
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
-                            <option value="">{{trans('file.supplier_select_supplier')}}</option>  
-                           
+                            
                     </select>
                 </div>
                 
@@ -57,7 +56,6 @@
                         <label>{{ trans('file.Brand') }} </label>
                         <div class="input-group">
                             <select name="brand_id" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                            <option value="">{{trans('file.search_select_brand')}}</option>  
                            
                             </select>
                         </div>
@@ -68,8 +66,7 @@
                         <label>{{trans('file.product')}}</label>
                         <div class="input-group">
                             <select name="product_id" class="selectpicker-product form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
-                            <option value="">{{trans('file.select')}}</option>  
-                           
+                            
                             </select>
                         </div>
                     </div>

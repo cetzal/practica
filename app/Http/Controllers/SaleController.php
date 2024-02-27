@@ -141,7 +141,15 @@ class SaleController extends Controller
 
     public function getBrandsBySupplierId($id)
     {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
         $brands = DB::table('view_brands_sales_create')->select(['id', 'name'])->where('supplier_id', $id)->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
 
         return $brands;
     }
@@ -156,55 +164,145 @@ class SaleController extends Controller
 
     public function searchBrandBySupplierId(Request $request)
     {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
         $brands = DB::table('view_sales_brands_list')
                     ->select(['id', 'name'])
                     ->where('supplier_id', $request->supplier_id)
                     ->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);          
         return $brands;
     }
 
     public function searchProductByBrandId(Request $request)
     {
-        $brands = DB::table('view_sales_products_list')
+        $option_initial = ['id' => '', 'name' => trans('file.select_without_products')];
+
+        $products = DB::table('view_sales_products_list')
                     ->select(['id', 'name'])
                     ->where('brand_id', $request->brand_id)
                     ->get();
-        return $brands;
+        if ($products->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.Select Product')];
+        }
+
+        $products->prepend((object)$option_initial);
+
+        return $products;
     }
 
     public function loadCreateComboSuppliers()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];
+        
         $suppliers = DB::table('view_suppliers_sales_create')->get();
+
+        if ($suppliers->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.supplier_select_supplier')];
+        }
+
+        $suppliers->prepend((object)$option_initial);
         return $suppliers;
+    }
+
+    public function loadCreateComboBrands()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
+        $brands = DB::table('view_brands_sales_create')->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
+        return $brands;
     }
 
     public function loadCreateComboClients()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.without_clients')];
+
         $clients = DB::table('view_clients_active')->get();
+
+        if ($clients->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_client')];
+        }
+
+        $clients->prepend((object)$option_initial);
+
         return $clients;
     }
     
     public function loadSearchComboSuppliers()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];
+
         $suppliers = DB::table('view_sales_suppliers_list')->get();
+        
+        if ($suppliers->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.supplier_select_supplier')];
+        }
+
+        $suppliers->prepend((object)$option_initial);
+
         return $suppliers;
     }
 
     public function loadSearchComboBrands()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
         $brands = DB::table('view_sales_brands_list')->select(['id', 'name'])->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
         return $brands;
     }
 
-    public function loadSearchComboProducts()
+    public function loadSearchComboProducts(Request $request)
     {
-        $producs = DB::table('view_sales_products_list')->select(['id', 'name'])->get();
-        return $producs;
+        $where = [];
+        if (isset($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+       
+        $option_initial = ['id' => '', 'name' => trans('file.select_without_products')];
+        $products = DB::table('view_sales_products_list')
+                    ->select(['id', 'name'])
+                    ->where($where)
+                    ->get();
+        if ($products->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.Select Product')];
+        }
+
+        $products->prepend((object)$option_initial);
+
+        return $products;
     }
 
     public function loadSearchComboClients()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.without_clients')];
+
         $clients = DB::table('view_sales_clients_list')->get();
+
+        if ($clients->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_client')];
+        }
+
+        $clients->prepend((object)$option_initial);
+
         return $clients;
     }
 
@@ -232,8 +330,8 @@ class SaleController extends Controller
             'qty', '>', 0
         ];
         
-        $data = DB::table('view_products_active')
-                 ->select(['id','name', 'code', 'qty','price', 'alert_quantity'])
+        $data = DB::table('view_products_sales_create')
+                 ->select(['id','name', 'code', 'qty', 'price', 'alert_quantity'])
                 ->where($where)
                 ->get();
 

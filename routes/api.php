@@ -135,6 +135,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/sales', [\App\Http\Controllers\SaleController::class, 'store'])->name('api.sales.store');
     Route::get('/sales/list', [\App\Http\Controllers\SaleController::class, 'list'])->name('api.sales.list');
     Route::get('/sales/load/create/suppliers', [\App\Http\Controllers\SaleController::class, 'loadCreateComboSuppliers'])->name('api.sales.load.create.combo-supliers');
+    Route::get('/sales/load/create/brands', [\App\Http\Controllers\SaleController::class, 'loadCreateComboBrands'])->name('api.sales.load.create.combo-brands');
     Route::get('/sales/load/create/clients', [\App\Http\Controllers\SaleController::class, 'loadCreateComboClients'])->name('api.sales.load.create.combo-clients');
     /**
      * Rutas para cargar los cambos de la vista index

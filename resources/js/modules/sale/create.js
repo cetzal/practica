@@ -77,12 +77,10 @@
     function loadComboClients() {
         let input = '#select_client';
         let url = '/api/sales/load/create/clients';
-        $(input).append('<option value="">Without clients</option>');
 
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select client</option>');
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -91,8 +89,16 @@
     }
 
     $(document).ready(function() {
-        loadComboSuppliers();
         loadComboClients();
+        
+        // $(document).on('click', function(event) {
+        //     console.log('event click', $(event.target).attr('id'));
+        //     // Verificar si el clic ocurrió fuera del área del modal
+        //     if ($(event.target).closest('#searchProduct').length === 0 && $(event.target).attr('id') !== 'botonAbrirModal') {
+        //         // El clic ocurrió fuera del modal, realiza las acciones de cierre del modal aquí
+        //         console.log('Se ha cerrado el modal');
+        //     }
+        // });
     });
 
     function calculateTotalSale() {
@@ -112,6 +118,7 @@
         $('#total-sale').text(total_sale.toFixed(2));
         $('#total-quantity').text(total_quantity);
     }
+
     function addRow(data) {
         let fila = $('<tr>')
                     .attr('data-product-id', data.id)
@@ -353,12 +360,23 @@
     function loadSearchComboSuppliers() {
         let input = '#select_search_supplier';
         let url = '/api/sales/load/create/suppliers';
-        $(input).append('<option value="">Without suppliers</option>');
 
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select supplier</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+    
+    function loadSearchComboBrands() {
+        let input = '#select_search_brand';
+        let url = '/api/sales/load/create/brands';
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -377,6 +395,30 @@
     $('#open-search-product').on('click', function(e) {
         e.preventDefault();
         loadSearchComboSuppliers();
+        loadSearchComboBrands();
         $('#searchProduct').modal('show');
+        $("input[name='code_prod']").val(''),
+        $("input[name='name_prod']").val(''),
+        $("#select_search_supplier").val(''),
+        $("#select_search_brand").val('')
+        $('#product-search-data-table tbody').empty();
+    });
+
+    $('.bt-close-modal').on('click', function(e){
+        $("input[name='code_prod']").val(''),
+        $("input[name='name_prod']").val(''),
+        $("#select_search_supplier").val(''),
+        $("#select_search_brand").val('')
+        $( "#select_all" ).prop('checked', false);
+        $('#product-search-data-table tbody').empty();
+    });
+
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='code_prod']").val(''),
+        $("input[name='name_prod']").val(''),
+        $("#select_search_supplier").val(''),
+        $("#select_search_brand").val('')
+        $( "#select_all" ).prop('checked', false);
+        $('#product-search-data-table tbody').empty();
     });
 })();

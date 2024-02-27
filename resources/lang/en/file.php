@@ -624,5 +624,8 @@ return [
 	'product_table' => 'Product Table *',
 	'search_products' => 'Search products',
 	'add_products' => 'Add products',
+	'without_suppliers' => 'Without suppliers',
+	'select_brand' => 'Select brand',
+	'without_clients' => 'Without clients',
 ];
 ?>

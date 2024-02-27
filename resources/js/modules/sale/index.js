@@ -44,12 +44,12 @@
     function loadSearchComboSuppliers() {
         let input = '#select_supplier';
         let url = '/api/sales/load/serach/suppliers';
-        $(input).append('<option value="">Witout suppliers</option>');
+        // $(input).append('<option value="">Witout suppliers</option>');
 
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select supplier</option>');
+                // $(input).append('<option value="">Select supplier</option>');
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -59,12 +59,16 @@
     function loadSearchComboBrands() {
         let input = '#select_brand';
         let url = '/api/sales/load/serach/brands';
-        $(input).append('<option value="">Non-brands</option>');
-
+        let select_supplier = $('#select_supplier').val();
+        // if (select_supplier != '') {
+        //     url +=
+        // }
+        // $(input).append('<option value="">Non-brands</option>');
+        console.log('load initial combos');
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select brand</option>');
+                // $(input).append('<option value="">Select brand</option>');
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -75,12 +79,15 @@
     function loadSearchComboProducts() {
         let input = '#select_product';
         let url = '/api/sales/load/search/products';
-        $(input).append('<option value="">Without products</option>');
-
+        // $(input).append('<option value="">Without products</option>');
+        let select_supplier = $('#select_supplier').val();
+        if (select_supplier != '' && select_supplier != null) {
+            url +='?supplier_id='+ select_supplier;
+        }
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select product</option>');
+                // $(input).append('<option value="">Select product</option>');
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -90,12 +97,12 @@
     function loadSearchComboClients() {
         let input = '#select_client';
         let url = '/api/sales/load/search/clients';
-        $(input).append('<option value="">Without clients</option>');
+        // $(input).append('<option value="">Without clients</option>');
 
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
-                $(input).append('<option value="">Select client</option>');
+                // $(input).append('<option value="">Select client</option>');
                 $.each(response, function(index, row) {
                     $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                 }); 
@@ -115,20 +122,24 @@
         let url = '/api/sales/brandSearch?supplier_id='+supplier_id;
         let input_brand = '#select_brand';
         let input_product = '#select_product';
-
         if (supplier_id != '') {
             $(input_product).find('option').remove().end();
-            $(input_product).append('<option value="">Sin productos</option>');
+            // $(input_product).append('<option value="">Sin productos</option>');
+            // loadSearchComboBrands();
+            loadSearchComboProducts();
             $.get(url, function(response) {
                 if (response) {
                     // $(input).find('option').get(0).remove();
                     $(input_brand).find('option').remove().end();
-                    $(input_brand).append('<option value="">Select brand</option>');
+                    // $(input_brand).append('<option value="">Select brand</option>');
                     $.each(response, function(index, row) {
                         $(input_brand).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
                 }
             })
+        } else if(supplier_id == '') {
+            loadSearchComboBrands();
+            loadSearchComboProducts();
         }
     });
 
@@ -141,12 +152,14 @@
                 if (response) {
                     // $(input).find('option').get(0).remove();
                     $(input).find('option').remove().end();
-                    $(input).append('<option value="">Select product</option>');
+                    // $(input).append('<option value="">Select product</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
                 }
             })
+        } else if(brand_id == '') {
+            loadSearchComboProducts();
         }
     });
 

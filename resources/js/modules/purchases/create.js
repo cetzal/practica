@@ -133,6 +133,46 @@
         });
     }
 
+    function addRows(response){
+        var flag = 1;
+        $(".product-code").each(function(i) {
+            if ($(this).val() == data['code']) {
+                rowindex = i;
+                var qty = parseFloat($('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val()) + 1;
+                $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
+                calculateRowProductData(qty);
+                flag = 0;
+            }
+        });
+       
+        if(flag){
+            var newRow = $("<tr>");
+            var cols = '';
+            //<button type="button" class="edit-product btn btn-link" data-toggle="modal" data-target="#editModal"> <i class="dripicons-document-edit"></i></button>
+            cols += '<td>' + data['name'] + '</td>';
+            cols += '<td>' + data['code'] + '</td>';
+            cols += '<td><input type="number" class="form-control qty" name="qty[]" value="1" step="any" required/></td>';
+            cols += '<td class="tax"></td>';
+            cols += '<td class="sub-total"></td>';
+            cols += '<td><button type="button" class="ibtnDel btn btn-md btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+            cols += '<input type="hidden" class="product-code" name="product_code[]" value="' + data['code'] + '"/>';
+            cols += '<input type="hidden" class="product-id" name="product_id[]" value="' + data['id'] + '"/>';
+            cols += '<input type="hidden" class="net_unit_cost" name="net_unit_cost[]" />';
+            cols += '<input type="hidden" class="subtotal-value" name="subtotal[]" />';
+
+            newRow.append(cols);
+            $("table.order-list tbody").append(newRow);
+
+            product_cost.push(parseFloat(data['cost']));
+            rowindex = newRow.index();
+            $("select[name='product_id']").val('');
+            $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', true);
+            calculateRowProductData(1);
+        }
+        
+       
+    }
+
     //Change quantity
     $("#myTable").on('input', '.qty', function() {
         rowindex = $(this).closest('tr').index();
@@ -358,5 +398,13 @@
 
     $(document).ready(function(){
         load_combobox(".selectpicker-suppliers");
+    });
+
+
+    $(document).on('listen-searchModal', function(event, datos) {
+        
+        if (datos.data.length) {
+            addRows(datos.data);
+        }
     });
 })();

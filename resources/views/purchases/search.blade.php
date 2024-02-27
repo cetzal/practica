@@ -13,13 +13,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>{{trans('file.Code')}}</label>
-                                    <input type="text" name="code" class="form-control">
+                                    <input type="text" name="code_prod" class="form-control">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>{{trans('file.name')}}</label>
-                                    <input type="text" name="name" class="form-control">
+                                    <input type="text" name="name_prod" class="form-control">
                                 </div>
                             </div>
                             <div class="col">
@@ -43,15 +43,16 @@
                 <div class="row">
                     <div class="col-md-12">                  
                         <div class="table-responsive mt-3">
-                            <table id="myTable" class="table table-hover order-list">
+                            <table id="table-prod-search" class="table table-hover order-list">
                                 <thead>
                                     <tr>
-                                        <th>{{trans('file.name')}}</th>
+                                        <th class="not-exported">
+                                            <div class="checkbox"><input type="checkbox" class="dt-checkboxes" id="select_all"><label></label></div>
+                                        </th>
                                         <th>{{trans('file.Code')}}</th>
-                                        <th>{{trans('file.Brand')}}</th>
+                                        <th>{{trans('file.name')}}</th>
                                         <th>{{trans('file.Quantity')}}</th>
-                                        <th>{{trans('file.unit_cost')}}</th>
-                                        <th>Accion</th>
+                                        <th>{{trans('file.price')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,6 +61,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
+                <input type="button" id="add-products" value="Agregar productos" class="btn btn-primary">
             </div>
         </div>
     </div>

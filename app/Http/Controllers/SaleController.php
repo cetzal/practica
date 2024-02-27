@@ -337,15 +337,15 @@ class SaleController extends Controller
                 ->where($where)
                 ->get();
 
-        $totalData = $data->count();
-        $totalFiltered = $data->count();
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
-        );
+        // $totalData = $data->count();
+        // $totalFiltered = $data->count();
+        // $json_data = array(
+        //     "draw"            => intval($request->input('draw')),  
+        //     "recordsTotal"    => intval($totalData),  
+        //     "recordsFiltered" => intval($totalFiltered), 
+        //     "data"            => $data   
+        // );
             
-        return response()->json($json_data);
+        return response()->json($data);
     }
 }

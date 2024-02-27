@@ -394,14 +394,22 @@
     //Open modal add product
     $('#open-search-product').on('click', function(e) {
         e.preventDefault();
-        loadSearchComboSuppliers();
-        loadSearchComboBrands();
-        $('#searchProduct').modal('show');
-        $("input[name='code_prod']").val(''),
-        $("input[name='name_prod']").val(''),
-        $("#select_search_supplier").val(''),
-        $("#select_search_brand").val('')
-        $('#product-search-data-table tbody').empty();
+        $client = $('#select_client').val();
+        if ($client == '') {
+            $.alert({
+                title: 'Ventas',
+                content: 'Selecciona un cliente'
+            })
+        } else {
+            loadSearchComboSuppliers();
+            loadSearchComboBrands();
+            $('#searchProduct').modal('show');
+            $("input[name='code_prod']").val(''),
+            $("input[name='name_prod']").val(''),
+            $("#select_search_supplier").val(''),
+            $("#select_search_brand").val('')
+            $('#product-search-data-table tbody').empty();
+        }
     });
 
     $('.bt-close-modal').on('click', function(e){

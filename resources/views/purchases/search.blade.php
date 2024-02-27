@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group float-right">       
                             <input type="submit" value="{{trans('file.filter')}}" id="submit-btn" class="btn btn-primary">
-                            <button type="button" class="btn btn-primary">{{trans('file.clear')}}</button>
+                            <button type="button" id="clear_form_search_product" class="btn btn-primary">{{trans('file.clear')}}</button>
 
                         </div>
                     </form>

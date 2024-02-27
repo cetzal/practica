@@ -23,10 +23,10 @@ class ProductController extends Controller
     public function index()
     {
         // $lims_product_brand_list = DB::table('view_products_brands')->get();
-        $lims_supplier_products_list = DB::table('view_suppliers_products_list')->get();
-        $lims_brands_products_list = DB::table('view_brands_products_list')->select('id', 'name')->get();
+        //$lims_supplier_products_list = DB::table('view_suppliers_products_list')->get();
+        //$lims_brands_products_list = DB::table('view_brands_products_list')->select('id', 'name')->get();
         $lims_product_category_list = DB::table('view_products_categories')->get();
-        return view('product.index', compact('lims_supplier_products_list','lims_brands_products_list', 'lims_product_category_list'));
+        return view('product.index', compact('lims_product_category_list'));
     }
 
     public function list(Request $request)
@@ -391,6 +391,51 @@ class ProductController extends Controller
                     ->select(['id', 'name', 'is_active'])
                     ->where('supplier_id', $id)
                     ->get();
+        return $brands;
+    }
+
+    public function loadSearchComboSuppliers()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];
+
+        $suppliers = DB::table('view_suppliers_products_list')->get();
+        
+        if ($suppliers->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.supplier_select_supplier')];
+        }
+
+        $suppliers->prepend((object)$option_initial);
+
+        return $suppliers;
+    }
+
+    public function loadSearchComboBrands()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
+        $brands = DB::table('view_brands_products_list')->select(['id', 'name'])->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
+        return $brands;
+    }
+
+    public function getBrandsBySupplierIdCombo($id)
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+
+        $brands = DB::table('view_products_brands_list')->select(['id', 'name'])->where('supplier_id', $id)->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
         return $brands;
     }
 }

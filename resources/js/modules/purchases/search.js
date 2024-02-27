@@ -96,13 +96,26 @@
         
         return data;
     }
+
+    $("#clear_form_search_product").on("click", function(e){
+        e.preventDefault();
+        $("input[name='code_prod']").val(''),
+        $("input[name='name_prod']").val(''),
+        $("input[name='supplier_id']").val(''),
+        $("select[name='brand_id']").val('')
+        $( "#select_all" ).prop('checked', false);
+        $('#table-prod-search tbody').empty();
+
+    });
     //Add products in view create sale
     $('#add-products').on('click', function() {
         let selected_products = selectedProducts();
         if (selected_products.length) {
+            $( "#select_all" ).prop('checked', false);
             $("input[name='code_prod']").val(''),
             $("input[name='name_prod']").val(''),
-            
+            $("input[name='supplier_id']").val(''),
+            $("select[name='brand_id']").val('')
             $('#table-prod-search tbody').empty();
             $(document).trigger('listen-searchModal', {data: selected_products});
             $('#serchModal').modal('hide');

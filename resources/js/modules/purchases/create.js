@@ -394,6 +394,11 @@
         $("input[name='supplier_id']").val(supplier_id);
         //$('#serchModal').data('suppier_id', supplier_id);
         $('#serchModal').modal('show');
+       
+        $("input[name='code_prod']").val('');
+        $("input[name='name_prod']").val('');
+        $("input[name='supplier_id']").val('');
+        $("input[name='brand_id']").val('');
 
     });
 

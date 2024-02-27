@@ -422,7 +422,7 @@
             brandsBySupplier(supplier_id);
         }else{    
             $('select[name="brand_id"]').find('option').remove().end();
-            $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
+            $('select[name="brand_id"]').append('<option value="">Without Brands</option>');
         }                
     });
 
@@ -436,7 +436,7 @@
             dataType: "json",
             success:function(response) {
                 $('select[name="brand_id"]').find('option').remove().end();
-                $('select[name="brand_id"]').append('<option value="">Non-branded</option>');
+                $('select[name="brand_id"]').append('<option value="">Without Brands</option>');
                 if (response.length) {
                     $('select[name="brand_id"]').find('option').remove().end();
                     $('select[name="brand_id"]').append('<option value="">Select a brand</option>');

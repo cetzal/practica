@@ -130,8 +130,11 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     });
 
     $('.clear_form_purchases').on('click', function(e){
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        loadSearchComboProducts();
         $('#from_search_purchase')[0].reset();
-        $('#product-data-table').DataTable().ajax.reload();
+        $('#purchase-table').DataTable().ajax.reload();
     });
 
     $( "#from_search_purchase" ).on("submit", function( event ) {

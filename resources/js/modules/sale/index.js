@@ -176,8 +176,20 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     });
 
     $('.clear_form').on('click', function(e){
-        $('.form_search').toggleClass('form_search_active');
-        window.location.replace('/sales');
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        loadSearchComboProducts();
+        loadSearchComboClients();
+        $("input[name='code_prod']").val('');
+        $("input[name='name_prod']").val('');
+        $("select[name='supplier_id']").val('');
+        $("select[name='brand_id']").val('');
+        $("select[name='product_id']").val('');
+        $("select[name='client_id']").val('');
+        $("input[name='range_date']").val('');
+        $('#sale-table').DataTable().ajax.reload();
+        // $('.form_search').toggleClass('form_search_active');
+        // window.location.replace('/sales');
     });
     
     var table = $('#sale-table').DataTable( {
@@ -267,7 +279,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         ],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api(),
-            columns = [7]; // Add columns here
+            columns = [6,7]; // Add columns here
 
             for (var i = 0; i < columns.length; i++) {
                 

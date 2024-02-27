@@ -64,8 +64,8 @@
         $.get('/api/sales/modalProductSearch', form_data)
             .done(function(response) {
                 $('#product-search-data-table tbody').empty();
-                if (response.data.length) {
-                    $.each(response.data, function(index, row) {
+                if (response.length) {
+                    $.each(response, function(index, row) {
                         let fila = $('<tr>')
                                     .attr('data-product-id', row.id)
                                     .attr('data-alert-quantity', row.alert_quantity);

@@ -5,20 +5,15 @@
     function brandsBySupplier(supplier_id){
         var url = 'api/purchase/getBrandsBySupplierId/'+ supplier_id;
         $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+       
         $.ajax({
             url: host +'/'+ url,
             type: "GET",
             dataType: "json",
             success:function(response) {
-                if(response.length != 0){
-                    $.each(response, function(index, row) {
-                        $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
-                    }); 
-                }else{
-                    $('select[name="brand_id"]').empty();
-                    $('select[name="brand_id"]').append('<option value="">Sin marcas</option>');
-                }
+                $.each(response, function(index, row) {
+                    $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
             },
         });
     }

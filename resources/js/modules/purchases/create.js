@@ -23,8 +23,7 @@ const { result } = require("lodash");
     });
 
     var load_combobox = function(input){
-       
-        $(input).append('<option value="">Select a suppliers</option>');
+
         $.ajax( {
             processData: false,
             contentType: false,
@@ -430,6 +429,7 @@ const { result } = require("lodash");
        
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');
+        $("input[name='brand_id']").empty();
         $("input[name='brand_id']").val('');
         $('#table-prod-search tbody').empty();
 

@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW view_products_for_purchase AS
+CREATE OR REPLACE VIEW view_purchase_product_search AS
 SELECT
     vpa.id,
     vpa.code,
@@ -29,5 +29,5 @@ SELECT
     vpa.unit_name,
     vpa.is_active
 FROM view_products_active AS vpa
-
+WHERE (SELECT vba.id from view_brands_active as vba where vba.id = vpa.brand_id)
 

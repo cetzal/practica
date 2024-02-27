@@ -25,7 +25,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>{{trans('file.brands')}}</label>
-                                    <select name="brand_id" class="selectpicker-suppliers form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a supplier...">
+                                    <select name="brand_id" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select a supplier...">
                                         
                                     </select>
                                 </div>

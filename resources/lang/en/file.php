@@ -627,5 +627,6 @@ return [
 	'without_suppliers' => 'Without suppliers',
 	'select_brand' => 'Select brand',
 	'without_clients' => 'Without clients',
+	'see_products_to_buy' => 'See products to buy',
 ];
 ?>

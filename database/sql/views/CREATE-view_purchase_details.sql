@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW view_purchase_details AS
 SELECT 
 	ps.id,
-	ps.code,
+	pr.code,
 	ps.purchase_date,
 	ps.supplier_id,
 	(SELECT s.name FROM view_suppliers AS s WHERE s.id = ps.supplier_id) as supplier_name,

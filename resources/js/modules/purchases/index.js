@@ -117,7 +117,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             columns = [6]; // Add columns here
 
         for (var i = 0; i < columns.length; i++) {
-            console.log(api.column(columns[i], {page:'current'}).data());
+            
             $('tfoot th').eq(columns[i]).html( api.column(columns[i], {page:'current'}).data().sum() + '<br>');
            
         }
@@ -129,11 +129,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         
     });
 
-    function datatable_sum(dt_selector, is_calling_first) {
-        // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
-        // $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-        $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-    }
+    $('.clear_form_purchases').on('click', function(e){
+        $('#from_search_purchase')[0].reset();
+        $('#product-data-table').DataTable().ajax.reload();
+    });
 
     $( "#from_search_purchase" ).on("submit", function( event ) {
         event.preventDefault();
@@ -149,10 +148,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         $('.form_search').removeClass('form_search_active');
     });
 
-    
-    $('.clear_form_purchases').on('click', function(e){
-        location.reload();
-    });
 
     function loadSearchComboSuppliers() {
         let input = '.selectpicker-suppliers';

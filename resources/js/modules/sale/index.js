@@ -182,6 +182,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         loadSearchComboClients();
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');
+        $("select[name='supplier_id']").val('');
+        $("select[name='brand_id']").val('');
+        $("select[name='product_id']").val('');
+        $("select[name='client_id']").val('');
         $("input[name='range_date']").val('');
         $('#sale-table').DataTable().ajax.reload();
         // $('.form_search').toggleClass('form_search_active');

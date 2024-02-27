@@ -22,6 +22,14 @@ class SaleController extends Controller
     {
         $where = [];
         
+        if(!empty($request->code_prod)){
+            $where[] = ['product_code', 'like', '%'.$request->code_prod.'%'];
+        }
+
+        if(!empty($request->name_prod)){
+            $where[] = ['product_name', 'like', '%'.$request->name_prod.'%'];
+        }
+
         if (!empty($request->supplier_id)) {
             $where[] = ['supplier_id', '=', $request->supplier_id];
         }
@@ -47,15 +55,9 @@ class SaleController extends Controller
         }
         
         $data = DB::table('view_sale_details')
-                ->select([
-                    'date',
-                    'client_id',
-                    'client_name',
-                    DB::raw('SUM(quantity) as total_quantity'),
-                    DB::raw('SUM(total) as total')
-                ])
+                ->select(['date', 'client_name', 'product_code', 'product_name',
+                    'supplier_name','brand_name','quantity', 'total'])
                 ->where($where)
-                ->groupBy(['date','client_id'])
                 ->get();
 
         $json_data = array(
@@ -102,7 +104,7 @@ class SaleController extends Controller
 
         if (isset($save->message)) {
             $product_ids = array_column($request->product_details, 'product_id');
-            $products = DB::table('view_products')
+            $products = DB::table('view_products_active')
                         ->select('name', 'qty', 'alert_quantity')
                         ->whereIn('id', $product_ids)
                         ->where('qty', '<', 'alert_quantity')

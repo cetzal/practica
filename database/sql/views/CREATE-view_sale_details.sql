@@ -6,6 +6,7 @@ SELECT
 	(SELECT c.name FROM clients c WHERE c.id = s.client_id) as client_name,
 	sd.id AS sale_detail_id,
 	sd.product_id,
+	p.code as product_code,
 	p.name AS product_name,
 	b.id as brand_id,
 	b.name AS brand_name,

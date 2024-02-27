@@ -12,6 +12,14 @@
         <form id="from_search_sale">
             <div class="row">
                 <div class="col">
+                    <label for="code_prod">{{trans('file.Code')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.Code')}}" name="code_prod">
+                </div>
+                <div class="col">
+                    <label for="name_rod">{{trans('file.name')}}</label>
+                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="name_prod">
+                </div>
+                <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
                     <select name="supplier_id" id="select_supplier" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
                     </select>
@@ -70,6 +78,10 @@
                     <!-- <th class="not-exported"></th> -->
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.customer')}}</th>
+                    <th>{{trans('file.Code')}}</th>
+                    <th>{{trans('file.product')}}</th>
+                    <th>{{trans('file.Supplier')}}</th>
+                    <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.Items')}}</th>
                     <th>{{trans('file.Total')}}</th>
                     <!-- <th>{{trans('file.Created By')}}</th>
@@ -83,8 +95,10 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <!-- <th></th>
-                <th></th> -->
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tfoot>
         </table>
     </div>

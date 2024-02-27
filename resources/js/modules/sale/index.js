@@ -208,31 +208,40 @@
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.total_quantity;
+                    return row.product_code;
                 },
                 'targets': [2]
             },
             {
                 'render': function(data, type, row, meta){
-                    return row.total;
+                    return row.product_name;
                 },
                 'targets': [3]
             },
-            // {
-            //     'render': function(data, type, row, meta) {
-            //         let html =  '<a href="#" class="btn bg-success btn-sm open-EditSupplierDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-            //         html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-            //         html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-            //         if(row.is_active == 1){
-            //             html +=  '<a class="btn m-1 desactivar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-on" aria-hidden="true"></i></a>';
-            //         }else{
-            //             html +=  '<a class="btn m-1 activar btn-sm" data-id="'+row.id+'"><i class="fa fa-toggle-off" aria-hidden="true"></i></a>';
-            //         }
-            //         return html;
-                
-            //     },
-            //     'targets': [7]
-            // },
+            {
+                'render': function(data, type, row, meta){
+                    return row.supplier_name;
+                },
+                'targets': [4]
+            },
+            {
+                'render': function(data, type, row, meta){
+                    return row.brand_name;
+                },
+                'targets': [5]
+            },
+            {
+                'render': function(data, type, row, meta){
+                    return row.quantity;
+                },
+                'targets': [6]
+            },
+            {
+                'render': function(data, type, row, meta){
+                    return row.total;
+                },
+                'targets': [7]
+            },
             { targets: [1], className: "text-center"},
             {targets: [0, 1, 2, 3], searchable: false}
         ],

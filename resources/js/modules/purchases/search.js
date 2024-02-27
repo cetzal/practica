@@ -105,7 +105,7 @@
             
             $('#table-prod-search tbody').empty();
             $(document).trigger('listen-searchModal', {data: selected_products});
-            $('#searchProduct').modal('hide');
+            $('#serchModal').modal('hide');
         } else {
             $.alert({
                 title: '',

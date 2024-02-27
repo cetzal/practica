@@ -1,13 +1,14 @@
 CREATE OR REPLACE VIEW view_purchase_details AS
 SELECT 
 	ps.id,
+	ps.code,
 	ps.purchase_date,
 	ps.supplier_id,
-	(SELECT s.name FROM suppliers AS s WHERE s.id = ps.supplier_id) as supplier_name,
+	(SELECT s.name FROM view_suppliers AS s WHERE s.id = ps.supplier_id) as supplier_name,
 	pd.product_id,
 	pr.name as product_name,
 	pr.brand_id,
-	(SELECT b.name FROM brands AS b WHERE b.id = pr.brand_id) as brand_name,
+	(SELECT b.name FROM view_brands AS b WHERE b.id = pr.brand_id) as brand_name,
 	pd.qty,
 	pd.unit_price,
 	pd.total,

@@ -1,6 +1,7 @@
 @extends('template.app') 
 @section('content')
 <section>
+
     <div class="container-fluid mb-2 p-1">
         <h4>{{trans('file.Purchase List')}}</h4>
     </div>
@@ -10,9 +11,34 @@
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
        
     </div>
+    <div class="alert alert-danger alert-dismissible text-center alert-stock" role="alert" style="display:none">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+            <div class="row">
+                <div class="col">
+                    <a href="#" id="show-product-dilay" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                        Ver porductos por comprar
+                    </a>
+                </div>
+            </div>
+        </div> 
     <div class="container-fluid mb-2 form_search">
         <form id="from_search_purchase">
             <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>{{ trans('file.name') }}</label>
+                        <input type="text" name="name_prod" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label>{{ trans('file.Code') }}</label>
+                        <input type="text" name="code_prod" class="form-control">
+                    </div>
+                </div>
                 
                 <div class="col">
                     <label for="name">{{trans('file.supplier')}}</label>
@@ -21,9 +47,14 @@
                            
                     </select>
                 </div>
+                
+                
+               
+            </div>
+            <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label>{{ trans('file.Brand') }}</strong> </label>
+                        <label>{{ trans('file.Brand') }} </label>
                         <div class="input-group">
                             <select name="brand_id" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                             <option value="">{{trans('file.search_select_brand')}}</option>  
@@ -34,7 +65,7 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>{{trans('file.product')}}</strong> </label>
+                        <label>{{trans('file.product')}}</label>
                         <div class="input-group">
                             <select name="product_id" class="selectpicker-product form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
                             <option value="">{{trans('file.select')}}</option>  
@@ -43,9 +74,6 @@
                         </div>
                     </div>
                 </div>
-               
-            </div>
-            <div class="row">
             
                 <div class="col">
                     <div class="form-group">
@@ -59,7 +87,6 @@
                     </div>
                 </div>
 
-                <div class="col"></div>
                 <div class="col float-right">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data"> {{ trans('file.Filter') }}</button>
@@ -77,11 +104,24 @@
             <thead>
                 <tr>
                     <th>{{trans('file.Date')}}</th>
+                    <th>{{trans('file.name')}}</th>
+                    <th>{{trans('file.Code')}}</th>
                     <th>{{trans('file.Supplier')}}</th>
+                    <th>{{trans('file.Brand')}}</th>
                     <th>{{trans('file.Items')}}</th>
                     <th>{{trans('file.Total')}}</th>
                 </tr>
             </thead>
+            <tfoot class="tfoot active">
+                <th>{{trans('file.Total')}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                
+            </tfoot>
             
            
         </table>

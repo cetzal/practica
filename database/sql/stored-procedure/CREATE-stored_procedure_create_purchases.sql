@@ -6,10 +6,6 @@ CREATE PROCEDURE create_purchases (
     IN param_purchase_date DATE,
     IN param_reference_no VARCHAR(250),
     IN param_supplier_id INT,
-    IN param_items INT,
-    IN param_total_qty INT,
-    IN param_total INT,
-    IN param_status INT,
     IN param_note VARCHAR(250),
     IN param_user_id INT,
     IN param_detalles JSON
@@ -44,8 +40,8 @@ BEGIN
     START TRANSACTION;
 
 	    -- Insertar la compra en la tabla purchases
-	    INSERT INTO purchases (purchase_date, reference_no, supplier_id, item, total_qty, total, status, note, user_id)
-	    VALUES (param_purchase_date , param_reference_no , param_supplier_id, param_items, param_total_qty, param_total, param_status, param_note, param_user_id);
+	    INSERT INTO purchases (purchase_date, reference_no, supplier_id, note, user_id)
+	    VALUES (param_purchase_date , param_reference_no , param_supplier_id, param_note, param_user_id);
 	
 	    -- Obtener el ID de la compra insertada
 	    SET @last_purchase_id := LAST_INSERT_ID();

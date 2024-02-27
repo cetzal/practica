@@ -1,3 +1,10 @@
+jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+        var x = parseFloat(a) || 0;
+        var y = parseFloat(b) || 0;
+        return x + y
+    }, 0 );
+} );
 (function(){
 
     $( "#range_date" ).daterangepicker({
@@ -35,12 +42,56 @@
                 console.log('frmdata', frm_data);
             }
         },
+        'columns' : [
+           
+            {
+                data: 'purchase_date',
+                render : function(data, type, row, meta){
+                    return row.purchase_date;
+                }
+            },
+            {
+                data: 'purchase_date',
+                render : function(data, type, row, meta){
+                    return row.product_name;
+                }
+            },
+            {
+                data: 'code',
+                render : function(data, type, row, meta){
+                    return row.code;
+                }
+            },
+            {
+                data: 'supplier_name',
+                render : function(data, type, row, meta){
+                    return row.supplier_name;
+                }
+            },
+            {
+                data: 'brand_name',
+                render : function(data, type, row, meta){
+                    return row.brand_name;
+                }
+            },
+            {
+                data: 'qty',
+                render : function(data, type, row, meta){
+                    return row.qty;
+                }
+            },
+            {
+                data: 'total',
+                render : function(data, type, row, meta){
+                    return row.total;
+                }
+            }
+        ],
         "createdRow": function( row, data, dataIndex ) {
             $(row).addClass('purchase-link');
             $(row).attr('data-purchase', data['purchase']);
         },
-        "columns": [
-             ],
+        
         'language': {
             /*'searchPlaceholder': "{{trans('file.Type date or purchase reference...')}}",*/
             'lengthMenu': '_MENU_',
@@ -57,36 +108,32 @@
                 "orderable": false,
                 'targets': [0]
             }
-            ,{
-                targets: [0],
-                render : function(data, type, row, meta){
-                    return row.purchase_date;
-                }
-            },
-            {
-                targets: [1],
-                render : function(data, type, row, meta){
-                    return row.supplier_name;
-                }
-            },
-            {
-                targets: [2],
-                render : function(data, type, row, meta){
-                    return row.qty;
-                }
-            },
-            {
-                targets: [3],
-                render : function(data, type, row, meta){
-                    return row.toital;
-                }
-            }
+            
         ],
-        'select': { style: 'multi',  selector: 'td:first-child'},
-        'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        
+        'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "footerCallback": function (tfoot, data, start, end, display) {
+            var api = this.api(),
+            columns = [6]; // Add columns here
+
+        for (var i = 0; i < columns.length; i++) {
+            console.log(api.column(columns[i], {page:'current'}).data());
+            $('tfoot th').eq(columns[i]).html( api.column(columns[i], {page:'current'}).data().sum() + '<br>');
+           
+        }
+        },
+        drawCallback: function () {
+            var api = this.api();
+            //datatable_sum(api, false);
+        }
         
     });
+
+    function datatable_sum(dt_selector, is_calling_first) {
+        // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
+        // $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
+        $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
+    }
 
     $( "#from_search_purchase" ).on("submit", function( event ) {
         event.preventDefault();
@@ -161,25 +208,17 @@
         let url = '/api/purchase/getStockAlert';
         $.get(url, function(response) {
             if (response.length) {
-                let message = '<ul>'
-                $.each(response,function(index, row){
-                    message+='<li> El producto <b>"' +row.name+ '"</b> cuenta con la cantidad stock minimo de <b>'+row.stock_min+'</b> de la marca <b>"'+ row.brand_name +'"</b>.</li>';
-                });
 
-                message+='</ul>'
-
-                $.alert({
-                    title: 'Alerta de stock',
-                    content: message,
-                });
+                $(".alert-stock").show();
+                $("#show-product-dilay").data('alerstock', JSON.stringify(response))
+                
             }
         })
 
     }
 
-    $('select[name="supplier_id"]').on('change', function(e) {
-        e.preventDefault();
-        let supplier_id = $(this).val();
+    function searchBrandBySupplierId(){
+        let supplier_id = $('select[name="supplier_id"]').val();
         let url = '/api/purchase/getbrandSearchById?supplier_id='+supplier_id;
         let input_brand = '.selectpicker-brands';
         let input_product = '.selectpicker-product';
@@ -198,24 +237,61 @@
                 }
             })
         }   
+    }
+
+    function searchProductBySupplierid(){
+        let brand_id = $('select[name="brand_id"]').val();
+        let supplier_id = $('select[name="supplier_id"]').val();
+
+        let url = '/api/purchase/productSearch?brand_id='+brand_id+'&supplier_id='+supplier_id;
+        let input = '.selectpicker-product';
+        $.get(url, function(response) {
+            if (response) {
+                // $(input).find('option').get(0).remove();
+                $(input).find('option').remove().end();
+                $(input).append('<option value="">Select product</option>');
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
+    $('select[name="supplier_id"]').on('change', function(e) {
+        e.preventDefault();
+        let supplier_id = $(this).val();
+        if(supplier_id == ""){
+            loadSearchComboSuppliers();
+            loadSearchComboBrands();
+            loadSearchComboProducts();
+        }else{
+            searchBrandBySupplierId();
+            searchProductBySupplierid();
+        }
+        
+       
     });
 
     $('select[name="brand_id"]').on('change', function(e) {
-        let brand_id = $(this).val();
-        let url = '/api/purchase/productSearch?brand_id='+brand_id;
-        let input = '.selectpicker-product';
-        if (brand_id != '') {
-            $.get(url, function(response) {
-                if (response) {
-                    // $(input).find('option').get(0).remove();
-                    $(input).find('option').remove().end();
-                    $(input).append('<option value="">Select product</option>');
-                    $.each(response, function(index, row) {
-                        $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
-                    }); 
-                }
-            })
-        }
+        searchProductBySupplierid();
+    });
+    // no puedes comprar menos del punto de reorden qty_alert
+
+    $("#show-product-dilay").on('click', function(e){
+        e.preventDefault();
+        let response = $(this).data('alerstock');
+        response = JSON.parse(response);
+        let message = '<ul>'
+        $.each(response,function(index, row){
+            message+='<li> El producto <b>"' +row.name+ '"</b> cuenta con la cantidad stock minimo de <b>'+row.stock_min+'</b> de la marca <b>"'+ row.brand_name +'"</b>.</li>';
+        });
+
+        message+='</ul>'
+
+        $.alert({
+            title: 'Alerta de stock',
+            content: message,
+        });
     });
 
 

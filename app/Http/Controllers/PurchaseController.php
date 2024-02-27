@@ -23,7 +23,14 @@ class PurchaseController extends Controller
     public function list(Request $request){
 
         $where = [];
-        
+        if(!empty($request->code_prod)){
+            $where[] = ['code', 'like', '%'.$request->code_prod.'%'];
+        }
+
+        if(!empty($request->name_prod)){
+            $where[] = ['product_name', 'like', '%'.$request->name_prod.'%'];
+        }
+
         if (!empty($request->supplier_id)) {
             $where[] = ['supplier_id', '=', $request->supplier_id];
         }
@@ -46,9 +53,9 @@ class PurchaseController extends Controller
         
 
         $query = DB::table('view_purchase_details')
-        ->select(DB::raw('purchase_date, supplier_id, supplier_name, SUM(qty) as qty, SUM(total) as toital'));
+        ->select(DB::raw('purchase_date, code, product_name, supplier_id, supplier_name,brand_name, qty, total'));
 
-        $data = $query->where($where)->groupBy('purchase_date')->groupBy('supplier_id')->get();
+        $data = $query->where($where)->get();
         $totalData = $data->count();
         $totalFiltered = $data->count();
         $json_data = array(
@@ -65,14 +72,8 @@ class PurchaseController extends Controller
         $this->validate(
             $request,
             [
-                'reference_no' => [
-                    'required',
-                    'max:255',
-                    Rule::unique('purchases')
-                ],
                 'supplier_id' =>  'required',
                 'purchase_date' => 'required',
-                'status' => 'required',
                 'purchase_detail' => ['required', 'array', 'min:1'],
                 'purchase_detail.*.product_id' => ['required'],
                 'purchase_detail.*.product_qty' => ['required'],
@@ -82,7 +83,7 @@ class PurchaseController extends Controller
             ]
         );
         
-        $reference_no = $request->reference_no;
+        $reference_no = 'pr-' . date("Ymd") . '-'. date("his");;
         $purchase_date = $request->purchase_date;
         $purchase_status = $request->status;
         $supplier_id = $request->supplier_id;
@@ -94,15 +95,11 @@ class PurchaseController extends Controller
         $product_detail = $request->purchase_detail;
        
         $save = DB::select(
-            'CALL create_purchases(?,?,?,?,?,?,?,?,?,?)', 
+            'CALL create_purchases(?,?,?,?,?,?)', 
             [ 
                 $purchase_date, 
                 $reference_no, 
                 $supplier_id, 
-                $purchase_item, 
-                $total_qty, 
-                $total, 
-                $purchase_status, 
                 $note,
                 JWTAuth::toUser()->id, 
                 json_encode($product_detail)
@@ -159,11 +156,20 @@ class PurchaseController extends Controller
         return $brands;
     }
 
-    public function searchProductByBrandId(Request $request)
+    public function searchProductByBrandIdAndSupplierId(Request $request)
     {
+        $where = [];
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+
+        if (!empty($request->brand_id)) {
+            $where[] = ['brand_id', '=', $request->brand_id];
+        }
+
         $brands = DB::table('view_purchase_products_list')
                     ->select(['id', 'name'])
-                    ->where('brand_id', $request->brand_id)
+                    ->where($where)
                     ->get();
         return $brands;
     }

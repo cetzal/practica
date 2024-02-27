@@ -125,7 +125,7 @@ Route::group(['middleware' => ['auth.jwt']], function(){
     Route::get('/purchase/load/search/products', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
 
     Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
-    Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandId'])->name('api.purchase.search-product');
+    Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase.search-product');
     Route::get('/purchase/getbrandSearchById', [App\Http\Controllers\PurchaseController::class, 'searchBrandBySupplierId'])->name('api.purchase.search-brand');
     Route::get('/purchase/modalProductSearch', [App\Http\Controllers\PurchaseController::class, 'searchProduct'])->name('api.sales.modal.search-product');
     Route::get('/purchase/getStockAlert', [App\Http\Controllers\PurchaseController::class, 'getStockAlert'])->name('api.purchase.stockAlert');

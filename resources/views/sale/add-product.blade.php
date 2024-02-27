@@ -2,7 +2,7 @@
     <div role="document" class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-        <h5 id="exampleModalLabel" class="modal-title">Buscar productos</h5>
+        <h5 id="exampleModalLabel" class="modal-title">{{trans('file.search_products')}}</h5>
           <button type="button" class="close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
         </div>
         <div class="modal-body">
@@ -62,7 +62,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
-            <input type="button" id="add-products" value="Agregar productos" class="btn btn-primary">
+            <input type="button" id="add-products" value="{{trans('file.add_products')}}" class="btn btn-primary">
         </div>
       </div>
     </div>

@@ -621,5 +621,8 @@ return [
 	'total_cost' => 'Total cost',
 	'Brands list' => 'Brands List',
 	'search products' => 'Search products',
+	'product_table' => 'Product Table *',
+	'search_products' => 'Search products',
+	'add_products' => 'Add products',
 ];
 ?>

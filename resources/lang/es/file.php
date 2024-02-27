@@ -620,5 +620,8 @@ return [
 	'total_cost' => 'Costo total',
 	'Brands list' => 'Lista de marcas',
 	'search products' => 'Buscar productos',
+	'product_table' => 'Tabla de productos *',
+	'search_products' => 'Buscar productos',
+	'add_products' => 'Agregar productos',
 ];
 ?>

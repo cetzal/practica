@@ -31,14 +31,14 @@
                                         <label for=""></label>
                                         <input 
                                             type="button" 
-                                            value="Buscar productos" 
+                                            value="{{trans('file.search_products')}}" 
                                             id="open-search-product"
                                             class="btn btn-primary position-absolute bottom-0">
                                     </div>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-12">
-                                        <h5>Tabla de productos *</h5>
+                                        <h5>{{trans('file.product_table')}}</h5>
                                         <div class="table-responsive mt-3">
                                             <table id="product-detail-table" class="table table-hover order-list">
                                                 <thead>

@@ -91,17 +91,16 @@ class SaleController extends Controller
         ]);
         
         $save = DB::select(
-                    "CALL create_sale(?,?,?,?,?)", 
+                    "CALL sp_create_sale(?,?,?,?,?)", 
                     [
                         $request->client_id, 
                         $request->date,
-                        $request->total,
                         $request->comments, 
                         json_encode($request->product_details)
                     ]
                 );
         $save = current($save);
-
+        
         if (isset($save->message)) {
             $product_ids = array_column($request->product_details, 'product_id');
             $products = DB::table('view_products_active')

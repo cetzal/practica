@@ -115,7 +115,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
             $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
-            $('tfoot th').eq(6).html('$ '+ api.column(6, {page:'current'}).data().sum().toFixed(2) + '<br>');
+            $('tfoot th').eq(6).html('$ '+ parseFloat( api.column(6, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
 
        
         },

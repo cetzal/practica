@@ -395,13 +395,22 @@
             type: "GET",
             url: host + '/api/suppliers/all/combobox',
             success: function( response ){
-                console.log('response suppliers', response);
                 if(response.length != 0) {
                    
                     $(input).empty();
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
-                    }); 
+                    });
+
+                    if (response.length == 1) {
+                        let filtered = response.filter(item => item.id == '' );
+
+                        if (filtered.length) {
+                            let input = 'select[name="brand_id"]';
+                            $(input).find('option').remove().end();
+                            $(input).append('<option value="">Without brands');
+                        }
+                    } 
               }
             },
             error: function(xhr, textStatus, error){

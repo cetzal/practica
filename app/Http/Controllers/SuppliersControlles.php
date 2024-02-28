@@ -229,7 +229,7 @@ class SuppliersControlles extends Controller
             $message = 'Se borraron '. count($supplier_deletes) .' Proveedores. No se borraron {'.$supplier.'} porque cuentan con marcas asignados';
         }
         
-        Suppliers::whereIn('id', $supplier_deletes)->update(['deleted_at' => date('Y-m-d H:i:s')]);
+        Suppliers::whereIn('id', $supplier_deletes)->update(['deleted_at' => date('Y-m-d H:i:s'), 'is_active' => 0]);
 
         return response()->json(['status' => 'success', 'message' => $message]);
     

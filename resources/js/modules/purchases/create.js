@@ -356,7 +356,7 @@ const { result } = require("lodash");
                 let name =  $(this).find('td:eq(0)').text();
 
                 if( (add_qty + current_qty) <= alert_q ){
-                    message.push({'message' : 'El producto "<b>'+ name +'</b>" no se puedes comprar menos del punto de reorden ' + alert_q + '.'});
+                    message.push({'message' : 'El producto "<b>'+ name +'</b>" no se puede comprar menos del punto de reorden ' + alert_q + '.'});
                 }
 
 
@@ -423,7 +423,7 @@ const { result } = require("lodash");
         supplier_id = $("select[name='supplier_id']").val();
         if(supplier_id == ""){
             $.alert({
-                title : "Compres",
+                title : "Compras",
                 content : "Selecione un proveedor"
             });
 

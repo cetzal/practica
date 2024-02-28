@@ -101,7 +101,6 @@
         e.preventDefault();
         $("input[name='code_prod']").val(''),
         $("input[name='name_prod']").val(''),
-        $("input[name='supplier_id']").val(''),
         $("select[name='brand_id']").val('')
         $( "#select_all" ).prop('checked', false);
         $('#table-prod-search tbody').empty();

@@ -113,14 +113,11 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
        
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "footerCallback": function (tfoot, data, start, end, display) {
-            var api = this.api(),
-            columns = [5,6]; // Add columns here
+            var api = this.api();
+            $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            $('tfoot th').eq(6).html('$ '+ api.column(6, {page:'current'}).data().sum().toFixed(2) + '<br>');
 
-        for (var i = 0; i < columns.length; i++) {
-            
-            $('tfoot th').eq(columns[i]).html( api.column(columns[i], {page:'current'}).data().sum() + '<br>');
-           
-        }
+       
         },
         drawCallback: function () {
             var api = this.api();

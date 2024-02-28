@@ -42,6 +42,7 @@
             .done(function(response) {
                 $('#table-prod-search tbody').empty();
                 if (response.length) {
+                    $('#table-prod-search').show();
                     $.each(response, function(index, row) {
                         let fila = $('<tr>')
                                     .attr('data-product-id', row.id)
@@ -57,7 +58,7 @@
                 }else{
                     $.alert({
                         title : '',
-                        content : 'No se encontraron datos'
+                        content : 'No se encontraron productos'
                     })
                 }
             });
@@ -104,6 +105,7 @@
         $("select[name='brand_id']").val('')
         $( "#select_all" ).prop('checked', false);
         $('#table-prod-search tbody').empty();
+        $('#table-prod-search').hide();
 
     });
     //Add products in view create sale

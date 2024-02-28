@@ -432,6 +432,7 @@ const { result } = require("lodash");
         $("input[name='brand_id']").empty();
         $("input[name='brand_id']").val('');
         $('#table-prod-search tbody').empty();
+        $('#table-prod-search').hide();
 
     });
 

@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="col-md-12">                  
                         <div class="table-responsive mt-3">
-                            <table id="table-prod-search" class="table table-hover">
+                            <table id="table-prod-search" class="table table-hover" style="display: none;">
                                 <thead>
                                     <tr>
                                         <th class="not-exported">

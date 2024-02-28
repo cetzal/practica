@@ -69,7 +69,7 @@
                                         <label>{{trans('file.Brand')}}</strong> </label>
                                         <div class="input-group">
                                           <select name="brand_id" class="selectpicker form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                                          <option value="">Without Brands</option>  
+                                          <option value="">{{trans('file.select_the_supplier')}}</option>  
                                           
                                           </select>
                                       </div>

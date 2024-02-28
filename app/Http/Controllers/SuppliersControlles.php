@@ -250,8 +250,17 @@ class SuppliersControlles extends Controller
     }
 
     public function combobox(){
-        $data = DB::table('view_suppliers_active')->get();
-        return $data;
+        $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];
+
+        $suppliers = DB::table('view_suppliers_active')->get();
+
+        if ($suppliers->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.supplier_select_supplier')];
+        }
+
+        $suppliers->prepend((object)$option_initial);
+        
+        return $suppliers;
     }
 
     public function combobox_filters(){

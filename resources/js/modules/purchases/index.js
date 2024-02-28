@@ -83,7 +83,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 data: 'total',
                 render : function(data, type, row, meta){
-                    return row.total;
+                    return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             }
         ],

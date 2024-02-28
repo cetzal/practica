@@ -388,7 +388,6 @@
     });
 
     var load_combobox = function(input){
-        $(input).append('<option value="">Without suppliers</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -398,8 +397,8 @@
             success: function( response ){
                 console.log('response suppliers', response);
                 if(response.length != 0) {
-                    $(input).find('option').remove().end();
-                    $(input).append('<option value="">Select supplier</option>');
+                   
+                    $(input).empty();
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 
@@ -421,25 +420,21 @@
         if(supplier_id) {
             brandsBySupplier(supplier_id);
         }else{    
-            $('select[name="brand_id"]').find('option').remove().end();
-            $('select[name="brand_id"]').append('<option value="">Without Brands</option>');
+            brandsBySupplier(0);
         }                
     });
 
     function brandsBySupplier(supplier_id){
         var url = 'api/brand/supplier/'+ supplier_id;
         $('select[name="brand_id"]').empty();
-        $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
+      
         $.ajax({
             url: host +'/'+ url,
             type: "GET",
             dataType: "json",
             success:function(response) {
-                $('select[name="brand_id"]').find('option').remove().end();
-                $('select[name="brand_id"]').append('<option value="">Without Brands</option>');
+               
                 if (response.length) {
-                    $('select[name="brand_id"]').find('option').remove().end();
-                    $('select[name="brand_id"]').append('<option value="">Select a brand</option>');
                     $.each(response, function(index, row) {
                         $('select[name="brand_id"]').append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

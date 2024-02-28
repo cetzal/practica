@@ -52,7 +52,7 @@
                         fila.append('<td>'+ row.code +'</td>');
                         fila.append('<td>'+ row.name +'</td>');
                         fila.append('<td>'+ row.qty +'</td>');
-                        fila.append('<td>'+ row.price +'</td>');
+                        fila.append('<td>$ '+ parseFloat(row.price).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#table-prod-search tbody').append(fila);
                     }); 
                 }else{
@@ -90,11 +90,10 @@
                     name: $(this).find('td:eq(2)').text(),
                     qty: parseInt($(this).find('td:eq(3)').text()),
                     alert_quantity: parseInt(row.data('alert-quantity').toString()),
-                    price: parseFloat($(this).find('td:eq(4)').text()),
+                    price: parseFloat($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, '')),
                 });
             }
         });
-        
         return data;
     }
 

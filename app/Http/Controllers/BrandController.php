@@ -266,8 +266,21 @@ class BrandController extends Controller
     }
 
     public function brandBySupplier($id){
-        $data = DB::table('view_brands_active')->select(['id', 'name'])->where('supplier_id', $id)->get();
-        return $data;
+        if($id == 0){
+            $option_initial = ['id' => '', 'name' => trans('file.select_the_supplier')];
+        }else{
+            $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+        }
+
+        $brands = DB::table('view_brands_active')->select(['id', 'name'])->where('supplier_id', $id)->get();
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
+        return $brands;
+       
     }
 
     public function allBrandsBySupplier($id){

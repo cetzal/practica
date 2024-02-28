@@ -222,10 +222,17 @@ const { result } = require("lodash");
         
         var sub_total = sub_total_unit * quantity;
     
-        $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(4)').text(net_unit_cost.toFixed(2));
+        // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(4)').text(net_unit_cost.toFixed(2));
+        // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.net_unit_cost').val(net_unit_cost.toFixed(2));
+
+        // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(5)').text(sub_total.toFixed(2));
+        // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.subtotal-value').val(sub_total.toFixed(2));
+        
+
+        $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(4)').text( '$ ' + parseFloat(net_unit_cost).toLocaleString('en-US', {minimumFractionDigits: 2}));
         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.net_unit_cost').val(net_unit_cost.toFixed(2));
 
-        $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(5)').text(sub_total.toFixed(2));
+        $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(5)').text('$ ' + parseFloat(sub_total).toLocaleString('en-US', {minimumFractionDigits: 2}));
         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.subtotal-value').val(sub_total.toFixed(2));
         
     
@@ -250,10 +257,10 @@ const { result } = require("lodash");
         //Sum of subtotal
         var total = 0;
         $(".sub-total").each(function() {
-            total += parseFloat($(this).text());
+            total += parseFloat($(this).text().replace(/[^\d.-]/g, ''));
         });
-        $("#total").text(total.toFixed(2));
-        $('input[name="total_cost"]').val(total.toFixed(2));
+        $("#total").text('$ ' + parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}));
+        $('input[name="total_cost"]').val( parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}));
     
         
     }

@@ -387,10 +387,25 @@ class ProductController extends Controller
 
     public function getBrandsBySupplierId($id)
     {
+        if($id == 0){
+            $option_initial = ['id' => '', 'name' => trans('file.select_the_supplier')];
+        }else{
+            $option_initial = ['id' => '', 'name' => trans('file.select_non_branded')];
+        }
+        
+
         $brands = DB::table('view_products_brands_edit')
-                    ->select(['id', 'name', 'is_active'])
-                    ->where('supplier_id', $id)
-                    ->get();
+        ->select(['id', 'name', 'is_active'])
+        ->where('supplier_id', $id)
+        ->get();
+
+        if ($brands->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_brand')];
+        }
+
+        $brands->prepend((object)$option_initial);
+
+        
         return $brands;
     }
 

@@ -267,7 +267,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 data: 'total',
                 render: function(data, type, row, meta){
-                    return row.total;
+                    return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
         ],
@@ -279,11 +279,20 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         ],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api(),
-            columns = [6,7]; // Add columns here
+            columns = [6]
+            column_currencies = [7]; // Add columns here
 
             for (var i = 0; i < columns.length; i++) {
                 
                 $('tfoot th').eq(columns[i]).html( api.column(columns[i], {page:'current'}).data().sum() + '<br>');
+            
+            }
+
+            for (var i = 0; i < column_currencies.length; i++) {
+                
+                $('tfoot th').eq(column_currencies[i]).html( 
+                    '$ ' + parseFloat(api.column(column_currencies[i], {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
+                );
             
             }
         },

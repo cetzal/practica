@@ -1,11 +1,11 @@
 DROP PROCEDURE IF EXISTS create_sale;
+DROP PROCEDURE IF EXISTS sp_create_sale;
 
 DELIMITER $$
 
-CREATE PROCEDURE create_sale(
+CREATE PROCEDURE sp_create_sale(
 	IN param_client_id INT,
     IN param_date DATE,
-    IN param_total DECIMAL(10,2),
     IN param_comments TEXT,
     IN param_details JSON
 )
@@ -24,6 +24,12 @@ BEGIN
 	
     DECLARE mysql_code CHAR(5) DEFAULT '00000';
     DECLARE mysql_msg TEXT;
+   
+    -- Declarar variales el item de json
+   	DECLARE item_product_id INT DEFAULT 0;
+    DECLARE item_quantity INT DEFAULT 0;
+    DECLARE item_unit_price DECIMAL DEFAULT 0;
+    DECLARE item_total DECIMAL DEFAULT 0;
     
    	DECLARE exit handler FOR SQLEXCEPTION
       BEGIN
@@ -38,14 +44,14 @@ BEGIN
     START TRANSACTION;
    
    	 -- Insertar la venta
-    INSERT INTO sales (client_id, date, comments, total) VALUES (param_client_id, param_date, param_comments, param_total);
+    INSERT INTO sales (client_id, date, comments) VALUES (param_client_id, param_date, param_comments);
     SET sale_id = LAST_INSERT_ID();
    
    	-- Variables para insertar el detalle de la venta
-    SET @product_id := 0;
-    SET @quantity := 0;
-    SET @unit_price := 0;
-    SET @total := 0;
+    -- SET @product_id := 0;
+    -- SET @quantity := 0;
+    -- SET @unit_price := 0;
+    -- SET @total := 0;
 
    	-- Variabla para armar los multiples update para productos
 	SET @sql_product_update = '';
@@ -57,25 +63,20 @@ BEGIN
   		SELECT REPLACE(current_item,'\\','') into current_item;
         SELECT REPLACE(current_item,'"{','{') into current_item;
         SELECT REPLACE(current_item,'}"','}') into current_item;
+       
 
        	-- SELECT current_item;
-        SET @product_id = CAST(JSON_EXTRACT(current_item, '$.product_id') AS UNSIGNED);
-        SET @quantity = CAST(JSON_EXTRACT(current_item, '$.quantity') AS UNSIGNED);
-        SET @unit_price =  CAST(JSON_EXTRACT(current_item, '$.unit_price') AS DECIMAL(10,2));
-		SET @total = CAST(JSON_EXTRACT(current_item, '$.total') AS DECIMAL(10,2));
+        SET item_product_id = JSON_UNQUOTE(JSON_EXTRACT(current_item, '$.product_id'));
+        SET item_quantity = JSON_UNQUOTE(JSON_EXTRACT(current_item, '$.quantity'));
+        SET item_unit_price = CONVERT(JSON_EXTRACT(current_item, '$.unit_price'), DECIMAL(10,2));
+		SET item_total = CONVERT(JSON_EXTRACT(current_item, '$.total'), DECIMAL(10,2));
    		
 		INSERT INTO sale_details (sale_id, product_id, quantity, unit_price, total)
-        VALUES (sale_id, @product_id, @quantity, @unit_price, @total);
+        VALUES (sale_id, item_product_id, item_quantity, item_unit_price, item_total);
        
 
        	-- Construir las consultas update para productos
-        SET @sql_product_update = CONCAT('UPDATE products SET qty = qty - ',  @quantity, ' WHERE id = ', @product_id, ' AND qty > 0; ');
-       	
-        PREPARE stmt FROM @sql_product_update;
-	    EXECUTE stmt;
-	    DEALLOCATE PREPARE stmt;
-	    
-	    SET @sql_product_update = '';
+        UPDATE products SET qty = qty - item_quantity WHERE id = item_product_id AND qty > 0;
        
        SET i := i + 1;
     END WHILE;

@@ -92,6 +92,8 @@
                         fila.append('<td>$ '+ parseFloat(row.price).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#product-search-data-table tbody').append(fila);
                     }); 
+                } else if (response.length == 0) {
+                    $('#display-table-product-search').addClass('d-none');
                 }
             });
     });

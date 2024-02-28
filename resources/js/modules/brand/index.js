@@ -521,8 +521,7 @@
     });
 
     var load_combobox = function(input){       
-        $(input).append('<option value="">Without suppliers</option>');
-
+        
         $.ajax( {
             processData: false,
             contentType: false,
@@ -531,8 +530,7 @@
             url: 'api/suppliers/all/combobox',
             success: function( response ){
                 if(response.length != 0){
-                    $(input).find('option').remove().end();
-                    $(input).append('<option value="">Select supplier</option>');
+                    $(input).empty();
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

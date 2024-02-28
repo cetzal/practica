@@ -56,6 +56,7 @@
                         $('#table-prod-search tbody').append(fila);
                     }); 
                 }else{
+                    $('#table-prod-search').show();
                     $.alert({
                         title : '',
                         content : 'No se encontraron productos'

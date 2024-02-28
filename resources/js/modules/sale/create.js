@@ -106,7 +106,8 @@
         let total_quantity = 0;
         let total_subtotal = 0;
         $('#product-detail-table tbody tr').each(function() {
-            let subtotal = parseFloat($(this).find('.subtotal').text());
+            // let subtotal = parseFloat($(this).find('.subtotal').text());
+            let subtotal = parseFloat($(this).find('.subtotal').text().replace(/[^\d.-]/g, ''));
             let quantity = parseInt($(this).find('.quantity').val());
             if (!isNaN(subtotal)) {
                 total_sale += subtotal;
@@ -114,8 +115,7 @@
                 total_subtotal += subtotal;
             }
         });
-
-        $('#total-sale').text(total_sale.toFixed(2));
+        $('#total-sale').text('$ '+parseFloat(total_sale).toLocaleString('en-US', {minimumFractionDigits: 2}));
         $('#total-quantity').text(total_quantity);
     }
 
@@ -132,9 +132,9 @@
             if (product_code == data.code) {
                 let exist_quantity = parseInt($(this).find('.quantity').val());
                 let new_quantity = exist_quantity + quantity;
-                let unit_cost = $(this).find('.unit_cost').text();
+                let unit_cost = parseFloat($(this).find('.unit_cost').text().replace(/[^\d.-]/g, ''));
                 $(this).find('.quantity').val(new_quantity);
-                $(this).find('.subtotal').text((new_quantity * unit_cost).toFixed(2));
+                $(this).find('.subtotal').text('$ '+parseFloat(new_quantity * unit_cost).toLocaleString('en-US', {minimumFractionDigits: 2}));
                 $(this).attr('data-stock-alert', data.alert_quantity);
                 product_exist = true;
                 return false;
@@ -144,11 +144,12 @@
         if (!product_exist) {
             let unit_price = parseFloat(data.price);
             let subtotal = 1 * unit_price;
+            
             fila.append('<td>'+ data.name +'</td>');
             fila.append('<td class="product-code">'+ data.code +'</td>');
             fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
-            fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
-            fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
+            fila.append('<td class="unit_cost">$ '+ parseFloat(unit_price).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
+            fila.append('<td class="subtotal">$ '+ parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
             fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
             $('#product-detail-table tbody').append(fila);
         }
@@ -172,8 +173,10 @@
                     fila.append('<td>'+ row.name +'</td>');
                     fila.append('<td class="product-code">'+ row.code +'</td>');
                     fila.append('<td><input type="number" name="quantity" class="quantity" value="1" min="1" step="1"></td>');
-                    fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
-                    fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
+                    // fila.append('<td class="unit_cost">'+ unit_price.toFixed(2) +'</td>');
+                    // fila.append('<td class="subtotal">'+ subtotal.toFixed(2) +'</td>');
+                    fila.append('<td class="unit_cost">$ '+ parseFloat(unit_price).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
+                    fila.append('<td class="subtotal">$ '+ parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                     fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
                     $('#product-detail-table tbody').append(fila);
             });
@@ -236,28 +239,19 @@
         if (quantity > product_quantity) {
             alert_reorden = product_quantity - quantity;
             let message = 'La cantidad del producto permitida es de <b>'+product_quantity+ '</b>.';
-            // if (stock_alert > alert_reorden) {
-            //     message +='<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.';
-            // }
             $.alert({
                 title: '',
                 content: message
             });
             row.find('.quantity').val(1);
-        } else if (stock_alert > alert_reorden) {
-            
-            $.alert({
-                title: '',
-                content: '<br>Se recomienda realizar el punto de reorden se encuentra por debajo de <b>'+stock_alert+'</b> en existencia.'
-            });
-            let unit_cost = parseFloat(row.find('.unit_cost').text());
-            let subtotal = quantity * unit_cost;
-            row.find('.subtotal').text(subtotal.toFixed(2));
+            let unit_cost = parseFloat(row.find('.unit_cost').text().replace(/[^\d.-]/g, ''));
+            let subtotal = 1 * unit_cost;
+            row.find('.subtotal').text('$ '+parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}));
             calculateTotalSale();
         } else {
-            let unit_cost = parseFloat(row.find('.unit_cost').text());
+            let unit_cost = parseFloat(row.find('.unit_cost').text().replace(/[^\d.-]/g, ''));
             let subtotal = quantity * unit_cost;
-            row.find('.subtotal').text(subtotal.toFixed(2));
+            row.find('.subtotal').text('$ '+parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}));
             calculateTotalSale();
         }
     });
@@ -282,11 +276,12 @@
     $('#save-sale').on('click', function(event) {
         let product_details = [];
         $('#product-detail-table tbody tr').each(function() {
+            parseFloat($(this).find('.unit_cost').text().replace(/[^\d.-]/g, ''))
             let product = {
                 product_id: parseInt($(this).data('product-id').toString()),
                 quantity: parseInt($(this).find('.quantity').val()),
-                unit_price: parseFloat($(this).find('.unit_cost').text()).toFixed(2),
-                total: parseFloat($(this).find('.subtotal').text()).toFixed(2),
+                unit_price: parseFloat($(this).find('.unit_cost').text().replace(/[^\d.-]/g, '')),
+                total: parseFloat($(this).find('.subtotal').text().replace(/[^\d.-]/g, '')),
             }
 
             product_details.push(product);
@@ -302,7 +297,7 @@
             let data = {
                 date: moment($("#sale_date").val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
                 client_id: parseInt($("select[name='client_id']").val()),
-                total: parseFloat($('#total-sale').text()).toFixed(2),
+                total: parseFloat($('#total-sale').text().replace(/[^\d.-]/g, '')),
                 product_details: product_details,
             };
     
@@ -395,22 +390,16 @@
     //Open modal add product
     $('#open-search-product').on('click', function(e) {
         e.preventDefault();
-        $client = $('#select_client').val();
-        if ($client == '') {
-            $.alert({
-                title: 'Ventas',
-                content: 'Selecciona un cliente'
-            })
-        } else {
-            loadSearchComboSuppliers();
-            loadSearchComboBrands();
-            $('#searchProduct').modal('show');
-            $("input[name='code_prod']").val(''),
-            $("input[name='name_prod']").val(''),
-            $("#select_search_supplier").val(''),
-            $("#select_search_brand").val('')
-            $('#product-search-data-table tbody').empty();
-        }
+        
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        $('#searchProduct').modal('show');
+        $("input[name='code_prod']").val('');
+        $("input[name='name_prod']").val('');
+        $("#select_search_supplier").val('');
+        $("#select_search_brand").val('')
+        $('#display-table-product-search').addClass('d-none');
+        $('#product-search-data-table tbody').empty();
     });
 
     $('.bt-close-modal').on('click', function(e){

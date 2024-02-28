@@ -4,7 +4,7 @@ FROM view_brands_active vba
 WHERE vba.id IN(
     SELECT vpa.brand_id
     FROM view_products_active vpa
-    WHERE vpa.brand_id = vba.id
+    WHERE vpa.brand_id = vba.id AND vpa.qty > 0
 ) AND vba.supplier_id IN (
 	SELECT vsa.id FROM view_suppliers_active vsa WHERE vsa.id = vba.supplier_id
 );

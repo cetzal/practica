@@ -1,5 +1,19 @@
 (function() {
 
+    function loadSearchComboSuppliers() {
+        let input = '#select_search_supplier';
+        let url = '/api/sales/load/create/suppliers';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
     function loadSearchComboBrands() {
         let input = '#select_search_brand';
         let url = '/api/sales/load/create/brands';
@@ -64,6 +78,7 @@
         $.get('/api/sales/modalProductSearch', form_data)
             .done(function(response) {
                 $('#product-search-data-table tbody').empty();
+                $('#display-table-product-search').removeClass('d-none');
                 if (response.length) {
                     $.each(response, function(index, row) {
                         let fila = $('<tr>')
@@ -74,7 +89,7 @@
                         fila.append('<td>'+ row.code +'</td>');
                         fila.append('<td>'+ row.name +'</td>');
                         fila.append('<td>'+ row.qty +'</td>');
-                        fila.append('<td>'+ row.price +'</td>');
+                        fila.append('<td>$ '+ parseFloat(row.price).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#product-search-data-table tbody').append(fila);
                     }); 
                 }
@@ -83,11 +98,14 @@
 
     $('#clear_form_prod').on('click', function(event) {
         event.preventDefault();
-        $("input[name='code_prod']").val(''),
-        $("input[name='name_prod']").val(''),
-        $("#select_search_supplier").val(''),
-        $("#select_search_brand").val('')
+        loadSearchComboSuppliers();
+        loadSearchComboBrands();
+        $("input[name='code_prod']").val('');
+        $("input[name='name_prod']").val('');
+        $("#select_search_supplier").val('');
+        $("#select_search_brand").val('');
         $( "#select_all" ).prop('checked', false);
+        $('#display-table-product-search').addClass('d-none');
         $('#product-search-data-table tbody').empty();
     })
 
@@ -114,7 +132,7 @@
                     name: $(this).find('td:eq(2)').text(),
                     qty: parseInt($(this).find('td:eq(3)').text()),
                     alert_quantity: parseInt(row.data('alert-quantity').toString()),
-                    price: parseFloat($(this).find('td:eq(4)').text()),
+                    price: parseFloat($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, '')),
                 });
             }
         });

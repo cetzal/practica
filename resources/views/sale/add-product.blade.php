@@ -41,7 +41,7 @@
                 </div>
             </form>
 
-            <div class="table-responsive">
+            <div id="display-table-product-search" class="table-responsive d-none">
                 <table id="product-search-data-table" class="table" style="width: 100%">
                     <thead>
                         <tr>

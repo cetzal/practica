@@ -313,7 +313,7 @@
                         content: response.message,
                         buttons: {
                             ok: function() {
-                                window.location.replace('/sale-details');
+                                window.location.replace('/sales');
                             }
                         }
                     });

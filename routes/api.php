@@ -119,21 +119,21 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 });
 
 Route::group(['middleware' => ['auth.jwt']], function(){
-    Route::post('/purchase',[App\Http\Controllers\PurchaseDetailController::class, 'store'])->name('api.purchase.store');
-    Route::get('/purchase/list', [App\Http\Controllers\PurchaseDetailController::class, 'list'])->name('api.purchase.list');
-    Route::get('/purchase/load/create/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadCreateComboSuppliers'])->name('api.supplier.load.create.combo-supliers');
-    Route::get('/purchase/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getBrandsBySupplierId'])->name('api.purchase.brand-combo');
-    Route::get('/purchase/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getProductsByBrandId'])->name('api.purchase.brand-combo');
+    Route::post('/purchase',[App\Http\Controllers\PurchaseController::class, 'store'])->name('api.purchase.store');
+    Route::get('/purchase/list', [App\Http\Controllers\PurchaseController::class, 'list'])->name('api.purchase.list');
+    Route::get('/purchase/load/create/suppliers', [\App\Http\Controllers\PurchaseController::class, 'loadCreateComboSuppliers'])->name('api.supplier.load.create.combo-supliers');
+    Route::get('/purchase/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getBrandsBySupplierId'])->name('api.purchase.brand-combo');
+    Route::get('/purchase/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getProductsByBrandId'])->name('api.purchase.brand-combo');
     
-    Route::get('/purchase/load/serach/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboSuppliers'])->name('api.purchase.load.combo.suppliers');
-    Route::get('/purchase/load/serach/brands', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboBrands'])->name('api.purchase.load.combo.brands');
-    Route::get('/purchase/load/search/products', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
+    Route::get('/purchase/load/serach/suppliers', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboSuppliers'])->name('api.purchase.load.combo.suppliers');
+    Route::get('/purchase/load/serach/brands', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboBrands'])->name('api.purchase.load.combo.brands');
+    Route::get('/purchase/load/search/products', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
 
-    Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseDetailController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
-    Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase.search-product');
-    Route::get('/purchase/getbrandSearchById', [App\Http\Controllers\PurchaseDetailController::class, 'searchBrandBySupplierId'])->name('api.purchase.search-brand');
-    Route::get('/purchase/modalProductSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProduct'])->name('api.sales.modal.search-product');
-    Route::get('/purchase/getStockAlert', [App\Http\Controllers\PurchaseDetailController::class, 'getStockAlert'])->name('api.purchase.stockAlert');
+    Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
+    Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase.search-product');
+    Route::get('/purchase/getbrandSearchById', [App\Http\Controllers\PurchaseController::class, 'searchBrandBySupplierId'])->name('api.purchase.search-brand');
+    Route::get('/purchase/modalProductSearch', [App\Http\Controllers\PurchaseController::class, 'searchProduct'])->name('api.sales.modal.search-product');
+    Route::get('/purchase/getStockAlert', [App\Http\Controllers\PurchaseController::class, 'getStockAlert'])->name('api.purchase.stockAlert');
 });
 Route::group(['middleware' => ['auth.jwt']], function(){
     Route::post('/purchase-details',[App\Http\Controllers\PurchaseDetailController::class, 'store'])->name('api.purchase-detail.store');

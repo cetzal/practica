@@ -23,25 +23,6 @@ class PurchaseController extends Controller
     public function list(Request $request){
 
         $where = [];
-        if(!empty($request->code_prod)){
-            $where[] = ['code', 'like', '%'.$request->code_prod.'%'];
-        }
-
-        if(!empty($request->name_prod)){
-            $where[] = ['product_name', 'like', '%'.$request->name_prod.'%'];
-        }
-
-        if (!empty($request->supplier_id)) {
-            $where[] = ['supplier_id', '=', $request->supplier_id];
-        }
-
-        if (!empty($request->brand_id)) {
-            $where[] = ['brand_id', '=', $request->brand_id];
-        }
-
-        if (!empty($request->product_id)) {
-            $where[] = ['product_id', '=', $request->product_id];
-        }
 
         if (!empty($request->range_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
@@ -50,12 +31,16 @@ class PurchaseController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '>=', trim($date_from)];
             $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
-        
 
-        $query = DB::table('view_purchase_details')
-        ->select(DB::raw('purchase_date, code, product_name, supplier_id, supplier_name,brand_name, qty, total'));
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+ 
+        $data = DB::table('view_purchases')
+                ->select(['id', 'purchase_date', 'supplier_name', 'total'])
+                ->where($where)
+                ->get();
 
-        $data = $query->where($where)->get();
         $totalData = $data->count();
         $totalFiltered = $data->count();
         $json_data = array(

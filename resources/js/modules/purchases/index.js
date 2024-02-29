@@ -43,7 +43,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             }
         },
         'columns' : [
-           
             {
                 data: 'purchase_date',
                 render : function(data, type, row, meta){
@@ -51,33 +50,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 }
             },
             {
-                data: 'purchase_date',
-                render : function(data, type, row, meta){
-                    return row.product_name;
-                }
-            },
-            {
-                data: 'code',
-                render : function(data, type, row, meta){
-                    return row.code;
-                }
-            },
-            {
                 data: 'supplier_name',
                 render : function(data, type, row, meta){
                     return row.supplier_name;
-                }
-            },
-            {
-                data: 'brand_name',
-                render : function(data, type, row, meta){
-                    return row.brand_name;
-                }
-            },
-            {
-                data: 'qty',
-                render : function(data, type, row, meta){
-                    return row.qty;
                 }
             },
             {
@@ -88,8 +63,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             }
         ],
         "createdRow": function( row, data, dataIndex ) {
-            $(row).addClass('purchase-link');
-            $(row).attr('data-purchase', data['purchase']);
+            $(row).attr('data-purchase-id', data['id']);
         },
         
         'language': {
@@ -107,15 +81,24 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 "orderable": false,
                 'targets': [0]
-            }
+            },
+            {
+                'render': function(data, type, row, meta){
+                    let html = '<a href="#" class="btn btn-primary btn-sm open-ViewPurcharseDetail" data-purcharse-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#viewDetailModal"><i class="fa fa-list" aria-hidden="true"></i></a>';
+
+                    return html;
+                
+                },
+                'targets': [3]
+            },
             
         ],
        
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
-            $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
-            $('tfoot th').eq(6).html('$ '+ parseFloat( api.column(6, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+            // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
 
        
         },

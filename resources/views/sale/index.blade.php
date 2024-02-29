@@ -75,27 +75,15 @@
         <table id="sale-table" class="table purchase-list" style="width: 100%">
             <thead>
                 <tr>
-                    <!-- <th class="not-exported"></th> -->
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.customer')}}</th>
-                    <th>{{trans('file.Code')}}</th>
-                    <th>{{trans('file.product')}}</th>
-                    <th>{{trans('file.Supplier')}}</th>
-                    <th>{{trans('file.Brand')}}</th>
-                    <th>{{trans('file.Items')}}</th>
                     <th>{{trans('file.Total')}}</th>
-                    <!-- <th>{{trans('file.Created By')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th> -->
+                    <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
             
             <tfoot class="tfoot active">
-                <!-- <th></th> -->
                 <th>{{trans('file.Total')}}</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

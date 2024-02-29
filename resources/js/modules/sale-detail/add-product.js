@@ -2,7 +2,7 @@
 
     function loadSearchComboSuppliers() {
         let input = '#select_search_supplier';
-        let url = '/api/sales/load/create/suppliers';
+        let url = '/api/sale-details/load/create/suppliers';
 
         $.get(url, function(response) {
             if (response.length) {
@@ -16,7 +16,7 @@
 
     function loadSearchComboBrands() {
         let input = '#select_search_brand';
-        let url = '/api/sales/load/create/brands';
+        let url = '/api/sale-details/load/create/brands';
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();
@@ -30,7 +30,7 @@
     //Load initial combos
     $('#select_search_supplier').on('change', function() {
         let supplier_id = $(this).val();
-        let url = '/api/sales/getBrandsBySupplierId/'+supplier_id;
+        let url = '/api/sale-details/getBrandsBySupplierId/'+supplier_id;
         let input_brand = '#select_search_brand';
 
         if (supplier_id != '') {
@@ -49,7 +49,7 @@
 
     $('#select_brand').on('change', function() {
         let brand_id = $(this).val();
-        let url = '/api/sales/getProductsByBrandId/'+brand_id;
+        let url = '/api/sale-details/getProductsByBrandId/'+brand_id;
         let input = '#select_product';
         if (brand_id != '') {
             $.get(url, function(response) {
@@ -75,7 +75,7 @@
             brand_id: $("#select_search_brand").val()
         };
 
-        $.get('/api/sales/modalProductSearch', form_data)
+        $.get('/api/sale-details/modalProductSearch', form_data)
             .done(function(response) {
                 $('#product-search-data-table tbody').empty();
                 $('#display-table-product-search').removeClass('d-none');

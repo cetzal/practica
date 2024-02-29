@@ -29,7 +29,7 @@ const { result } = require("lodash");
             contentType: false,
             dataType: 'json',
             type: "GET",
-            url: host + '/api/purchase/load/create/suppliers',
+            url: host + '/api/purchase-details/load/create/suppliers',
             success: function( response ){
                
                 if(response.length != 0){
@@ -90,7 +90,7 @@ const { result } = require("lodash");
         
         $.ajax({
             type: 'GET',
-            url: host + '/api/purchase/getProductSearch/' + product_id ,
+            url: host + '/api/purchase-details/getProductSearch/' + product_id ,
             success: function(data) {
                 //console.log(data);
                 var flag = 1;
@@ -386,7 +386,7 @@ const { result } = require("lodash");
 
             $.ajax({
                 type:'POST',
-                url: host + "/api/purchase",
+                url: host + "/api/purchase-details",
                 data: data,
                 success: function (response) {
                     $.confirm({
@@ -394,7 +394,7 @@ const { result } = require("lodash");
                         content: response.message,
                         buttons: {
                             ok: function () {
-                                window.location.replace('/purchases');
+                                window.location.replace('/purchase-details');
                             }
                         }
                     });

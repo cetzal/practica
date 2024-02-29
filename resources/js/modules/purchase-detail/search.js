@@ -3,7 +3,7 @@
 (function(){
     var host = window.location.origin;
     function brandsBySupplier(supplier_id){
-        var url = 'api/purchase/getBrandsBySupplierId/'+ supplier_id;
+        var url = 'api/purchase-details/getBrandsBySupplierId/'+ supplier_id;
         $('select[name="brand_id"]').empty();
        
         $.ajax({
@@ -38,7 +38,7 @@
             brand_id: $("select[name='brand_id']").val()
         };
 
-        $.get('/api/purchase/modalProductSearch', form_data)
+        $.get('/api/purchase-details/modalProductSearch', form_data)
             .done(function(response) {
                 $('#table-prod-search tbody').empty();
                 if (response.length) {

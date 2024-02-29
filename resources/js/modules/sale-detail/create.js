@@ -20,7 +20,7 @@
 
     $('#select_supplier').on('change', function() {
         let supplier_id = $(this).val();
-        let url = '/api/sales/getBrandsBySupplierId/'+supplier_id;
+        let url = '/api/sale-details/getBrandsBySupplierId/'+supplier_id;
         let input_brand = '#select_brand';
         let input_product = '#select_product';
 
@@ -42,7 +42,7 @@
 
     $('#select_brand').on('change', function() {
         let brand_id = $(this).val();
-        let url = '/api/sales/getProductsByBrandId/'+brand_id;
+        let url = '/api/sale-details/getProductsByBrandId/'+brand_id;
         let input = '#select_product';
         if (brand_id != '') {
             $.get(url, function(response) {
@@ -60,7 +60,7 @@
 
     function loadComboSuppliers() {
         let input = '#select_supplier';
-        let url = '/api/sales/load/create/suppliers';
+        let url = '/api/sale-details/load/create/suppliers';
         $(input).append('<option value="">Without suppliers</option>');
 
         $.get(url, function(response) {
@@ -76,7 +76,7 @@
 
     function loadComboClients() {
         let input = '#select_client';
-        let url = '/api/sales/load/create/clients';
+        let url = '/api/sale-details/load/create/clients';
 
         $.get(url, function(response) {
             if (response.length) {
@@ -303,7 +303,7 @@
     
             $.ajax({
                 type: "POST",
-                url: '/api/sales',
+                url: '/api/sale-details',
                 dataType: 'json',
                 async: false,
                 data: data,
@@ -313,7 +313,7 @@
                         content: response.message,
                         buttons: {
                             ok: function() {
-                                window.location.replace('/sales');
+                                window.location.replace('/sale-details');
                             }
                         }
                     });
@@ -355,7 +355,7 @@
     //Para cargar los cambos del modal searchProduct
     function loadSearchComboSuppliers() {
         let input = '#select_search_supplier';
-        let url = '/api/sales/load/create/suppliers';
+        let url = '/api/sale-details/load/create/suppliers';
 
         $.get(url, function(response) {
             if (response.length) {
@@ -369,7 +369,7 @@
     
     function loadSearchComboBrands() {
         let input = '#select_search_brand';
-        let url = '/api/sales/load/create/brands';
+        let url = '/api/sale-details/load/create/brands';
         $.get(url, function(response) {
             if (response.length) {
                 $(input).find('option').remove().end();

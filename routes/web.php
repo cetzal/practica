@@ -49,6 +49,7 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/clients', [App\Http\Controllers\ClientsControlles::class, 'index'])->name('clients.index');
     Route::get('/product/code', [App\Http\Controllers\ProductController::class, 'validateCode'])->name('api.product.validate_code');
     Route::get('/purchases', [App\Http\Controllers\PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/purchases/create', [App\Http\Controllers\PurchaseController::class, 'create'])->name('purchases.create');
     Route::get('/purchase-details', [App\Http\Controllers\PurchaseDetailController::class, 'index'])->name('purchase-details.index');
     Route::get('/purchase-details/create', [App\Http\Controllers\PurchaseDetailController::class, 'create'])->name('purchase-details.create');
     Route::get('/log-record/{id}', [App\Http\Controllers\LogRecordController::class, 'index'])->name('api.log-record.index');

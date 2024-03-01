@@ -44,6 +44,7 @@
                     type: "GET"
                 },
                 'language': {
+                    'infoFiltered': ' - filtrado de _MAX_ registros en total',
                     // 'lengthMenu': '_MENU_ {{trans("file.records per page")}}',
                     // "info":      '<small>{{trans("file.Showing")}} _START_ - _END_ (_TOTAL_)</small>',
                     // "search":  '{{trans("file.Search")}}',

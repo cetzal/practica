@@ -91,8 +91,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             $(row).addClass('purchase-link');
             $(row).attr('data-purchase', data['purchase']);
         },
-        
+        //"sInfoFiltered":   "(filtrado de _MX_ en total)",
         'language': {
+            'infoFiltered': ' - filtrado de _MAX_ registros en total',
             /*'searchPlaceholder': "{{trans('file.Type date or purchase reference...')}}",*/
             'lengthMenu': '_MENU_',
             "info":      '<small> _START_ - _END_ (_TOTAL_)</small>',

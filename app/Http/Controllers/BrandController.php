@@ -51,6 +51,12 @@ class BrandController extends Controller
             $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', trim($date_from)];
             $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', trim($date_to)];
         }
+
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+        $start = $request->start ?? 1;
         
         $data = DB::table('view_brands')
                 ->select(['id', 'name', 'description', 'is_active', 'created_by', 'supplier_name', 'created_at', 'updated_at'])
@@ -61,7 +67,7 @@ class BrandController extends Controller
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($data->count()),  
             "recordsFiltered" => intval($data->count()), 
-            "data"            => $data
+            "data"            => $data->skip($start)->take($limit)->values()
         );
 
         return response()->json($json_data);

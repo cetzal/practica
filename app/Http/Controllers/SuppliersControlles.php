@@ -45,6 +45,12 @@ class SuppliersControlles extends Controller
             $whereBetween = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), [$date_from, $date_to]];
         }
 
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+        $start = $request->start ?? 1;
+
         $query = DB::table('view_suppliers')->where($where);
 
         if(count($whereBetween) > 0){
@@ -57,7 +63,7 @@ class SuppliersControlles extends Controller
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($data->count()),  
             "recordsFiltered" => intval($data->count()), 
-            "data"            => $data
+            "data"            => $data->skip($start)->take($limit)->values()
         );
 
         return response()->json($json_data);

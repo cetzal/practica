@@ -418,7 +418,7 @@
                 //{"data": "options"},
             ],
             'language': {
-                
+                'infoFiltered': ' - filtrado de _MAX_ registros en total',
                 'lengthMenu': '_MENU_',
                 "info":      '<small> _START_ - _END_ (_TOTAL_)</small>',
                 "search":  '{{trans("file.Search")}}',

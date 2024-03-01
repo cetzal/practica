@@ -65,6 +65,12 @@ class ProductController extends Controller
         if($request->prod_status != '') {
             $where[] = ['is_active', '=' ,$request->prod_status];
         }
+        
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+        $start = $request->start ?? 1;
 
         $data = DB::table('view_products')
                  ->select([
@@ -74,14 +80,15 @@ class ProductController extends Controller
                 ])
                 ->where($where)
                 ->get();
-
-       $totalData = $data->count();
-       $totalFiltered = $data->count();
+        
+        $totalData = $data->count();
+        $totalFiltered = $totalData;
+       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
             "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
+            "data"            => $data->skip($start)->take($limit)->values()   
         );
             
         echo json_encode($json_data);

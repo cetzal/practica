@@ -50,19 +50,29 @@ class PurchaseController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '>=', trim($date_from)];
             $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
-        
+
+        if($request->input('length') != -1)
+            $limit = $request->input('length');
+        else
+            $limit = 10;
+        $start = $request->input('start') ?? 1;
+
+       
 
         $query = DB::table('view_purchase_details')
         ->select(DB::raw('purchase_date, code, product_name, supplier_id, supplier_name,brand_name, qty, total'));
+        
 
         $data = $query->where($where)->get();
+
         $totalData = $data->count();
-        $totalFiltered = $data->count();
+        $totalFiltered = $totalData;
+       
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
             "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
+            "data"            => $data->skip($start)->take($limit)->values()
         );
             
         echo json_encode($json_data);

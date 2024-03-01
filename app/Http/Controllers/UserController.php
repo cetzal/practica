@@ -55,6 +55,12 @@ class UserController extends Controller
         if($request->user_status != '') {
             $where[] = ['is_active', '=', $request->user_status];
         }
+
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+        $start = $request->start ?? 1;
         
         $data = DB::table('view_users')
                     ->select([
@@ -73,7 +79,7 @@ class UserController extends Controller
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
             "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
+            "data"            => $data->skip($start)->take($limit)->values()   
         );
             
         //echo json_encode($json_data);

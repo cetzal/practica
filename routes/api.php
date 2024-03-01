@@ -137,63 +137,67 @@ Route::group(['middleware' => ['auth.jwt']], function(){
 });
 Route::group(['middleware' => ['auth.jwt']], function(){
     Route::post('/purchase-details',[App\Http\Controllers\PurchaseDetailController::class, 'store'])->name('api.purchase-detail.store');
-    Route::get('/purchase-details/list', [App\Http\Controllers\PurchaseDetailController::class, 'list'])->name('api.purchase-detail.list');
-    Route::get('/purchase-details/load/create/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadCreateComboSuppliers'])->name('api.supplier.load.create.combo-supliers');
-    Route::get('/purchase-details/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getBrandsBySupplierId'])->name('api.purchase-detail.brand-combo');
-    Route::get('/purchase-details/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getProductsByBrandId'])->name('api.purchase-detail.brand-combo');
+    Route::get('/purchase-details/{id}', [App\Http\Controllers\PurchaseDetailController::class, 'showList'])->name('api.purchase-detail.show-list');
     
-    Route::get('/purchase-details/load/serach/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboSuppliers'])->name('api.purchase-detail.load.combo.suppliers');
-    Route::get('/purchase-details/load/serach/brands', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboBrands'])->name('api.purchase-detail.load.combo.brands');
-    Route::get('/purchase-details/load/search/products', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboProducts'])->name('api.purchase-detail.load.combo.products');
+    // Route::get('/purchase-details/list', [App\Http\Controllers\PurchaseDetailController::class, 'list'])->name('api.purchase-detail.list');
+    // Route::get('/purchase-details/load/create/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadCreateComboSuppliers'])->name('api.supplier.load.create.combo-supliers');
+    // Route::get('/purchase-details/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getBrandsBySupplierId'])->name('api.purchase-detail.brand-combo');
+    // Route::get('/purchase-details/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseDetailController::class, 'getProductsByBrandId'])->name('api.purchase-detail.brand-combo');
+    
+    // Route::get('/purchase-details/load/serach/suppliers', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboSuppliers'])->name('api.purchase-detail.load.combo.suppliers');
+    // Route::get('/purchase-details/load/serach/brands', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboBrands'])->name('api.purchase-detail.load.combo.brands');
+    // Route::get('/purchase-details/load/search/products', [\App\Http\Controllers\PurchaseDetailController::class, 'loadSearchComboProducts'])->name('api.purchase-detail.load.combo.products');
 
-    Route::get('/purchase-details/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseDetailController::class, 'getproductSearchById'])->name('api.purchase-detail.getProductSearch');
-    Route::get('/purchase-details/productSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase-detail.search-product');
-    Route::get('/purchase-details/getbrandSearchById', [App\Http\Controllers\PurchaseDetailController::class, 'searchBrandBySupplierId'])->name('api.purchase-detail.search-brand');
-    Route::get('/purchase-details/modalProductSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProduct'])->name('api.sales.modal.search-product');
-    Route::get('/purchase-details/getStockAlert', [App\Http\Controllers\PurchaseDetailController::class, 'getStockAlert'])->name('api.purchase-detail.stockAlert');
+    // Route::get('/purchase-details/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseDetailController::class, 'getproductSearchById'])->name('api.purchase-detail.getProductSearch');
+    // Route::get('/purchase-details/productSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase-detail.search-product');
+    // Route::get('/purchase-details/getbrandSearchById', [App\Http\Controllers\PurchaseDetailController::class, 'searchBrandBySupplierId'])->name('api.purchase-detail.search-brand');
+    // Route::get('/purchase-details/modalProductSearch', [App\Http\Controllers\PurchaseDetailController::class, 'searchProduct'])->name('api.sales.modal.search-product');
+    // Route::get('/purchase-details/getStockAlert', [App\Http\Controllers\PurchaseDetailController::class, 'getStockAlert'])->name('api.purchase-detail.stockAlert');
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {
-    Route::post('/sales', [\App\Http\Controllers\SaleDetailController::class, 'store'])->name('api.sales.store');
-    Route::get('/sales/list', [\App\Http\Controllers\SaleDetailController::class, 'list'])->name('api.sales.list');
-    Route::get('/sales/load/create/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboSuppliers'])->name('api.sales.load.create.combo-supliers');
-    Route::get('/sales/load/create/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboBrands'])->name('api.sales.load.create.combo-brands');
-    Route::get('/sales/load/create/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboClients'])->name('api.sales.load.create.combo-clients');
+    Route::post('/sales', [\App\Http\Controllers\SaleController::class, 'store'])->name('api.sales.store');
+    Route::get('/sales/list', [\App\Http\Controllers\SaleController::class, 'list'])->name('api.sales.list');
+    Route::get('/sales/load/create/suppliers', [\App\Http\Controllers\SaleController::class, 'loadCreateComboSuppliers'])->name('api.sales.load.create.combo-supliers');
+    Route::get('/sales/load/create/brands', [\App\Http\Controllers\SaleController::class, 'loadCreateComboBrands'])->name('api.sales.load.create.combo-brands');
+    Route::get('/sales/load/create/clients', [\App\Http\Controllers\SaleController::class, 'loadCreateComboClients'])->name('api.sales.load.create.combo-clients');
     /**
      * Rutas para cargar los cambos de la vista index
      */
-    Route::get('/sales/load/serach/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboSuppliers'])->name('api.sales.load.combo.suppliers');
-    Route::get('/sales/load/serach/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboBrands'])->name('api.sales.load.combo.brands');
-    Route::get('/sales/load/search/products', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboProducts'])->name('api.sales.load.combo.products');
-    Route::get('/sales/load/search/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboClients'])->name('api.sales.load.combo.clients');
+    Route::get('/sales/load/serach/suppliers', [\App\Http\Controllers\SaleController::class, 'loadSearchComboSuppliers'])->name('api.sales.load.combo.suppliers');
+    Route::get('/sales/load/serach/brands', [\App\Http\Controllers\SaleController::class, 'loadSearchComboBrands'])->name('api.sales.load.combo.brands');
+    Route::get('/sales/load/search/products', [\App\Http\Controllers\SaleController::class, 'loadSearchComboProducts'])->name('api.sales.load.combo.products');
+    Route::get('/sales/load/search/clients', [\App\Http\Controllers\SaleController::class, 'loadSearchComboClients'])->name('api.sales.load.combo.clients');
     /**
      * End combos de la vista index
      */
-    Route::get('/sales/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getBrandsBySupplierId'])->name('api.sales.brand-combo');
-    Route::get('/sales/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getProductsByBrandId'])->name('api.sales.brand-combo');
-    Route::get('/sales/brandSearch', [App\Http\Controllers\SaleDetailController::class, 'searchBrandBySupplierId'])->name('api.sales.search-brand');
-    Route::get('/sales/productSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProductByBrandId'])->name('api.sales.search-product');
-    Route::get('/sales/modalProductSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProduct'])->name('api.sales.modal.search-product');
+    Route::get('/sales/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleController::class, 'getBrandsBySupplierId'])->name('api.sales.brand-combo');
+    Route::get('/sales/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleController::class, 'getProductsByBrandId'])->name('api.sales.brand-combo');
+    Route::get('/sales/brandSearch', [App\Http\Controllers\SaleController::class, 'searchBrandBySupplierId'])->name('api.sales.search-brand');
+    Route::get('/sales/productSearch', [App\Http\Controllers\SaleController::class, 'searchProductByBrandId'])->name('api.sales.search-product');
+    Route::get('/sales/modalProductSearch', [App\Http\Controllers\SaleController::class, 'searchProduct'])->name('api.sales.modal.search-product');
 });
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/sale-details', [\App\Http\Controllers\SaleDetailController::class, 'store'])->name('api.sale-details.store');
     Route::get('/sale-details/list', [\App\Http\Controllers\SaleDetailController::class, 'list'])->name('api.sale-details.list');
-    Route::get('/sale-details/load/create/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboSuppliers'])->name('api.sale-details.load.create.combo-supliers');
-    Route::get('/sale-details/load/create/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboBrands'])->name('api.sale-details.load.create.combo-brands');
-    Route::get('/sale-details/load/create/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboClients'])->name('api.sale-details.load.create.combo-clients');
-    /**
-     * Rutas para cargar los cambos de la vista index
-     */
-    Route::get('/sale-details/load/serach/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboSuppliers'])->name('api.sale-details.load.combo.suppliers');
-    Route::get('/sale-details/load/serach/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboBrands'])->name('api.sale-details.load.combo.brands');
-    Route::get('/sale-details/load/search/products', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboProducts'])->name('api.sale-details.load.combo.products');
-    Route::get('/sale-details/load/search/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboClients'])->name('api.sale-details.load.combo.clients');
-    /**
-     * End combos de la vista index
-     */
-    Route::get('/sale-details/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getBrandsBySupplierId'])->name('api.sale-details.brand-combo');
-    Route::get('/sale-details/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getProductsByBrandId'])->name('api.sale-details.brand-combo');
-    Route::get('/sale-details/brandSearch', [App\Http\Controllers\SaleDetailController::class, 'searchBrandBySupplierId'])->name('api.sale-details.search-brand');
-    Route::get('/sale-details/productSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProductByBrandId'])->name('api.sale-details.search-product');
-    Route::get('/sale-details/modalProductSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProduct'])->name('api.sale-details.modal.search-product');
+    
+    // Route::get('/sale-details/list', [\App\Http\Controllers\SaleDetailController::class, 'list'])->name('api.sale-details.list');
+    // Route::get('/sale-details/load/create/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboSuppliers'])->name('api.sale-details.load.create.combo-supliers');
+    // Route::get('/sale-details/load/create/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboBrands'])->name('api.sale-details.load.create.combo-brands');
+    // Route::get('/sale-details/load/create/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboClients'])->name('api.sale-details.load.create.combo-clients');
+    // /**
+    //  * Rutas para cargar los cambos de la vista index
+    //  */
+    // Route::get('/sale-details/load/serach/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboSuppliers'])->name('api.sale-details.load.combo.suppliers');
+    // Route::get('/sale-details/load/serach/brands', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboBrands'])->name('api.sale-details.load.combo.brands');
+    // Route::get('/sale-details/load/search/products', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboProducts'])->name('api.sale-details.load.combo.products');
+    // Route::get('/sale-details/load/search/clients', [\App\Http\Controllers\SaleDetailController::class, 'loadSearchComboClients'])->name('api.sale-details.load.combo.clients');
+    // /**
+    //  * End combos de la vista index
+    //  */
+    // Route::get('/sale-details/getBrandsBySupplierId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getBrandsBySupplierId'])->name('api.sale-details.brand-combo');
+    // Route::get('/sale-details/getProductsByBrandId/{id}', [\App\Http\Controllers\SaleDetailController::class, 'getProductsByBrandId'])->name('api.sale-details.brand-combo');
+    // Route::get('/sale-details/brandSearch', [App\Http\Controllers\SaleDetailController::class, 'searchBrandBySupplierId'])->name('api.sale-details.search-brand');
+    // Route::get('/sale-details/productSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProductByBrandId'])->name('api.sale-details.search-product');
+    // Route::get('/sale-details/modalProductSearch', [App\Http\Controllers\SaleDetailController::class, 'searchProduct'])->name('api.sale-details.modal.search-product');
 });

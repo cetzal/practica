@@ -630,5 +630,6 @@ return [
 	'without_clients' => 'Without clients',
 	'see_products_to_buy' => 'See products to buy',
 	'select_the_supplier' => 'Select the supplier',
+	'purchase_number' => 'Purchase number',
 ];
 ?>

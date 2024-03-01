@@ -32,7 +32,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            url:"/api/purchase/list",
+            url:"/api/purchase-details/list",
             "data": function(d) {
                 var frm_data = $('form#from_search_purchase').serializeArray();
                 // return frm_data;
@@ -43,16 +43,41 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             }
         },
         'columns' : [
+           
             {
                 data: 'purchase_date',
                 render : function(data, type, row, meta){
-                    return moment(row.purcharse_date).format('DD/MM/YYYY');
+                    return row.purchase_date;
+                }
+            },
+            {
+                data: 'purchase_date',
+                render : function(data, type, row, meta){
+                    return row.product_name;
+                }
+            },
+            {
+                data: 'code',
+                render : function(data, type, row, meta){
+                    return row.code;
                 }
             },
             {
                 data: 'supplier_name',
                 render : function(data, type, row, meta){
                     return row.supplier_name;
+                }
+            },
+            {
+                data: 'brand_name',
+                render : function(data, type, row, meta){
+                    return row.brand_name;
+                }
+            },
+            {
+                data: 'qty',
+                render : function(data, type, row, meta){
+                    return row.qty;
                 }
             },
             {
@@ -63,7 +88,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             }
         ],
         "createdRow": function( row, data, dataIndex ) {
-            $(row).attr('data-purchase-id', data['id']);
+            $(row).addClass('purchase-link');
+            $(row).attr('data-purchase', data['purchase']);
         },
         
         'language': {
@@ -81,25 +107,15 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 "orderable": false,
                 'targets': [0]
-            },
-            {
-                'render': function(data, type, row, meta){
-                    // let html = '<a href="#" class="btn btn-primary btn-sm open-ViewPurcharseDetail" data-purcharse-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#viewDetailModal"><i class="fa fa-list" aria-hidden="true"></i></a>';
-                    let html =  '<a href="#" class="btn bg-primary btn-sm redirect-purchase-detail" data-purchase-id="'+row.id+'"'+
-                                'data-purchase-date="'+row.purchase_date+'" data-supplier="'+row.supplier_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
-                    return html;
-                
-                },
-                'targets': [3]
-            },
+            }
             
         ],
        
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
-            // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
-            $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+            $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            $('tfoot th').eq(6).html('$ '+ parseFloat( api.column(6, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
 
        
         },
@@ -135,7 +151,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
     function loadSearchComboSuppliers() {
         let input = '.selectpicker-suppliers';
-        let url = '/api/purchase/load/serach/suppliers';
+        let url = '/api/purchase-details/load/serach/suppliers';
         $(input).empty();
 
         $.get(url, function(response) {
@@ -149,7 +165,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     }
     function loadSearchComboBrands() {
         let input = '.selectpicker-brands';
-        let url = '/api/purchase/load/serach/brands';
+        let url = '/api/purchase-details/load/serach/brands';
         $(input).empty();
         $.get(url, function(response) {
             if (response.length) {
@@ -163,7 +179,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
     function loadSearchComboProducts() {
         let input = '.selectpicker-product';
-        let url = '/api/purchase/load/search/products';
+        let url = '/api/purchase-details/load/search/products';
         $(input).empty();
         $.get(url, function(response) {
             if (response.length) {
@@ -176,7 +192,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     }
 
     function loadStockAlert(){
-        let url = '/api/purchase/getStockAlert';
+        let url = '/api/purchase-details/getStockAlert';
         $.get(url, function(response) {
             if (response.length) {
 
@@ -190,7 +206,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
     function searchBrandBySupplierId(){
         let supplier_id = $('select[name="supplier_id"]').val();
-        let url = '/api/purchase/getbrandSearchById?supplier_id='+supplier_id;
+        let url = '/api/purchase-details/getbrandSearchById?supplier_id='+supplier_id;
         let input_brand = '.selectpicker-brands';
         $(input_brand).empty();
         if (supplier_id != '') {
@@ -215,7 +231,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         }
        
 
-        let url = '/api/purchase/productSearch?brand_id='+brand_id+'&supplier_id='+supplier_id;
+        let url = '/api/purchase-details/productSearch?brand_id='+brand_id+'&supplier_id='+supplier_id;
         let input = '.selectpicker-product';
         $(input).empty();
         $.get(url, function(response) {
@@ -266,13 +282,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         });
     });
 
-    $('#purchase-table').on('click', '.redirect-purchase-detail', function(e) {
-        e.preventDefault();
-        let purchase_id = $(this).data('purchase-id').toString();
-        let purchase_date = $(this).data('purchase-date').toString();
-        let supplier = $(this).data('supplier').toString();
-        window.open(window.location.origin +'/purchase-details/'+purchase_id+'?purchase_date='+purchase_date+'&supplier='+supplier, '_blank');
-    });
 
     $(document).ready(function(){
         loadStockAlert();

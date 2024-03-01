@@ -209,12 +209,11 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     function searchProductBySupplierid(){
         let brand_id = $('select[name="brand_id"]').val();
         let supplier_id = $('select[name="supplier_id"]').val();
-        console.log(typeof(brand_id));
+
         if(typeof(brand_id) === 'object'){
             brand_id = '';
         }
-       
-
+        
         let url = '/api/purchase/productSearch?brand_id='+brand_id+'&supplier_id='+supplier_id;
         let input = '.selectpicker-product';
         $(input).empty();

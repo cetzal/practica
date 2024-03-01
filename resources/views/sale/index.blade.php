@@ -13,6 +13,13 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
+                        <label>{{trans('file.client')}}</label>
+                        <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -22,14 +29,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label>{{trans('file.client')}}</label>
-                        <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
-                        </select>
-                    </div>
-                </div>
-                
                 <div class="col">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data">{{trans('file.filter')}}</button>

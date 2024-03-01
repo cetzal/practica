@@ -27,6 +27,11 @@
         <form id="from_search_purchase">
             <div class="row">
                 <div class="col">
+                    <label for="name">{{trans('file.supplier')}}</label>
+                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">        
+                    </select>
+                </div>
+                <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
@@ -36,12 +41,6 @@
                             <input type="text" name="range_date" id="range_date" class="form-control" />
                         </div>
                     </div>
-                </div>
-                <div class="col">
-                    <label for="name">{{trans('file.supplier')}}</label>
-                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
-                            
-                    </select>
                 </div>
                 <div class="col">
                     <label for=""></label>

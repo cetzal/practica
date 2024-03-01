@@ -11,11 +11,11 @@ class PurchaseDetailController extends Controller
 {
     public function index(Request $request, $id)
     {
-        $purchase_number = $id;
+        $purchase_id = $id;
         $purchase_date = Carbon::createFromFormat('Y-m-d', $request->purchase_date)->format('d/m/Y');
         $supplier = $request->supplier;
         
-        return view('purchase-detail.index', compact('purchase_number', 'purchase_date', 'supplier'));
+        return view('purchase-detail.index', compact('purchase_id', 'purchase_date', 'supplier'));
     }
 
     public function showList(Request $request, $id)

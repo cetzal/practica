@@ -15,17 +15,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             "serverSide": true,
             "ajax":{
                 url:"/api/purchase-details/"+purchase_id,
-                "data": function(d) {
-                    var frm_data = $('form#from_search_purchase').serializeArray();
-                    // return frm_data;
-                    $.each(frm_data, function(key, val) {
-                        d[val.name] = val.value;
-                    });
-                    console.log('frmdata', frm_data);
-                }
             },
             'columns' : [
-            
                 {
                     data: 'code',
                     render : function(data, type, row, meta){
@@ -33,7 +24,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                     }
                 },
                 {
-                    data: 'purchase_name',
+                    data: 'product_name',
                     render : function(data, type, row, meta){
                         return row.product_name;
                     }

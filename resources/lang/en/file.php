@@ -631,5 +631,6 @@ return [
 	'see_products_to_buy' => 'See products to buy',
 	'select_the_supplier' => 'Select the supplier',
 	'purchase_number' => 'Purchase number',
+	'purchase_detail' => 'Purchase detail',
 ];
 ?>

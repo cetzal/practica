@@ -630,5 +630,6 @@ return [
 	'see_products_to_buy' => 'Ver productos por comprar',
 	'select_the_supplier' => 'Seleccione el proveedor',
 	'purchase_number' => 'Numero compra',
+	'purchase_detail' => 'Detalle de compra',
 ];
 ?>

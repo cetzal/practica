@@ -84,14 +84,9 @@ class ProductController extends Controller
         $totalData = $data->count();
         $totalFiltered = $totalData;
        
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data->skip($start)->take($limit)->values()   
-        );
-            
-        echo json_encode($json_data);
+        $data = $data->skip($start)->take($limit)->values();
+       
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
     }
     
     public function create()

@@ -59,18 +59,15 @@ class BrandController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_brands')
-                ->select(['id', 'name', 'description', 'is_active', 'created_by', 'supplier_name', 'created_at', 'updated_at'])
+                ->select(['id', 'name', 'description', 'is_active', 'created_by', 'supplier_name','supplier_id', 'created_at', 'updated_at'])
                 ->where($where)
                 ->get();
         
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($data->count()),  
-            "recordsFiltered" => intval($data->count()), 
-            "data"            => $data->skip($start)->take($limit)->values()
-        );
-
-        return response()->json($json_data);
+        $totalData = $data->count();
+        $totalFiltered = $totalData;
+        $data = $data->skip($start)->take($limit)->values();
+        
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
     }
 
     public function store(Request $request)

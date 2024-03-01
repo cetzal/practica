@@ -29,20 +29,24 @@ class SaleController extends Controller
         if (!empty($request->client_id)) {
             $where[] = ['client_id', '=', $request->client_id];
         }
+
+
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+        $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
                 ->select(['id','sale_date', 'client_name', 'total'])
                 ->where($where)
                 ->get();
 
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($data->count()),  
-            "recordsFiltered" => intval($data->count()), 
-            "data"            => $data
-        );
-
-        return response()->json($json_data);
+        $totalData = $data->count();
+        $totalFiltered = $totalData;
+        $data = $data->skip($start)->take($limit)->values();
+        
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
     }
     
     public function create()

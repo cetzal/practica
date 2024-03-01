@@ -74,16 +74,11 @@ class UserController extends Controller
         
         $totalData = $data->count();
         $totalFiltered = $totalData; 
+        $data = $data->skip($start)->take($limit)->values();
 
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data->skip($start)->take($limit)->values()   
-        );
-            
-        //echo json_encode($json_data);
-        return json_encode($json_data);
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
+
+       
     }
 
     public function create()

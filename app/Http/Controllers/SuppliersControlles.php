@@ -58,15 +58,11 @@ class SuppliersControlles extends Controller
         }
 
         $data = $query->get();
+        $totalData = $data->count();
+        $totalFiltered = $totalData; 
+        $data = $data->skip($start)->take($limit)->values();
 
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($data->count()),  
-            "recordsFiltered" => intval($data->count()), 
-            "data"            => $data->skip($start)->take($limit)->values()
-        );
-
-        return response()->json($json_data);
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
 
     }
 

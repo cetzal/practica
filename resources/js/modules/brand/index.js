@@ -76,23 +76,7 @@
                 'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         },
-        // 'columns': [
-        //     { 
-        //         data: "", "render": function (data, type, full, meta) {
-        //             return data = '<div class="checkbox"><input type="checkbox" class="dt-checkboxes"><label></label></div>';
-        //         }
-        //     },
-        //     { data: 'name' },
-        //     { data: 'description' },
-        //     { data: 'accion' , "render": function (data, type, full, meta) {
-                        
-        //         let $html =  '<a class="btn bg-success m-1 update" data-id="'+data+'"><i class="icon-floppy-disk"></i> Update</a>';
-        //             $html +=  '<a class="btn bg-danger m-1 remove" data-id="'+data+'"><i class="icon-trash"></i> Delete</a>';
-        //             $html +=  '<a class="btn bg-grey m-1 reset" data-id="'+data+'"><i class="icon-reset"></i> Reset</a>';
-        //             return $html;
-        //         }
-        //     },
-        // ],
+       
         'createdRow': function(row, data, dataIndex) {
             $(row).attr('data-branch-id', data['id']);
         },
@@ -167,7 +151,7 @@
             {
                 'render': function(data, type, row, meta){
                     // let $html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></button>';
-                    let html =  '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                    let html =  '<a href="#" class="btn bg-success btn-sm open-EditbrandDialog" data-id="'+row.id+'" data-supplier-hiden="'+row.supplier_id+'"  data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                     html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
 
@@ -343,14 +327,15 @@
     $('#brand-table').on('click', '.open-EditbrandDialog ', function(e) {
        e.preventDefault();
         $('#update_brand')[0].reset();
-        $('#suppliersup_id').find('option').remove();
+        $('#suppliersup_id').empty();
         load_combobox_edit("#suppliersup_id");
-        var url = "api/brand/"
-        var id = $(this).data('id').toString();
+        let url = "api/brand/"
+        let id = $(this).data('id').toString();
+        let supplier_id = $(this).data('supplier-hiden');
+        $('input[name="supplier_hidden"]').val(supplier_id);
         url = url.concat(id).concat("/edit");
 
         $.get(url, function(data) {
-            console.log('get brand ', data);
             $("input[name='name']").val(data['name']);
             $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
@@ -545,7 +530,7 @@
 
     var load_combobox_edit = function(input){       
         $(input).append('<option value="">Without brands</option>');
-
+        let supplier_id_hidden = $('input[name="supplier_hidden"]').val();
         $.ajax( {
             processData: false,
             contentType: false,
@@ -554,16 +539,18 @@
             url: 'api/brand/load/edit/suppliers',
             success: function( response ){
                 if(response.length != 0){
-                    $(input).find('option').remove().end();
+                    $(input).empty();
                     $(input).append('<option value="">Select supplier</option>');
                     $.each(response, function(index, row) {
                         if(row.is_active == 0){
-                            $(input).append('<option value=' + row.id + ' disabled>' + row.name + '</option>');
+                            $(input).append('<option value="' + row.id + '" disabled>' + row.name + '</option>');
                         }else{
-                            $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                            $(input).append('<option value="' + row.id + '">' + row.name + '</option>');
                         }
                         
                     }); 
+                    $(input).val(supplier_id_hidden);
+                   
               }
             },
             error: function(xhr, textStatus, error){

@@ -29,5 +29,5 @@ SELECT
     vpa.unit_name,
     vpa.is_active
 FROM view_products_active AS vpa
-WHERE (SELECT vba.id from view_brands_active as vba where vba.id = vpa.brand_id)
+WHERE vpa.brand_id in (SELECT vba.id FROM view_brands_active as vba)
 

@@ -41,7 +41,7 @@ class PurchaseController extends Controller
         if (!empty($request->supplier_id)) {
             $where[] = ['supplier_id', '=', $request->supplier_id];
         }
- 
+      
         $data = DB::table('view_purchases')
                 ->select(['id', 'purchase_date', 'supplier_name', 'total'])
                 ->where($where)
@@ -49,15 +49,10 @@ class PurchaseController extends Controller
 
         $totalData = $data->count();
         $totalFiltered = $totalData;
+        $data = $data->skip($start)->take($limit)->values();
        
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data->skip($start)->take($limit)->values()
-        );
-            
-        echo json_encode($json_data);
+        return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
+        
     }
 
     public function store(Request $request){

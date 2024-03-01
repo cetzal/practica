@@ -15,6 +15,7 @@
         </div>
 
         <input type="hidden" name="brand_id">
+        <input type="hidden" name="supplier_hidden">
         <div class="form-group">
                 <label>{{trans('file.supplier')}} *</label>
                 <select class="form-select" name="supplier_id" id="suppliersup_id" required></select>

@@ -633,5 +633,8 @@ return [
 	'purchase_number' => 'Purchase number',
 	'purchase_detail' => 'Purchase detail',
 	'sale_detail' => 'Sale detail',
+	//Inventario
+	'inventory' => 'Inventory',
+	'inventory_list' => 'Inventory list',
 ];
 ?>

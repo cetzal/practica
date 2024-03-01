@@ -85,7 +85,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             },
             {
                 'render': function(data, type, row, meta){
-                    // let html = '<a href="#" class="btn btn-primary btn-sm open-ViewPurcharseDetail" data-purcharse-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#viewDetailModal"><i class="fa fa-list" aria-hidden="true"></i></a>';
                     let html =  '<a href="#" class="btn bg-primary btn-sm redirect-purchase-detail" data-purchase-id="'+row.id+'"'+
                                 'data-purchase-date="'+row.purchase_date+'" data-supplier="'+row.supplier_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
                     return html;

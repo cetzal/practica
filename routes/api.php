@@ -179,7 +179,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 });
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/sale-details', [\App\Http\Controllers\SaleDetailController::class, 'store'])->name('api.sale-details.store');
-    Route::get('/sale-details/list', [\App\Http\Controllers\SaleDetailController::class, 'list'])->name('api.sale-details.list');
+    Route::get('/sale-details/{id}', [\App\Http\Controllers\SaleDetailController::class, 'showList'])->name('api.sale-details.show-list');
     
     // Route::get('/sale-details/list', [\App\Http\Controllers\SaleDetailController::class, 'list'])->name('api.sale-details.list');
     // Route::get('/sale-details/load/create/suppliers', [\App\Http\Controllers\SaleDetailController::class, 'loadCreateComboSuppliers'])->name('api.sale-details.load.create.combo-supliers');

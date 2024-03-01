@@ -229,8 +229,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             },
             {
                 'render': function(data, type, row, meta){
-                    let html = '<a href="#" class="btn btn-primary btn-sm open-ViewSaleDetail" data-sale-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#viewDetailModal"><i class="fa fa-list" aria-hidden="true"></i></a>';
-
+                    let html =  '<a href="#" class="btn bg-primary btn-sm redirect-sale-detail" data-sale-id="'+row.id+'"'+
+                    'data-sale-date="'+row.sale_date+'" data-client="'+row.client_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
                     return html;
                 
                 },
@@ -247,4 +247,12 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        
     } );
+
+    $('#sale-table').on('click', '.redirect-sale-detail', function(e) {
+        e.preventDefault();
+        let sale_id = $(this).data('sale-id').toString();
+        let sale_date = $(this).data('sale-date').toString();
+        let client = $(this).data('client').toString();
+        window.open(window.location.origin +'/sale-details/'+sale_id+'?sale_date='+sale_date+'&client='+client, '_blank');
+    });
 })();

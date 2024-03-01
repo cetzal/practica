@@ -631,5 +631,6 @@ return [
 	'select_the_supplier' => 'Seleccione el proveedor',
 	'purchase_number' => 'Numero compra',
 	'purchase_detail' => 'Detalle de compra',
+	'sale_detail' => 'Detalle de venta',
 ];
 ?>

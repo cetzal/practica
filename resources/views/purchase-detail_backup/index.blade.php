@@ -7,7 +7,7 @@
     </div>
     <div class="container-fluid mb-2 p-1">
        
-        <a href="{{ route('purchases.create') }}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.Add Purchase')}}</a>&nbsp;
+        <a href="{{ route('purchase-details.create') }}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.Add Purchase')}}</a>&nbsp;
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i><i class="fa fa-pencil" aria-hidden="true"></i></a>
        
     </div>
@@ -28,6 +28,52 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
+                        <label>{{ trans('file.name') }}</label>
+                        <input type="text" name="name_prod" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label>{{ trans('file.Code') }}</label>
+                        <input type="text" name="code_prod" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <label for="name">{{trans('file.supplier')}}</label>
+                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
+                            
+                    </select>
+                </div>
+                
+                
+               
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>{{ trans('file.Brand') }} </label>
+                        <div class="input-group">
+                            <select name="brand_id" class="selectpicker-brands form-select" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
+                           
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>{{trans('file.product')}}</label>
+                        <div class="input-group">
+                            <select name="product_id" class="selectpicker-product form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select Category...">
+                            
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col">
+                    <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -37,19 +83,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <label for="name">{{trans('file.supplier')}}</label>
-                    <select name="supplier_id" class="form-select selectpicker-suppliers" data-live-search="true" data-live-search-style="begins" placeholder="{{trans('file.supplier')}}">
-                            
-                    </select>
-                </div>
-                <div class="col">
+
+                <div class="col float-right">
                     <label for=""></label>
                     <button type="submit" class="btn btn-primary mt-4 filter_data"> {{ trans('file.Filter') }}</button>
                     <button type="button" class="btn btn-primary mt-4 clear_form_purchases">{{ trans('file.Clear') }}</button>
                     <button type="button" class="btn btn-primary mt-4 close_form">{{ trans('file.Close') }}</button>
                 </div>
-            </div>           
+            
+                
+            </div>
+           
         </form>
     </div>
     <div class="table-responsive">
@@ -57,9 +101,12 @@
             <thead>
                 <tr>
                     <th>{{trans('file.Date')}}</th>
+                    <th>{{trans('file.name')}}</th>
+                    <th>{{trans('file.Code')}}</th>
                     <th>{{trans('file.Supplier')}}</th>
+                    <th>{{trans('file.Brand')}}</th>
+                    <th>{{trans('file.Items')}}</th>
                     <th>{{trans('file.Total')}}</th>
-                    <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
             <tfoot class="tfoot active">
@@ -67,6 +114,10 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                
             </tfoot>
             
            
@@ -116,5 +167,5 @@
 
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/modules/purchases/index.js') }}"></script>
+    <script src="{{ asset('js/modules/purchase-detail/index.js') }}"></script>
 @endsection

@@ -5,19 +5,47 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
-class SaleController extends Controller
+class SaleDetailController_backup extends Controller
 {
     public function index()
-    {
-        return view('sale.index');
+    {  
+        // $lims_sales_suppliers_list = DB::table('view_sales_suppliers_list')->get();
+        // $lims_sales_brands_list = DB::table('view_sales_brands_list')->select(['id', 'name'])->get();
+        // $lims_sales_products_list = DB::table('view_sales_products_list')->select(['id', 'name'])->get();
+        // $lims_sales_clients_list = DB::table('view_sales_clients_list')->get();
+        return view('sale-detail.index');
     }
 
     public function list(Request $request)
     {
         $where = [];
         
+        if(!empty($request->code_prod)){
+            $where[] = ['product_code', 'like', '%'.$request->code_prod.'%'];
+        }
+
+        if(!empty($request->name_prod)){
+            $where[] = ['product_name', 'like', '%'.$request->name_prod.'%'];
+        }
+
+        if (!empty($request->supplier_id)) {
+            $where[] = ['supplier_id', '=', $request->supplier_id];
+        }
+
+        if (!empty($request->brand_id)) {
+            $where[] = ['brand_id', '=', $request->brand_id];
+        }
+
+        if (!empty($request->product_id)) {
+            $where[] = ['product_id', '=', $request->product_id];
+        }
+
+        if (!empty($request->client_id)) {
+            $where[] = ['client_id', '=', $request->client_id];
+        }
+
         if (!empty($request->range_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
@@ -25,13 +53,10 @@ class SaleController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(date,"%Y-%m-%d")'), '>=', trim($date_from)];
             $where[] = [DB::raw('DATE_FORMAT(date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
-
-        if (!empty($request->client_id)) {
-            $where[] = ['client_id', '=', $request->client_id];
-        }
         
-        $data = DB::table('view_sales')
-                ->select(['id','sale_date', 'client_name', 'total'])
+        $data = DB::table('view_sale_details')
+                ->select(['date', 'client_name', 'product_code', 'product_name',
+                    'supplier_name','brand_name','quantity', 'total'])
                 ->where($where)
                 ->get();
 
@@ -47,7 +72,9 @@ class SaleController extends Controller
     
     public function create()
     {
-        return view('sale.create');
+        // $lims_clients_list = DB::table('view_clients_active')->get();
+        // $lims_suppliers_list = DB::table('view_suppliers_sales_create')->get();
+        return view('sale-detail.create');
     }
 
     public function store(Request $request)

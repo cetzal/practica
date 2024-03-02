@@ -83,6 +83,33 @@
            
         </form>
     </div>
+    <div class="table-responsive">
+        <table id="inventory-table" class="table inventory-list" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>{{trans('file.Date')}}</th>
+                    <th>{{trans('file.name')}}</th>
+                    <th>{{trans('file.Code')}}</th>
+                    <th>{{trans('file.Supplier')}}</th>
+                    <th>{{trans('file.Brand')}}</th>
+                    <th>{{trans('file.Items')}}</th>
+                    <th>{{trans('file.Total')}}</th>
+                </tr>
+            </thead>
+            <tfoot class="tfoot active">
+                <th>{{trans('file.Total')}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                
+            </tfoot>
+            
+           
+        </table>
+    </div>
 </section>
 @endsection
 @section('scripts')

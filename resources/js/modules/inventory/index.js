@@ -124,11 +124,93 @@
     });
 
     /**End load combo search */
-
+    
     $(document).ready(function() {
         $('#select_client').attr('disabled', 'disabled');
         loadSearchComboSuppliers();
         loadSearchComboBrands();
         loadSearchComboClients();
+
+        //config table
+        var table = $("#inventory-table").DataTable({
+            "searching": false,
+            "processing": true,
+            "serverSide": true,
+            "ajax":{
+                url:"/api/inventory/list",
+                "data": function(d) {
+                    var frm_data = $('form#from_search_purchase').serializeArray();
+                    // return frm_data;
+                    $.each(frm_data, function(key, val) {
+                        d[val.name] = val.value;
+                    });
+                }
+            },
+            // 'columns' : [
+            //     {
+            //         data: 'purchase_date',
+            //         render : function(data, type, row, meta){
+            //             return moment(row.purcharse_date).format('DD/MM/YYYY');
+            //         }
+            //     },
+            //     {
+            //         data: 'supplier_name',
+            //         render : function(data, type, row, meta){
+            //             return row.supplier_name;
+            //         }
+            //     },
+            //     {
+            //         data: 'total',
+            //         render : function(data, type, row, meta){
+            //             return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
+            //         }
+            //     }
+            // ],
+            // "createdRow": function( row, data, dataIndex ) {
+            //     $(row).attr('data-purchase-id', data['id']);
+            // },
+            'language': {
+                'infoFiltered': ' - filtrado de _MAX_ registros en total',
+                /*'searchPlaceholder': "{{trans('file.Type date or purchase reference...')}}",*/
+                'lengthMenu': '_MENU_',
+                "info":      '<small> _START_ - _END_ (_TOTAL_)</small>',
+                //"search":  '{{trans("file.Search")}}',
+                'paginate': {
+                    'previous': '<i class="fa fa-angle-left" aria-hidden="true"></i>',
+                    'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
+                }
+            },
+            // order:[['1', 'desc']],
+            // 'columnDefs': [
+            //     {
+            //         "orderable": false,
+            //         'targets': [0]
+            //     },
+            //     {
+            //         'render': function(data, type, row, meta){
+            //             let html =  '<a href="#" class="btn bg-primary btn-sm redirect-purchase-detail" data-purchase-id="'+row.id+'"'+
+            //                         'data-purchase-date="'+row.purchase_date+'" data-supplier="'+row.supplier_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+            //             return html;
+                    
+            //         },
+            //         'targets': [3]
+            //     },
+                
+            // ],
+           
+            'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            // "footerCallback": function (tfoot, data, start, end, display) {
+            //     var api = this.api();
+            //     // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            //     $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+    
+           
+            // },
+            drawCallback: function () {
+                var api = this.api();
+                //datatable_sum(api, false);
+            }
+            
+        });
     });
 })();

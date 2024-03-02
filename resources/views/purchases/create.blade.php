@@ -18,7 +18,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>{{trans('file.purchase date')}}</label>
-                                            <input type="text" class="form-control" name="purchase_date" id="purchase_date" value="">
+                                            <input type="text" class="form-control" name="purchase_date" id="purchase_date" value="" autocomplete="off">
                                         </div>
                                     </div>
                                   

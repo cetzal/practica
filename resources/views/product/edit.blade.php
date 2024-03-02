@@ -202,13 +202,13 @@
                                         <div id="start_date" class="col-md-4">
                                             <div class="form-group">
                                                 <label>{{trans('file.Promotion Starts')}}</label>
-                                                <input type="text" name="starting_date" value="{{$product_data->starting_date}}" id="starting_date" class="form-control" />
+                                                <input type="text" name="starting_date" value="{{$product_data->starting_date}}" id="starting_date" class="form-control" autocomplete="off" />
                                             </div>
                                         </div>
                                         <div id="last_date" class="col-md-4">
                                             <div class="form-group">
                                                 <label>{{trans('file.Promotion Ends')}}</label>
-                                                <input type="text" name="last_date" value="{{$product_data->last_date}}" id="ending_date" class="form-control" />
+                                                <input type="text" name="last_date" value="{{$product_data->last_date}}" id="ending_date" class="form-control" autocomplete="off" />
                                             </div>
                                         </div>
                                     </div>

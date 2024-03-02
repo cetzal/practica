@@ -200,7 +200,7 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text"><i class="dripicons-calendar"></i></div>
                                                     </div>
-                                                    <input type="text" name="starting_date" id="starting_date" class="form-control" />
+                                                    <input type="text" name="starting_date" id="starting_date" class="form-control" autocomplete="off"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,7 +211,7 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text"><i class="dripicons-calendar"></i></div>
                                                     </div>
-                                                    <input type="text" name="last_date" id="ending_date" class="form-control" />
+                                                    <input type="text" name="last_date" id="ending_date" class="form-control" autocomplete="off"/>
                                                 </div>
                                             </div>
                                         </div>

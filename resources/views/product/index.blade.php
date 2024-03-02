@@ -82,7 +82,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
                             </div>
-                            <input type="text" name="date_range" id="date_range" class="form-control" />
+                            <input type="text" name="date_range" id="date_range" class="form-control" autocomplete="off" />
                         </div>
                     </div>
                 </div>

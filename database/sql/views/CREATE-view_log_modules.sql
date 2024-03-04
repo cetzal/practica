@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW view_log_modules AS
         lg.user_id,
         lg.modified_record_id,
         lg.movement_date,
-        (SELECT CONCAT(u.name, ' ', u.last_name) FROM users u WHERE u.id = lg.user_id) AS user_name,
+        (SELECT CONCAT(vu.name, ' ', vu.last_name) FROM view_users vu WHERE vu.id = lg.user_id) AS user_name,
         lg.module_id,
         (SELECT m.name FROM modules m WHERE m.id = lg.module_id) AS module_name,
         lg.movement_type_id,

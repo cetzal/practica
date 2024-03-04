@@ -29,10 +29,10 @@ SELECT
     p.user_id AS user_id,
     b.supplier_id AS supplier_id,
     b.name AS brand_name,
-    (SELECT s.name FROM suppliers s WHERE (s.id = b.supplier_id)) AS supplier_name,
-    (SELECT c.name FROM categories c WHERE (c.id = p.category_id)) AS category_name,
-    (SELECT ut.unit_name FROM units ut WHERE (ut.id = p.unit_id)) AS unit_name,
-    (SELECT concat(u.name, ' ', u.last_name) FROM users u WHERE (u.id = p.user_id)) AS asuser_name
+    (SELECT vs.name FROM view_suppliers vs WHERE (vs.id = b.supplier_id)) AS supplier_name,
+    (SELECT vc.name FROM view_categories vc WHERE (vc.id = p.category_id)) AS category_name,
+    (SELECT vun.unit_name FROM view_units vun WHERE (vun.id = p.unit_id)) AS unit_name,
+    (SELECT concat(vu.name, ' ', vu.last_name) FROM view_users vu WHERE (vu.id = p.user_id)) AS asuser_name
 FROM products p
 JOIN brands b ON p.brand_id = b.id
 WHERE p.deleted_at IS NULL;

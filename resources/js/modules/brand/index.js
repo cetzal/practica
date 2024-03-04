@@ -560,7 +560,6 @@
     };
 
     var load_combobox_filter = function(input){
-        $(input).append('<option value="">Without products</option>');
         $.ajax( {
             processData: false,
             contentType: false,
@@ -570,7 +569,6 @@
             success: function( response ){
                 if(response.length != 0){
                     $(input).empty();
-                    $(input).append('<option value="">Select a brand</option>');
                     $.each(response, function(index, row) {
                         $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
                     }); 

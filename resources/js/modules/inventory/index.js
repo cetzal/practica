@@ -19,9 +19,9 @@
         $(this).val('');
     });
     
-    $( "#from_search_purchase" ).on("submit", function( event ) {
+    $( "#from_search_inventory" ).on("submit", function( event ) {
         event.preventDefault();
-        table.ajax.reload();
+        $("#inventory-table").DataTable().ajax.reload();
     });
 
     $('.show_form_search').on('click', function(e){
@@ -120,7 +120,7 @@
         $('#select_client').val('');
         $('#select_client').attr('disabled', 'disabled');
         $('#from_search_inventory')[0].reset();
-        // $('#inventory-table').DataTable().ajax.reload();
+        $('#inventory-table').DataTable().ajax.reload();
     });
 
     /**End load combo search */
@@ -139,33 +139,73 @@
             "ajax":{
                 url:"/api/inventory/list",
                 "data": function(d) {
-                    var frm_data = $('form#from_search_purchase').serializeArray();
+                    var frm_data = $('form#from_search_inventory').serializeArray();
                     // return frm_data;
                     $.each(frm_data, function(key, val) {
                         d[val.name] = val.value;
                     });
                 }
             },
-            // 'columns' : [
-            //     {
-            //         data: 'purchase_date',
-            //         render : function(data, type, row, meta){
-            //             return moment(row.purcharse_date).format('DD/MM/YYYY');
-            //         }
-            //     },
-            //     {
-            //         data: 'supplier_name',
-            //         render : function(data, type, row, meta){
-            //             return row.supplier_name;
-            //         }
-            //     },
-            //     {
-            //         data: 'total',
-            //         render : function(data, type, row, meta){
-            //             return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
-            //         }
-            //     }
-            // ],
+            'columns' : [
+                {
+                    date : 'icon',
+                    render : function(data, type, row, meta){
+                        if(typeof(row.client_id) == 'undefined'){
+                            return '<div style="color:green"><i class="fa fa-plus" aria-hidden="true"></i></div>';
+                        }else{
+                            return '<div style="color:red"><i class="fa fa-minus" aria-hidden="true"></i></div>';
+                        }
+                       
+                    }
+                },
+                {
+                    data: 'date',
+                    render : function(data, type, row, meta){
+                        return moment(row.date).format('DD/MM/YYYY');
+                    }
+                },
+                {
+                    data: 'product_name',
+                    render : function(data, type, row, meta){
+                        return row.product_name;
+                    }
+                },
+                {
+                    data: 'product_code',
+                    render : function(data, type, row, meta){
+                        return row.product_code;
+                    }
+                },
+                {
+                    data: 'supplier_name',
+                    render : function(data, type, row, meta){
+                        return row.supplier_name;
+                    }
+                },
+                {
+                    data: 'brand_name',
+                    render : function(data, type, row, meta){
+                        return row.brand_name;
+                    }
+                },
+                {
+                    data: 'qty',
+                    render : function(data, type, row, meta){
+                        if(typeof(row.client_id) == 'undefined'){
+                            return row.qty;
+                        }else{
+                            return row.quantity;
+                        }
+                       
+                    }
+                },
+                {
+                    data: 'total',
+                    render : function(data, type, row, meta){
+                        return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    }
+                }
+            ],
             // "createdRow": function( row, data, dataIndex ) {
             //     $(row).attr('data-purchase-id', data['id']);
             // },
@@ -206,10 +246,7 @@
     
            
             // },
-            drawCallback: function () {
-                var api = this.api();
-                //datatable_sum(api, false);
-            }
+           
             
         });
     });

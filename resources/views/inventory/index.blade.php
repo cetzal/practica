@@ -13,14 +13,14 @@
                 <div class="col">
                     <div class="form-group">
                         <label>{{ trans('file.name') }}</label>
-                        <input type="text" name="name_prod" class="form-control" placeholder="{{trans('file.Code')}}">
+                        <input type="text" name="name_prod" class="form-control" placeholder="{{trans('file.name')}}">
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-group">
                         <label>{{ trans('file.Code') }}</label>
-                        <input type="text" name="code_prod" class="form-control" placeholder="{{trans('file.name')}}">
+                        <input type="text" name="code_prod" class="form-control" placeholder="{{trans('file.Code')}}">
                     </div>
                 </div>
                 
@@ -45,7 +45,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.Type')}}</label>
-                        <select name="type" id="select_type" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                        <select name="type" id="select_type" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select type...">
                             <option value="">{{trans('file.All')}}</option>
                             <option value="purchase">{{trans('file.Purchase')}}</option>
                             <option value="sale">{{trans('file.Sale')}}</option>
@@ -67,7 +67,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
                             </div>
-                            <input type="text" name="range_date" id="range_date" class="form-control" />
+                            <input type="text" name="range_date" id="range_date" class="form-control" autocomplete="off" />
                         </div>
                     </div>
                 </div>             
@@ -87,6 +87,7 @@
         <table id="inventory-table" class="table inventory-list" style="width: 100%">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.name')}}</th>
                     <th>{{trans('file.Code')}}</th>

@@ -223,23 +223,37 @@
         brand_ids = [];
         verific_checks(0);
         if(brand_ids.length) {
-            $.ajax({
-                type:'PUT',
-                url:'api/brand/all/activatebyselection',
-                data:{
-                    brandIdArray: brand_ids
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Activar marcas',
-                        content: 'Se activo todo las marcas selecionados ',
-                        buttons: {
-                            ok: function () {
-                                table.ajax.reload();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                            }
+            $.confirm({
+                title: 'Activar marcas',
+                content: 'Realmente quieres activar las marcas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/brand/all/activatebyselection',
+                                data:{
+                                    brandIdArray: brand_ids
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar marcas',
+                                        content: 'Se activo todo las marcas selecionadas',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    });
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
         }else{
@@ -257,25 +271,39 @@
         verific_checks(0);
         console.log('brands ids', brand_ids);
         if(brand_ids.length) {
-            $.ajax({
-                type:'PUT',
-                url:'api/brand/all/deactivatebyselection',
-                data:{
-                    brandIdArray: brand_ids
-                },
-                success:function(data){
-                    $.confirm({
-                        title: 'Desactivar marcas',
-                        content: 'Se desactivo todas los marcas selecionados ',
-                        buttons: {
-                            ok: function () {
-                                table.ajax.reload();
-                                $("tbody input[type='checkbox']").prop('checked', false);
-                                // $('#brand-table').DataTable().ajax().reload();
-                            }
+            $.confirm({
+                title: 'Desactivar marcas',
+                content: 'Realmente quieres desactivar las marcas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, desactivar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/brand/all/deactivatebyselection',
+                                data:{
+                                    brandIdArray: brand_ids
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactivar marcas',
+                                        content: 'Se desactivo todas las marcas selecionadas ',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                                // $('#brand-table').DataTable().ajax().reload();
+                                            }
+                                        }
+                                    });
+                                    
+                                }
+                            });
                         }
-                    });
-                    
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
                 }
             });
         }else{

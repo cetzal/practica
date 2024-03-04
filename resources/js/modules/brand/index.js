@@ -356,21 +356,21 @@
        e.preventDefault();
         $('#update_brand')[0].reset();
         $('#suppliersup_id').empty();
-        load_combobox_edit("#suppliersup_id");
         let url = "api/brand/"
         let id = $(this).data('id').toString();
         let supplier_id = $(this).data('supplier-hiden');
         $('input[name="supplier_hidden"]').val(supplier_id);
         url = url.concat(id).concat("/edit");
+        load_combobox_edit("#suppliersup_id");
 
         $.get(url, function(data) {
             $("input[name='name']").val(data['name']);
             $("textarea[name='description']").val(data['description']);
             $("input[name='brand_id']").val(data['id']);
-            $('#suppliersup_id option[value="'+data['supplier_id']+'"]').prop('selected', true);
+            // $('#suppliersup_id option[value="'+data['supplier_id']+'"]').prop('selected', true);
             $("input[name='is_active']").prop( "checked", parseInt(data['is_active']) );
         });
-
+        
     });
 
     $('#brand-table').on('click', '.redirect-record-log', function(e) {

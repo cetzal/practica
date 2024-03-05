@@ -76,6 +76,12 @@ class InventoryController extends Controller
                     ->orderBy('date')
                     ->orderBy('product_id')
                     ->get();
+        
+        $data->map(function($item) {
+            $item->client_name = trans('file.none');
+            return $item;
+        });
+
         $totalData = $data->count();
         $totalFiltered = $totalData;
         $data = $data->skip($start)->take($limit)->values();

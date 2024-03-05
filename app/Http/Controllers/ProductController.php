@@ -45,7 +45,7 @@ class ProductController extends Controller
             $where[] = ['brand_id', '=', $request->brand_prod];
         }
         if(!empty($request->category_id)){
-            $where[] = ['category_id', '=', '%'.$request->category_id.'%'];
+            $where[] = ['category_id', '=', $request->category_id];
         }
         
         if(!empty($request->user_created)){

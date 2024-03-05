@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\DataTableResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,19 +25,21 @@ class PurchaseDetailController extends Controller
             ['id', '=', $id]
         ];
 
+        if($request->length != -1)
+            $limit = $request->length;
+        else
+            $limit = 10;
+
+        $start = $request->start ?? 1;
+
         $query = DB::table('view_purchase_details')
                     ->select(['code', 'product_name', 'brand_name', 'qty', 'total']);
 
         $data = $query->where($where)->get();
-        $totalData = $data->count();
-        $totalFiltered = $data->count();
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
-        );
-            
-        echo json_encode($json_data);
+        $total_data = $data->count();
+        $total_filtered = $total_data;
+        $data = $data->skip($start)->take($limit)->values();
+
+        return $this->formatResponse($request->draw, $total_data, $total_filtered, $data);
     }
 }

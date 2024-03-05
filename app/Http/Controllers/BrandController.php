@@ -259,7 +259,16 @@ class BrandController extends Controller
 
     public function loadSearchComboSuppliers()
     {
+        $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];
+
         $suppliers = DB::table('view_brands_suppliers_list')->get();
+        
+        if ($suppliers->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.supplier_select_supplier')];
+        }
+
+        $suppliers->prepend((object)$option_initial);
+
         return $suppliers;
     }
 

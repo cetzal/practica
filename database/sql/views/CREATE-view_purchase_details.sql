@@ -17,4 +17,4 @@ SELECT
 	ps.deleted_at 
 FROM purchases ps 
 inner join purchases_detail pd on ps.id  = pd.purchase_id
-inner join view_products AS vp ON pd.product_id  = vp.id 
+inner join view_products AS vp ON pd.product_id  = vp.id;

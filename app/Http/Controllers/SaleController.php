@@ -22,8 +22,8 @@ class SaleController extends Controller
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $where[] = [DB::raw('DATE_FORMAT(date,"%Y-%m-%d")'), '>=', trim($date_from)];
-            $where[] = [DB::raw('DATE_FORMAT(date,"%Y-%m-%d")'), '<=', trim($date_to)];
+            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
 
         if (!empty($request->client_id)) {
@@ -38,7 +38,7 @@ class SaleController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
-                ->select(['id','sale_date', 'client_name', 'total'])
+                ->select(['id', 'sale_date', 'client_name', 'total'])
                 ->where($where)
                 ->get();
 

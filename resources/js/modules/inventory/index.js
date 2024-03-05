@@ -286,9 +286,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
                 $('tfoot th').eq(7).html(total_quantity);
                 $('tfoot th').eq(8).html('$ '+ parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
-            },
-           
-            
+            }, 
         });
     });
 })();

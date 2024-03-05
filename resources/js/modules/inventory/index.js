@@ -256,15 +256,15 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
             },
             "footerCallback": function (tfoot, data, start, end, display) {
-               let total_purchases = 0;
-               let total_sales = 0;
-               let total = 0;
+                let total_purchases = 0;
+                let total_sales = 0;
+                let total = 0;
 
-               let total_purchase_qty = 0;
-               let total_sale_qty = 0;
-               let total_quantity = 0;
-
-               data.forEach(function(value, index){
+                let total_purchase_qty = 0;
+                let total_sale_qty = 0;
+                let total_quantity = 0;
+                
+                data.forEach(function(value, index){
                     if(typeof(value.client_id) == 'undefined'){
                         total_purchases+=parseFloat(value.total);
                         total_purchase_qty+=parseFloat(value.qty);
@@ -272,14 +272,18 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                         total_sales+=parseFloat(value.total);
                         total_sale_qty+=parseFloat(value.quantity);
                     }
-               });
+                });
 
-               total = total_purchases - total_sales;
-               total_quantity = total_purchase_qty - total_sale_qty;
+                total = total_purchases - total_sales;
+                if (total_purchases == 0) {
+                    total = total_sales;
+                }
 
-                var api = this.api();
-                //console.log(api.column(5, {page:'current'}).columns());
-                // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+                total_quantity = total_purchase_qty - total_sale_qty;
+                if (total_purchase_qty == 0) {
+                    total_quantity = total_sale_qty;
+                }
+
                 $('tfoot th').eq(7).html(total_quantity);
                 $('tfoot th').eq(8).html('$ '+ parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
             },

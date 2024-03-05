@@ -26,7 +26,7 @@ class InventoryController extends Controller
                 $data = $this->getSale($request);
                 break;
             default:
-               $data = $this->margeCV($request);
+               $data = $this->mergeCV($request);
                 break;
         }
 
@@ -138,7 +138,7 @@ class InventoryController extends Controller
         return $this->formatResponse($request->draw, $totalData, $totalFiltered, $data);
     }
 
-    public function margeCV($request){
+    public function mergeCV($request){
 
         $where = [];
         $where_sales = [];
@@ -191,6 +191,7 @@ class InventoryController extends Controller
         $data = [];
         foreach ($purchases as $key => $item) {
             $c_qty = $item->qty;
+            $item->client_name = trans('file.none');
             $data[] = (array) $item;
             $filter_by_porduct = $sales->where('product_id', $item->product_id)->all();
            

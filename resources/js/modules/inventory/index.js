@@ -172,6 +172,12 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                     }
                 },
                 {
+                    data: 'client_name',
+                    render : function(data, type, row, meta){
+                        return row.client_name;
+                    }
+                },
+                {
                     data: 'product_name',
                     render : function(data, type, row, meta){
                         return row.product_name;
@@ -250,32 +256,32 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
             },
             "footerCallback": function (tfoot, data, start, end, display) {
-               let total_c = 0;
-               let total_v = 0;
+               let total_purchases = 0;
+               let total_sales = 0;
                let total = 0;
 
-               let total_cq = 0;
-               let total_vq = 0;
-               let total_q = 0;
+               let total_purchase_qty = 0;
+               let total_sale_qty = 0;
+               let total_quantity = 0;
 
                data.forEach(function(value, index){
                     if(typeof(value.client_id) == 'undefined'){
-                        total_c+=parseFloat(value.total);
-                        total_cq+=parseFloat(value.qty);
+                        total_purchases+=parseFloat(value.total);
+                        total_purchase_qty+=parseFloat(value.qty);
                     }else{
-                        total_v+=parseFloat(value.total);
-                        total_vq+=parseFloat(value.quantity);
+                        total_sales+=parseFloat(value.total);
+                        total_sale_qty+=parseFloat(value.quantity);
                     }
                });
 
-               total = total_c - total_v;
-               total_q= total_cq - total_vq;
+               total = total_purchases - total_sales;
+               total_quantity = total_purchase_qty - total_sale_qty;
 
                 var api = this.api();
                 //console.log(api.column(5, {page:'current'}).columns());
                 // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
-                $('tfoot th').eq(6).html(total_q);
-                $('tfoot th').eq(7).html('$ '+ parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+                $('tfoot th').eq(7).html(total_quantity);
+                $('tfoot th').eq(8).html('$ '+ parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
             },
            
             

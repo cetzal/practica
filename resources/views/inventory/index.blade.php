@@ -89,6 +89,7 @@
                 <tr>
                     <th></th>
                     <th>{{trans('file.Date')}}</th>
+                    <th>{{trans('file.client')}}</th>
                     <th>{{trans('file.name')}}</th>
                     <th>{{trans('file.Code')}}</th>
                     <th>{{trans('file.Supplier')}}</th>
@@ -99,6 +100,7 @@
             </thead>
             <tfoot class="tfoot active">
                 <th>{{trans('file.Total')}}</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

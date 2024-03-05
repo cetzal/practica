@@ -635,5 +635,6 @@ return [
 	//Inventario
 	'inventory' => 'Inventario',
 	'inventory_list' => 'Listado de inventario',
+	'none' => 'Ninguno',
 ];
 ?>

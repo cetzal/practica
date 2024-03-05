@@ -46,7 +46,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 data: 'purchase_date',
                 render : function(data, type, row, meta){
-                    return moment(row.purcharse_date).format('DD/MM/YYYY');
+                    return moment(row.purcharse_date, 'YYYY-MM-DD').format('DD/MM/YYYY');
                 }
             },
             {

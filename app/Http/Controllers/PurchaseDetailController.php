@@ -33,7 +33,7 @@ class PurchaseDetailController extends Controller
         $start = $request->start ?? 1;
 
         $query = DB::table('view_purchase_details')
-                    ->select(['code', 'product_name', 'brand_name', 'qty', 'total']);
+                    ->select(['product_code', 'product_name', 'brand_name', 'qty', 'total']);
 
         $data = $query->where($where)->get();
         $total_data = $data->count();

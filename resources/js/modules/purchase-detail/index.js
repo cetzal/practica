@@ -20,7 +20,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 {
                     data: 'code',
                     render : function(data, type, row, meta){
-                        return row.code;
+                        return row.product_code;
                     }
                 },
                 {

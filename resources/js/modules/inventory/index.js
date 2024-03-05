@@ -1,3 +1,10 @@
+jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+        var x = parseFloat(a) || 0;
+        var y = parseFloat(b) || 0;
+        return x + y
+    }, 0 );
+} );
 (function() {
     $( "#range_date" ).daterangepicker({
         maxDate : moment().endOf(),
@@ -239,13 +246,37 @@
             // ],
            
             'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            // "footerCallback": function (tfoot, data, start, end, display) {
-            //     var api = this.api();
-            //     // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
-            //     $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
-    
-           
-            // },
+            "rowCallback": function( row, data, index ){
+
+            },
+            "footerCallback": function (tfoot, data, start, end, display) {
+               let total_c = 0;
+               let total_v = 0;
+               let total = 0;
+
+               let total_cq = 0;
+               let total_vq = 0;
+               let total_q = 0;
+
+               data.forEach(function(value, index){
+                    if(typeof(value.client_id) == 'undefined'){
+                        total_c+=parseFloat(value.total);
+                        total_cq+=parseFloat(value.qty);
+                    }else{
+                        total_v+=parseFloat(value.total);
+                        total_vq+=parseFloat(value.quantity);
+                    }
+               });
+
+               total = total_c - total_v;
+               total_q= total_cq - total_vq;
+
+                var api = this.api();
+                //console.log(api.column(5, {page:'current'}).columns());
+                // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+                $('tfoot th').eq(6).html(total_q);
+                $('tfoot th').eq(7).html('$ '+ parseFloat(total).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+            },
            
             
         });

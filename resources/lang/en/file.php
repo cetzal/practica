@@ -636,5 +636,6 @@ return [
 	//Inventario
 	'inventory' => 'Inventory',
 	'inventory_list' => 'Inventory list',
+	'none' => 'None',
 ];
 ?>

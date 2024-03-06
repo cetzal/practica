@@ -9,6 +9,7 @@ class ModuleEnum
     const PRODUCTS = 3;
     const SUPPLIERS = 5;
     const CLIENTS = 6;
+    const ACCOUNTS = 6;
 
     public static function getValueConstant($constante)
     {

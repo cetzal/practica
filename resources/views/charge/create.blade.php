@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                        <h4>{{trans('file.Add Sale')}}</h4>
+                        <h4>{{trans('file.add_charge')}}</h4>
                     </div>
                     <div class="card-body">
                         {{-- <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p> --}}
@@ -54,8 +54,8 @@
                                                 </tbody>
                                                 <tfoot class="tfoot active">
                                                     <th colspan="2">{{trans('file.Total')}}</th>
-                                                    <th>0</th>
-                                                    <th id="total-sale">0.00</th>
+                                                    <th id="total-sale">0</th>
+                                                    <th id="total-charge">0.00</th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>
                                             </table>

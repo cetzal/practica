@@ -46,6 +46,7 @@
                             <th>{{trans('file.date')}}</th>
                             <th>{{trans('file.customer')}}</th>
                             <th>{{trans('file.total')}}</th>
+                            <th>{{trans('file.balance_receivable')}}</th>
                         </tr>
                     </thead>
                     <tbody>

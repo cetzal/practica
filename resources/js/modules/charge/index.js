@@ -48,13 +48,28 @@
             }
         })
     }
+    
+    function loadSearchComboAccounts() {
+        let input = '#select_account';
+        let url = '/api/charges/load/search/accounts';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
     //End comobos iniciales
 
     $(document).ready(function() {
-        loadSearchComboClients();
+        // loadSearchComboClients();
+        loadSearchComboAccounts();
     });
 
-    var table = $('#sale-table').DataTable( {
+    var table = $('#charge-table').DataTable( {
         responsive: false,
         autoWidth : false,
         serverSide: true,
@@ -87,15 +102,15 @@
             {
                 data: 'account',
                 render: function(data, type, row, meta){
-                   return row.account;
+                   return row.account_name;
                 }
             },
-            {
-                data: 'client_name',
-                render: function(data, type, row, meta){
-                   return row.client_name;
-                }
-            },
+            // {
+            //     data: 'client_name',
+            //     render: function(data, type, row, meta){
+            //        return row.client_name;
+            //     }
+            // },
             {
                 data: 'charge_date',
                 render: function(data, type, row, meta){
@@ -147,5 +162,10 @@
         $('#charge-table').DataTable().ajax.reload();
     });
 
-    
+    $('#charge-table').on('click', '.redirect-charge-detail', function(e) {
+        e.preventDefault();
+        let charge_id = $(this).data('charge-id').toString();
+        let charge_date = $(this).data('charge-date').toString();
+        window.open(window.location.origin +'/charges/'+charge_id+'/details?charge_date='+charge_date, '_blank');
+    });
 })();

@@ -647,5 +647,9 @@ return [
 	'search_sales' => 'Buscar ventas',
 	'without_accounts' => 'Sin cuentas',
 	'select_account' => 'Selecccione cuenta',
+	'charge_detail' => 'Detalle de cobro',
+	'status' => 'Estatus',
+	'total_charged' => 'Total cobrado',
+	'balance_receivable' => 'Saldo cobrar',
 ];
 ?>

@@ -10,6 +10,7 @@
     "/js/modules/brand/edit.js": "/js/modules/brand/edit.js",
     "/js/modules/brand/index.js": "/js/modules/brand/index.js",
     "/js/modules/charge/create.js": "/js/modules/charge/create.js",
+    "/js/modules/charge/detail.js": "/js/modules/charge/detail.js",
     "/js/modules/charge/index.js": "/js/modules/charge/index.js",
     "/js/modules/charge/search-sale.js": "/js/modules/charge/search-sale.js",
     "/js/modules/clients/create.js": "/js/modules/clients/create.js",

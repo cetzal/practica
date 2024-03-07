@@ -38,7 +38,7 @@ class SaleController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
-                ->select(['id', 'sale_date', 'client_name', 'total'])
+                ->select(['id', 'sale_date', 'client_name', 'total', 'status', 'total_charged'])
                 ->where($where)
                 ->get();
 
@@ -309,7 +309,7 @@ class SaleController extends Controller
         ];
         
         $data = DB::table('view_products_sales_create')
-                 ->select(['id','name', 'code', 'qty', 'price', 'alert_quantity'])
+                ->select(['id','name', 'code', 'qty', 'price', 'alert_quantity'])
                 ->where($where)
                 ->get();
 

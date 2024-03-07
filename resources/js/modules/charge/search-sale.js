@@ -60,6 +60,7 @@
                         fila.append('<td>'+ moment(row.sale_date, 'YYYY-MM-DD').format('DD/MM/YYYY') +'</td>');
                         fila.append('<td>'+ row.client_name +'</td>');
                         fila.append('<td>$ '+ parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
+                        fila.append('<td>$ '+ parseFloat(row.total_charged).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#sale-search-data-table tbody').append(fila);
                     }); 
                 } else if (response.length == 0) {
@@ -100,6 +101,7 @@
                     date: $(this).find('td:eq(1)').text(),
                     client_name: $(this).find('td:eq(2)').text(),
                     total: parseInt($(this).find('td:eq(3)').text().replace(/[^\d.-]/g, '')),
+                    balance_receivable: parseInt($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, '')),
                 });
             }
         });

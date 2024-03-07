@@ -18,13 +18,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
+                {{-- <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.client')}}</label>
                         <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins">
                         </select>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
@@ -50,7 +50,7 @@
             <thead>
                 <tr>
                     <th>{{trans('file.account')}}</th>
-                    <th>{{trans('file.customer')}}</th>
+                    {{-- <th>{{trans('file.customer')}}</th> --}}
                     <th>{{trans('file.date')}}</th>
                     <th>{{trans('file.charge_amount')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
@@ -59,7 +59,7 @@
             
             <tfoot class="tfoot active">
                 <th>{{trans('file.Total')}}</th>
-                <th></th>
+                {{-- <th></th> --}}
                 <th></th>
                 <th></th>
                 <th></th>

@@ -214,6 +214,18 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                     return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
+            {
+                data: 'status',
+                render: function(data, type, row, meta){
+                    return row.status;
+                }
+            },
+            {
+                data: 'total_charged',
+                render: function(data, type, row, meta){
+                    return '$ '+parseFloat(row.total_charged).toLocaleString('en-US', {minimumFractionDigits: 2});
+                }
+            },
         ],
         'columnDefs': [
             {
@@ -227,13 +239,16 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                     return html;
                 
                 },
-                'targets': [3]
+                'targets': [5]
             },
         ],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
             $('tfoot th').eq(2).html( 
                 '$ ' + parseFloat(api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
+            );
+            $('tfoot th').eq(4).html( 
+                '$ ' + parseFloat(api.column(4, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
             );
         },
         // 'select': { style: 'multi',  selector: 'td:first-child'},

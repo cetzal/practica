@@ -648,5 +648,9 @@ return [
 	'search_sales' => 'Search sales',
 	'without_accounts' => 'Without accounts',
 	'select_account' => 'Select account',
+	'charge_detail' => 'Charge detail',
+	'status' => 'Status',
+	'total_charged' => 'Total charged',
+	'balance_receivable' => 'balance receivable',
 ];
 ?>

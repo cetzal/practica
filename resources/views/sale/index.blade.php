@@ -45,12 +45,16 @@
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.customer')}}</th>
                     <th>{{trans('file.Total')}}</th>
+                    <th>{{trans('file.status')}}</th>
+                    <th>{{trans('file.total_charged')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
             
             <tfoot class="tfoot active">
                 <th>{{trans('file.Total')}}</th>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

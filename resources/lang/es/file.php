@@ -647,5 +647,7 @@ return [
 	'search_sales' => 'Buscar ventas',
 	'without_accounts' => 'Sin cuentas',
 	'select_account' => 'Selecccione cuenta',
+	'Payment list' => 'Lista de pagos',
+	'search purchase' => 'Buscar compras',
 ];
 ?>

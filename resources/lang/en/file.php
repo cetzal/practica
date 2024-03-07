@@ -648,5 +648,7 @@ return [
 	'search_sales' => 'Search sales',
 	'without_accounts' => 'Without accounts',
 	'select_account' => 'Select account',
+	'Payment list' => 'Payment list',
+	'search purchase' => 'Search purchase',
 ];
 ?>

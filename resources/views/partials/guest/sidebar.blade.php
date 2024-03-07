@@ -7,6 +7,7 @@
     <div class="item"><a href="{{route('sales.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.sale') }}</a></div>
     <div class="item"><a href="{{route('inventory.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.inventory') }}</a></div>
     <div class="item"><a href="{{route('charges.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.charge') }}</a></div>
+    <div class="item"><a href="{{route('payments.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.Payment') }}</a></div>
     <div class="item"><a href="{{route('suppliers.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.Supplier') }}</a></div>
     <div class="item"><a href="{{route('clients.index')}}"><i class="fas fa-desktop"></i>{{ trans('file.customer') }}</a></div>
     <div class="item" id="">
@@ -21,6 +22,7 @@
     <div class="item"><a href="{{ route('accounts.index') }}"><i class="fas fa-th"></i>{{__('file.Account')}}</a></div>
     <div class="item"><a href="{{route('logs.index')}}"><i class="fas fa-list"></i>Logs</a></div>
     <div class="item"><a href="{{route('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>{{ __('file.logout') }}</a></div>
+    <div class="item"><a href="#"></a></div>
     <i class="fa-solid fa-list"></i>
     </div>
 </div>

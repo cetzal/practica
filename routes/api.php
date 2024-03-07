@@ -214,3 +214,8 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/charges/load/search-sales/clients', [\App\Http\Controllers\ChargeController::class, 'loadSearchSaleComboClients'])->name('api.charges.load.search-sales.combo-clients');
     Route::get('/charges/modalSaleSearch', [App\Http\Controllers\ChargeController::class, 'searchSales'])->name('api.charges.modal.search-sale');
 });
+
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/payments/load/create/accounts', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboAccounts'])->name('api.payments.load.create.combo-accounts');
+    Route::get('/payments/load/create/suppliers', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboSuppliers'])->name('api.payments.load.create.combo-supliers');
+});

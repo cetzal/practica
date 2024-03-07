@@ -78,7 +78,7 @@
         "ajax" : {
             "url": "api/charges/list",
             "data": function(d) {
-                var frm_data = $('form#from_search_sale').serializeArray();
+                var frm_data = $('form#from_search_charge').serializeArray();
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
@@ -157,7 +157,7 @@
 
     $('.clear_form').on('click', function(e){
         loadSearchComboClients();
-        $("select[name='client_id']").val('');
+        $("select[name='select_account']").val('');
         $("input[name='range_date']").val('');
         $('#charge-table').DataTable().ajax.reload();
     });

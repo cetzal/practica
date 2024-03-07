@@ -18,16 +18,16 @@ class ChargeController extends Controller
     {
         $where = [];
         
-        if (!empty($request->client_id)) {
-            $where[] = ['client_id', '=', $request->client_id];
+        if (!empty($request->account_id)) {
+            $where[] = ['account_id', '=', $request->account_id];
         }
 
         if (!empty($request->range_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '>=', trim($date_from)];
-            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '<=', trim($date_to)];
+            $where[] = [DB::raw('DATE_FORMAT(charge_date,"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT(charge_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
 
         if($request->length != -1)

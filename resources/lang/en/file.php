@@ -638,5 +638,13 @@ return [
 	'inventory_list' => 'Inventory list',
 	'none' => 'None',
 	'egress' => 'Egress',
+	//Cuentas
+	'account' => 'Account',
+	//Cobros
+	'charge' => 'Charges',
+	'list_charges' => 'List charges',
+	'charge_amount' => 'Amount',
+	'add_charge' => 'Add charge',
+	'search_sales' => 'Search sales',
 ];
 ?>

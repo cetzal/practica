@@ -191,3 +191,19 @@ Route::group(['middleware' => ['auth.jwt']],  function(){
 Route::group(['middleware' => ['auth.jwt']],  function(){
 
 });
+
+Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/charges/list', [\App\Http\Controllers\ChargeController::class, 'list'])->name('api.inventory.list');
+    
+    /**
+     * Rutas para cargar los cambos de la vista index
+     */
+    // Route::get('/inventory/load/serach/suppliers', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboSuppliers'])->name('api.inventory.load.combo.suppliers');
+    // Route::get('/inventory/load/serach/brands', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboBrands'])->name('api.inventory.load.combo.brands');
+    Route::get('/charges/load/search/clients', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboClients'])->name('api.charges.load.combo.clients');
+    /**
+     * End combos de la vista index
+     */
+    Route::get('/charges/load/search-sales/clients', [\App\Http\Controllers\ChargeController::class, 'loadSearchSaleComboClients'])->name('api.charges.load.search-sales.combo-clients');
+    Route::get('/charges/modalSaleSearch', [App\Http\Controllers\ChargeController::class, 'searchSales'])->name('api.charges.modal.search-sale');
+});

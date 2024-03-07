@@ -12,13 +12,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         }
     });
 
-    var module = 'sales';
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
     $( "#range_date" ).daterangepicker({
         maxDate : moment().endOf(),
         showApplyButton: false,

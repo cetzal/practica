@@ -637,5 +637,13 @@ return [
 	'inventory_list' => 'Listado de inventario',
 	'none' => 'Ninguno',
 	'egress' => 'Egresos',
+	//Cuentas
+	'account' => 'Cuenta',
+	//Cobros
+	'charge' => 'Cobros',
+	'list_charges' => 'Listado cobros',
+	'charge_amount' => 'Monto',
+	'add_charge' => 'Agregar cobro',
+	'search_sales' => 'Buscar ventas',
 ];
 ?>

@@ -186,6 +186,11 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 Route::group(['middleware' => ['auth.jwt']],  function(){
     Route::get('/accounts', [App\Http\Controllers\AccountsController::class, 'list'])->name('api.accounts.list');
     Route::post('/accounts', [App\Http\Controllers\AccountsController::class, 'store'])->name('api.accounts.store');
+    Route::get('/accounts/{id}', [App\Http\Controllers\AccountsController::class, 'show'])->name('api.accounts.show');
+    Route::put('/accounts/{id}', [App\Http\Controllers\AccountsController::class, 'update'])->name('api.accounts.update');
+    Route::delete('/accounts/{id}', [App\Http\Controllers\AccountsController::class, 'destroy'])->name('api.accounts.destroy');
+    Route::put('/accounts/{id}/activate', [App\Http\Controllers\AccountsController::class, 'activate'])->name('api.accounts.activate');
+    Route::put('/accounts/{id}/deactivate', [App\Http\Controllers\AccountsController::class, 'deactivate'])->name('api.accounts.deactivate');
 });
 
 Route::group(['middleware' => ['auth.jwt']],  function(){

@@ -1,5 +1,46 @@
 (function(){
-    var table =  $('#clients-data-table').DataTable({
+
+    $('.show_form_search').on('click', function(e){
+        e.preventDefault();
+        $('.form_search').toggleClass('form_search_active');
+    });
+
+    $( "#from_accounts_search" ).on( "submit", function( event ) {
+        event.preventDefault();
+        var date_range = $('#date_range').val();
+        var type_fecha = $('.client-select-date').val();
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
+
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
+
+        table.ajax.reload();
+    });
+
+    $('.clear_form').on('click', function(e){
+        $('#from_accounts_search')[0].reset();
+        table.ajax.reload();
+    });
+
+    $('.close_form').on('click', function(e){
+        $('.form_search').removeClass('form_search_active');
+    });
+
+
+    var table =  $('#accounts-table').DataTable({
         responsive: true,
         autoWidth : true,
         serverSide: true,
@@ -8,7 +49,7 @@
         "ajax": {
             "url":  'api/accounts',
             "data": function(d) {
-                var frm_data = $('form#from_search_client').serializeArray();
+                var frm_data = $('form#from_accounts_search').serializeArray();
                 // return frm_data;
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
@@ -21,24 +62,43 @@
         },
         'columns': [
             { 
-                data: "text", "render": function (data, type, full, meta) {
-                        return '<div class="checkbox"><input type="checkbox" class="dt-checkboxes checkbox_client"><label></label></div>';
-                    }
-            }
-        ],
-        "columnDefs": [
-            {
-                    "orderable": false,
-                    'targets': [0]
+                data: "check", 
+                render: function (data, type, full, meta) {
+                    return '<div class="checkbox"><input type="checkbox" class="dt-checkboxes checkbox_client"><label></label></div>';
+                }
             },
             {
-                targets : [1],
+                data: "name", 
                 render : function(data, type, row, meta){
                     return row.name;
                 }
             },
+            {
+                data : 'init_balance',
+                render : function(data, type, row, meta){
+                    return row.init_balance;
+                }
+            },
+            {
+                data : 'renueve',
+                render : function(data, type, row, meta){
+                    return 0;
+                }
+            },
+            {
+                data : 'egress',
+                render : function(data, type, row, meta){
+                    return 0;
+                }
+            },
+            {
+                data : 'balance',
+                render : function(data, type, row, meta){
+                    return 0;
+                }
+            },
             { 
-                targets : [2],
+                data: "null", 
                 render: function (data, type, row, meta) {
                     var is_active = row.is_active == 1 ? 'Activo' : 'Desactivado';
                     var class_text = "text-success";
@@ -51,14 +111,14 @@
             },
 
             {
-                targets : [3],
+                data: "null", 
                 render : function(data, type, row, meta){
                     return row.created_by;
                 }
             },
 
             {
-                targets : [4],
+                data: "null", 
                 render: function(data, type, row, meta){                    
                     if (row.created_at == null) {
                         return '';
@@ -67,7 +127,7 @@
                 }
             },
             {
-                targets : [5],
+                data: "null", 
                 render: function(data, type, row, meta){
                     if (row.updated_at == null) {
                         return '';
@@ -76,7 +136,7 @@
                 }
             },
             {
-                targets : [6],
+                data: "null", 
                 render: function (data, type, row, meta) {
                         
                     let html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
@@ -92,6 +152,12 @@
                  }
             },
         ],
+        "columnDefs": [
+            {
+                    "orderable": false,
+                    'targets': [0]
+            }
+        ],
         "order": [],
         'language': {
             'infoFiltered': ' - filtrado de _MAX_ registros en total',
@@ -103,5 +169,19 @@
                     'next': '<i class="fa fa-angle-right" aria-hidden="true"></i>'
             }
         }, 
+    });
+
+    $('#accounts-table').on('click', '.open-EditbrandDialog ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id);
+        $("input[name='accounts_id']").val(id);
+        $.get(url, function(response) {
+            if(response.status == "success"){
+                $("input[name='name']").val(response.data.name);
+                $("input[name='is_active']").prop( "checked", response.data.is_active );
+            }
+            
+        });
     });
 })();

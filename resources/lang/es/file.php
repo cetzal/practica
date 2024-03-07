@@ -645,5 +645,7 @@ return [
 	'charge_amount' => 'Monto',
 	'add_charge' => 'Agregar cobro',
 	'search_sales' => 'Buscar ventas',
+	'without_accounts' => 'Sin cuentas',
+	'select_account' => 'Selecccione cuenta',
 ];
 ?>

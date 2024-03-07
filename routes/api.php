@@ -199,7 +199,9 @@ Route::group(['middleware' => ['auth.jwt']],  function(){
 
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/charges/list', [\App\Http\Controllers\ChargeController::class, 'list'])->name('api.inventory.list');
-    
+    /** Combos para la vista para agregar cobros */
+    Route::get('/charges/load/create/accounts', [\App\Http\Controllers\ChargeController::class, 'loadCreateComboAccounts'])->name('api.sales.load.create.combo-supliers');
+
     /**
      * Rutas para cargar los cambos de la vista index
      */

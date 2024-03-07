@@ -3,6 +3,8 @@
     "/css/app.css": "/css/app.css",
     "/js/bootstrap.js": "/js/bootstrap.js",
     "/js/functions.js": "/js/functions.js",
+    "/js/modules/accounts/create.js": "/js/modules/accounts/create.js",
+    "/js/modules/accounts/index.js": "/js/modules/accounts/index.js",
     "/js/modules/brand/Brand.js": "/js/modules/brand/Brand.js",
     "/js/modules/brand/create.js": "/js/modules/brand/create.js",
     "/js/modules/brand/edit.js": "/js/modules/brand/edit.js",

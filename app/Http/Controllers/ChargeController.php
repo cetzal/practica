@@ -50,6 +50,21 @@ class ChargeController extends Controller
         return view('charge.create');
     }
 
+    public function loadCreateComboAccounts()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.without_accounts')];
+
+        $accounts = DB::table('view_accounts_create_list')->get();
+
+        if ($accounts->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_account')];
+        }
+
+        $accounts->prepend((object)$option_initial);
+
+        return $accounts;
+    }
+
     public function loadSearchComboClients()
     {
         $option_initial = ['id' => '', 'name' => trans('file.without_clients')];

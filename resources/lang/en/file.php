@@ -646,5 +646,7 @@ return [
 	'charge_amount' => 'Amount',
 	'add_charge' => 'Add charge',
 	'search_sales' => 'Search sales',
+	'without_accounts' => 'Without accounts',
+	'select_account' => 'Select account',
 ];
 ?>

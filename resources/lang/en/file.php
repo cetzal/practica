@@ -652,5 +652,6 @@ return [
 	'status' => 'Status',
 	'total_charged' => 'Total charged',
 	'balance_receivable' => 'balance receivable',
+	'select_status' => 'Select status',
 ];
 ?>

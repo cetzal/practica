@@ -20,6 +20,13 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
+                        <label>{{trans('file.status')}}</label>
+                        <select name="status_id" id="select_status" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">

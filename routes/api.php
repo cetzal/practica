@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/sales/load/serach/brands', [\App\Http\Controllers\SaleController::class, 'loadSearchComboBrands'])->name('api.sales.load.combo.brands');
     Route::get('/sales/load/search/products', [\App\Http\Controllers\SaleController::class, 'loadSearchComboProducts'])->name('api.sales.load.combo.products');
     Route::get('/sales/load/search/clients', [\App\Http\Controllers\SaleController::class, 'loadSearchComboClients'])->name('api.sales.load.combo.clients');
+    Route::get('/sales/load/search/status', [\App\Http\Controllers\SaleController::class, 'loadSearchComboStatus'])->name('api.sales.load.combo.status');
     /**
      * End combos de la vista index
      */

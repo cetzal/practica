@@ -29,6 +29,10 @@ class SaleController extends Controller
         if (!empty($request->client_id)) {
             $where[] = ['client_id', '=', $request->client_id];
         }
+        
+        if (!empty($request->status_id)) {
+            $where[] = ['status', '=', $request->status_id];
+        }
 
 
         if($request->length != -1)
@@ -282,6 +286,17 @@ class SaleController extends Controller
         $clients->prepend((object)$option_initial);
 
         return $clients;
+    }
+
+    public function loadSearchComboStatus()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.All')];
+
+        $status = DB::table('view_sales_status_list')->get();
+
+        $status->prepend((object)$option_initial);
+
+        return $status;
     }
 
     public function searchProduct(Request $request)

@@ -99,11 +99,26 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         })
     }
 
+    function loadSearchComboStatus() {
+        let input = '#select_status';
+        let url = '/api/sales/load/search/status';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
     $(document).ready(function() {
-        loadSearchComboSuppliers();
-        loadSearchComboBrands();
-        loadSearchComboProducts();
+        // loadSearchComboSuppliers();
+        // loadSearchComboBrands();
+        // loadSearchComboProducts();
         loadSearchComboClients();
+        loadSearchComboStatus();
     });
 
     $('#select_supplier').on('change', function() {

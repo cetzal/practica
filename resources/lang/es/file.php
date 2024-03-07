@@ -651,5 +651,6 @@ return [
 	'status' => 'Estatus',
 	'total_charged' => 'Total cobrado',
 	'balance_receivable' => 'Saldo cobrar',
+	'select_status' => 'Selecciona estatus',
 ];
 ?>

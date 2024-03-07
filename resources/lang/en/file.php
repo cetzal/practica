@@ -650,5 +650,10 @@ return [
 	'select_account' => 'Select account',
 	'Payment list' => 'Payment list',
 	'search purchase' => 'Search purchase',
+	'charge_detail' => 'Charge detail',
+	'status' => 'Status',
+	'total_charged' => 'Total charged',
+	'balance_receivable' => 'balance receivable',
+	'select_status' => 'Select status',
 ];
 ?>

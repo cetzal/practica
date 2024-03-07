@@ -29,6 +29,10 @@ class SaleController extends Controller
         if (!empty($request->client_id)) {
             $where[] = ['client_id', '=', $request->client_id];
         }
+        
+        if (!empty($request->status_id)) {
+            $where[] = ['status', '=', $request->status_id];
+        }
 
 
         if($request->length != -1)
@@ -38,7 +42,7 @@ class SaleController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
-                ->select(['id', 'sale_date', 'client_name', 'total'])
+                ->select(['id', 'sale_date', 'client_name', 'total', 'status', 'total_charged'])
                 ->where($where)
                 ->get();
 
@@ -284,6 +288,17 @@ class SaleController extends Controller
         return $clients;
     }
 
+    public function loadSearchComboStatus()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.All')];
+
+        $status = DB::table('view_sales_status_list')->get();
+
+        $status->prepend((object)$option_initial);
+
+        return $status;
+    }
+
     public function searchProduct(Request $request)
     {
         $where = [];
@@ -309,7 +324,7 @@ class SaleController extends Controller
         ];
         
         $data = DB::table('view_products_sales_create')
-                 ->select(['id','name', 'code', 'qty', 'price', 'alert_quantity'])
+                ->select(['id','name', 'code', 'qty', 'price', 'alert_quantity'])
                 ->where($where)
                 ->get();
 

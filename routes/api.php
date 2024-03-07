@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/sales/load/serach/brands', [\App\Http\Controllers\SaleController::class, 'loadSearchComboBrands'])->name('api.sales.load.combo.brands');
     Route::get('/sales/load/search/products', [\App\Http\Controllers\SaleController::class, 'loadSearchComboProducts'])->name('api.sales.load.combo.products');
     Route::get('/sales/load/search/clients', [\App\Http\Controllers\SaleController::class, 'loadSearchComboClients'])->name('api.sales.load.combo.clients');
+    Route::get('/sales/load/search/status', [\App\Http\Controllers\SaleController::class, 'loadSearchComboStatus'])->name('api.sales.load.combo.status');
     /**
      * End combos de la vista index
      */
@@ -198,7 +199,9 @@ Route::group(['middleware' => ['auth.jwt']],  function(){
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {
-    Route::get('/charges/list', [\App\Http\Controllers\ChargeController::class, 'list'])->name('api.inventory.list');
+    Route::post('/charges', [\App\Http\Controllers\ChargeController::class, 'store'])->name('api.charges.store');
+    Route::get('/charges/list', [\App\Http\Controllers\ChargeController::class, 'list'])->name('api.charges.list');
+    Route::get('/charges/details/{id}', [\App\Http\Controllers\ChargeController::class, 'detailList'])->name('api.charges.detail-list');
     /** Combos para la vista para agregar cobros */
     Route::get('/charges/load/create/accounts', [\App\Http\Controllers\ChargeController::class, 'loadCreateComboAccounts'])->name('api.sales.load.create.combo-supliers');
 
@@ -207,6 +210,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
      */
     // Route::get('/inventory/load/serach/suppliers', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboSuppliers'])->name('api.inventory.load.combo.suppliers');
     // Route::get('/inventory/load/serach/brands', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboBrands'])->name('api.inventory.load.combo.brands');
+    Route::get('/charges/load/search/accounts', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboAccounts'])->name('api.charges.load.combo.accounts');
     Route::get('/charges/load/search/clients', [\App\Http\Controllers\ChargeController::class, 'loadSearchComboClients'])->name('api.charges.load.combo.clients');
     /**
      * End combos de la vista index

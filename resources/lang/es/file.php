@@ -649,5 +649,10 @@ return [
 	'select_account' => 'Selecccione cuenta',
 	'Payment list' => 'Lista de pagos',
 	'search purchase' => 'Buscar compras',
+	'charge_detail' => 'Detalle de cobro',
+	'status' => 'Estatus',
+	'total_charged' => 'Total cobrado',
+	'balance_receivable' => 'Saldo cobrar',
+	'select_status' => 'Selecciona estatus',
 ];
 ?>

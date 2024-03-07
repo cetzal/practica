@@ -20,6 +20,13 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
+                        <label>{{trans('file.status')}}</label>
+                        <select name="status_id" id="select_status" class="form-control form-select" data-live-search="true" data-live-search-style="begins" title="Select supplier...">
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
                         <label>{{trans('file.range_date')}}</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -45,12 +52,16 @@
                     <th>{{trans('file.Date')}}</th>
                     <th>{{trans('file.customer')}}</th>
                     <th>{{trans('file.Total')}}</th>
+                    <th>{{trans('file.status')}}</th>
+                    <th>{{trans('file.total_charged')}}</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
             
             <tfoot class="tfoot active">
                 <th>{{trans('file.Total')}}</th>
+                <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

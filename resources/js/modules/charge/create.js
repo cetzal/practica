@@ -27,6 +27,22 @@
         loadSearchCreateComboAccounts();
     });
 
+    function calculateTotal() {
+        let total_sale = 0;
+        let total_amount = 0;
+        $('#sale-detail-table tbody tr').each(function() {
+            // let subtotal = parseFloat($(this).find('.subtotal').text());
+            let sale = parseFloat($(this).find('.total_sale').text().replace(/[^\d.-]/g, ''));
+            let amount = parseInt($(this).find('.amount').val());
+            total_sale += sale;
+            if (!isNaN(amount)) {
+                total_amount += amount;
+            }
+        });
+        $('#total-sale').text('$ '+parseFloat(total_sale).toLocaleString('en-US', {minimumFractionDigits: 2}));
+        $('#total-charge').text('$ '+parseFloat(total_amount).toLocaleString('en-US', {minimumFractionDigits: 2}));
+    }
+
     function addRow(data) {
         let fila = $('<tr>').attr('data-sale-id', data.id);
         let sale_exist = false;
@@ -48,7 +64,7 @@
             fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
             $('#sale-detail-table tbody').append(fila);
         }
-        // calculateTotalSale();
+        calculateTotal();
     }
 
     function addRows(data) {
@@ -59,7 +75,9 @@
         } else {
             console.log('agregar sales', data);
             $.each(data,function(index, row) {
-                let fila = $('<tr>').attr('data-sale-id', row.id);
+                let fila = $('<tr>')
+                            .attr('data-sale-id', row.id)
+                            .attr('data-balance', row.balance_receivable);
                 fila.append('<td>'+ row.date +'</td>');
                 fila.append('<td>'+ row.client_name +'</td>');
                 fila.append('<td class="total_sale">$ '+ parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
@@ -67,7 +85,7 @@
                 fila.append('<td><button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button></td>');
                 $('#sale-detail-table tbody').append(fila);
             });
-            // calculateTotalSale();
+            calculateTotal();
         }
     }
     
@@ -98,7 +116,7 @@
             buttons: {
                 ok: function () {
                     row.remove();
-                    // calculateTotalSale();
+                    calculateTotal();
                 },
                 cancel: function() {
 
@@ -109,10 +127,12 @@
 
     $('#sale-detail-table').on('input', 'input.amount', function() {
         let row = $(this).closest('tr');
-        // let stock_alert = row.data('stock-alert').toString();
+        let balance = row.data('balance').toString();
         // let product_quantity = row.data('product-quantity').toString();
         let total_sale = parseFloat(row.find('.total_sale').text().replace(/[^\d.-]/g, ''));
         let amount = parseFloat(row.find('.amount').val());
+        let current_balance = total_sale - balance;
+        
         // let alert_reorden = product_quantity - amount;
         if (amount < 0) {
             $.alert({
@@ -120,16 +140,21 @@
                 content: 'Solo se acepta valores positivos.'
             });
             row.find('.amount').val(0);
-        }
-
-        if (amount > total_sale ) {
+        } else if (amount > total_sale ) {
             $.alert({
                 title: '',
-                content: 'El monto no debe ser mayor al total de la venta'
+                content: 'El monto no debe ser mayor al total de la venta $'+total_sale
             });
             row.find('.amount').val(0);
         }
-
+         else if (amount > current_balance) {
+            $.alert({
+                title: '',
+                content: 'El monto no debe ser mayor al saldo a cobrar $'+current_balance
+            });
+            row.find('.amount').val(0);
+        } 
+        calculateTotal();
         // if (amount > product_quantity) {
         //     alert_reorden = product_quantity - quantity;
         //     let message = 'La cantidad del producto permitida es de <b>'+product_quantity+ '</b>.';
@@ -141,12 +166,12 @@
         //     let unit_cost = parseFloat(row.find('.unit_cost').text().replace(/[^\d.-]/g, ''));
         //     let subtotal = 1 * unit_cost;
         //     row.find('.subtotal').text('$ '+parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}));
-        //     calculateTotalSale();
+        //     calculateTotal();
         // } else {
         //     let unit_cost = parseFloat(row.find('.unit_cost').text().replace(/[^\d.-]/g, ''));
         //     let subtotal = amount * unit_cost;
         //     row.find('.subtotal').text('$ '+parseFloat(subtotal).toLocaleString('en-US', {minimumFractionDigits: 2}));
-        //     calculateTotalSale();
+        //     calculateTotal();
         // }
     });
 
@@ -233,37 +258,37 @@
                 });
             } else {
                 console.log('avanzo el codigo');
-                // $.ajax({
-                //     type: "POST",
-                //     url: '/api/sales',
-                //     dataType: 'json',
-                //     async: false,
-                //     data: data,
-                //     success: function (response) {
-                //         $.confirm({
-                //             title : '',
-                //             content: response.message,
-                //             buttons: {
-                //                 ok: function() {
-                //                     window.location.replace('/sales');
-                //                 }
-                //             }
-                //         });
-                //     },
-                //     error: function(xhr, textStatus, error){
-                //         if (xhr.status == 422) {
-                //             let message = ''
-                //             $.each(xhr.responseJSON.errors,function(field_name,error){
-                //                 message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
-                //             })
+                $.ajax({
+                    type: "POST",
+                    url: '/api/charges',
+                    dataType: 'json',
+                    async: false,
+                    data: data,
+                    success: function (response) {
+                        $.confirm({
+                            title : '',
+                            content: response.message,
+                            buttons: {
+                                ok: function() {
+                                    window.location.replace('/charges');
+                                }
+                            }
+                        });
+                    },
+                    error: function(xhr, textStatus, error){
+                        if (xhr.status == 422) {
+                            let message = ''
+                            $.each(xhr.responseJSON.errors,function(field_name,error){
+                                message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                            })
     
-                //             $.alert({
-                //                 title: 'Field invalid',
-                //                 content: message,
-                //             });
-                //         }
-                //     }
-                // });
+                            $.alert({
+                                title: 'Field invalid',
+                                content: message,
+                            });
+                        }
+                    }
+                });
             }
 
         }

@@ -48,13 +48,28 @@
             }
         })
     }
+    
+    function loadSearchComboAccounts() {
+        let input = '#select_account';
+        let url = '/api/charges/load/search/accounts';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
     //End comobos iniciales
 
     $(document).ready(function() {
-        loadSearchComboClients();
+        // loadSearchComboClients();
+        loadSearchComboAccounts();
     });
 
-    var table = $('#sale-table').DataTable( {
+    var table = $('#charge-table').DataTable( {
         responsive: false,
         autoWidth : false,
         serverSide: true,
@@ -63,7 +78,7 @@
         "ajax" : {
             "url": "api/charges/list",
             "data": function(d) {
-                var frm_data = $('form#from_search_sale').serializeArray();
+                var frm_data = $('form#from_search_charge').serializeArray();
                 $.each(frm_data, function(key, val) {
                     d[val.name] = val.value;
                 });
@@ -87,15 +102,15 @@
             {
                 data: 'account',
                 render: function(data, type, row, meta){
-                   return row.account;
+                   return row.account_name;
                 }
             },
-            {
-                data: 'client_name',
-                render: function(data, type, row, meta){
-                   return row.client_name;
-                }
-            },
+            // {
+            //     data: 'client_name',
+            //     render: function(data, type, row, meta){
+            //        return row.client_name;
+            //     }
+            // },
             {
                 data: 'charge_date',
                 render: function(data, type, row, meta){
@@ -142,10 +157,15 @@
 
     $('.clear_form').on('click', function(e){
         loadSearchComboClients();
-        $("select[name='client_id']").val('');
+        $("select[name='select_account']").val('');
         $("input[name='range_date']").val('');
         $('#charge-table').DataTable().ajax.reload();
     });
 
-    
+    $('#charge-table').on('click', '.redirect-charge-detail', function(e) {
+        e.preventDefault();
+        let charge_id = $(this).data('charge-id').toString();
+        let charge_date = $(this).data('charge-date').toString();
+        window.open(window.location.origin +'/charges/'+charge_id+'/details?charge_date='+charge_date, '_blank');
+    });
 })();

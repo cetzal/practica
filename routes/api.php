@@ -183,4 +183,11 @@ Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/inventory/getbrandSearchById', [App\Http\Controllers\InventoryController::class, 'searchBrandBySupplierId'])->name('api.inventory.search-brand');
 });
 
+Route::group(['middleware' => ['auth.jwt']],  function(){
+    Route::get('/accounts', [App\Http\Controllers\AccountsController::class, 'list'])->name('api.accounts.list');
+    Route::post('/accounts', [App\Http\Controllers\AccountsController::class, 'store'])->name('api.accounts.store');
+});
 
+Route::group(['middleware' => ['auth.jwt']],  function(){
+
+});

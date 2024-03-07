@@ -637,5 +637,6 @@ return [
 	'inventory' => 'Inventory',
 	'inventory_list' => 'Inventory list',
 	'none' => 'None',
+	'egress' => 'Egress',
 ];
 ?>

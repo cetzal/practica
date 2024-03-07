@@ -55,5 +55,7 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/sales/create', [App\Http\Controllers\SaleController::class, 'create'])->name('sales.create');
     Route::get('/sale-details/{id}', [App\Http\Controllers\SaleDetailController::class, 'index'])->name('sale-details.index');
     Route::get('/inventroy', [App\Http\Controllers\InventoryController::class, 'index'])->name('inventory.index');
+    Route::get('/accounts', [App\Http\Controllers\AccountsController::class, 'index'])->name('accounts.index');
+
 });
 

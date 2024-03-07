@@ -18,6 +18,7 @@
         </div>
     </div>
     <div class="item"><a href="{{route('user.index')}}"><i class="fas fa-th"></i>{{__('file.Users')}}</a></div>
+    <div class="item"><a href="{{ route('accounts.index') }}"><i class="fas fa-th"></i>{{__('file.Account')}}</a></div>
     <div class="item"><a href="{{route('logs.index')}}"><i class="fas fa-list"></i>Logs</a></div>
     <div class="item"><a href="{{route('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>{{ __('file.logout') }}</a></div>
     <i class="fa-solid fa-list"></i>

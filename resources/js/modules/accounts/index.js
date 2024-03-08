@@ -39,6 +39,12 @@
         $('.form_search').removeClass('form_search_active');
     });
 
+    $('.open-modal-account').on('click', function(e) {
+        e.preventDefault();
+        $('form#new_accounts')[0].reset();
+        // load_combobox("#suppliers_id");
+    });
+
 
     var table =  $('#accounts-table').DataTable({
         responsive: true,
@@ -76,13 +82,13 @@
             {
                 data : 'init_balance',
                 render : function(data, type, row, meta){
-                    return row.init_balance;
+                    return '$ '+parseFloat(row.init_balance).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             {
                 data : 'renueve',
                 render : function(data, type, row, meta){
-                    return 0;
+                    return '$ '+parseFloat(row.revenue).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             {
@@ -94,7 +100,7 @@
             {
                 data : 'balance',
                 render : function(data, type, row, meta){
-                    return 0;
+                    return '$ '+parseFloat(row.balance).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             { 
@@ -139,7 +145,7 @@
                 data: "null", 
                 render: function (data, type, row, meta) {
                         
-                    let html =  '<button type="button" class="open-EditbrandDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                    let html =  '<button type="button" class="open-EditAccountDialog btn bg-success" data-id="'+row.id+'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit" aria-hidden="true"></i></button>';
                     html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     html +=  '<a href="#" class="btn bg-primary btn-sm redirect-record-log" data-record-id="'+row.id+'" data-record-name="'+row.name+'"><i class="fa fa-eye" aria-hidden="true"></i></a>';
                     if(row.is_active == 1){
@@ -171,7 +177,7 @@
         }, 
     });
 
-    $('#accounts-table').on('click', '.open-EditbrandDialog ', function() {
+    $('#accounts-table').on('click', '.open-EditAccountDialog ', function() {
         var url = "api/accounts/"
         var id = $(this).data('id').toString();
         url = url.concat(id);
@@ -179,6 +185,7 @@
         $.get(url, function(response) {
             if(response.status == "success"){
                 $("input[name='name']").val(response.data.name);
+                $("input[name='init_balance']").val(response.data.init_balance);
                 $("input[name='is_active']").prop( "checked", response.data.is_active );
             }
             

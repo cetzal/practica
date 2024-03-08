@@ -5,7 +5,7 @@
         <h4>{{trans('file.Account List')}}</h4>
     </div>
     <div class="container-fluid mb-2 p-1">
-        <button class="btn btn-info open-modal-brand" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add Account')}} </button>&nbsp;
+        <button class="btn btn-info open-modal-account" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add Account')}} </button>&nbsp;
         <!-- <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
         <a href="#" class="btn btn-success active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
         <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a> -->

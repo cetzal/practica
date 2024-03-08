@@ -1,5 +1,26 @@
 (function(){
     var accounts_id = [];
+
+    $( "#range_date" ).daterangepicker({
+        maxDate : moment().endOf(),
+        showApplyButton: false,
+        autoApply: true,
+        showInputs: false,
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+        todayHighlight: true,
+        autoUpdateInput: false,
+    });
+
+    $('input[name="range_date"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="range_date"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
     $('.show_form_search').on('click', function(e){
         e.preventDefault();
         $('.form_search').toggleClass('form_search_active');
@@ -51,7 +72,6 @@
             if (typeof(account_data) != "undefined") {
                 accounts_id.push(account_data);
             }
-            console.log('accounts', accounts_id);
         });
     }
 
@@ -229,7 +249,6 @@
                                     accountIdArray: accounts_id
                                 },
                                 success:function(data){
-                                    console.log('data', data.messages);
                                     var messsage = 'Se elimino todas las cuentas selecionados';
                                     if (typeof data.messages != undefined) {
                                         messsage = data.messages;
@@ -267,7 +286,6 @@
         e.preventDefault();
         accounts_id = [];
         verific_checks_accounts(0);
-        console.log ('active all', accounts_id);
         if(accounts_id.length) {
             $.confirm({
                 title: 'Activar cuentas',
@@ -361,13 +379,38 @@
             });
         }
     });
+
+    $( "#from_accounts_search" ).on( "submit", function( event ) {
+        event.preventDefault();
+        var date_range = $('#range_date').val();
+        var type_fecha = $('select[name="select_date"]').val();
+
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
+        
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
+        $('#accounts-table').DataTable().ajax.reload();
+    });
     
     $('#accounts-table').on('click', '.remove ', function() {
         var url = "api/accounts/"
         var id = $(this).data('id').toString();
         url = url.concat(id);
         var Jquery = $.Jquery;
-        console.log('delete ciuenta', url);
+        ß
         $.confirm({
             title: 'Delete cuenta?',
             content: 'Realmente quieres eliminar la cuenta',
@@ -471,4 +514,5 @@
         });
 
     });
+
 })();

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Enum\ModuleEnum;
-use App\Enum\MovementTypeEnum;
 use App\Models\Accounts;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class AccountsController extends Controller
 {
@@ -18,7 +19,30 @@ class AccountsController extends Controller
         return view('Accounts.index');
     }
 
-    public function list(Request $request){
+    public function list(Request $request)
+    {
+        $where = [];
+
+        if (!empty($request->account_name)) {
+            $where[] = ['name', 'like', '%'.$request->account_name.'%'];
+        }
+
+        if (!empty($request->created_by)) {
+            $where[] = ['created_by', 'like', '%'.$request->created_by.'%'];
+        }
+
+
+        if ($request->status != '') {
+            $where[] = ['is_active', '=', $request->status];
+        }
+
+        if (!empty($request->range_date) && !empty($request->select_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->range_date);
+            $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
+            $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', trim($date_to)];
+        }
 
         if($request->length != -1)
             $limit = $request->length;
@@ -27,7 +51,7 @@ class AccountsController extends Controller
         $start = $request->start ?? 1;
 
 
-        $query = DB::table('view_accounts');
+        $query = DB::table('view_accounts')->where($where);
 
         $data = $query->get();
         $totalData = $data->count();

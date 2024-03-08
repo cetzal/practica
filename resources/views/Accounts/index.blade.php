@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col">
                     <label for="name">{{trans('file.name')}}</label>
-                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="name">
+                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="account_name">
                 </div>
                 
                 <div class="col">
@@ -39,7 +39,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.date')}}</label>
-                        <select class="form-select brand-date-select" name="select_date">
+                        <select class="form-select" name="select_date" id="account-date-select">
                             <option selected value="">{{trans('file.select')}}</option>
                             <option value="created_at">{{trans('file.date_create')}}</option>
                             <option value="updated_at">{{trans('file.date_update')}}</option>

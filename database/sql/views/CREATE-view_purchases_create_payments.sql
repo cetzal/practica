@@ -5,6 +5,6 @@ SELECT vp.id,
 	   vp.supplier_name,
 	   vp.total,
 	   vp.status,
-	  vp.pid_amounts
+	  vp.paid_amounts
 FROM view_purchases vp 
 WHERE vp.status != 3

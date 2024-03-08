@@ -59,7 +59,7 @@ class PaymentsController extends Controller
         }
 
         $data = DB::table('view_purchases_create_payments')
-                ->select(['id', 'purchase_date', 'supplier_name', 'total', 'pid_amounts'])
+                ->select(['id', 'purchase_date', 'supplier_name', 'total', 'paid_amounts'])
                 ->where($where)
                 ->get();
         

@@ -48,7 +48,7 @@
                         fila.append('<td>'+ row.purchase_date +'</td>');
                         fila.append('<td>'+ row.supplier_name +'</td>');
                         fila.append('<td>$ '+ row.total +'</td>');
-                        fila.append('<td>$ '+ parseFloat(row.pid_amounts).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
+                        fila.append('<td>$ '+ parseFloat(row.paid_amounts).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#table-purc-search tbody').append(fila);
                     }); 
                 }else{
@@ -82,7 +82,7 @@
                     date: $(this).find('td:eq(1)').text(),
                     supplier_name: $(this).find('td:eq(2)').text(),
                     total: parseInt($(this).find('td:eq(3)').text().replace(/[^\d.-]/g, '')),
-                    pid_amounts: parseInt($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, '')),
+                    paid_amounts: parseInt($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, '')),
                 });
             }
         });

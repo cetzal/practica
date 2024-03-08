@@ -63,6 +63,8 @@
     $('.open-modal-account').on('click', function(e) {
         e.preventDefault();
         $('form#new_accounts')[0].reset();
+        $('input[name="name"]').find('.is-invalid').removeClass('is-invalid');
+        $('input[name="init_balance"]').find('.invalid-feedback').text('');
         // load_combobox("#suppliers_id");
     });
 
@@ -210,6 +212,8 @@
         var id = $(this).data('id').toString();
         url = url.concat(id);
         $("input[name='accounts_id']").val(id);
+        $('input[name="name"]').find('.is-invalid').removeClass('is-invalid');
+        $('input[name="init_balance"]').find('.invalid-feedback').text('');
         $.get(url, function(response) {
             if(response.status == "success"){
                 $("input[name='name']").val(response.data.name);
@@ -410,7 +414,6 @@
         var id = $(this).data('id').toString();
         url = url.concat(id);
         var Jquery = $.Jquery;
-        ß
         $.confirm({
             title: 'Delete cuenta?',
             content: 'Realmente quieres eliminar la cuenta',
@@ -513,6 +516,35 @@
             }
         });
 
+    });
+
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("input[name='init_balance']").val('');
+        $('form#new_accounts')[0].reset();
+        $('form#edit_accounts')[0].reset();
+        $("form#new_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#new_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+    });
+
+    $(document).on('click', function(e) {
+        if ($(e.target).hasClass('modal-backdrop')) {
+          // El clic ocurrió en el backdrop del modal
+          console.log('Clic en el backdrop del modal');
+        }
+      });
+    $('#createModal').on('show.bs.modal', function (event) {
+        console.log('cerrar modal afuera');
+        $("form#edit_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
     });
 
 })();

@@ -191,4 +191,114 @@
             
         });
     });
+
+    $('#accounts-table').on('click', '.remove ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id);
+        var Jquery = $.Jquery;
+        console.log('delete ciuenta', url);
+        $.confirm({
+            title: 'Delete cuenta?',
+            content: 'Realmente quieres eliminar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'delete cuentas',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
+                                });
+                                // table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#accounts-table').on('click', '.desactivar ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/deactivate");
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Descativar cuenta?',
+            content: 'Realmente quieres desactivar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'desactivar cuenta',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.alert({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#accounts-table').on('click', '.activar ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/activate");
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Activar cuenta?',
+            content: 'Realmente quieres activar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'activar cuenta',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.alert({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
 })();

@@ -156,11 +156,27 @@ class AccountsController extends Controller
 
     public function destroy($id)
     {
-        $client_data = Accounts::findOrFail($id);
-        $client_data->is_active = false;
-        $client_data->deleted_at = date('Y-m-d H:i:s');
-        $client_data->save();
+        $account_data = Accounts::findOrFail($id);
+
+        $charges = DB::table('view_charges')
+                    ->select('id')
+                    ->where('account_id', $account_data->getKey())
+                    ->count();
+        if ($charges > 0) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'La cuenta no se puede eliminar, tiene una o varias cobros relacionados a esta cuenta.'
+            ]);
+        } 
+        // $payments = DB::table('view_charges')
+        //             ->select('id')
+        //             ->where('account_id', $account_data->getKey())
+        //             ->count();
+
+        $account_data->is_active = false;
+        $account_data->deleted_at = date('Y-m-d H:i:s');
+        $account_data->save();
      
-        return response()->json(['status' => 'success', 'message' => 'El cliente se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'La cuenta se ha sido eliminado']);
     }
 }

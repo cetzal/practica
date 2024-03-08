@@ -76,13 +76,13 @@
             {
                 data : 'init_balance',
                 render : function(data, type, row, meta){
-                    return row.init_balance;
+                    return '$ '+parseFloat(row.init_balance).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             {
                 data : 'renueve',
                 render : function(data, type, row, meta){
-                    return 0;
+                    return '$ '+parseFloat(row.revenue).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             {
@@ -94,7 +94,7 @@
             {
                 data : 'balance',
                 render : function(data, type, row, meta){
-                    return 0;
+                    return '$ '+parseFloat(row.balance).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             { 

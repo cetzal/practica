@@ -1,7 +1,7 @@
 <div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
     <div role="document" class="modal-dialog">
       <div class="modal-content">
-        {!! Form::open([  'method' => 'post', 'files' => false, 'id'=> 'edit_accounts']) !!}
+        {{ Form::open([ 'route' => ['api.accounts.update', 1], 'method' => 'put', 'files' => false, 'id'=> 'edit_accounts']) }}
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Update Account')}}</h5>
           <button type="button" class="close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span></button>
@@ -17,9 +17,10 @@
                 <input type="number" name="init_balance" required class="form-control" value="0" placeholder="">
             </div>
             <div class="form-group">
-                <input class="mt-2" type="checkbox" name="is_active" value="1" checked>
+                <input class="mt-2" type="checkbox" name="is_active" id="is_active" value="1" checked>
                 <label class="mt-2"><strong>{{trans('file.Active')}}</strong></label>
             </div>
+            <input type="hidden" name="accounts_id">
             
         </div>
         <div class="modal-footer">

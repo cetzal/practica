@@ -8,6 +8,7 @@ use App\Models\Accounts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -80,12 +81,13 @@ class AccountsController extends Controller
     }
 
     public function update(Request $request, $id){
-        
         $this->validate($request, [
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('view_accounts'),
+                Rule::unique('view_accounts')->ignore($request->id)->where(function ($query) {
+                    return $query->where('is_active', 1);
+                }),
 
             ],
             'init_balance' => ['required']

@@ -104,4 +104,5 @@
 @section('scripts')
     <script src="{{ asset('js/modules/accounts/index.js') }}"></script>
     <script src="{{ asset('js/modules/accounts/create.js') }}"></script>
+    <script src="{{ asset('js/modules/accounts/edit.js') }}"></script>
 @endsection

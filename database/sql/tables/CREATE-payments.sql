@@ -1,0 +1,14 @@
+CREATE TABLE payments(
+	id INT NOT NULL AUTO_INCREMENT,
+    paid_date DATE DEFAULT NULL,
+	account_id INT NOT NULL,
+    supplier_id INT NOT NULL,
+    user_id INT DEFAULT NULL,
+    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT fk_payments_account_id FOREIGN KEY (account_id)
+      REFERENCES accounts(id)
+      ON UPDATE CASCADE ON DELETE RESTRICT
+);

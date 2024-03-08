@@ -220,6 +220,8 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 });
 
 Route::group(['middleware' => ['auth.jwt']], function() {
+    Route::get('/payments', [\App\Http\Controllers\PaymentsController::class, 'list'])->name('api.payments.list');
+    Route::post('/payments', [\App\Http\Controllers\PaymentsController::class, 'store'])->name('api.payments.store');
     Route::get('/payments/load/create/accounts', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboAccounts'])->name('api.payments.load.create.combo-accounts');
     Route::get('/payments/load/create/suppliers', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboSuppliers'])->name('api.payments.load.create.combo-supliers');
     Route::get('/payments/modalPurchaseSearch', [App\Http\Controllers\PaymentsController::class, 'searchPurchase'])->name('api.charges.modal.search-sale');

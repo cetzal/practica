@@ -61,5 +61,6 @@ Route::group(['middleware'=> ['auth.jwt']], function () {
     Route::get('/charges/{id}/details', [App\Http\Controllers\ChargeController::class, 'detail'])->name('charges.details');
     Route::get('/payments', [App\Http\Controllers\PaymentsController::class, 'index'])->name('payments.index');
     Route::get('/payments/create', [App\Http\Controllers\PaymentsController::class, 'create'])->name('payments.create');
+    Route::get('/payments/{id}/details', [App\Http\Controllers\PaymentsController::class, 'detail'])->name('payments.details');
 });
 

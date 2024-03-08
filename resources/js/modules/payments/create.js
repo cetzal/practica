@@ -8,7 +8,7 @@
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
-                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                    $(input).append('<option value="' + row.id + '" data-total_balance="'+row.total_balance+'" >' + row.name + '</option>');
                 }); 
             }
         })
@@ -63,19 +63,26 @@
 
 
     function calculateTotal() {
-        let total_sale = 0;
+        let total_purchase = 0;
         let total_amount = 0;
         $('#purchase-detail-table tbody tr').each(function() {
             // let subtotal = parseFloat($(this).find('.subtotal').text());
-            let sale = parseFloat($(this).find('.total_purchase').text().replace(/[^\d.-]/g, ''));
+            let purchase = parseFloat($(this).find('.total_purchase').text().replace(/[^\d.-]/g, ''));
             let amount = parseInt($(this).find('.amount').val());
-            total_sale += sale;
+            total_purchase += purchase;
             if (!isNaN(amount)) {
                 total_amount += amount;
             }
         });
-        $('#total-purchase').text('$ '+parseFloat(total_sale).toLocaleString('en-US', {minimumFractionDigits: 2}));
+
+        $('#total-purchase').text('$ '+parseFloat(total_purchase).toLocaleString('en-US', {minimumFractionDigits: 2}));
         $('#total-paid').text('$ '+parseFloat(total_amount).toLocaleString('en-US', {minimumFractionDigits: 2}));
+        
+        if(total_purchase > 0){
+            $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', true);
+        }else{
+            $("select[name='supplier_id']").find('option:not(:selected)').attr('disabled', false);
+        }
     }
 
     function addRow(data) {
@@ -108,7 +115,6 @@
                 addRow(row);
             });
         } else {
-            console.log('agregar sales', data);
             $.each(data,function(index, row) {
                 let fila = $('<tr>')
                             .attr('data-purchase-id', row.id)
@@ -139,6 +145,32 @@
                 }
             }
         });
+    });
+
+
+    $('#purchase-detail-table').on('input', 'input.amount', function() {
+        let row = $(this).closest('tr');
+       
+        let total_purchase = parseFloat(row.find('.total_purchase').text().replace(/[^\d.-]/g, ''));
+        let amount = parseFloat(row.find('.amount').val());
+       
+        // let alert_reorden = product_quantity - amount;
+        if (amount < 0) {
+            $.alert({
+                title: '',
+                content: 'Solo se acepta valores positivos.'
+            });
+            row.find('.amount').val(0);
+        } else if (amount > total_purchase ) {
+            $.alert({
+                title: '',
+                content: 'El monto no debe ser mayor al total de la compra $'+total_purchase
+            });
+            row.find('.amount').val(0);
+        }
+         
+        calculateTotal();
+       
     });
 
     $('#payments-form').validate({
@@ -181,55 +213,59 @@
     $('#payments-form').on('submit',function(e){
         e.preventDefault();
         if($(this).valid() && check_ored_table()){
-            let purchase_detail = [];
-            let message = [];
+            let payments_detail = [];
+            let count = [];
             $('table#purchase-detail-table tbody tr').each(function() {
-                
-                let add_qty = parseInt($(this).find('input[name="qty[]"]').val());
-                let current_qty = parseInt($(this).find('input[name="t_qty[]"]').val());
-                let alert_q = parseInt($(this).find('input[name="alert_quantity[]"]').val());
-                let name =  $(this).find('td:eq(0)').text();
-
-                if( (add_qty + current_qty) <= alert_q ){
-                    message.push({'message' : 'El producto "<b>'+ name +'</b>" no se puede comprar menos del punto de reorden ' + alert_q + '.'});
+                let amount = parseFloat($(this).find('.amount').val().replace(/[^\d.-]/g, ''));
+                if(amount == 0){
+                    count.push(1);
                 }
-
-
-                let product = {
-                    product_id : parseInt($(this).find('input[name="product_id[]"]').val()),
-                    product_code : parseInt($(this).find('input[name="product_code[]"]').val()),
-                    product_qty : parseInt($(this).find('input[name="qty[]"]').val()),
-                    product_unit_price : parseFloat($(this).find('input[name="net_unit_cost[]"]').val()).toFixed(2),
-                    product_subtotal : parseFloat($(this).find('input[name="subtotal[]"]').val()).toFixed(2),
+                let payments = {
+                    purchase_id: parseInt($(this).data('purchase-id').toString()),
+                    amount : amount,
                 }
-                purchase_detail.push(product);
+                payments_detail.push(payments);
             });
 
-            if(message.length > 0){
-                alert_purchase_form(message);
-                return;
+
+            if(count.length > 0){
+                $.alert({
+                    title : 'cuenta por pagar',
+                    content : 'La lista de compras tiene un monto igual a 0'
+                });
+                return false;
             }
 
+            let total_payments = parseFloat($('#purchase-detail-table').find('#total-paid').text().replace(/[^\d.-]/g, ''));
+            let account_tota_balance = $('select[name="account_id"] option:selected').data('total_balance');
+            
+            if(total_payments > account_tota_balance){
+                $.alert({
+                    title : '',
+                    content: 'La cuenta selecionada no tienes los fondos suficientes para realizar el pago'
+                });
+
+                return;
+            }
+            
             let data = {
-                reference_no : $('input[name="reference_no"]').val(),
-                purchase_date: moment($("#purchase_date").val(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
+                account_id : parseInt($("select[name='account_id']").val()),
                 supplier_id: parseInt($("select[name='supplier_id']").val()),
-                note: $('input[name="note"]').text(),
-                purchase_detail: purchase_detail,
+                payments_purchase: payments_detail,
             };
 
 
             $.ajax({
                 type:'POST',
-                url: host + "/api/purchase",
+                url:  "/api/payments",
                 data: data,
                 success: function (response) {
                     $.confirm({
-                        title: 'Agregar compra',
+                        title: 'Agregar pagos',
                         content: response.message,
                         buttons: {
                             ok: function () {
-                                window.location.replace('/purchases');
+                                window.location.replace('/payments');
                             }
                         }
                     });

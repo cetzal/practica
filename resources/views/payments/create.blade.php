@@ -62,8 +62,9 @@
                                                 <tfoot class="tfoot active">
                                                     <th colspan="2">{{trans('file.Total')}}</th>
                                                     <th id="total-purchase">0.00</th>
-                                                    <th><i class="dripicons-trash"></i></th>
+                                                    <th id="total-paid"></th>
                                                     <th></th>
+                                                    <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>
                                             </table>
                                         </div>

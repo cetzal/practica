@@ -9,7 +9,7 @@
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
     <div class="container-fluid mb-2 form_search">  
-        <form id="from_search_charge">
+        <form id="from_search_payments">
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -20,8 +20,8 @@
                 </div>
                 <div class="col">
                     <div class="form-group">
-                        <label>{{trans('file.client')}}</label>
-                        <select name="client_id" id="select_client" class="form-control form-select" data-live-search="true" data-live-search-style="begins">
+                        <label>{{trans('file.supplier')}}</label>
+                        <select name="supplier_id" id="select_supplier" class="form-control form-select" data-live-search="true" data-live-search-style="begins">
                         </select>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
         </form>
     </div>
     <div class="table-responsive">
-        <table id="table-purchase" class="table purchase-list" style="width: 100%">
+        <table id="table-payments" class="table purchase-list" style="width: 100%">
             <thead>
                 <tr>
                     <th>{{trans('file.account')}}</th>

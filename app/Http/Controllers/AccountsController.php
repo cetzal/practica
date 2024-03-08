@@ -179,4 +179,62 @@ class AccountsController extends Controller
      
         return response()->json(['status' => 'success', 'message' => 'La cuenta se ha sido eliminado']);
     }
+
+    public function deactivateBySelection(Request $request)
+    {
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        Accounts::whereIn('id', $request->accountIdArray)->update(['is_active' => false]);
+        
+        return response()->json(['status' => 'succes', 'message' => 'Las cuentas hab sido desactivadas']); 
+    }
+
+    public function activateBySelection(Request $request)
+    {
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        Accounts::whereIn('id', $request->accountIdArray)->update(['is_active' => true]);
+
+        return response()->json(['status' => 'succes', 'message' => 'Las cuentas han sido activadas']); 
+    }
+
+    public function deleteBySelection(Request $request){
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        $charges = DB::table('view_charges')
+                    ->select(['account_id', 'account_name'])
+                    ->whereIn('account_id', $request->accountIdArray)
+                    ->get();
+        $account_ids = [];
+        $account_names = [];
+        if ($charges->count() > 0) {
+            $account_ids = array_values(array_unique($charges->pluck('account_id')->toArray()));
+            $account_names = array_values(array_unique($charges->pluck('account_name')->toArray()));
+        }
+        
+        $message = 'Se borraron todas las cuentas seleccionadas';
+        $acount_deletes = array_diff($request->accountIdArray, $account_ids);
+
+        if (count($account_ids) > 0) {
+            if ($account_names > 1) {
+                $account_names = array_slice($account_names, 0, 1);
+            }
+            $account_names = array_map(function($item) {
+                $item = '<b>'. $item .'</b>';
+                return $item;
+            }, $account_names);
+            
+            $message = 'Se borraron '. count($acount_deletes) .' cuentas. No se borraron '.  implode(',', $account_names).' porque estas estan realaciondos con cobros';
+        }
+        
+        Accounts::whereIn('id', $acount_deletes)->update(['deleted_at' => date('Y-m-d H:i:s'), 'is_active' => false]);
+
+        return response()->json(['status' => 'success', 'messages' => $message]);
+    }
 }

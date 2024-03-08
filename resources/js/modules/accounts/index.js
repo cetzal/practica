@@ -1,5 +1,5 @@
 (function(){
-
+    var accounts_id = [];
     $('.show_form_search').on('click', function(e){
         e.preventDefault();
         $('.form_search').toggleClass('form_search_active');
@@ -45,6 +45,15 @@
         // load_combobox("#suppliers_id");
     });
 
+    var verific_checks_accounts = function(num){
+        $(':checkbox:checked').each(function(i){
+            var account_data = $(this).closest('tr').data('account-id');
+            if (typeof(account_data) != "undefined") {
+                accounts_id.push(account_data);
+            }
+            console.log('accounts', accounts_id);
+        });
+    }
 
     var table =  $('#accounts-table').DataTable({
         responsive: true,
@@ -63,8 +72,7 @@
             }
         },
         "createdRow": function( row, data, dataIndex ) {
-                $(row).addClass('client-link');
-                $(row).attr('data-client', JSON.stringify(data));
+            $(row).attr('data-account-id', data['id']);
         },
         'columns': [
             { 
@@ -192,6 +200,168 @@
         });
     });
 
+    $( "#select_all" ).on( "change", function() {
+        if ($(this).is(':checked')) {
+            $("tbody input[type='checkbox']").prop('checked', true);
+        } 
+        else {
+            $("tbody input[type='checkbox']").prop('checked', false);
+        }
+    });
+
+    $(".delete_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        if(accounts_id.length) {
+
+            $.confirm({
+                title: 'Eliminar cuentas',
+                content: 'Realmente quieres eliminar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, eliminar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/deletebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    console.log('data', data.messages);
+                                    var messsage = 'Se elimino todas las cuentas selecionados';
+                                    if (typeof data.messages != undefined) {
+                                        messsage = data.messages;
+                                    }
+                                    $.confirm({
+                                        title: 'Eliminar cuentas',
+                                        content: messsage,
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $( "#select_all" ).prop('checked', false);
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Eliminar cuentas',
+                content: 'Seleccione las cuentas que deseas eliminar',
+            });
+        }
+    });
+
+    //Activar todas las marcas seleccionas
+    $(".active_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        console.log ('active all', accounts_id);
+        if(accounts_id.length) {
+            $.confirm({
+                title: 'Activar cuentas',
+                content: 'Realmente quieres activar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/activatebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar cuentas',
+                                        content: 'Se activo todas las cuentas selecionadas',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $( "#select_all" ).prop('checked', false);
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Activar cuentas',
+                content: 'Seleccione las cuentas que deseas activar',
+            });
+        }
+    });
+
+    // Desactivas todas las marcas seleccionadas
+    $(".desactive_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        
+        if(accounts_id.length) {
+            $.confirm({
+                title: 'Desactivar cuentas',
+                content: 'Realmente quieres desactivar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, desactivar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/deactivatebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactivar cuentas',
+                                        content: 'Se desactivo todas las cuentas selecionadas ',
+                                        buttons: {
+                                            ok: function () {
+                                                $( "#select_all" ).prop('checked', false);
+                                                table.ajax.reload();
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                                // $('#brand-table').DataTable().ajax().reload();
+                                            }
+                                        }
+                                    });
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Desactivar cuentas',
+                content: 'Seleccione las cuentas que deseas desactivar',
+            });
+        }
+    });
+    
     $('#accounts-table').on('click', '.remove ', function() {
         var url = "api/accounts/"
         var id = $(this).data('id').toString();

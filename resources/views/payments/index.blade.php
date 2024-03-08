@@ -46,7 +46,7 @@
         </form>
     </div>
     <div class="table-responsive">
-        <table id="charge-table" class="table charge-list" style="width: 100%">
+        <table id="table-purchase" class="table purchase-list" style="width: 100%">
             <thead>
                 <tr>
                     <th>{{trans('file.account')}}</th>

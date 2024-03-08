@@ -42,7 +42,7 @@ class PaymentsController extends Controller
         return $suppliers;
     }
 
-    public function searchSales(Request $request)
+    public function searchPurchase(Request $request)
     {
         $where = [];
 
@@ -54,12 +54,12 @@ class PaymentsController extends Controller
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
             $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
-            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '>=', trim($date_from)];
-            $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '<=', trim($date_to)];
+            $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT(purchase_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
 
-        $data = DB::table('view_sales')
-                ->select(['id', 'sale_date', 'client_name', 'total'])
+        $data = DB::table('view_purchases_create_payments')
+                ->select(['id', 'purchase_date', 'supplier_name', 'total', 'pid_amounts'])
                 ->where($where)
                 ->get();
         

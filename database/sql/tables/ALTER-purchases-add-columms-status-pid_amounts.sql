@@ -1,0 +1,3 @@
+ALTER TABLE purchases
+ADD COLUMN status INT DEFAULT 0 AFTER note,
+ADD COLUMN pid_amounts DECIMAL(10,2) DEFAULT 0 AFTER status;

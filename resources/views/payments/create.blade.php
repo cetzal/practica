@@ -10,7 +10,7 @@
                     </div>
                     <div class="card-body">
                         {{-- <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p> --}}
-                        {!! Form::open(['route' => ['api.product.show', 'id' => 0], 'method' => 'get', 'files' => true, 'id' => 'charge-form']) !!}
+                        {!! Form::open([ 'method' => 'get', 'files' => false, 'id' => 'payments-form']) !!}
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
@@ -47,7 +47,7 @@
                                     <div class="col-md-12">
                                         <h5>{{trans('file.Purchase List')}}</h5>
                                         <div class="table-responsive mt-3">
-                                            <table id="sale-detail-table" class="table table-hover order-list">
+                                            <table id="purchase-detail-table" class="table table-hover order-list">
                                                 <thead>
                                                     <tr>
                                                         <th>{{trans('file.date')}}</th>
@@ -61,17 +61,17 @@
                                                 </tbody>
                                                 <tfoot class="tfoot active">
                                                     <th colspan="2">{{trans('file.Total')}}</th>
-                                                    <th>0</th>
-                                                    <th id="total-sale">0.00</th>
+                                                    <th id="total-purchase">0.00</th>
                                                     <th><i class="dripicons-trash"></i></th>
+                                                    <th></th>
                                                 </tfoot>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group float-right">
-                                    <a href="{{route('charges.index')}}" class="btn btn-info">{{trans('file.back')}}</a>
-                                    <button type="button" class="btn btn-primary" id="save-charge">{{trans('file.Save')}}</button>
+                                    <a href="{{route('payments.index')}}" class="btn btn-info">{{trans('file.back')}}</a>
+                                    <button type="submit" class="btn btn-primary" id="save-charge">{{trans('file.Save')}}</button>
                                 </div>
                             </div>
                         </div>

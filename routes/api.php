@@ -192,6 +192,9 @@ Route::group(['middleware' => ['auth.jwt']],  function(){
     Route::delete('/accounts/{id}', [App\Http\Controllers\AccountsController::class, 'destroy'])->name('api.accounts.destroy');
     Route::put('/accounts/{id}/activate', [App\Http\Controllers\AccountsController::class, 'activate'])->name('api.accounts.activate');
     Route::put('/accounts/{id}/deactivate', [App\Http\Controllers\AccountsController::class, 'deactivate'])->name('api.accounts.deactivate');
+    Route::put('/accounts/all/activatebyselection', [App\Http\Controllers\AccountsController::class, 'activateBySelection'])->name('api.accounts.all_active');
+    Route::put('/accounts/all/deactivatebyselection', [App\Http\Controllers\AccountsController::class, 'deactivateBySelection'])->name('api.accounts.all_desactive');
+    Route::put('/accounts/all/deletebyselection', [App\Http\Controllers\AccountsController::class, 'deleteBySelection'])->name('api.accounts.all_delete');
 });
 
 Route::group(['middleware' => ['auth.jwt']],  function(){

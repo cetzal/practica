@@ -1,4 +1,25 @@
 (function(){
+    var accounts_id = [];
+
+    $( "#range_date" ).daterangepicker({
+        maxDate : moment().endOf(),
+        showApplyButton: false,
+        autoApply: true,
+        showInputs: false,
+        locale: {
+            format: 'DD/MM/YYYY'
+        },
+        todayHighlight: true,
+        autoUpdateInput: false,
+    });
+
+    $('input[name="range_date"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="range_date"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
 
     $('.show_form_search').on('click', function(e){
         e.preventDefault();
@@ -42,9 +63,19 @@
     $('.open-modal-account').on('click', function(e) {
         e.preventDefault();
         $('form#new_accounts')[0].reset();
+        $('input[name="name"]').find('.is-invalid').removeClass('is-invalid');
+        $('input[name="init_balance"]').find('.invalid-feedback').text('');
         // load_combobox("#suppliers_id");
     });
 
+    var verific_checks_accounts = function(num){
+        $(':checkbox:checked').each(function(i){
+            var account_data = $(this).closest('tr').data('account-id');
+            if (typeof(account_data) != "undefined") {
+                accounts_id.push(account_data);
+            }
+        });
+    }
 
     var table =  $('#accounts-table').DataTable({
         responsive: true,
@@ -63,8 +94,7 @@
             }
         },
         "createdRow": function( row, data, dataIndex ) {
-                $(row).addClass('client-link');
-                $(row).attr('data-client', JSON.stringify(data));
+            $(row).attr('data-account-id', data['id']);
         },
         'columns': [
             { 
@@ -182,6 +212,8 @@
         var id = $(this).data('id').toString();
         url = url.concat(id);
         $("input[name='accounts_id']").val(id);
+        $('input[name="name"]').find('.is-invalid').removeClass('is-invalid');
+        $('input[name="init_balance"]').find('.invalid-feedback').text('');
         $.get(url, function(response) {
             if(response.status == "success"){
                 $("input[name='name']").val(response.data.name);
@@ -191,4 +223,328 @@
             
         });
     });
+
+    $( "#select_all" ).on( "change", function() {
+        if ($(this).is(':checked')) {
+            $("tbody input[type='checkbox']").prop('checked', true);
+        } 
+        else {
+            $("tbody input[type='checkbox']").prop('checked', false);
+        }
+    });
+
+    $(".delete_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        if(accounts_id.length) {
+
+            $.confirm({
+                title: 'Eliminar cuentas',
+                content: 'Realmente quieres eliminar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, eliminar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/deletebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    var messsage = 'Se elimino todas las cuentas selecionados';
+                                    if (typeof data.messages != undefined) {
+                                        messsage = data.messages;
+                                    }
+                                    $.confirm({
+                                        title: 'Eliminar cuentas',
+                                        content: messsage,
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $( "#select_all" ).prop('checked', false);
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Eliminar cuentas',
+                content: 'Seleccione las cuentas que deseas eliminar',
+            });
+        }
+    });
+
+    //Activar todas las marcas seleccionas
+    $(".active_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        if(accounts_id.length) {
+            $.confirm({
+                title: 'Activar cuentas',
+                content: 'Realmente quieres activar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, activar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/activatebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Activar cuentas',
+                                        content: 'Se activo todas las cuentas selecionadas',
+                                        buttons: {
+                                            ok: function () {
+                                                table.ajax.reload();
+                                                $( "#select_all" ).prop('checked', false);
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Activar cuentas',
+                content: 'Seleccione las cuentas que deseas activar',
+            });
+        }
+    });
+
+    // Desactivas todas las marcas seleccionadas
+    $(".desactive_all").on('click', function(e){
+        e.preventDefault();
+        accounts_id = [];
+        verific_checks_accounts(0);
+        
+        if(accounts_id.length) {
+            $.confirm({
+                title: 'Desactivar cuentas',
+                content: 'Realmente quieres desactivar las cuentas selecionadas',
+                buttons: {
+                    deleteUser: {
+                        text: 'Si, desactivar',
+                        action: function () {
+                            $.ajax({
+                                type:'PUT',
+                                url:'api/accounts/all/deactivatebyselection',
+                                data:{
+                                    accountIdArray: accounts_id
+                                },
+                                success:function(data){
+                                    $.confirm({
+                                        title: 'Desactivar cuentas',
+                                        content: 'Se desactivo todas las cuentas selecionadas ',
+                                        buttons: {
+                                            ok: function () {
+                                                $( "#select_all" ).prop('checked', false);
+                                                table.ajax.reload();
+                                                $("tbody input[type='checkbox']").prop('checked', false);
+                                                // $('#brand-table').DataTable().ajax().reload();
+                                            }
+                                        }
+                                    });
+                                    
+                                }
+                            });
+                        }
+                    },
+                    cancelar: function () {
+                        // $.alert('action is canceled');
+                    }
+                }
+            });
+        }else{
+            $.alert({
+                title: 'Desactivar cuentas',
+                content: 'Seleccione las cuentas que deseas desactivar',
+            });
+        }
+    });
+
+    $( "#from_accounts_search" ).on( "submit", function( event ) {
+        event.preventDefault();
+        var date_range = $('#range_date').val();
+        var type_fecha = $('select[name="select_date"]').val();
+
+        if(type_fecha=='' && date_range !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione un tipo de fecha a consultar',
+            });
+
+            return '';
+        }
+        
+        if(date_range == '' && type_fecha !== ''){
+            $.alert({
+                title: 'Filtra datos',
+                content:'Selecione el rango de fecha',
+            });
+
+            return '';
+        }
+        $('#accounts-table').DataTable().ajax.reload();
+    });
+    
+    $('#accounts-table').on('click', '.remove ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id);
+        var Jquery = $.Jquery;
+        $.confirm({
+            title: 'Delete cuenta?',
+            content: 'Realmente quieres eliminar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'delete cuentas',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
+                                });
+                                // table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#accounts-table').on('click', '.desactivar ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/deactivate");
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Descativar cuenta?',
+            content: 'Realmente quieres desactivar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'desactivar cuenta',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.alert({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('#accounts-table').on('click', '.activar ', function() {
+        var url = "api/accounts/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/activate");
+        var Jquery = $.Jquery;
+       
+        $.confirm({
+            title: 'Activar cuenta?',
+            content: 'Realmente quieres activar la cuenta',
+            // autoClose: 'cancelAction|8000',
+            buttons: {
+                deleteUser: {
+                    text: 'activar cuenta',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'PUT',
+                            success: function(response) {
+                                $.alert({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
+
+    $('.btn-close-modal').on('click', function(e){
+        $("input[name='name']").val('');
+        $("input[name='init_balance']").val('');
+        $('form#new_accounts')[0].reset();
+        $('form#edit_accounts')[0].reset();
+        $("form#new_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#new_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+    });
+
+    $(document).on('click', function(e) {
+        if ($(e.target).hasClass('modal-backdrop')) {
+          // El clic ocurrió en el backdrop del modal
+          console.log('Clic en el backdrop del modal');
+        }
+      });
+    $('#createModal').on('show.bs.modal', function (event) {
+        console.log('cerrar modal afuera');
+        $("form#edit_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#edit_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#edit_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+    });
+
 })();

@@ -6,9 +6,9 @@
     </div>
     <div class="container-fluid mb-2 p-1">
         <button class="btn btn-info open-modal-account" data-bs-toggle="modal" data-bs-target="#createModal"><i class="dripicons-plus"></i> {{trans('file.Add Account')}} </button>&nbsp;
-        <!-- <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
+        <a href="#" class="btn btn-danger delete_all"><i class="dripicons-plus"></i> {{__('file.delete_all')}}</a>
         <a href="#" class="btn btn-success active_all"><i class="dripicons-plus"></i> {{__('file.active_all')}}</a>
-        <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a> -->
+        <a href="#" class="btn btn-warning desactive_all"><i class="dripicons-plus"></i> {{__('file.desactive_all')}}</a>
         <a href="#" class="btn btn-primary show_form_search"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
     <div class="container-fluid mb-2 form_search">
@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col">
                     <label for="name">{{trans('file.name')}}</label>
-                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="name">
+                    <input type="text" class="form-control" placeholder="{{trans('file.name')}}" name="account_name">
                 </div>
                 
                 <div class="col">
@@ -39,7 +39,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>{{trans('file.date')}}</label>
-                        <select class="form-select brand-date-select" name="select_date">
+                        <select class="form-select" name="select_date" id="account-date-select">
                             <option selected value="">{{trans('file.select')}}</option>
                             <option value="created_at">{{trans('file.date_create')}}</option>
                             <option value="updated_at">{{trans('file.date_update')}}</option>
@@ -104,4 +104,5 @@
 @section('scripts')
     <script src="{{ asset('js/modules/accounts/index.js') }}"></script>
     <script src="{{ asset('js/modules/accounts/create.js') }}"></script>
+    <script src="{{ asset('js/modules/accounts/edit.js') }}"></script>
 @endsection

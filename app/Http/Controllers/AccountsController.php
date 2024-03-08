@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Enum\ModuleEnum;
-use App\Enum\MovementTypeEnum;
 use App\Models\Accounts;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Enum\MovementTypeEnum;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class AccountsController extends Controller
 {
@@ -17,7 +19,30 @@ class AccountsController extends Controller
         return view('Accounts.index');
     }
 
-    public function list(Request $request){
+    public function list(Request $request)
+    {
+        $where = [];
+
+        if (!empty($request->account_name)) {
+            $where[] = ['name', 'like', '%'.$request->account_name.'%'];
+        }
+
+        if (!empty($request->created_by)) {
+            $where[] = ['created_by', 'like', '%'.$request->created_by.'%'];
+        }
+
+
+        if ($request->status != '') {
+            $where[] = ['is_active', '=', $request->status];
+        }
+
+        if (!empty($request->range_date) && !empty($request->select_date)) {
+            list($date_from, $date_to) = explode(' - ', $request->range_date);
+            $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
+            $date_to = Carbon::createFromFormat('d/m/Y', $date_to)->format('Y-m-d');
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '>=', trim($date_from)];
+            $where[] = [DB::raw('DATE_FORMAT('. $request->select_date.',"%Y-%m-%d")'), '<=', trim($date_to)];
+        }
 
         if($request->length != -1)
             $limit = $request->length;
@@ -26,7 +51,7 @@ class AccountsController extends Controller
         $start = $request->start ?? 1;
 
 
-        $query = DB::table('view_accounts');
+        $query = DB::table('view_accounts')->where($where);
 
         $data = $query->get();
         $totalData = $data->count();
@@ -80,12 +105,13 @@ class AccountsController extends Controller
     }
 
     public function update(Request $request, $id){
-        
         $this->validate($request, [
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('view_accounts'),
+                Rule::unique('view_accounts')->ignore($request->id)->where(function ($query) {
+                    return $query->where('is_active', 1);
+                }),
 
             ],
             'init_balance' => ['required']
@@ -154,11 +180,85 @@ class AccountsController extends Controller
 
     public function destroy($id)
     {
-        $client_data = Accounts::findOrFail($id);
-        $client_data->is_active = false;
-        $client_data->deleted_at = date('Y-m-d H:i:s');
-        $client_data->save();
+        $account_data = Accounts::findOrFail($id);
+
+        $charges = DB::table('view_charges')
+                    ->select('id')
+                    ->where('account_id', $account_data->getKey())
+                    ->count();
+        if ($charges > 0) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'La cuenta no se puede eliminar, tiene una o varias cobros relacionados a esta cuenta.'
+            ]);
+        } 
+        // $payments = DB::table('view_charges')
+        //             ->select('id')
+        //             ->where('account_id', $account_data->getKey())
+        //             ->count();
+
+        $account_data->is_active = false;
+        $account_data->deleted_at = date('Y-m-d H:i:s');
+        $account_data->save();
      
-        return response()->json(['status' => 'success', 'message' => 'El cliente se ha eliminado con exito']);
+        return response()->json(['status' => 'success', 'message' => 'La cuenta se ha sido eliminado']);
+    }
+
+    public function deactivateBySelection(Request $request)
+    {
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        Accounts::whereIn('id', $request->accountIdArray)->update(['is_active' => false]);
+        
+        return response()->json(['status' => 'succes', 'message' => 'Las cuentas hab sido desactivadas']); 
+    }
+
+    public function activateBySelection(Request $request)
+    {
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        Accounts::whereIn('id', $request->accountIdArray)->update(['is_active' => true]);
+
+        return response()->json(['status' => 'succes', 'message' => 'Las cuentas han sido activadas']); 
+    }
+
+    public function deleteBySelection(Request $request){
+        $this->validate($request, [
+            'accountIdArray' => ['required', 'array', 'min:1']
+        ]);
+
+        $charges = DB::table('view_charges')
+                    ->select(['account_id', 'account_name'])
+                    ->whereIn('account_id', $request->accountIdArray)
+                    ->get();
+        $account_ids = [];
+        $account_names = [];
+        if ($charges->count() > 0) {
+            $account_ids = array_values(array_unique($charges->pluck('account_id')->toArray()));
+            $account_names = array_values(array_unique($charges->pluck('account_name')->toArray()));
+        }
+        
+        $message = 'Se borraron todas las cuentas seleccionadas';
+        $acount_deletes = array_diff($request->accountIdArray, $account_ids);
+
+        if (count($account_ids) > 0) {
+            if ($account_names > 1) {
+                $account_names = array_slice($account_names, 0, 1);
+            }
+            $account_names = array_map(function($item) {
+                $item = '<b>'. $item .'</b>';
+                return $item;
+            }, $account_names);
+            
+            $message = 'Se borraron '. count($acount_deletes) .' cuentas. No se borraron '.  implode(',', $account_names).' porque estas estan realaciondos con cobros';
+        }
+        
+        Accounts::whereIn('id', $acount_deletes)->update(['deleted_at' => date('Y-m-d H:i:s'), 'is_active' => false]);
+
+        return response()->json(['status' => 'success', 'messages' => $message]);
     }
 }

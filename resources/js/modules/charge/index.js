@@ -1,3 +1,10 @@
+jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+        var x = parseFloat(a) || 0;
+        var y = parseFloat(b) || 0;
+        return x + y
+    }, 0 );
+} );
 (function() {
     $.ajaxSetup({
         headers: {
@@ -141,9 +148,9 @@
         ],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
-            // $('tfoot th').eq(2).html( 
-            //     '$ ' + parseFloat(api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
-            // );
+            $('tfoot th').eq(2).html( 
+                '$ ' + parseFloat(api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
+            );
         },
         // 'select': { style: 'multi',  selector: 'td:first-child'},
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],

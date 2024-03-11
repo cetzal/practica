@@ -5,6 +5,22 @@
         let input = '#select_account';
         let url = '/api/payments/load/create/accounts';
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Para realizar pagos se requiere atender la configuracion de las cuentas.',
+                    buttons: {
+                        ok: function () {
+                            window.location.replace('/accounts');
+                        }
+                    }
+                });
+            }
+
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
@@ -23,7 +39,22 @@
             type: "GET",
             url:  '/api/payments/load/create/suppliers',
             success: function( response ){
-               
+               let filtered = response.filter(function(current) {
+                    return current.id != ''
+                });
+                
+                if (filtered.length == 0) {
+                    $.confirm({
+                        title: '',
+                        content: 'Para realizar pagos se requiere atender la configuracion en proveedores.',
+                        buttons: {
+                            ok: function () {
+                                window.location.replace('/suppliers');
+                            }
+                        }
+                    });
+                }
+
                 if(response.length != 0){
                     
                     $.each(response, function(index, row) {

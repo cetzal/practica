@@ -43,6 +43,12 @@ $(document).ready(function() {
                 }
             },
             {
+                data : 'purchase_date',
+                render : function(data, type, row, meta){
+                    return  moment(row.purchase_date).format('DD/MM/YYYY HH:mm:ss');
+                }
+            },
+            {
                 data: 'amount',
                 render: function(data, type, row, meta){
                     return '$ '+parseFloat(row.amount).toLocaleString('en-US', {minimumFractionDigits: 2});
@@ -52,13 +58,13 @@ $(document).ready(function() {
         'columnDefs': [
             {
                 "orderable": false,
-                'targets': [0,1,2]
+                'targets': [0,1,2,3]
             }
         ],
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         footerCallback: function (tfoot, data, start, end, display) {
             var api = this.api();
-            $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+            $('tfoot th').eq(3).html('$ '+ parseFloat( api.column(3, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
         },
     } );
 });

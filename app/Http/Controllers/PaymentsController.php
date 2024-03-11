@@ -71,7 +71,7 @@ class PaymentsController extends Controller
                     ->count();
 
         $data = DB::table('view_payments_detail')
-                    ->select(['account_name', 'supplier_name', 'amount'])
+                    ->select(['account_name', 'supplier_name', 'purchase_date','amount'])
                     ->where('payments_id', $id)
                     ->skip($start)->take($limit)
                     ->get();

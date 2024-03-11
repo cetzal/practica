@@ -13,12 +13,14 @@
                 <tr>
                     <th>{{trans('file.account')}}</th>
                     <th>{{trans('file.supplier')}}</th>
+                    <th>{{trans('file.purchase date')}}</th>
                     <th>{{trans('file.Paid')}}</th>
                 </tr>
             </thead>
             
             <tfoot class="tfoot active">
                 <th>{{trans('file.Total')}}</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tfoot>

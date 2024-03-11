@@ -177,6 +177,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         $("select[name='brand_id']").val('');
         $("select[name='product_id']").val('');
         $("select[name='client_id']").val('');
+        $("select[name='status_id']").val('');
         $("input[name='range_date']").val('');
         $('#sale-table').DataTable().ajax.reload();
     });

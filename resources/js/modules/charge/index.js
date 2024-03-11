@@ -157,7 +157,7 @@
 
     $('.clear_form').on('click', function(e){
         loadSearchComboClients();
-        $("select[name='select_account']").val('');
+        $("select[name='account_id']").val('');
         $("input[name='range_date']").val('');
         $('#charge-table').DataTable().ajax.reload();
     });

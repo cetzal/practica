@@ -74,7 +74,7 @@ BEGIN
 	    END WHILE;
 
     COMMIT;
-    SELECT 'Compra realizada exitosamente.' AS message;
+    SELECT 'El pago se ha realizado exitosamente.' AS message;
 END $$
 
 DELIMITER ;

@@ -61,8 +61,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+               
                 <button type="button" class="btn btn-secondary bt-close-modal" data-bs-dismiss="modal">{{trans('file.close')}}</button>
-                <input type="button" id="add-purchase" value="Agregar compras" class="btn btn-primary">
+                <input type="button" id="add-purchase" value=" {{ trans('file.Add Purchase') }}" class="btn btn-primary">
             </div>
         </div>
     </div>

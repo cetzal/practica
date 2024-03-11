@@ -251,6 +251,20 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         })
     }
 
+    function loadSearchComboStatus() {
+        let input = '#select_status';
+        let url = '/api/purchase/load/search/status';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value="' + row.id + '">' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+
     $('select[name="supplier_id"]').on('change', function(e) {
         e.preventDefault();
         let supplier_id = $(this).val();
@@ -301,5 +315,6 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         loadSearchComboSuppliers();
         loadSearchComboBrands();
         loadSearchComboProducts();
+        loadSearchComboStatus();
     });
 })();

@@ -41,6 +41,10 @@ class PurchaseController extends Controller
         if (!empty($request->supplier_id)) {
             $where[] = ['supplier_id', '=', $request->supplier_id];
         }
+
+        if (!is_null($request->status_id)) {
+            $where[] = ['status', '=', $request->status_id];
+        }
       
         $data = DB::table('view_purchases')
                 ->select(['id', 'purchase_date', 'supplier_name', 'total', 'status', 'paid_amounts'])
@@ -240,6 +244,17 @@ class PurchaseController extends Controller
         $producs->prepend((object)$option_initial);  
        
         return $producs;
+    }
+
+    public function loadSearchComboStatus()
+    {
+        $option_initial = ['id' => '', 'name' => trans('file.All')];
+
+        $status = DB::table('view_purchase_status_list')->get();
+
+        $status->prepend((object)$option_initial);
+
+        return $status;
     }
 
     public function getStockAlert(){

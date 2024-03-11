@@ -127,6 +127,8 @@ Route::group(['middleware' => ['auth.jwt']], function(){
     Route::get('/purchase/load/serach/suppliers', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboSuppliers'])->name('api.purchase.load.combo.suppliers');
     Route::get('/purchase/load/serach/brands', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboBrands'])->name('api.purchase.load.combo.brands');
     Route::get('/purchase/load/search/products', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboProducts'])->name('api.purchase.load.combo.products');
+    Route::get('/purchase/load/search/status', [\App\Http\Controllers\PurchaseController::class, 'loadSearchComboStatus'])->name('api.purchase.load.combo.status');
+
 
     Route::get('/purchase/getProductSearch/{product_id}', [App\Http\Controllers\PurchaseController::class, 'getproductSearchById'])->name('api.purchase.getProductSearch');
     Route::get('/purchase/productSearch', [App\Http\Controllers\PurchaseController::class, 'searchProductByBrandIdAndSupplierId'])->name('api.purchase.search-product');

@@ -355,6 +355,10 @@
     $('#brand-table').on('click', '.open-EditbrandDialog ', function(e) {
        e.preventDefault();
         $('#update_brand')[0].reset();
+        $('form#update_brand').validate().resetForm();
+        $('form#update_brand').validate().prepareForm();
+        $('form#update_brand').validate().hideErrors();
+        $('form#update_brand').find(".is-invalid").removeClass("is-invalid");
         $('#suppliersup_id').empty();
         let url = "api/brand/"
         let id = $(this).data('id').toString();
@@ -531,6 +535,10 @@
     $('.open-modal-brand').on('click', function(e){
         e.preventDefault();
         $('form#new_brand')[0].reset();
+        $('form#new_brand').validate().resetForm();
+        $('form#new_brand').validate().prepareForm();
+        $('form#new_brand').validate().hideErrors();
+        $('form#new_brand').find(".is-invalid").removeClass("is-invalid");
         load_combobox("#suppliers_id");
     });
 

@@ -111,6 +111,7 @@
     //Add products in view create sale
     $('#add-products').on('click', function() {
         let selected_products = selectedProducts();
+        
         if (selected_products.length) {
             $( "#select_all" ).prop('checked', false);
             $("input[name='code_prod']").val(''),

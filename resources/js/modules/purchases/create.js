@@ -134,8 +134,9 @@ const { result } = require("lodash");
     }
 
     function addRows(response){
-        var flag = 1;
+        
         $.each(response, function(index, data){
+            var flag = 1;
             $(".product-code").each(function(i) {
                 if ($(this).val() == data['code']) {
                     rowindex = i;
@@ -453,6 +454,7 @@ const { result } = require("lodash");
     $(document).on('listen-searchModal', function(event, datos) {
         
         if (datos.data.length) {
+            console.log(datos.data);
             addRows(datos.data);
         }
     });

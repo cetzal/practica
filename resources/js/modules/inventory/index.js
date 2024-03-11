@@ -114,6 +114,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
     $('#select_type').on('change', function(e) {
         e.preventDefault();
+        loadSearchComboClients();
         $('#select_client').attr('disabled', 'disabled');
         if ($(this).val() == "sale") {
             $('#select_client').removeAttr('disabled');

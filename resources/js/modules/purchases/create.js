@@ -31,7 +31,22 @@ const { result } = require("lodash");
             type: "GET",
             url: host + '/api/purchase/load/create/suppliers',
             success: function( response ){
-               
+                let filtered = response.filter(function(current) {
+                    return current.id != ''
+                });
+                
+                if (filtered.length == 0) {
+                    $.confirm({
+                        title: '',
+                        content: 'Para realizar compra se requiere atender la configuracion de proveedores.',
+                        buttons: {
+                            ok: function () {
+                                window.location.replace('/suppliers');
+                            }
+                        }
+                    });
+                }
+
                 if(response.length != 0){
                     
                     $.each(response, function(index, row) {

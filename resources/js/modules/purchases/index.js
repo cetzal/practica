@@ -69,7 +69,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                         content = 'Abonado';
                     }
 
-                    if(row.status == 3){
+                    if(row.status == 2){
                         content = 'Pagado';
                     }
 

@@ -12,6 +12,22 @@
         let input = '#select_account';
         let url = '/api/charges/load/create/accounts';
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Para realizar cobros se requiere atender la configuracion de las cuentas.',
+                    buttons: {
+                        ok: function () {
+                            window.location.replace('/accounts');
+                        }
+                    }
+                });
+            }
+
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {

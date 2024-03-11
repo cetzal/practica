@@ -1,5 +1,6 @@
 (function(){
     var accounts_id = [];
+    var module = 'accounts';
 
     $( "#range_date" ).daterangepicker({
         maxDate : moment().endOf(),
@@ -518,6 +519,13 @@
 
     });
 
+    $('#accounts-table').on('click', '.redirect-record-log', function(e) {
+        e.preventDefault();
+        let record_id = $(this).data('record-id').toString();
+        let record_name = $(this).data('record-name').toString();
+        window.open(window.location.origin +'/log-record/'+record_id+'?record_name='+record_name+'&module_name='+module, '_blank');
+    });
+
     $('.btn-close-modal').on('click', function(e){
         $("input[name='name']").val('');
         $("input[name='init_balance']").val('');
@@ -538,13 +546,26 @@
           // El clic ocurrió en el backdrop del modal
           console.log('Clic en el backdrop del modal');
         }
-      });
-    $('#createModal').on('show.bs.modal', function (event) {
-        console.log('cerrar modal afuera');
+    });
+
+    $('#createModal').on('hidden.bs.modal', function (event) {
+        $("form#new_accounts").find("input[name='name']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='name']").attr('aria-invalid', false);
+        $("form#new_accounts").find("input[name='init_balance']").removeClass('is-invalid');
+        $("form#new_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
+    });
+
+    $('#editModal').on('hidden.bs.modal', function (event) {
         $("form#edit_accounts").find("input[name='name']").removeClass('is-invalid');
         $("form#edit_accounts").find("input[name='name']").attr('aria-invalid', false);
         $("form#edit_accounts").find("input[name='init_balance']").removeClass('is-invalid');
         $("form#edit_accounts").find("input[name='init_balance']").attr('aria-invalid', false);
     });
+
+    // $('#miModal').on('hidden.bs.modal', function (e) {
+    //     // Limpiar estilos de los inputs sombreados en color rojo
+    //     $('input').removeClass('is-invalid');
+    //     $('.invalid-feedback').text('');
+    //   });
 
 })();

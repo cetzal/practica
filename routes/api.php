@@ -225,7 +225,10 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/payments', [\App\Http\Controllers\PaymentsController::class, 'list'])->name('api.payments.list');
     Route::post('/payments', [\App\Http\Controllers\PaymentsController::class, 'store'])->name('api.payments.store');
+    Route::get('/payments/details/{id}', [\App\Http\Controllers\PaymentsController::class, 'detailList'])->name('api.payments.detail-list');
+    Route::get('/payments/load/search/accounts', [\App\Http\Controllers\PaymentsController::class, 'loadSearchComboAccounts'])->name('api.payments.load.combo.accounts');
+    Route::get('/payments/load/search/suppliers', [\App\Http\Controllers\PaymentsController::class, 'loadSearchComboSuppliers'])->name('api.payments.load.combo.suppliers');
     Route::get('/payments/load/create/accounts', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboAccounts'])->name('api.payments.load.create.combo-accounts');
     Route::get('/payments/load/create/suppliers', [\App\Http\Controllers\PaymentsController::class, 'loadCreateComboSuppliers'])->name('api.payments.load.create.combo-supliers');
-    Route::get('/payments/modalPurchaseSearch', [App\Http\Controllers\PaymentsController::class, 'searchPurchase'])->name('api.charges.modal.search-sale');
+    Route::get('/payments/modalPurchaseSearch', [App\Http\Controllers\PaymentsController::class, 'searchPurchase'])->name('api.payments.modal.search-sale');
 });

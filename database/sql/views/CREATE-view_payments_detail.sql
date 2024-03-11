@@ -1,7 +1,9 @@
 CREATE OR REPLACE VIEW view_payments_detail AS
 SELECT 
 	vp.id,
+	vp.account_id,
 	vp.account_name,
+	vp.supplier_id,
 	vp.supplier_name,
 	(SELECT vp.purchase_date FROM view_purchases vp WHERE vp.id = pd.purchase_id) as purchase_date,
 	pd.amount,

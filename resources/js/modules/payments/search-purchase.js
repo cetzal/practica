@@ -95,6 +95,7 @@
         if (selected_purchase.length) {
             $("input[name='range_date']").val('');
             $('#table-purc-search tbody').empty();
+            $('#table-purc-search').hide();
             $( "#select_all" ).prop('checked', false);
             $(document).trigger('listen-searchModalPurchase', {data: selected_purchase});
             $('.bt-close-modal').trigger('click');

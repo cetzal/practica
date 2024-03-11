@@ -60,6 +60,27 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 render : function(data, type, row, meta){
                     return '$ '+parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
+            },
+            {
+                data: 'status',
+                render : function(data, type, row, meta){
+                    let content = 'Pendiente';
+                    if(row.status == 1){
+                        content = 'Abonado';
+                    }
+
+                    if(row.status == 3){
+                        content = 'Pagado';
+                    }
+
+                    return content;
+                }
+            },
+            {
+                data: 'paid_amounts',
+                render : function(data, type, row, meta){
+                    return '$ '+parseFloat(row.paid_amounts).toLocaleString('en-US', {minimumFractionDigits: 2});
+                }
             }
         ],
         "createdRow": function( row, data, dataIndex ) {
@@ -90,7 +111,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                     return html;
                 
                 },
-                'targets': [3]
+                'targets': [5]
             },
             
         ],
@@ -98,8 +119,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
-            // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            console.log(api.column(4, {page:'current'}).data());
+            
             $('tfoot th').eq(2).html('$ '+ parseFloat( api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+            $('tfoot th').eq(4).html('$ '+ parseFloat( api.column(4, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
 
        
         },

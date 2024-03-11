@@ -43,7 +43,7 @@ class PurchaseController extends Controller
         }
       
         $data = DB::table('view_purchases')
-                ->select(['id', 'purchase_date', 'supplier_name', 'total'])
+                ->select(['id', 'purchase_date', 'supplier_name', 'total', 'status', 'paid_amounts'])
                 ->where($where)
                 ->get();
 

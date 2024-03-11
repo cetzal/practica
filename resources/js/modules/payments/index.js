@@ -1,3 +1,10 @@
+jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+        var x = parseFloat(a) || 0;
+        var y = parseFloat(b) || 0;
+        return x + y
+    }, 0 );
+} );
 (function(){
 
     $( "#range_date" ).daterangepicker({
@@ -19,6 +26,34 @@
     $('input[name="range_date"]').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
+
+    function loadSearchComboSuppliers() {
+        let input = 'select[name="supplier_id"]';
+        let url = '/api/payments/load/search/suppliers';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
+    
+    function loadSearchComboAccounts() {
+        let input = 'select[name="account_id"]';
+        let url = '/api/payments/load/search/accounts';
+
+        $.get(url, function(response) {
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
 
     $('.show_form_search').on('click', function(e){
         e.preventDefault();
@@ -100,8 +135,12 @@
                 
             },
         ],
-      
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "footerCallback": function (tfoot, data, start, end, display) {
+            var api = this.api();
+            // $('tfoot th').eq(5).html( api.column(5, {page:'current'}).data().sum() + '<br>');
+            $('tfoot th').eq(3).html('$ '+ parseFloat( api.column(3, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>');
+        },
        
     } );
 
@@ -123,5 +162,10 @@
         let payments_id = $(this).data('payments-id').toString();
         let paid_date = $(this).data('paid-date').toString();
         window.open(window.location.origin +'/payments/'+payments_id+'/details?paid_date='+paid_date, '_blank');
+    });
+
+    $(document).ready(function(){
+        loadSearchComboAccounts();
+        loadSearchComboSuppliers();
     });
 })();

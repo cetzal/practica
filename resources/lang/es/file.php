@@ -655,5 +655,7 @@ return [
 	'balance_receivable' => 'Saldo cobrar',
 	'select_status' => 'Selecciona estatus',
 	'payments detail' => 'Detalle de pagos',
+	'balance_collected' => 'Saldo cobrado',
+	'total_to_charged' => 'Total a cobrar',
 ];
 ?>

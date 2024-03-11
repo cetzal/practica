@@ -163,13 +163,13 @@
             });
             row.find('.amount').val(0);
         }
-         else if (amount > current_balance) {
-            $.alert({
-                title: '',
-                content: 'El monto no debe ser mayor al saldo a cobrar $'+current_balance
-            });
-            row.find('.amount').val(0);
-        } 
+        //  else if (amount > current_balance) {
+        //     $.alert({
+        //         title: '',
+        //         content: 'El monto no debe ser mayor al saldo a cobrar $'+current_balance
+        //     });
+        //     row.find('.amount').val(0);
+        // } 
         calculateTotal();
         // if (amount > product_quantity) {
         //     alert_reorden = product_quantity - quantity;

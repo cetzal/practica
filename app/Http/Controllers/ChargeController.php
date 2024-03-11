@@ -205,10 +205,10 @@ class ChargeController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(sale_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
 
-        $data = DB::table('view_sales')
+        $data = DB::table('view_charges_sales_search')
                 ->select(['id', 'sale_date', 'client_name', 'total', 'total_charged'])
                 ->where($where)
-                ->whereRaw('total <> total_charged')
+                ->whereRaw('total <> 0')
                 ->get();
         
         return response()->json($data);

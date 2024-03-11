@@ -655,6 +655,8 @@ return [
 	'total_charged' => 'Total charged',
 	'balance_receivable' => 'balance receivable',
 	'select_status' => 'Select status',
-	'payments detail' => 'Payments detail'
+	'payments detail' => 'Payments detail',
+	'balance_collected' => 'Balance collected',
+	'total_to_charged' => 'Total charged',
 ];
 ?>

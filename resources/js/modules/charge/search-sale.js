@@ -55,12 +55,12 @@
                     console.log('sales find', response);
                     $.each(response, function(index, row) {
                         let fila = $('<tr>').attr('data-sale-id', row.id);
-                        let balance = parseFloat(row.total) - parseFloat(row.total_charged);
+                        // let balance = parseFloat(row.total) - parseFloat(row.total_charged);
                         fila.append('<td><div class="checkbox"><input type="checkbox" class="dt-checkboxes checked-sale"><label></label></div></td>');
                         fila.append('<td>'+ moment(row.sale_date, 'YYYY-MM-DD').format('DD/MM/YYYY') +'</td>');
                         fila.append('<td>'+ row.client_name +'</td>');
                         fila.append('<td>$ '+ parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
-                        fila.append('<td>$ '+ parseFloat(balance).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
+                        fila.append('<td>$ '+ parseFloat(row.total_charged).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         $('#sale-search-data-table tbody').append(fila);
                     }); 
                 } else if (response.length == 0) {
@@ -96,17 +96,17 @@
             let row = $(this).closest('tr');
             let total = parseInt($(this).find('td:eq(3)').text().replace(/[^\d.-]/g, ''));
             let balance_receivable = parseInt($(this).find('td:eq(4)').text().replace(/[^\d.-]/g, ''));
-            let balance = total - balance_receivable;
-            if (balance == 0) {
-                balance = 0;
-            }
+            // let balance = total - balance_receivable;
+            // if (balance == 0) {
+            //     balance = 0;
+            // }
             if(checked.prop('checked')) {
                 data.push({
                     id: parseInt(row.data('sale-id').toString()),
                     date: $(this).find('td:eq(1)').text(),
                     client_name: $(this).find('td:eq(2)').text(),
                     total: total,
-                    balance_receivable: balance,
+                    balance_receivable: balance_receivable,
                 });
             }
         });

@@ -37,7 +37,7 @@
                             ok: function () {
                                 $('.btn-close-modal').trigger('click');
                                 $("#new_accounts").get(0).reset();
-                                //$('#brand-table').DataTable().ajax.reload();
+                                $('#accounts-table').DataTable().ajax.reload();
                             }
                         }
                     });

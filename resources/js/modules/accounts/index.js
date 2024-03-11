@@ -125,7 +125,7 @@
             {
                 data : 'egress',
                 render : function(data, type, row, meta){
-                    return 0;
+                    return '$ '+parseFloat(row.egress).toLocaleString('en-US', {minimumFractionDigits: 2});
                 }
             },
             {

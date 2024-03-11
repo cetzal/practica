@@ -79,6 +79,22 @@
         let url = '/api/sales/load/create/clients';
 
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Para realizar venta se requiere atender la configuracion de clientes.',
+                    buttons: {
+                        ok: function () {
+                            window.location.replace('/clients');
+                        }
+                    }
+                });
+            }
+
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
@@ -369,6 +385,22 @@
         let url = '/api/sales/load/create/suppliers';
 
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Para realizar venta se requiere atender la configuracion de proveedores.',
+                    buttons: {
+                        ok: function () {
+                            window.location.replace('/suppliers');
+                        }
+                    }
+                });
+            }
+
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
@@ -382,6 +414,22 @@
         let input = '#select_search_brand';
         let url = '/api/sales/load/create/brands';
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Para realizar venta se requiere atender la configuracion de marcas.',
+                    buttons: {
+                        ok: function () {
+                            window.location.replace('/brand');
+                        }
+                    }
+                });
+            }
+
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
@@ -402,8 +450,8 @@
     $('#open-search-product').on('click', function(e) {
         e.preventDefault();
         
-        loadSearchComboSuppliers();
         loadSearchComboBrands();
+        loadSearchComboSuppliers();
         $('#searchProduct').modal('show');
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');

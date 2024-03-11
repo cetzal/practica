@@ -126,21 +126,26 @@
                     .attr('data-product-quantity', data.qty);
         let product_exist = false;
         let quantity = 1;
+        let quantity_allowed = [];
 
         $('#product-detail-table tbody tr').each(function() {
             let product_code = $(this).find('.product-code').text();
             if (product_code == data.code) {
+                product_exist = true;
                 let exist_quantity = parseInt($(this).find('.quantity').val());
                 let new_quantity = exist_quantity + quantity;
-                let unit_cost = parseFloat($(this).find('.unit_cost').text().replace(/[^\d.-]/g, ''));
-                $(this).find('.quantity').val(new_quantity);
-                $(this).find('.subtotal').text('$ '+parseFloat(new_quantity * unit_cost).toLocaleString('en-US', {minimumFractionDigits: 2}));
-                $(this).attr('data-stock-alert', data.alert_quantity);
-                product_exist = true;
+                if (new_quantity > data.qty) {
+                    quantity_allowed.push('El producto <b>'+data.name+'</b> la cantidad permitida es de <b>'+data.qty+'</b>');
+                } else {
+                    let unit_cost = parseFloat($(this).find('.unit_cost').text().replace(/[^\d.-]/g, ''));
+                    $(this).find('.quantity').val(new_quantity);
+                    $(this).find('.subtotal').text('$ '+parseFloat(new_quantity * unit_cost).toLocaleString('en-US', {minimumFractionDigits: 2}));
+                    $(this).attr('data-stock-alert', data.alert_quantity);
+                }
                 return false;
             }
         });
-
+        
         if (!product_exist) {
             let unit_price = parseFloat(data.price);
             let subtotal = 1 * unit_price;
@@ -154,6 +159,12 @@
             $('#product-detail-table tbody').append(fila);
         }
         calculateTotalSale();
+        if (quantity_allowed.length) {
+            $.alert({
+                title: '',
+                content: quantity_allowed.join('<br>')
+            })
+        }
     }
 
     function addRows(data) {

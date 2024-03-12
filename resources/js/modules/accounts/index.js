@@ -2,6 +2,12 @@
     var accounts_id = [];
     var module = 'accounts';
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
     $( "#range_date" ).daterangepicker({
         maxDate : moment().endOf(),
         showApplyButton: false,

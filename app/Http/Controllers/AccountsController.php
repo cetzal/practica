@@ -104,15 +104,14 @@ class AccountsController extends Controller
         return response()->json(['status' => 'succes', 'message' => 'La cuenta se guardo con exito']);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('view_accounts')->ignore($request->id)->where(function ($query) {
-                    return $query->where('is_active', 1);
+                Rule::unique('view_accounts')->ignore($id)->where(function ($query) {
+                    return $query->whereRaw('deleted_at IS NULL');
                 }),
-
             ],
             'init_balance' => ['required']
         ]);

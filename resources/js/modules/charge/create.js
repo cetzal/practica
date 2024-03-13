@@ -220,15 +220,23 @@
 
     $('#save-charge').on('click', function(event) {
         let sales = [];
+        let sales_not_allowed = [];
         $('#sale-detail-table tbody tr').each(function() {
+            let total_sale = parseFloat($(this).find('.total_sale').val().replace(/[^\d.-]/g, ''));
+            let amount = parseFloat($(this).find('.amount').val().replace(/[^\d.-]/g, ''));
+            let client = $(this).find('td:eq(1)').text();
             let sale = {
                 sale_id: parseInt($(this).data('sale-id').toString()),
                 amount: parseFloat($(this).find('.amount').val().replace(/[^\d.-]/g, '')),
             }
-
+            if (amount > total_sale) {
+                sales_not_allowed.push({client: client, amount: amount});
+            }
             sales.push(sale);
             
         });
+
+        console.log('sales not allowed', sales_not_allowed);
         
         if (sales.length == 0) {
             $.alert({
@@ -257,7 +265,7 @@
                 account_id: parseInt($("select[name='account_id']").val()),
                 sales: sales,
             };
-            console.log('cobro', data);
+            
             let amount_is_zero = false;
             $('#sale-detail-table tbody tr').each(function() {
                 let amount = $(this).find('.amount').val();

@@ -231,9 +231,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 }
             },
             {
-                data: 'status',
+                data: 'status_charge_name',
                 render: function(data, type, row, meta){
-                    return row.status;
+                    return row.status_charge_name;
                 }
             },
             {
@@ -252,6 +252,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 'render': function(data, type, row, meta){
                     let html =  '<a href="#" class="btn bg-primary btn-sm redirect-sale-detail" data-sale-id="'+row.id+'"'+
                     'data-sale-date="'+row.sale_date+'" data-client="'+row.client_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                    html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     return html;
                 
                 },
@@ -272,6 +273,43 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
        
     } );
 
+    $('#sale-table').on('click', '.remove ', function() {
+        var url = "/api/sales/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/delete");
+       
+        $.confirm({
+            title: 'Eliminar venta',
+            content: 'Realmente quieres eliminar la venta?',
+            buttons: {
+                deleteUser: {
+                    text: 'Eliminar venta',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
+                                });
+                                // table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
     $('#sale-table').on('click', '.redirect-sale-detail', function(e) {
         e.preventDefault();
         let sale_id = $(this).data('sale-id').toString();

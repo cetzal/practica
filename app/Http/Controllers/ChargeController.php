@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Charge;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,10 @@ class ChargeController extends Controller
             $where[] = ['account_id', '=', $request->account_id];
         }
 
+        if (!empty($request->client_id)) {
+            $where[] = ['clients', 'like', '%'.$request->client_id.'%'];
+        }
+
         if (!empty($request->range_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
@@ -39,12 +44,14 @@ class ChargeController extends Controller
         $count_filtered = DB::table('view_charges')
                             ->select(['id'])
                             ->where($where)
+                            ->orderBy('charge_date', 'DESC')
                             ->count();
 
         $data = DB::table('view_charges')
-                            ->select(['id', 'account_name', 'charge_date', 'amount'])
+                            ->select(['id', 'account_name', 'charge_date', 'amount', 'clients'])
                             ->where($where)
                             ->skip($start)->take($limit)
+                            ->orderBy('charge_date', 'DESC')
                             ->get();
 
         $total_data = $count_filtered;
@@ -96,7 +103,7 @@ class ChargeController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $charge_date = $request->charge_date;
+        $charge_date = Carbon::createFromFormat('Y-m-d', $request->charge_date)->format('d/m/Y');
         $charge_id = $request->id;
 
         return view('charge.detail', compact('charge_date', 'charge_id'));
@@ -162,16 +169,15 @@ class ChargeController extends Controller
     {
         $option_initial = ['id' => '', 'name' => trans('file.without_clients')];
 
-        // $clients = DB::table('view_sales_clients_list')->get();
+        $clients = DB::table('view_charges_clients_index')->get();
 
-        // if ($clients->count()) {
-        //     $option_initial = ['id' => '', 'name' => trans('file.select_client')];
-        // }
+        if ($clients->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_client')];
+        }
 
-        // $clients->prepend((object)$option_initial);
+        $clients->prepend((object)$option_initial);
 
-        // return $clients;
-        return [$option_initial];
+        return $clients;
     }
 
     public function loadSearchSaleComboClients()
@@ -212,5 +218,30 @@ class ChargeController extends Controller
                 ->get();
         
         return response()->json($data);
+    }
+
+    public function destroy($id)
+    {
+        $save = DB::select('CALL sp_delete_charge(?)', [$id]);
+        
+        $save = current($save);
+
+        if (isset($save->message)) {
+            return response()->json([
+                'status' => 'succes',
+                'message' => $save->message
+            ]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The sale could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
     }
 }

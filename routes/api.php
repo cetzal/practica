@@ -145,6 +145,7 @@ Route::group(['middleware' => ['auth.jwt']], function(){
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/sales', [\App\Http\Controllers\SaleController::class, 'store'])->name('api.sales.store');
     Route::get('/sales/list', [\App\Http\Controllers\SaleController::class, 'list'])->name('api.sales.list');
+    Route::delete('/sales/{id}/delete', [App\Http\Controllers\SaleController::class, 'destroy'])->name('api.sales.delete');
     Route::get('/sales/load/create/suppliers', [\App\Http\Controllers\SaleController::class, 'loadCreateComboSuppliers'])->name('api.sales.load.create.combo-supliers');
     Route::get('/sales/load/create/brands', [\App\Http\Controllers\SaleController::class, 'loadCreateComboBrands'])->name('api.sales.load.create.combo-brands');
     Route::get('/sales/load/create/clients', [\App\Http\Controllers\SaleController::class, 'loadCreateComboClients'])->name('api.sales.load.create.combo-clients');
@@ -207,6 +208,7 @@ Route::group(['middleware' => ['auth.jwt']],  function(){
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::post('/charges', [\App\Http\Controllers\ChargeController::class, 'store'])->name('api.charges.store');
     Route::get('/charges/list', [\App\Http\Controllers\ChargeController::class, 'list'])->name('api.charges.list');
+    Route::delete('/charges/{id}/delete', [App\Http\Controllers\ChargeController::class, 'destroy'])->name('api.charges.delete');
     Route::get('/charges/details/{id}', [\App\Http\Controllers\ChargeController::class, 'detailList'])->name('api.charges.detail-list');
     /** Combos para la vista para agregar cobros */
     Route::get('/charges/load/create/accounts', [\App\Http\Controllers\ChargeController::class, 'loadCreateComboAccounts'])->name('api.sales.load.create.combo-supliers');

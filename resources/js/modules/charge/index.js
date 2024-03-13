@@ -72,7 +72,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     //End comobos iniciales
 
     $(document).ready(function() {
-        // loadSearchComboClients();
+        loadSearchComboClients();
         loadSearchComboAccounts();
     });
 
@@ -87,6 +87,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             "data": function(d) {
                 var frm_data = $('form#from_search_charge').serializeArray();
                 $.each(frm_data, function(key, val) {
+                    if (val.name == 'client_id') {
+                        val.value = ($('#select_client').val() == '') ? '' : $('#select_client option:selected').text();
+                    }
+
                     d[val.name] = val.value;
                 });
             }
@@ -107,21 +111,21 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         },
         'columns': [
             {
+                data: 'charge_date',
+                render: function(data, type, row, meta){
+                   return moment(row.charge_date).format('DD/MM/YYYY');
+                }
+            },
+            {
                 data: 'account',
                 render: function(data, type, row, meta){
                    return row.account_name;
                 }
             },
-            // {
-            //     data: 'client_name',
-            //     render: function(data, type, row, meta){
-            //        return row.client_name;
-            //     }
-            // },
             {
-                data: 'charge_date',
+                data: 'clients',
                 render: function(data, type, row, meta){
-                   return moment(row.charge_date).format('DD/MM/YYYY');
+                   return row.clients;
                 }
             },
             {
@@ -140,22 +144,61 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 'render': function(data, type, row, meta){
                     let html =  '<a href="#" class="btn bg-primary btn-sm redirect-charge-detail" data-charge-id="'+row.id+'"'+
                     'data-charge-date="'+row.charge_date+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                    html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     return html;
                 
                 },
-                'targets': [3]
+                'targets': [4]
             },
         ],
         "footerCallback": function (tfoot, data, start, end, display) {
             var api = this.api();
-            $('tfoot th').eq(2).html( 
-                '$ ' + parseFloat(api.column(2, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
+            $('tfoot th').eq(3).html( 
+                '$ ' + parseFloat(api.column(3, {page:'current'}).data().sum()).toLocaleString('en-US', {minimumFractionDigits: 2}) + '<br>'
             );
         },
         // 'select': { style: 'multi',  selector: 'td:first-child'},
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        
     } );
+
+    $('#charge-table').on('click', '.remove ', function() {
+        var url = "/api/charges/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/delete");
+       
+        $.confirm({
+            title: 'Eliminar cobro',
+            content: 'Realmente quieres eliminar el cobro?',
+            buttons: {
+                deleteUser: {
+                    text: 'Eliminar cobro',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
+                                });
+                                // table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
 
     $( "#from_search_charge" ).on("submit", function( event ) {
         event.preventDefault();
@@ -164,7 +207,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
 
     $('.clear_form').on('click', function(e){
         loadSearchComboClients();
+        loadSearchComboAccounts();
         $("select[name='account_id']").val('');
+        $("select[name='client_id']").val('');
         $("input[name='range_date']").val('');
         $('#charge-table').DataTable().ajax.reload();
     });

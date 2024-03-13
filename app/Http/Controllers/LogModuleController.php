@@ -81,9 +81,6 @@ class LogModuleController extends Controller
             ->where('modified_record_id',$id)
             ->get();
         
-        Log::emergency('logs');
-        Log::emergency(print_r($logs, true));
-        
         
         if ($logs->count()) {
             $module_name = $logs->first()->module_name;

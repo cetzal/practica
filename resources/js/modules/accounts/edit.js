@@ -24,16 +24,12 @@
     $( 'form#edit_accounts' ).submit( function(e){
         e.preventDefault();
         if ($('#edit_accounts').valid()) {
-            var data = new FormData( $( 'form#edit_accounts' )[ 0 ] );
-            var actionUrl = $(this).attr('action');
+            var frm_data = $('form#edit_accounts').serializeArray();
             
             $.ajax( {
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                data: data,
-                type: $( this ).attr( 'method' ),
-                url: actionUrl,
+                data: frm_data,
+                type: 'PUT',
+                url: '/api/accounts/'+  $("input[name='accounts_id']").val(),
                 success: function( response ){
                     $('#accounts-table').DataTable().ajax.reload();
                     $('.btn-close-modal').trigger('click');

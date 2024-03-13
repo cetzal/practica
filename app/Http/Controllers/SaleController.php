@@ -42,7 +42,7 @@ class SaleController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
-                ->select(['id', 'sale_date', 'client_name', 'total', 'status', 'total_charged'])
+                ->select(['id', 'sale_date', 'client_name', 'total', 'status_charge_name', 'total_charged'])
                 ->where($where)
                 ->get();
 
@@ -338,5 +338,31 @@ class SaleController extends Controller
         // );
             
         return response()->json($data);
+    }
+
+    public function destroy($id)
+    {
+        $save = DB::select('CALL sp_delete_sale(?)', [$id]);
+        Log::emergency('save');
+        Log::emergency(print_r($save, true));
+        $save = current($save);
+        
+        if (isset($save->message)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => $save->message
+            ]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The sale could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
     }
 }

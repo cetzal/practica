@@ -140,6 +140,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 'render': function(data, type, row, meta){
                     let html =  '<a href="#" class="btn bg-primary btn-sm redirect-charge-detail" data-charge-id="'+row.id+'"'+
                     'data-charge-date="'+row.charge_date+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                    html +=  '<a class="btn bg-danger m-1 remove btn-sm" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     return html;
                 
                 },
@@ -156,6 +157,44 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
        
     } );
+
+    $('#charge-table').on('click', '.remove ', function() {
+        var url = "/api/charges/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id).concat("/delete");
+       
+        $.confirm({
+            title: 'Eliminar cobro',
+            content: 'Realmente quieres eliminar el cobro?',
+            buttons: {
+                deleteUser: {
+                    text: 'Eliminar cobro',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.confirm({
+                                    title: response.status,
+                                    content: response.message,
+                                    buttons: {
+                                        ok: function () {
+                                            table.ajax.reload();
+                                        }
+                                    }
+                                });
+                                // table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelAction: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
 
     $( "#from_search_charge" ).on("submit", function( event ) {
         event.preventDefault();

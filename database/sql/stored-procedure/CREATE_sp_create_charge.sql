@@ -62,7 +62,7 @@ BEGIN
         	VALUES (last_charge_id, item_sale_id, item_amount);
 
         SELECT total INTO total_sale FROM view_sales WHERE id = item_sale_id;
-        SELECT SUM(amount) INTO balance FROM charges_detail WHERE sale_id = item_sale_id;
+        SELECT SUM(amount) INTO balance FROM charges_detail WHERE sale_id = item_sale_id AND deleted_at IS NULL;
         
 
         -- Actualiza el estatus de la venta

@@ -6,4 +6,5 @@ SELECT s.id,
 	  (SELECT SUM(sd.total) FROM sale_details sd WHERE sd.sale_id = s.id) AS total,
 	  s.status,
 	  s.total_charged
-FROM sales s;
+FROM sales s
+WHERE s.deleted_at IS NULL;

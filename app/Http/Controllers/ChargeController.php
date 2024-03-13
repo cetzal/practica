@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Charge;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -212,5 +213,30 @@ class ChargeController extends Controller
                 ->get();
         
         return response()->json($data);
+    }
+
+    public function destroy($id)
+    {
+        $save = DB::select('CALL sp_delete_charge(?)', [$id]);
+        
+        $save = current($save);
+
+        if (isset($save->message)) {
+            return response()->json([
+                'status' => 'succes',
+                'message' => $save->message
+            ]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The sale could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
     }
 }

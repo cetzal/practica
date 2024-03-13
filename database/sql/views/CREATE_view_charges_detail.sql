@@ -8,7 +8,10 @@ SELECT
 	cd.sale_id,
 	vs.client_id,
 	vs.client_name,
-	cd.amount
+	cd.amount,
+	vc.created_at,
+	vc.updated_at,
+	vc.deleted_at
 FROM charges_detail cd
 JOIN view_charges vc ON vc.id = cd.charge_id
 JOIN view_sales vs ON vs.id = cd.sale_id;

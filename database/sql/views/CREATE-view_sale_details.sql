@@ -17,4 +17,4 @@ SELECT
 	sd.total
 FROM sales s
 INNER JOIN sale_details sd ON sd.sale_id = s.id
-INNER JOIN view_products vp ON vp.id = sd.product_id;
+INNER JOIN view_products vp ON vp.id = sd.product_id

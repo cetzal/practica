@@ -31,7 +31,7 @@ class SaleController extends Controller
         }
         
         if (!empty($request->status_id)) {
-            $where[] = ['status', '=', $request->status_id];
+            $where[] = ['status_charge_id', '=', $request->status_id];
         }
 
 

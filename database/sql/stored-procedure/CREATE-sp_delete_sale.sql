@@ -64,7 +64,6 @@ BEGIN
         FROM view_charges_detail vcd 
         WHERE vcd.sale_id = param_sale_id);
        	
-       	SELECT var_list_charge_id AS charge_ids;
         -- Obtiene por el id venta el listado de ids del cobro detalle
         SET var_list_charge_detail_id = (SELECT CAST(CONCAT("'", GROUP_CONCAT(vcd.id SEPARATOR "','"), "'") AS CHAR)
         FROM view_charges_detail vcd
@@ -80,12 +79,16 @@ BEGIN
         UPDATE sale_details SET deleted_at = var_now  WHERE sale_id = param_sale_id;
 
         -- Eliminar logicamente los cobros realizados
-        UPDATE charges SET deleted_at = var_now 
-        WHERE id IN (var_list_charge_id);
+        IF var_list_charge_id <> '' THEN
+          UPDATE charges SET deleted_at = var_now 
+          WHERE id IN (var_list_charge_id);
+        END IF;
             
         -- Eliminar logicamente el detalle de cobros realizados
-        UPDATE charges_detail SET deleted_at = var_now 
-        WHERE id IN (var_list_charge_detail_id);
+        IF var_list_charge_detail_id <> '' THEN
+          UPDATE charges_detail SET deleted_at = var_now 
+          WHERE id IN (var_list_charge_detail_id);
+        END IF;
 
         FETCH cur INTO var_sale_id, var_sale_detail_id, var_product_id, var_product_quantity;
   		

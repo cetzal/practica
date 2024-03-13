@@ -299,6 +299,20 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                                     }
                                 });
                                 // table.ajax.reload();
+                            },
+                            error: function(xhr, textStatus, error){
+                                if (xhr.status == 422) {
+                                    let message = ''
+                                    $.each(xhr.responseJSON.errors,function(field_name,error){
+                                        message+='<b>'+field_name+'</b>: '+xhr.responseJSON.errors[field_name][0]+'<br>';
+                                    })
+            
+                                    $.alert({
+                                        title: 'Error',
+                                        content: message,
+                                    });
+            
+                                }
                             }
                         });
                     }

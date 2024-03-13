@@ -35,9 +35,6 @@ class ChargeController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(charge_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
 
-        Log::emergency('where');
-        Log::emergency(print_r($where, true));
-
         if($request->length != -1)
             $limit = $request->length;
         else
@@ -47,12 +44,14 @@ class ChargeController extends Controller
         $count_filtered = DB::table('view_charges')
                             ->select(['id'])
                             ->where($where)
+                            ->orderBy('charge_date', 'DESC')
                             ->count();
 
         $data = DB::table('view_charges')
                             ->select(['id', 'account_name', 'charge_date', 'amount', 'clients'])
                             ->where($where)
                             ->skip($start)->take($limit)
+                            ->orderBy('charge_date', 'DESC')
                             ->get();
 
         $total_data = $count_filtered;
@@ -104,7 +103,7 @@ class ChargeController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $charge_date = $request->charge_date;
+        $charge_date = Carbon::createFromFormat('Y-m-d', $request->charge_date)->format('d/m/Y');
         $charge_id = $request->id;
 
         return view('charge.detail', compact('charge_date', 'charge_id'));

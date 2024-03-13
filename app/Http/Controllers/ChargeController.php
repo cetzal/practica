@@ -23,6 +23,10 @@ class ChargeController extends Controller
             $where[] = ['account_id', '=', $request->account_id];
         }
 
+        if (!empty($request->client_id)) {
+            $where[] = ['clients', 'like', '%'.$request->client_id.'%'];
+        }
+
         if (!empty($request->range_date)) {
             list($date_from, $date_to) = explode(' - ', $request->range_date);
             $date_from = Carbon::createFromFormat('d/m/Y', $date_from)->format('Y-m-d');
@@ -30,6 +34,9 @@ class ChargeController extends Controller
             $where[] = [DB::raw('DATE_FORMAT(charge_date,"%Y-%m-%d")'), '>=', trim($date_from)];
             $where[] = [DB::raw('DATE_FORMAT(charge_date,"%Y-%m-%d")'), '<=', trim($date_to)];
         }
+
+        Log::emergency('where');
+        Log::emergency(print_r($where, true));
 
         if($request->length != -1)
             $limit = $request->length;
@@ -43,7 +50,7 @@ class ChargeController extends Controller
                             ->count();
 
         $data = DB::table('view_charges')
-                            ->select(['id', 'account_name', 'charge_date', 'amount'])
+                            ->select(['id', 'account_name', 'charge_date', 'amount', 'clients'])
                             ->where($where)
                             ->skip($start)->take($limit)
                             ->get();
@@ -163,16 +170,15 @@ class ChargeController extends Controller
     {
         $option_initial = ['id' => '', 'name' => trans('file.without_clients')];
 
-        // $clients = DB::table('view_sales_clients_list')->get();
+        $clients = DB::table('view_charges_clients_index')->get();
 
-        // if ($clients->count()) {
-        //     $option_initial = ['id' => '', 'name' => trans('file.select_client')];
-        // }
+        if ($clients->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.select_client')];
+        }
 
-        // $clients->prepend((object)$option_initial);
+        $clients->prepend((object)$option_initial);
 
-        // return $clients;
-        return [$option_initial];
+        return $clients;
     }
 
     public function loadSearchSaleComboClients()

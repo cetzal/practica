@@ -69,7 +69,7 @@ BEGIN
             (
                 SELECT vcd.id
                 FROM view_charges_detail vcd
-                WHERE vcd.sale_id = 4
+                WHERE vcd.sale_id = param_sale_id
             )
             SEPARATOR ','
         ) INTO var_list_charge_detail_id;

@@ -65,14 +65,9 @@ BEGIN
         WHERE vcd.sale_id = param_sale_id;
 
         -- Obtiene por el id venta el listado de ids del cobro detalle
-        SELECT GROUP_CONCAT( 
-            (
-                SELECT vcd.id
-                FROM view_charges_detail vcd
-                WHERE vcd.sale_id = param_sale_id
-            )
-            SEPARATOR ','
-        ) INTO var_list_charge_detail_id;
+        SELECT GROUP_CONCAT(vcd.id SEPARATOR ',') INTO var_list_charge_detail_id
+        FROM view_charges_detail vcd
+        WHERE vcd.sale_id = param_sale_id;
 
         -- Eliminar logicamente la venta
         UPDATE sales SET deleted_at = var_now  WHERE id = param_sale_id;

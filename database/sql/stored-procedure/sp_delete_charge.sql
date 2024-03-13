@@ -50,10 +50,13 @@ BEGIN
     -- SELECT var_sale_id as sale_id, var_charge_amount as amount;
     UPDATE sales SET total_charged = total_charged - var_charge_amount WHERE id = var_sale_id;
     SELECT total_charged INTO var_total_charged FROM sales WHERE id = var_sale_id;
+    
+    -- Status 2 = No cobrado
+    -- Status 3 = Abonado
     IF var_total_charged = 0 THEN
-      UPDATE sales SET status = 'Pendiente' WHERE id = var_sale_id;
+      UPDATE sales SET status_charge_id = 2 WHERE id = var_sale_id;
     ELSEIF var_total_charged < var_total_sale THEN
-      UPDATE sales SET status = 'Abonado';
+      UPDATE sales SET status_charge_id = 3;
     END IF;
 
     UPDATE charges SET deleted_at = NOW() WHERE id = param_charge_id;

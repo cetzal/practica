@@ -231,9 +231,9 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 }
             },
             {
-                data: 'status',
+                data: 'status_charge_name',
                 render: function(data, type, row, meta){
-                    return row.status;
+                    return row.status_charge_name;
                 }
             },
             {

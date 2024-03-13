@@ -66,10 +66,13 @@ BEGIN
         
 
         -- Actualiza el estatus de la venta
+        -- Status 1 = Cobrado
+        -- Status 3 = Abonado
+
         IF balance < total_sale THEN
-            UPDATE sales SET status = 'Abonado' WHERE id = item_sale_id;
+            UPDATE sales SET status_charge_id = 3 WHERE id = item_sale_id;
         ELSEIF balance = total_sale THEN
-            UPDATE sales SET status = 'Cobrado' WHERE id = item_sale_id;
+            UPDATE sales SET status_charge_id = 1 WHERE id = item_sale_id;
         END IF;
 
         UPDATE sales set total_charged = balance WHERE id = item_sale_id;

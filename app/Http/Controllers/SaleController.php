@@ -42,7 +42,7 @@ class SaleController extends Controller
         $start = $request->start ?? 1;
         
         $data = DB::table('view_sales')
-                ->select(['id', 'sale_date', 'client_name', 'total', 'status', 'total_charged'])
+                ->select(['id', 'sale_date', 'client_name', 'total', 'status_charge_name', 'total_charged'])
                 ->where($where)
                 ->get();
 

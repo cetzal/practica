@@ -102,7 +102,7 @@
         } else {
             $.alert({
                 title: '',
-                content: 'No hay ventas seleccionados'
+                content: 'No hay compras seleccionados'
             });
         }
     });

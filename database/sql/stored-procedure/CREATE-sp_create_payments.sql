@@ -64,8 +64,8 @@ BEGIN
             -- actualizar em monto de pago de las compras y los status
             IF @balance < @total_purchase THEN
                SET @status_paid = 1;
-            ELSEIF @balance = @total_purchase THEN
-                set @status_paid = 3;
+            ELSEIF @balance >= @total_purchase THEN
+                set @status_paid = 2;
             END IF;
 
             UPDATE purchases SET paid_amounts = @balance, status = @status_paid WHERE id = @purchase_id;

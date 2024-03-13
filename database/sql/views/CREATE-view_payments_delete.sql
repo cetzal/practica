@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW view_payments AS (
+CREATE OR REPLACE VIEW view_payments_delete AS (
 SELECT 
 	p.id,
 	p.account_id,
@@ -8,5 +8,4 @@ SELECT
 	p.paid_date,
 	(SELECT SUM(cd.amount) FROM payments_detail cd WHERE cd.payments_id = p.id) as amount
 FROM payments p
-WHERE deleted_at IS NULL
 );

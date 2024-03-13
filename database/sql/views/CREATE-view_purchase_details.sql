@@ -1,6 +1,7 @@
 CREATE OR REPLACE VIEW view_purchase_details AS
 SELECT 
-	ps.id,
+	pd.id,
+	pd.purchase_id,
 	ps.purchase_date as date,
 	ps.supplier_id,
 	vp.supplier_name,

@@ -64,7 +64,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
             {
                 data: 'status',
                 render : function(data, type, row, meta){
-                    let content = 'Pendiente';
+                    let content = 'No pagado';
                     if(row.status == 1){
                         content = 'Abonado';
                     }
@@ -108,6 +108,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                 'render': function(data, type, row, meta){
                     let html =  '<a href="#" class="btn bg-primary btn-sm redirect-purchase-detail" data-purchase-id="'+row.id+'"'+
                                 'data-purchase-date="'+row.purchase_date+'" data-supplier="'+row.supplier_name+'"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                    html +=  '<a class="btn bg-danger m-1 remove" data-id="'+row.id+'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                     return html;
                 
                 },
@@ -155,6 +156,38 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
         $('.form_search').removeClass('form_search_active');
     });
 
+    $('#purchase-table').on('click', '.remove ', function() {
+        var url = "api/purchase/"
+        var id = $(this).data('id').toString();
+        url = url.concat(id);
+        
+        $.confirm({
+            title: 'Eliminar compra',
+            content: 'Realmente quieres eliminar el compra?',
+            buttons: {
+                deleteUser: {
+                    text: 'Si, eliminar',
+                    action: function () {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function(response) {
+                                $.alert({
+                                    title: response.status,
+                                    content: response.message,
+                                });
+                                table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                cancelar: function () {
+                    // $.alert('action is canceled');
+                }
+            }
+        });
+
+    });
 
     function loadSearchComboSuppliers() {
         let input = '.selectpicker-suppliers';

@@ -3,7 +3,7 @@ SELECT
 DISTINCT 
 vp.status as id,
 (CASE vp.status
-   when 0 then 'Pendiente' 
+   when 0 then 'No pagado' 
    when 1 then 'Abonado' 
    when 2 then 'Pagado' END) as name
 FROM view_purchases AS vp 

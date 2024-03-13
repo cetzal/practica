@@ -120,6 +120,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 Route::group(['middleware' => ['auth.jwt']], function(){
     Route::post('/purchase',[App\Http\Controllers\PurchaseController::class, 'store'])->name('api.purchase.store');
     Route::get('/purchase/list', [App\Http\Controllers\PurchaseController::class, 'list'])->name('api.purchase.list');
+    Route::delete('/purchase/{id}', [App\Http\Controllers\PurchaseController::class, 'destroy'])->name('api.purchase.destroy');
     Route::get('/purchase/load/create/suppliers', [\App\Http\Controllers\PurchaseController::class, 'loadCreateComboSuppliers'])->name('api.supplier.load.create.combo-supliers');
     Route::get('/purchase/getBrandsBySupplierId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getBrandsBySupplierId'])->name('api.purchase.brand-combo');
     Route::get('/purchase/getProductsByBrandId/{id}', [\App\Http\Controllers\PurchaseController::class, 'getProductsByBrandId'])->name('api.purchase.brand-combo');
@@ -227,6 +228,7 @@ Route::group(['middleware' => ['auth.jwt']], function() {
 Route::group(['middleware' => ['auth.jwt']], function() {
     Route::get('/payments', [\App\Http\Controllers\PaymentsController::class, 'list'])->name('api.payments.list');
     Route::post('/payments', [\App\Http\Controllers\PaymentsController::class, 'store'])->name('api.payments.store');
+    Route::delete('/payments/{id}', [\App\Http\Controllers\PaymentsController::class, 'destroy'])->name('api.payments.destroy');
     Route::get('/payments/details/{id}', [\App\Http\Controllers\PaymentsController::class, 'detailList'])->name('api.payments.detail-list');
     Route::get('/payments/load/search/accounts', [\App\Http\Controllers\PaymentsController::class, 'loadSearchComboAccounts'])->name('api.payments.load.combo.accounts');
     Route::get('/payments/load/search/suppliers', [\App\Http\Controllers\PaymentsController::class, 'loadSearchComboSuppliers'])->name('api.payments.load.combo.suppliers');

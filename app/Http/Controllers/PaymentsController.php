@@ -51,7 +51,7 @@ class PaymentsController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $paid_date = $request->paid_date;
+        $paid_date = Carbon::createFromFormat('Y-m-d', $request->paid_date)->format('d/m/Y');
         $payments_id = $request->id;
 
         return view('payments.detail', compact('paid_date', 'payments_id'));
@@ -103,6 +103,35 @@ class PaymentsController extends Controller
                 $request->supplier_id, 
                 JWTAuth::toUser()->id, 
                 json_encode($request->payments_purchase)
+            ]
+        );
+        $save = current($save);
+
+        if (isset($save->message)) {
+            return response()->json([
+                'status' => 'succes',
+                'message' => $save->message
+            ]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The purchases could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
+    }
+
+    public function destroy($id){
+
+        $save = DB::select(
+            "CALL sp_delete_payments(?)", 
+            [
+                $id
             ]
         );
         $save = current($save);

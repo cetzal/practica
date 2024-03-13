@@ -113,6 +113,10 @@ class PurchaseController extends Controller
         }
     }
 
+    public function destroy($id){
+        
+    }
+
     public function loadCreateComboSuppliers()
     {
         $option_initial = ['id' => '', 'name' => trans('file.without_suppliers')];

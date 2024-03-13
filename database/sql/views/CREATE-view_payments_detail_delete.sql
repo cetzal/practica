@@ -1,0 +1,13 @@
+CREATE OR REPLACE VIEW view_payments_detail_delete AS
+SELECT 
+	vp.id,
+	vp.account_id,
+	vp.account_name,
+	vp.supplier_id,
+	vp.supplier_name,
+	(SELECT vp.purchase_date FROM view_purchases vp WHERE vp.id = pd.purchase_id) as purchase_date,
+	pd.amount,
+	pd.payments_id,
+	pd.purchase_id
+FROM view_payments_delete vp
+INNER JOIN payments_detail pd ON vp.id = pd.payments_id 

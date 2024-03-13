@@ -6,4 +6,5 @@ SELECT p.id,
 	  (SELECT SUM(pd.total) FROM purchases_detail pd WHERE pd.purchase_id = p.id) AS total,
 	  p.status,
 	  p.paid_amounts
-FROM purchases p;
+FROM purchases p
+WHERE deleted_at IS NULL;

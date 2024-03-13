@@ -22,7 +22,7 @@ class PurchaseDetailController extends Controller
     public function showList(Request $request, $id)
     {
         $where = [
-            ['id', '=', $id]
+            ['purchase_id', '=', $id]
         ];
 
         if($request->length != -1)

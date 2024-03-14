@@ -164,18 +164,21 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     $( "#from_search_sale" ).on("submit", function( event ) {
         event.preventDefault();
         table.ajax.reload();
+        loadSearchComboClients();
+        loadSearchComboStatus();
     });
 
     $('.clear_form').on('click', function(e){
-        loadSearchComboSuppliers();
-        loadSearchComboBrands();
-        loadSearchComboProducts();
+        // loadSearchComboSuppliers();
+        // loadSearchComboBrands();
+        // loadSearchComboProducts();
         loadSearchComboClients();
+        loadSearchComboStatus();
         $("input[name='code_prod']").val('');
         $("input[name='name_prod']").val('');
-        $("select[name='supplier_id']").val('');
-        $("select[name='brand_id']").val('');
-        $("select[name='product_id']").val('');
+        // $("select[name='supplier_id']").val('');
+        // $("select[name='brand_id']").val('');
+        // $("select[name='product_id']").val('');
         $("select[name='client_id']").val('');
         $("select[name='status_id']").val('');
         $("input[name='range_date']").val('');
@@ -294,6 +297,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                                     content: response.message,
                                     buttons: {
                                         ok: function () {
+                                            loadSearchComboStatus();
+                                            $("select[name='status_id']").val('');
                                             table.ajax.reload();
                                         }
                                     }

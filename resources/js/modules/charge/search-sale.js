@@ -24,6 +24,21 @@
         let url = '/api/charges/load/search-sales/clients';
 
         $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Por el momento no existe ventas por cobrar.',
+                    buttons: {
+                        ok: function () {
+                            $('#searchSale').modal('hide');
+                        }
+                    }
+                });
+            }
             if (response.length) {
                 $(input).find('option').remove().end();
                 $.each(response, function(index, row) {
@@ -33,10 +48,9 @@
         })
     }
 
-    $(document).ready(function() {
-        console.log('load clientes by sales');
-        loadSearchSaleComboClients();
-    });
+    // $(document).ready(function() {
+    //     loadSearchSaleComboClients();
+    // });
 
    
     $('#filter_data').on('click', function(event) {
@@ -71,7 +85,7 @@
 
     $('#clear_form_sale').on('click', function(event) {
         event.preventDefault();
-        loadSearchSaleComboClients
+        loadSearchSaleComboClients()
         $("#select_search_client").val('');
         $("input[name='range_date']").val('');
         $( "#select_all" ).prop('checked', false);

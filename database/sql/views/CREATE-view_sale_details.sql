@@ -4,6 +4,8 @@ SELECT
 	s.date,
 	s.client_id,
 	(SELECT vc.name FROM view_clients vc WHERE vc.id = s.client_id) as client_name,
+	s.status_charge_id,
+	(SELECT vsc.name FROM view_status_charge vsc WHERE vsc.id = s.status_charge_id) as status_charge_name,
 	sd.id AS sale_detail_id,
 	sd.product_id,
 	vp.code as product_code,

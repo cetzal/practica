@@ -5,8 +5,6 @@
         }
     });
 
-
-
     //Cargos combos para agregar cuentas
     function loadSearchCreateComboAccounts() {
         let input = '#select_account';
@@ -37,6 +35,35 @@
         })
     }
     
+    function loadSearchSaleComboClients() {
+        let input = '#select_search_client';
+        let url = '/api/charges/load/search-sales/clients';
+
+        $.get(url, function(response) {
+            let filtered = response.filter(function(current) {
+                return current.id != ''
+            });
+            
+            if (filtered.length == 0) {
+                $.confirm({
+                    title: '',
+                    content: 'Por el momento no existe ventas por cobrar.',
+                    buttons: {
+                        ok: function () {
+                            $('#searchSale').modal('hide');
+                        }
+                    }
+                });
+            }
+
+            if (response.length) {
+                $(input).find('option').remove().end();
+                $.each(response, function(index, row) {
+                    $(input).append('<option value=' + row.id + '>' + row.name + '</option>');
+                }); 
+            }
+        })
+    }
 
     $(document).ready(function() {
         $('#set_date').text(moment().format('DD/MM/YYYY'));
@@ -117,6 +144,7 @@
     $('#open-search-sale').on('click', function(e) {
         e.preventDefault();
         $('#searchSale').modal('show');
+        loadSearchSaleComboClients();
         $("#select_search_client").val('');
         $("input[name='range_date']").val('');
         $( "#select_all" ).prop('checked', false);
@@ -235,8 +263,6 @@
             sales.push(sale);
             
         });
-
-        console.log('sales not allowed', sales_not_allowed);
         
         if (sales.length == 0) {
             $.alert({

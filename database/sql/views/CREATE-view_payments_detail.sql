@@ -11,3 +11,4 @@ SELECT
 	pd.purchase_id
 FROM view_payments vp
 INNER JOIN payments_detail pd ON vp.id = pd.payments_id 
+WHERE pd.deleted_at IS NULL;

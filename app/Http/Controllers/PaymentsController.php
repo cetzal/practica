@@ -41,7 +41,7 @@ class PaymentsController extends Controller
 
         $query = DB::table('view_payments')->where($where);
 
-        $data = $query->orderBy('paid_date', 'DESC')->get();
+        $data = $query->orderBy('id', 'DESC')->orderBy('paid_date', 'DESC')->get();
         $totalData = $data->count();
         $totalFiltered = $totalData;
         $data = $data->skip($start)->take($limit)->values();
@@ -128,12 +128,7 @@ class PaymentsController extends Controller
 
     public function destroy($id){
 
-        $save = DB::select(
-            "CALL sp_delete_payments(?)", 
-            [
-                $id
-            ]
-        );
+        $save = DB::select("CALL sp_delete_payments(?)", [$id]);
         $save = current($save);
 
         if (isset($save->message)) {

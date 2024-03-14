@@ -45,7 +45,7 @@
                                     .attr('data-purchase-id', row.id);
 
                         fila.append('<td><div class="checkbox"><input type="checkbox" class="dt-checkboxes checked-purchase"><label></label></div></td>');
-                        fila.append('<td>'+ row.purchase_date +'</td>');
+                        fila.append('<td>'+ moment(row.purchase_date).format('DD/MM/YYYY') +'</td>');
                         fila.append('<td>'+ row.supplier_name +'</td>');
                         fila.append('<td>$ '+ parseFloat(row.total).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');
                         fila.append('<td>$ '+ parseFloat(row.paid_amounts).toLocaleString('en-US', {minimumFractionDigits: 2}) +'</td>');

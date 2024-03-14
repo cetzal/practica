@@ -59,7 +59,7 @@ BEGIN
 	        VALUES (@last_payment_id, @purchase_id, @amount);
 
             SET @total_purchase = (SELECT total FROM view_purchases WHERE id = @purchase_id);
-            SET @balance = (SELECT SUM(amount) FROM payments_detail WHERE purchase_id = @purchase_id);
+            SET @balance = (SELECT SUM(amount) FROM payments_detail WHERE purchase_id = @purchase_id AND deleted_at IS NULL);
 
             -- actualizar em monto de pago de las compras y los status
             IF @balance < @total_purchase THEN

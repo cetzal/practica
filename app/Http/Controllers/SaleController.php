@@ -344,7 +344,7 @@ class SaleController extends Controller
     public function destroy($id)
     {
         $save = DB::select('CALL sp_delete_sale(?)', [$id]);
-        Log::emergency('save');
+        Log::emergency('delete sale');
         Log::emergency(print_r($save, true));
         $save = current($save);
         

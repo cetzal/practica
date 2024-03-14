@@ -82,6 +82,8 @@
 
             return;
         }
+        $('#table-purc-search tbody').empty();
+        $('#table-purc-search').hide();
         $("input[name='supplier_id']").val('');
         $("input[name='supplier_id']").val(supplier_id);
         $('#serchModalPurchase').modal('show');

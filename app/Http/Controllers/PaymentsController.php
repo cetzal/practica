@@ -41,7 +41,7 @@ class PaymentsController extends Controller
 
         $query = DB::table('view_payments')->where($where);
 
-        $data = $query->get();
+        $data = $query->orderBy('paid_date', 'DESC')->get();
         $totalData = $data->count();
         $totalFiltered = $totalData;
         $data = $data->skip($start)->take($limit)->values();

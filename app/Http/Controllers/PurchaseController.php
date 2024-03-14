@@ -114,7 +114,26 @@ class PurchaseController extends Controller
     }
 
     public function destroy($id){
-        
+        $save = DB::select("CALL sp_delete_purchases(?)", [$id]);
+        $save = current($save);
+
+        if (isset($save->message)) {
+            return response()->json([
+                'status' => 'succes',
+                'message' => $save->message
+            ]); 
+        }
+
+        if(isset($save->error)) {
+            return response()->json([
+                'errors' => [
+                    'message' => [
+                        'The purchases could not be completed please try again, if the error persists, please contact technical support.'
+                    ]
+                ]
+            ], 422);
+            exit;
+        }
     }
 
     public function loadCreateComboSuppliers()

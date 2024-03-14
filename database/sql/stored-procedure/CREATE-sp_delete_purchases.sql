@@ -13,7 +13,7 @@ BEGIN
    	DECLARE var_id INT;
 
 	DECLARE purchase_details CURSOR FOR SELECT vpd.id, vpd.product_id, vpd.qty FROM view_purchase_details vpd WHERE vpd.purchase_id = param_purchase_id;
-   	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
    
     DECLARE exit handler FOR SQLEXCEPTION
     BEGIN
@@ -45,7 +45,7 @@ BEGIN
 		            LEAVE read_loop;
 		        END IF;
 
-                SET @current_qty = (SELECT paid_amounts FROM view_purchases WHERE id = var_purchase_id);
+                SET @current_qty = (SELECT qty FROM view_products WHERE id = var_product_id);
                 SET @total_qty = @current_qty - var_product_qty;
 
                 UPDATE products SET qty = @total_qty WHERE id = var_product_id;
@@ -55,7 +55,9 @@ BEGIN
         CLOSE purchase_details;
 
         UPDATE purchases SET deleted_at = CURDATE() WHERE id = param_purchase_id;
-        UPDATE payments_detail SET deleted_at = CURDATE() WHERE purchase_id = param_purchase_id;
+        CALL sp_delete_payments_by_purchase(param_purchase_id);
+        -- eliminar abonos o pagados
+        -- UPDATE payments_detail SET deleted_at = CURDATE() WHERE purchase_id = param_purchase_id;
 
     COMMIT;
     SELECT 'El compra se elimino.' AS message;

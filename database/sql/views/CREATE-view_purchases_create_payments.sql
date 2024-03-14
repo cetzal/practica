@@ -7,4 +7,4 @@ SELECT vp.id,
 	   vp.status,
 	  vp.paid_amounts
 FROM view_purchases vp 
-WHERE vp.status != 2;
+WHERE vp.status != 2 HAVING total > 0; 

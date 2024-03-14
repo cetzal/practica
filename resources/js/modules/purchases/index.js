@@ -145,6 +145,7 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     $( "#from_search_purchase" ).on("submit", function( event ) {
         event.preventDefault();
         table.ajax.reload();
+        loadSearchComboStatus();
     });
 
     $('.show_form_search').on('click', function(e){
@@ -177,6 +178,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                                     content: response.message,
                                 });
                                 table.ajax.reload();
+                                loadSearchComboStatus();
+                                loadSearchComboSuppliers();
                             }
                         });
                     }

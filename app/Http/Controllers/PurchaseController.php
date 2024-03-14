@@ -273,9 +273,13 @@ class PurchaseController extends Controller
 
     public function loadSearchComboStatus()
     {
-        $option_initial = ['id' => '', 'name' => trans('file.All')];
+        $option_initial = ['id' => '', 'name' => trans('file.purchases_select_status')];
 
         $status = DB::table('view_purchase_status_list')->get();
+
+        if ($status->count()) {
+            $option_initial = ['id' => '', 'name' => trans('file.All')];
+        }
 
         $status->prepend((object)$option_initial);
 

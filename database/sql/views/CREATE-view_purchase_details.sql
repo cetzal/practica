@@ -16,6 +16,6 @@ SELECT
 	ps.created_at,
 	ps.updated_at,
 	ps.deleted_at 
-FROM purchases ps 
+FROM view_purchases ps 
 inner join purchases_detail pd on ps.id  = pd.purchase_id
 inner join view_products AS vp ON pd.product_id  = vp.id;

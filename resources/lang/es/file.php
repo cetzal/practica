@@ -657,5 +657,6 @@ return [
 	'payments detail' => 'Detalle de pagos',
 	'balance_collected' => 'Saldo cobrado',
 	'total_to_charged' => 'Total a cobrar',
+	'purchases_select_status' => 'Sin status',
 ];
 ?>

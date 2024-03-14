@@ -230,7 +230,7 @@
                 amount: parseFloat($(this).find('.amount').val().replace(/[^\d.-]/g, '')),
             }
             if (amount > total_sale) {
-                sales_not_allowed.push({client: client, amount: amount});
+                sales_not_allowed.push({client: client, amount: amount, total_sale: total_sale});
             }
             sales.push(sale);
             
@@ -243,6 +243,17 @@
                 title: '',
                 content: 'No hay cobros agregados'
             });
+        } else if(sales_not_allowed.length > 0) {
+            let content = [];
+            content = sales_not_allowed.map(function(value) {
+                let string = 'El total '+value.total_sale+ 'no puede ser mayor a '+ value.amount;
+                return string;
+            });
+
+            $.alert({
+                title: 'Montos a cobrar',
+                content: content.join('<br>')
+            })
         } else if ($('form#charge-form').valid()) {
             let exist_error = false;
             $(this).find('select').each(function() {
@@ -281,7 +292,6 @@
                     content: 'Algun(os) monto(s) no pueden tener el valor de "0"'
                 });
             } else {
-                console.log('avanzo el codigo');
                 $.ajax({
                     type: "POST",
                     url: '/api/charges',

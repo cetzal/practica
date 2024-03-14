@@ -31,7 +31,7 @@ class SaleController extends Controller
         }
         
         if (!empty($request->status_id)) {
-            $where[] = ['status', '=', $request->status_id];
+            $where[] = ['status_charge_id', '=', $request->status_id];
         }
 
 
@@ -44,6 +44,7 @@ class SaleController extends Controller
         $data = DB::table('view_sales')
                 ->select(['id', 'sale_date', 'client_name', 'total', 'status_charge_name', 'total_charged'])
                 ->where($where)
+                ->orderBy('id', 'DESC')
                 ->get();
 
         $totalData = $data->count();

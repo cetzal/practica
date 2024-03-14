@@ -13,7 +13,7 @@ BEGIN
     DECLARE var_product_id INT;
     DECLARE var_product_quantity INT;
     DECLARE var_now TIMESTAMP;
-    DECLARE var_charge_id INT;
+    DECLARE var_list_charge_id VARCHAR(255);
     DECLARE var_list_charge_detail_id VARCHAR(255);
 
    
@@ -59,18 +59,19 @@ BEGIN
         -- Obtiene la fecha y hora actual
         SET var_now = NOW();
 
-        -- Obtiene el account_id
-        SELECT DISTINCT vcd.charge_id INTO var_charge_id
+        -- Obtiene el charge_id
+        SET var_list_charge_id = (SELECT CAST(CONCAT("'", GROUP_CONCAT(vcd.charge_id SEPARATOR "','"), "'") AS CHAR)
         FROM view_charges_detail vcd 
-        WHERE vcd.sale_id = param_sale_id;
-
+        WHERE vcd.sale_id = param_sale_id);
+       	
         -- Obtiene por el id venta el listado de ids del cobro detalle
-        SELECT GROUP_CONCAT(vcd.id SEPARATOR ',') INTO var_list_charge_detail_id
+        SET var_list_charge_detail_id = (SELECT CAST(CONCAT("'", GROUP_CONCAT(vcd.id SEPARATOR "','"), "'") AS CHAR)
         FROM view_charges_detail vcd
-        WHERE vcd.sale_id = param_sale_id;
-
+        WHERE vcd.sale_id = param_sale_id);
+		
+       	-- SELECT var_list_charge_detail_id AS charge_details_ids;
         -- Eliminar logicamente la venta
-        UPDATE sales SET deleted_at = var_now  WHERE id = param_sale_id;
+        UPDATE sales SET deleted_at = var_now WHERE id = param_sale_id;
 
         -- Una vez eliminada la venta se recupera los productos vendidos, agregando
         -- al stock del producto
@@ -78,12 +79,16 @@ BEGIN
         UPDATE sale_details SET deleted_at = var_now  WHERE sale_id = param_sale_id;
 
         -- Eliminar logicamente los cobros realizados
-        UPDATE charges SET deleted_at = var_now 
-        WHERE id = var_charge_id;
+        IF var_list_charge_id <> '' THEN
+          UPDATE charges SET deleted_at = var_now 
+          WHERE id IN (var_list_charge_id);
+        END IF;
             
         -- Eliminar logicamente el detalle de cobros realizados
-        UPDATE charges_detail SET deleted_at = var_now 
-        WHERE id IN (var_list_charge_detail_id);
+        IF var_list_charge_detail_id <> '' THEN
+          UPDATE charges_detail SET deleted_at = var_now 
+          WHERE id IN (var_list_charge_detail_id);
+        END IF;
 
         FETCH cur INTO var_sale_id, var_sale_detail_id, var_product_id, var_product_quantity;
   		

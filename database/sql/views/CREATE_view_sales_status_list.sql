@@ -1,3 +1,3 @@
 CREATE OR REPLACE VIEW view_sales_status_list AS
-SELECT DISTINCT vs.status as id, vs.status_charge_name as name
+SELECT DISTINCT vs.status_charge_id as id, vs.status_charge_name as name
 FROM view_sales vs;

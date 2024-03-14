@@ -44,14 +44,14 @@ class ChargeController extends Controller
         $count_filtered = DB::table('view_charges')
                             ->select(['id'])
                             ->where($where)
-                            ->orderBy('charge_date', 'DESC')
+                            ->orderBy('id', 'DESC')
                             ->count();
 
         $data = DB::table('view_charges')
                             ->select(['id', 'account_name', 'charge_date', 'amount', 'clients'])
                             ->where($where)
                             ->skip($start)->take($limit)
-                            ->orderBy('charge_date', 'DESC')
+                            ->orderBy('id', 'DESC')
                             ->get();
 
         $total_data = $count_filtered;

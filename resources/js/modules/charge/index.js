@@ -184,6 +184,8 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                                     buttons: {
                                         ok: function () {
                                             table.ajax.reload();
+                                            loadSearchComboClients();
+                                            loadSearchComboAccounts();
                                         }
                                     }
                                 });

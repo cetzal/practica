@@ -295,6 +295,10 @@ class SaleController extends Controller
 
         $status = DB::table('view_sales_status_list')->get();
 
+        if ($status->count() == 0) {
+            $option_initial = ['id' => '', 'name' => trans('file.without_status')];
+        }
+
         $status->prepend((object)$option_initial);
 
         return $status;

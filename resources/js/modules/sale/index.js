@@ -297,9 +297,10 @@ jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
                                     content: response.message,
                                     buttons: {
                                         ok: function () {
-                                            loadSearchComboStatus();
                                             $("select[name='status_id']").val('');
                                             table.ajax.reload();
+                                            loadSearchComboClients();
+                                            loadSearchComboStatus();
                                         }
                                     }
                                 });

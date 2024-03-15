@@ -658,6 +658,7 @@ return [
 	'payments detail' => 'Payments detail',
 	'balance_collected' => 'Balance collected',
 	'total_to_charged' => 'Total charged',
-	'purchases_select_status' => 'Without status'
+	'purchases_select_status' => 'Without status',
+	'without_status' => 'Without status',
 ];
 ?>

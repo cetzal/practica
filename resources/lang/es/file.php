@@ -658,5 +658,6 @@ return [
 	'balance_collected' => 'Saldo cobrado',
 	'total_to_charged' => 'Total a cobrar',
 	'purchases_select_status' => 'Sin status',
+	'without_status' => 'Sin estatus',
 ];
 ?>
